@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('api/v1/follow', [
+    'middleware' => 'follow',
+    'uses' => 'FollowerController@newFollower'
+]);
+
+Route::get('/unsubscribe', [
+    'middleware' => 'unsubscribe',
+    'uses' => 'FollowerController@unsubscribe'
+]);
