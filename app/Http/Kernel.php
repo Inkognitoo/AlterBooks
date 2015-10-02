@@ -29,7 +29,6 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'follow' => \App\Http\Middleware\FollowerMiddleware::class,
-        'unsubscribe' => \App\Http\Middleware\UnsubscribeMiddleware::class,
+        'reg.validate' => \App\Http\Middleware\Registration::class,
     ];
 }
