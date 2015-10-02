@@ -44,7 +44,7 @@ class FollowerController extends Controller
         // пользователь подписан?
         if ((bool)$followers->first()->follow === true ) {
             // да
-            return $this->buildResponse(['text' => 'Ой! Данный адрес электронной уже включен в рассылку. Пожалуйста, проверьте адрес на наличие ошибок в нем. Или, может быть, Вы просто забыли о подписке? Всякое бывает.'], 400);
+            return $this->buildResponse(['text' => 'Ой! Данный адрес электронной уже включен в рассылку. Пожалуйста, проверьте адрес на наличие ошибок в нем. Или, может быть, Вы просто забыли о подписке? Всякое бывает.'], 409);
         }
 
         // нет
@@ -78,10 +78,10 @@ class FollowerController extends Controller
                 $json['status'] = 'success';
                 $json['code'] = $code;
                 break;
-            case 400:
+            default:
                 $json['status'] = 'error';
                 $json['code'] = $code;
-                break;
+
         }
 
         $json['property'] = $property;

@@ -1,4 +1,5 @@
 <?php
+//TODO: купить и настроить info@alterbooks.ru
 
 return [
 
