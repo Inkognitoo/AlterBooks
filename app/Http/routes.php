@@ -23,16 +23,17 @@ Route::group(['prefix' => 'api/v1'], function()
         'uses' => 'UsersController@login'
     ]);
 
+    Route::get('activate/{id}/{activation_code}', [
+        'uses' => 'UsersController@activate'
+    ]);
+
 });
 
-// Логи приложения. Только для локала
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-
 // Для single page. Любой не зарегистрированый маршрут отправляет к index
-Route::get('{path}', function () {
-    return view('index');
-})
-    ->where('path', '.*?');
+//Route::get('{path}', function () {
+//    return view('index');
+//})
+//    ->where('path', '.*?');
 
 //// Роуты запроса ссылки для сброса пароля
 //Route::get('password/email', 'Auth\PasswordController@getEmail');

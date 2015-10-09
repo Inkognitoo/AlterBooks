@@ -8,74 +8,100 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
     public function registration(Request $request) {
         // Сама регистрация с уже проверенными данными
         $user = new User();
-        $user->fill($request->input());
+        $user->email = $request['email'];
+        $user->password = $request['password'];
+
         $user->registration();
 
         // Вывод информационного сообщения об успешности регистрации
+        //TODO: сделать нормальное заполенение json-ок
         $json['status'] = 'OK';
         $json['code'] = 200;
-        $json['property'] = ['Регистрация почти завершена. Вам необходимо подтвердить e-mail, указанный при регистрации, перейдя по ссылке в письме.'];
+        $json['property'] = [
+            'text' => 'Регистрация почти завершена. Вам необходимо подтвердить e-mail, указанный при регистрации, перейдя по ссылке в письме.'
+        ];
 
         return response(json_encode($json), 200)
             ->header('Content-Type', 'text/json');
     }
 
-    public function getActivate($userId, $activationCode) {
+    public function activate($id, $activation_code) {;
         // Получаем указанного пользователя
-        $user = User::find($userId);
+        $user = User::find($id);
         if (!$user) {
-            return $this->getMessage("Неверная ссылка на активацию аккаунта.");
+            $json['status'] = 'Bad Request';
+            $json['code'] = 400;
+            $json['property'] = [
+                'text' => 'Неверная ссылка на активацию аккаунта.'
+            ];
+
+            return response(json_encode($json), 400)
+                ->header('Content-Type', 'text/json');
         }
 
         // Пытаемся его активировать с указанным кодом
-        if ($user->activate($activationCode)) {
-            // В случае успеха авторизовываем его
-            Auth::login($user);
-            // И выводим сообщение об успехе
-            return $this->getMessage("Аккаунт активирован", "/");
+        if (!$user->activate($activation_code)) {
+            //если не удалось, сообщаем об ошибке
+            $json['status'] = 'Bad Request';
+            $json['code'] = 400;
+            $json['property'] = [
+                'text' => 'Неверная ссылка на активацию аккаунта, либо учетная запись уже активирована.'
+            ];
+
+            return response(json_encode($json), 400)
+                ->header('Content-Type', 'text/json');
         }
 
-        // В противном случае сообщаем об ошибке
-        return $this->getMessage("Неверная ссылка на активацию аккаунта, либо учетная запись уже активирована.");
+        // В случае успеха авторизовываем пользователя
+        Auth::login($user);
+        // И выводим сообщение об успехе
+        $json['status'] = 'OK';
+        $json['code'] = 200;
+        $json['property'] = [
+            'text' => 'Аккаунт активирован.'
+        ];
+
+        return response(json_encode($json), 200)
+            ->header('Content-Type', 'text/json');
     }
 
     public function login(Request $request) {
         // Формируем базовый набор данных для авторизации
-        // (isActive => 1 нужно для того, чтобы аторизоваться могли только
-        // активированные пользователи)
-        $creds = array(
-            'password' => $request->input('password'),
-            'is_active'  => 1,
+        $login = array(
+            'password' => $request->password,
+            'active' => true,
+            'email' => $request->email
         );
 
         // В зависимости от того, что пользователь указал в поле username,
         // дополняем авторизационные данные
-        $username = $request->input('username');
-        if (strpos($username, '@')) {
-            $creds['email'] = $username;
-        } else {
-            $creds['username'] = $username;
-        }
 
         // Пытаемся авторизовать пользователя
-        if (Auth::attempt($creds, $request->has('remember'))) {
-            Log::info("User [{$username}] successfully logged in.");
-            return redirect()->intended();
-        } else {
-            Log::info("User [{$username}] failed to login.");
+        //TODO: подумать о специальном ответе при попытке неактивированного пользователя войти в систему
+        if (!Auth::attempt($login, $request->has('remember'))) {
+            $json['status'] = 'Bad Request';
+            $json['code'] = 400;
+            $json['property'] = [
+                'text' => 'Неверный логин, пароль или аккаунт не ещё активирован.'
+            ];
+
+            return response(json_encode($json), 400)
+                ->header('Content-Type', 'text/json');
         }
 
-        $alert = "Неверная комбинация имени (email) и пароля, либо учетная запись еще не активирована.";
+        $json['status'] = 'OK';
+        $json['code'] = 200;
+        $json['property'] = [
+            'text' => 'Login success'
+        ];
 
-        // Возвращаем пользователя назад на форму входа с временной сессионной
-        // переменной alert (withAlert)
-        return redirect()->back()->withAlert($alert);
+        return response(json_encode($json), 200)
+            ->header('Content-Type', 'text/json');
     }
 }

@@ -39,10 +39,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
 
+    public function profile()
+    {
+        return $this->hasOne('App\Profile');
+    }
+
     public function registration() {
         $this->password = Hash::make($this->password);
         $this->activation_code = $this->generateCode();
-        $this->is_active = false;
+        $this->active = false;
+        $this->save();
+        $this->profile()->save(new Profile());
         $this->save();
 
         Log::info("User [{$this->email}, {$this->id}] registered. Activation code: {$this->activation_code}");
@@ -56,21 +63,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     protected function sendActivationMail() {
         //генерируем ссылку
-        $activationUrl = Request::root().'api/v1/activate?email='.$this->email.'&activation_code='.$this->activation_code;
+        $activationUrl = Request::root().'/api/v1/activate/'.$this->id.'/'.$this->activation_code;
 
-        //TODO: замутить нормальные очереди
-        Mail::send('emails/activation',
+        //и отправляем (в очереди)
+        Mail::queue('emails/activation',
             ['activationUrl' => $activationUrl],
-            function ($message){
-                $message->to($this->email)->subject('Спасибо за регистрацию!');
-            }
-        );
+            function($message) {
+                $message->to($this->email)->subject('Спасибо за регистрацию! Активируйте Ваш аккаунт.');
+        });
     }
 
     public function activate($activation_code) {
         // Если пользователь уже активирован, не будем делать никаких
         // проверок и вернем false
-        if ($this->is_active) {
+        if ($this->active) {
             return false;
         }
 
@@ -80,8 +86,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         // Обнулим код, изменим флаг isActive и сохраним
-        $this->activation_code = '';
-        $this->is_active = true;
+        $this->activation_code = null;
+        $this->active = true;
         $this->save();
 
         // И запишем информацию в лог, просто, чтобы была :)
