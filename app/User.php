@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Request;
 
+/**
+ * Class User
+ * @package App
+ *
+ * @property integer $id User id
+ * @property string $email Flag user activations
+ * @property string $password User password
+ * @property string $activation_code Code for activation user
+ * @property boolean $active Flag user activations
+ *
+ */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
 
@@ -26,19 +37,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $table = 'users';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['email', 'password'];
-
-    /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function profile()
     {
         return $this->hasOne('App\Profile');

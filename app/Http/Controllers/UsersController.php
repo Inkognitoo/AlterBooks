@@ -20,25 +20,28 @@ class UsersController extends Controller
         $user->registration();
 
         // Вывод информационного сообщения об успешности регистрации
-        //TODO: сделать нормальное заполенение json-ок
-        $json['status'] = 'OK';
-        $json['code'] = 200;
-        $json['property'] = [
-            'text' => 'Регистрация почти завершена. Вам необходимо подтвердить e-mail, указанный при регистрации, перейдя по ссылке в письме.'
+        $json = [
+            'status' => 'OK',
+            'code' => 200,
+            'property' => [
+                'text' => 'Регистрация почти завершена. Вам необходимо подтвердить e-mail, указанный при регистрации, перейдя по ссылке в письме.'
+            ]
         ];
 
         return response(json_encode($json), 200)
             ->header('Content-Type', 'text/json');
     }
 
-    public function activate($id, $activation_code) {;
+    public function activate($id, $activation_code) {
         // Получаем указанного пользователя
         $user = User::find($id);
         if (!$user) {
-            $json['status'] = 'Bad Request';
-            $json['code'] = 400;
-            $json['property'] = [
-                'text' => 'Неверная ссылка на активацию аккаунта.'
+            $json = [
+                'status' => 'Bad Request',
+                'code' => 400,
+                'property' => [
+                    'text' => 'Неверная ссылка на активацию аккаунта.'
+                ]
             ];
 
             return response(json_encode($json), 400)
@@ -48,10 +51,12 @@ class UsersController extends Controller
         // Пытаемся его активировать с указанным кодом
         if (!$user->activate($activation_code)) {
             //если не удалось, сообщаем об ошибке
-            $json['status'] = 'Bad Request';
-            $json['code'] = 400;
-            $json['property'] = [
-                'text' => 'Неверная ссылка на активацию аккаунта, либо учетная запись уже активирована.'
+            $json = [
+                'status' => 'Bad Request',
+                'code' => 400,
+                'property' => [
+                    'text' => 'Неверная ссылка на активацию аккаунта, либо учетная запись уже активирована.'
+                ]
             ];
 
             return response(json_encode($json), 400)
@@ -61,10 +66,12 @@ class UsersController extends Controller
         // В случае успеха авторизовываем пользователя
         Auth::login($user);
         // И выводим сообщение об успехе
-        $json['status'] = 'OK';
-        $json['code'] = 200;
-        $json['property'] = [
-            'text' => 'Аккаунт активирован.'
+        $json = [
+            'status' => 'OK',
+            'code' => 200,
+            'property' => [
+                'text' => 'Аккаунт активирован.'
+            ]
         ];
 
         return response(json_encode($json), 200)
@@ -85,20 +92,39 @@ class UsersController extends Controller
         // Пытаемся авторизовать пользователя
         //TODO: подумать о специальном ответе при попытке неактивированного пользователя войти в систему
         if (!Auth::attempt($login, $request->has('remember'))) {
-            $json['status'] = 'Bad Request';
-            $json['code'] = 400;
-            $json['property'] = [
-                'text' => 'Неверный логин, пароль или аккаунт не ещё активирован.'
+            $json = [
+                'status' => 'Bad Request',
+                'code' => 400,
+                'property' => [
+                    'text' => 'Неверный логин, пароль или аккаунт не ещё активирован.'
+                ]
             ];
 
             return response(json_encode($json), 400)
                 ->header('Content-Type', 'text/json');
         }
 
-        $json['status'] = 'OK';
-        $json['code'] = 200;
-        $json['property'] = [
-            'text' => 'Login success'
+        $json = [
+            'status' => 'OK',
+            'code' => 200,
+            'property' => [
+                'text' => 'Login success'
+            ]
+        ];
+
+        return response(json_encode($json), 200)
+            ->header('Content-Type', 'text/json');
+    }
+
+    public function logout() {
+        Auth::logout();
+
+        $json = [
+            'status' => 'OK',
+            'code' => 200,
+            'property' => [
+                'text' => 'Logout success'
+            ]
         ];
 
         return response(json_encode($json), 200)

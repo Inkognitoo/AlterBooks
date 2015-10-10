@@ -66,9 +66,11 @@ class Registration
             }
         }
 
-        $json['status'] = 'error';
-        $json['code'] = 400;
-        $json['property'] = $_errors;
+        $json = [
+            'status' => '',
+            'code' => 400,
+            'property' => $_errors
+        ];
 
         return json_encode($json);
     }
