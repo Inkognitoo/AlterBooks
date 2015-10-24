@@ -25,16 +25,30 @@ Route::group(['prefix' => 'api/v1'], function()
         'uses' => 'UsersController@login'
     ]);
 
-
     // Активация пользователя
     Route::get('activate/{id}/{activation_code}', [
         'uses' => 'UsersController@activate'
     ]);
 
+    // Получение сериализованного объекта книги
+    Route::get('book/{id}', [
+       'uses' => 'BookController@index'
+    ])->where('id', '[0-9]+');
+
     Route::group(['middleware' => 'auth'], function() {
         Route::delete('user/session', [
             'uses' => 'UsersController@logout'
         ]);
+
+        // Создание новой книги
+        Route::post('book', [
+            'uses' => 'BookController@index'
+        ]);
+
+        // Редактирование книги
+        Route::put('book/{id}', [
+            'uses' => 'BookController@index'
+        ])->where('id', '[0-9]+');
     });
 
 
