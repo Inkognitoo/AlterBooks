@@ -1,0 +1,231 @@
+﻿input[type="text"]:focus { outline: none; }		/*небольшие фиксы input-глюков*/
+
+/*основные стили*/
+html {										/*подготовка для слоя с копирайтом*/
+  position: relative;
+  min-height: 100%;
+}
+body {										/*маргин body для показа слоя копирайта*/
+  margin-bottom: 60px;
+}
+.footer {									/*общий стиль слоя с копирайтом*/
+	margin-top:50px;
+	position: absolute;
+	bottom: 0;
+	width:100%;
+}
+.button:focus {								/*убираем рамку на активной кнопке*/
+	outline: none;
+}
+.footer-copyright{							/*общий стиль абзаца копирайт*/
+	font-size:11pt;
+	text-align:center;
+	font-family: 'Kurale', serif;
+	margin-bottom:0.4rem;
+	color:#808285;
+	}
+.footer-copyright-sign{						/*стиль для значка копирайт*/
+	font-family: Arial, serif;
+}
+.mainform{									/*для формы*/
+	width:55%;
+	margin:3% auto 0;
+}
+.textfield{									/*текстовое поле ввода электронной почты*/
+	width:75%;
+	height:40px;
+	font-family: 'Kurale', serif;
+	border:1px solid #bcbec0;
+	border-radius:0 0 0 9px;
+	padding-left:50px;
+	background-color:#f1f2f2;
+    background-repeat: no-repeat;
+	background-image:url("/img/mail.svg");
+	background-position:8px center;
+	background-size:32px 32px;
+}
+.button-sign{								/*надпись на кнопке*/
+	font-family: 'Kurale', serif;
+	font-size:15px;
+}
+.button{									/*стили кнопки*/
+	width:25%;
+	height:40px;
+	margin-left:-10px;
+	color: #fff;
+    background-color: #cd2027;
+	border-style:none;
+    background-image: linear-gradient(top, #ed1c24 47%, #cd2027 53%);
+    background-image: -o-linear-gradient(top, #ed1c24 47%, #cd2027 53%);
+    background-image: -moz-linear-gradient(top, #ed1c24 47%, #cd2027 53%);
+    background-image: -webkit-linear-gradient(top, #ed1c24 47%, #cd2027 53%);
+    background-image: -ms-linear-gradient(top, #ed1c24 47%, #cd2027 53%);
+	-webkit-border-radius: 0 9px 0 9px;
+	-moz-border-radius: 0 9px 0 9px;
+	border-radius: 0 9px 0 9px;
+	box-shadow: inset 0 -6px 0 0 #b62025;
+}
+.button:hover {								/*наведение на кнопку*/
+    background-image: linear-gradient(bottom, #df1d26 47%, #f2717c 53%);
+    background-image: -o-linear-gradient(bottom, #df1d26 47%, #f2717c 53%);
+    background-image: -moz-linear-gradient(bottom, #df1d26 47%, #f2717c 53%);
+    background-image: -webkit-linear-gradient(bottom, #df1d26 47%, #f2717c 53%);
+    background-image: -ms-linear-gradient(bottom, #df1d26 47%, #f2717c 53%);
+}
+.button:active .button-sign{					/*эффект нажатия, надпись кнопки*/
+	position:relative;
+	top:2px;
+}
+.button:active {								/*состояние именно нажатой кнопки*/
+	background-image:none;
+	background-color:#cd2027;
+	box-shadow: inset 0 6px 0 0 #b62025;
+}
+h1{											/*заголовок*/
+	text-align:center;
+	font-size:64pt;
+	font-family: 'Kurale', serif;
+	}
+.red{										/*красные буквы*/
+	font-size:96pt;
+	font-family: 'Kurale', serif;
+	color:#cd2027; 
+	}
+.moto{										/*девиз*/
+	font-size:11pt;
+	text-align:center;
+	margin-top:-20px;
+	font-family: 'Kurale', serif;
+	color:#939598;
+	}
+.icon{										/*слой иконки подписки-отписки*/
+	margin:0 auto;
+	height:96px;
+	}
+.success{									/* иконка - успешная подписка */
+	background-image:url("/img/ok.svg");
+	background-repeat:no-repeat;
+	background-position:50%;
+	background-size:96px;
+}
+.unsubscribe{								/* иконка - успешная отписка */
+	background-image:url("/img/notok.svg");
+	background-repeat:no-repeat;
+	background-position:50%;
+	background-size:96px;
+}
+.info-text{									/*текст мыла, и сообщения о подписке/отписке*/
+	font-size:3.5rem;
+	text-align:center;
+	font-family: 'Kurale', serif;
+}
+.mail{										/*цвет текста для мыла*/
+color:#939598;
+}
+.popup {										/*вспылвающее сообщение при ошибке*/
+    border: 2px solid #B9BCC1;	
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+	width:65%;
+	margin: 5px auto 0;
+   }
+.popup::before, .popup::after {
+    content: ''; 
+    position: absolute;
+    left: 9.5%;
+	top: -20px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid #B9BCC1;
+   }
+.popup::after {
+    border-bottom: 10px solid white;
+    top: -18px; 
+   }
+.onerror{
+	background-image:url("/img/error.svg");
+	background-position:12px center;
+	background-size:24px 24px;
+	color:#E22431;
+}
+/*стиль для мобильных - ширина экрана менее 480px*/
+	@media screen and (max-width:480px){
+h1{											/*заголовок*/
+	text-align:center;
+	font-size:6rem;
+	font-family: 'Kurale', serif;
+	}
+.red{										/*красные буквы*/
+	font-size:8rem;
+	font-family: 'Kurale', serif;
+	}
+.mainform{									/*главная форма*/
+	width:100%;
+	margin:15% auto 0;
+	}
+.header{									/*заголовок*/
+	margin:0 auto;
+}
+.button{									/*ширина кнопки*/
+	width:50px;
+}
+.textfield{									/*ширина текстового поля*/
+	margin: auto;
+	}
+.icon{
+	height:64px;
+}
+.success{
+	background-size:64px;
+}
+.unsubscribe{
+	background-size:64px;
+}
+.info-text{
+	font-size:2rem;
+}
+.popup::before, .popup::after {
+    left: 15% !important;
+   }
+.popup{
+   margin-top:5px;
+   }
+	}
+/*стиль для планшета - щирина экрана не более 991px*/
+@media screen and (max-width:991px){
+.button{
+		background-image:url("/img/rss.svg");
+		color:transparent;
+		background-size:28px;
+		background-position:50%;
+		background-repeat:no-repeat;
+		width:50px;
+}
+.button:hover{
+		background-image:url("/img/rss.svg");
+		color:transparent;
+		background-size:28px;
+		background-position:50%;
+		background-repeat:no-repeat;
+		background-color:#fe2d35;
+}
+.button:active {
+	background-image:url("/img/rss.svg");
+	background-position:50% 8px;
+	background-color:#cd2027;
+	box-shadow: inset 0 6px 0 0 #b62025;
+}
+.textfield{
+	margin-left:7%;
+	}
+	
+.mainform{
+	width:90%;
+}
+.popup{
+	width:100%;
+	}
+.popup::before, .popup::after {
+    left: 13%;
+   }
+}
