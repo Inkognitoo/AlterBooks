@@ -148,6 +148,13 @@ color:#939598;
 	background-size:24px 24px;
 	color:#E22431;
 }
+
+.on-load{
+	background-image:url("/img/load.gif");
+	background-position:12px center;
+	background-size:24px 24px;
+}
+
 /*стиль для мобильных - ширина экрана менее 480px*/
 	@media screen and (max-width:480px){
 h1{											/*заголовок*/
