@@ -16,7 +16,7 @@ class FollowerController extends Controller
 
     public function newFollower(Request $request)
     {
-        $email = \Illuminate\Support\Str::lower($request->email);
+        $email = Str::lower($request->email);
         $followers = Follower::where('email', $email)->get();
         // пользователя ещё нет в базе?
         if ($followers->count() === 0) {
@@ -38,7 +38,7 @@ class FollowerController extends Controller
                 $message->to($this->email)->subject('Спасибо!');
             });
 
-            return $this->buildResponse(['text' => 'Поздравляем Вас с подпиской на новостную рассылку AlterBooks!'], 200);
+            return $this->buildResponse(['text' => 'Поздравляем Вас с подпиской на новостную рассылку AlterBooks!', 'unique' => true], 200);
         }
 
         // нет
@@ -53,7 +53,7 @@ class FollowerController extends Controller
         $followers->first()->unsubscribe_code = Str::random(20);
         $followers->first()->save();
 
-        return $this->buildResponse(['text' => 'И снова рады приветствовать Вас! Подписка на новостную рассылку проекта AlterBooks прошла успешно.'], 200);
+        return $this->buildResponse(['text' => 'И снова рады приветствовать Вас! Подписка на новостную рассылку проекта AlterBooks прошла успешно.', 'unique' => false], 200);
 
     }
 
