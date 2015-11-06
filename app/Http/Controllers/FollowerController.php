@@ -53,7 +53,7 @@ class FollowerController extends Controller
         $followers->first()->unsubscribe_code = Str::random(20);
         $followers->first()->save();
 
-        return $this->buildResponse(['text' => 'И снова рады приветствовать Вас! Подписка на новостную расслыку проетка AlterBooks прошла успешно.'], 200);
+        return $this->buildResponse(['text' => 'И снова рады приветствовать Вас! Подписка на новостную рассылку проекта AlterBooks прошла успешно.'], 200);
 
     }
 
