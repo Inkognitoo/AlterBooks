@@ -15,4 +15,6 @@
             </form>
         </div>
     </div>
+    <script src="/js/reqwest.min.js"></script>
+    <script src="/js/main.js"></script>
 @endsection

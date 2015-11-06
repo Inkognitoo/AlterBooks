@@ -3,6 +3,7 @@ var main_form = document.getElementById('subscribe_form');
 main_form.addEventListener('submit', function(event) {
     onSubscribe(this);
     event.preventDefault();
+    yaCounter32344465.reachGoal('sendEmail');
 });
 main_form.addEventListener('keydown', function() {
     this.elements[0].classList.remove('onerror');
@@ -19,6 +20,7 @@ main_form.addEventListener('keydown', function() {
 function onSubscribe(form){
     if (!validateEmail(form.elements[0].value)) {
         renderError(form, 'К сожалению, введеный Вами адрес электронной почты некорректен.<br>Пожалуйста, исправьте ошибки и попробуйте снова.')
+        yaCounter32344465.reachGoal('sendEmailFailSyntax');
     } else {
         form.elements[0].classList.add('on-load');
         form.elements[0].disabled = true;
@@ -37,9 +39,15 @@ function onSubscribe(form){
 
                 date = JSON.parse(date.response);
                 renderError(form, date.property.text)
+                yaCounter32344465.reachGoal('sendEmailFailUnique');
             },
             success: function (date) {
                 console.log(date);
+                if (date.property.unique) {
+                    yaCounter32344465.reachGoal('sendEmailSuccessNew');
+                } else {
+                    yaCounter32344465.reachGoal('sendEmailSuccessOld');
+                }
                 renderSuccess(form, date.property.text);
             }
         });
@@ -65,6 +73,8 @@ function renderError(form, text) {
     } else {
         document.getElementById('dynamic-wrapper').appendChild(div);
     }
+
+    yaCounter32344465.reachGoal('sendEmailFail');
 }
 
 function renderSuccess(form, text) {
@@ -73,4 +83,6 @@ function renderSuccess(form, text) {
     content += '<p class="info-text">' + text + '</p>';
 
     document.getElementById('dynamic-wrapper').innerHTML = content;
+
+    yaCounter32344465.reachGoal('sendEmailSuccess');
 }
