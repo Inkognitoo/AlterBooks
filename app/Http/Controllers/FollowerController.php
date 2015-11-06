@@ -68,7 +68,7 @@ class FollowerController extends Controller
         $followers->first()->unsubscribe_code = '';
         $followers->first()->save();
 
-        return view('unsubscribe');
+        return view('unsubscribe', ['email' => $request->email]);
     }
 
     protected function buildResponse($property, $code)
