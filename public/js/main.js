@@ -31,6 +31,7 @@ function onSubscribe(form){
             data: {email: form.elements[0].value},
             contentType: 'application/x-www-form-urlencoded',
             error: function (date) {
+                console.log(date);
                 form.elements[0].classList.remove('on-load');
                 form.elements[0].disabled = false;
 
@@ -39,7 +40,7 @@ function onSubscribe(form){
             },
             success: function (date) {
                 console.log(date);
-                renderSuccess(form);
+                renderSuccess(form, date.property.text);
             }
         });
     }
@@ -66,10 +67,10 @@ function renderError(form, text) {
     }
 }
 
-function renderSuccess(form) {
+function renderSuccess(form, text) {
     var content = '<div class="row icon success"></div>';
     content += '<p class="info-text mail">' + form.elements[0].value + '</p>';
-    content += '<p class="info-text">Поздравляем Вас с подпиской на новостную рассылку AlterBooks!</p>';
+    content += '<p class="info-text">' + text + '</p>';
 
     document.getElementById('dynamic-wrapper').innerHTML = content;
 }
