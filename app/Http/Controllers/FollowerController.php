@@ -16,12 +16,13 @@ class FollowerController extends Controller
 
     public function newFollower(Request $request)
     {
-        $followers = Follower::where('email', $request->email)->get();
+        $email = \Illuminate\Support\Str::lower($request->email);
+        $followers = Follower::where('email', $email)->get();
         // пользователя ещё нет в базе?
         if ($followers->count() === 0) {
             // да
             $follower = new Follower();
-            $follower->email = $request->email;
+            $follower->email = $email;
             $follower->unsubscribe_code = Str::random(20);
             $follower->save();
 
