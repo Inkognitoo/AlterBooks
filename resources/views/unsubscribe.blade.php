@@ -13,6 +13,6 @@
         <p class="info-text">Вы отписались от новостной рассылки AlterBooks! Очень жаль! Возвращайтесь к нам!</p>
     </div>
     <script>
-        yaCounter32344465.reachGoal('unsubscribe');
+        yaCounter33451233.reachGoal('unsubscribe');
     </script>
 @endsection
