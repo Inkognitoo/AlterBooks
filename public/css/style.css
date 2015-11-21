@@ -13,6 +13,8 @@ body {										/*маргин body для показа слоя копирай�
 	position: absolute;
 	bottom: 0;
 	width:100%;
+	margin-left:auto;
+	margin-right:auto;
 }
 .button:focus {								/*убираем рамку на активной кнопке*/
 	outline: none;
@@ -23,6 +25,7 @@ body {										/*маргин body для показа слоя копирай�
 	font-family: 'Kurale', serif;
 	margin-bottom:0.4rem;
 	color:#808285;
+	
 	}
 .footer-copyright-sign{						/*стиль для значка копирайт*/
 	font-family: Arial, serif;
@@ -148,18 +151,11 @@ color:#939598;
 	background-size:24px 24px;
 	color:#E22431;
 }
-
-.on-load{
-	background-image:url("/img/load.gif");
-	background-position:12px center;
-	background-size:24px 24px;
-}
-
 /*стиль для мобильных - ширина экрана менее 480px*/
 	@media screen and (max-width:480px){
 h1{											/*заголовок*/
 	text-align:center;
-	font-size:6rem;
+	font-size:4rem;
 	font-family: 'Kurale', serif;
 	}
 .red{										/*красные буквы*/
