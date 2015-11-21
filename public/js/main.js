@@ -3,7 +3,7 @@ var main_form = document.getElementById('subscribe_form');
 main_form.addEventListener('submit', function(event) {
     onSubscribe(this);
     event.preventDefault();
-    yaCounter33451233.reachGoal('sendEmail');
+    yaCounter33733234.reachGoal('sendEmail');
 });
 main_form.addEventListener('keydown', function() {
     this.elements[0].classList.remove('onerror');
@@ -20,7 +20,7 @@ main_form.addEventListener('keydown', function() {
 function onSubscribe(form){
     if (!validateEmail(form.elements[0].value)) {
         renderError(form, 'К сожалению, введеный Вами адрес электронной почты некорректен.<br>Пожалуйста, исправьте ошибки и попробуйте снова.')
-        yaCounter33451233.reachGoal('sendEmailFailSyntax');
+        yaCounter33733234.reachGoal('sendEmailFailSyntax');
     } else {
         form.elements[0].classList.add('on-load');
         form.elements[0].disabled = true;
@@ -38,15 +38,15 @@ function onSubscribe(form){
                 form.elements[0].disabled = false;
 
                 date = JSON.parse(date.response);
-                renderError(form, date.property.text)
-                yaCounter33451233.reachGoal('sendEmailFailUnique');
+                renderError(form, date.property.text);
+                yaCounter33733234.reachGoal('sendEmailFailUnique');
             },
             success: function (date) {
                 console.log(date);
                 if (date.property.unique) {
-                    yaCounter33451233.reachGoal('sendEmailSuccessNew');
+                    yaCounter33733234.reachGoal('sendEmailSuccessNew');
                 } else {
-                    yaCounter33451233.reachGoal('sendEmailSuccessOld');
+                    yaCounter33733234.reachGoal('sendEmailSuccessOld');
                 }
                 renderSuccess(form, date.property.text);
             }
@@ -74,7 +74,7 @@ function renderError(form, text) {
         document.getElementById('dynamic-wrapper').appendChild(div);
     }
 
-    yaCounter33451233.reachGoal('sendEmailFail');
+    yaCounter33733234.reachGoal('sendEmailFail');
 }
 
 function renderSuccess(form, text) {
@@ -84,5 +84,5 @@ function renderSuccess(form, text) {
 
     document.getElementById('dynamic-wrapper').innerHTML = content;
 
-    yaCounter33451233.reachGoal('sendEmailSuccess');
+    yaCounter33733234.reachGoal('sendEmailSuccess');
 }
