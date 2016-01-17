@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - alterbooks_base@localhost" uuid="2a2a3672-b0e4-448b-bb5e-9ed127c4ef0e">
+      <secret-storage>master_key</secret-storage>
+      <user-name>alterbooks</user-name>
+      <schema-pattern>alterbooks_base.public</schema-pattern>
+    </data-source>
+  </component>
+</project>

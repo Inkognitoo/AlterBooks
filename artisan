@@ -13,6 +13,20 @@
 |
 */
 
+//Start - Code to allow PhpStorm CLI
+if (isset($argv[1]) && $argv[1] === '-V') {
+    die('Symfony version 2.7.8');
+}
+
+if (isset($argv[1], $argv[2]) &&
+    $argv[1] === 'list' &&
+    $argv[2] === '--xml'
+) {
+    $argv[2] = '--format=xml';
+    $_SERVER['argv'] = $argv;
+}
+//End - Code to allow PhpStorm CLI
+
 require __DIR__.'/bootstrap/autoload.php';
 
 $app = require_once __DIR__.'/bootstrap/app.php';
