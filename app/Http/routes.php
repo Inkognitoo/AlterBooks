@@ -15,6 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['middleware' => ['web']], function () {
+
+
+//Social Login
+    Route::get('social/oauth/{provider?}', 'SocialController@getSocialAuth');
+    Route::get('social/oauth/redirect/{provider?}', 'SocialController@getSocialAuthCallback');
+});
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -25,7 +32,18 @@ Route::get('/', function () {
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-Route::group(['middleware' => ['web']], function () {
-    //
+Route::group(['prefix' => 'api'], function() {
+    Route::post('registration', [
+        'as' => 'registration', 'uses' => 'UserController@registration'
+    ]);
 });
+
+//Route::group(['middleware' => ['web']], function () {
+//    //
+//});
+//
+//Route::group(['middleware' => 'web'], function () {
+//    Route::auth();
+//
+//    Route::get('/home', 'HomeController@index');
+//});

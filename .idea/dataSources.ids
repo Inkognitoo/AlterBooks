@@ -5,32 +5,309 @@
       <identifier-quote-string>&quot;</identifier-quote-string>
     </database-info>
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact"/>
-    <schema name="public" catalog="alterbooks_base"/>
-    <table name="followers" schema="public" catalog="alterbooks_base" type="TABLE">
-      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnZm9sbG93ZXJzX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
-      <column name="email" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12"/>
-      <column name="follow" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7" def="dHJ1ZQ=="/>
-      <column name="unsubscribe_code" sqlType="varchar" precision="20" scale="0" nullable="false" jdbcType="12"/>
-      <column name="created_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
-      <column name="updated_at" sqlType="timestamp" precision="22" scale="0" nullable="false" jdbcType="93"/>
-      <primary-key name="followers_pkey" columns="id"/>
-      <index name="followers_email_unique" unique="true" columns="email"/>
-    </table>
-    <table name="followers_id_seq" schema="public" catalog="alterbooks_base" type="SEQUENCE">
-      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
-      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
-    </table>
-    <table name="migrations" schema="public" catalog="alterbooks_base" type="TABLE">
-      <column name="migration" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12"/>
-      <column name="batch" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
-    </table>
+    <database-model serializer="dbm" rdbms="POSTGRES" format-version="2.4">
+      <database id="1" name="alterbooks_base"/>
+      <schema id="2" parent="1" name="public">
+        <object-id>2200</object-id>
+        <comment>standard public schema</comment>
+        <introspection-state-number>90382</introspection-state-number>
+        <introspection-timestamp>2016-01-19.02:14:13.519</introspection-timestamp>
+      </schema>
+      <sequence id="3" parent="2" name="books_id_seq">
+        <object-id>111876</object-id>
+        <state-number>90380</state-number>
+      </sequence>
+      <sequence id="4" parent="2" name="profiles_id_seq">
+        <object-id>111849</object-id>
+        <state-number>90375</state-number>
+      </sequence>
+      <sequence id="5" parent="2" name="rars_id_seq">
+        <object-id>111865</object-id>
+        <state-number>90378</state-number>
+      </sequence>
+      <sequence id="6" parent="2" name="users_id_seq">
+        <object-id>111828</object-id>
+        <state-number>90368</state-number>
+      </sequence>
+      <table id="7" parent="2" name="books">
+        <object-id>111878</object-id>
+        <state-number>90382</state-number>
+      </table>
+      <table id="8" parent="2" name="migrations">
+        <object-id>111825</object-id>
+        <state-number>90367</state-number>
+      </table>
+      <table id="9" parent="2" name="password_resets">
+        <object-id>111841</object-id>
+        <state-number>90371</state-number>
+      </table>
+      <table id="10" parent="2" name="profiles">
+        <object-id>111851</object-id>
+        <state-number>90376</state-number>
+      </table>
+      <table id="11" parent="2" name="rars">
+        <object-id>111867</object-id>
+        <state-number>90382</state-number>
+      </table>
+      <table id="12" parent="2" name="users">
+        <object-id>111830</object-id>
+        <state-number>90381</state-number>
+      </table>
+      <column id="13" parent="7" name="id">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+        <default-expression>nextval(&apos;books_id_seq&apos;::regclass)</default-expression>
+      </column>
+      <column id="14" parent="7" name="name">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="15" parent="7" name="description">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="16" parent="7" name="cover">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="17" parent="7" name="author_id">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+      </column>
+      <column id="18" parent="7" name="rars_id">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+      </column>
+      <column id="19" parent="7" name="created_at">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <column id="20" parent="7" name="updated_at">
+        <state-number>90380</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <index id="21" parent="7" name="books_pkey">
+        <object-id>111885</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="22" parent="7" name="books_pkey">
+        <columns>id</columns>
+        <underlying-index>books_pkey</underlying-index>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="23" parent="7" name="books_author_id_foreign">
+        <columns>author_id</columns>
+        <ref-key>~.users.users_pkey</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="24" parent="7" name="books_rars_id_foreign">
+        <columns>rars_id</columns>
+        <ref-key>~.rars.rars_pkey</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="25" parent="8" name="migration">
+        <state-number>90367</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="26" parent="8" name="batch">
+        <state-number>90367</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+      </column>
+      <column id="27" parent="9" name="email">
+        <state-number>90371</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="28" parent="9" name="token">
+        <state-number>90371</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="29" parent="9" name="created_at">
+        <state-number>90371</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <index id="30" parent="9" name="password_resets_email_index">
+        <object-id>111847</object-id>
+        <columns>email</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="31" parent="9" name="password_resets_token_index">
+        <object-id>111848</object-id>
+        <columns>token</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <column id="32" parent="10" name="id">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+        <default-expression>nextval(&apos;profiles_id_seq&apos;::regclass)</default-expression>
+      </column>
+      <column id="33" parent="10" name="name">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="34" parent="10" name="surname">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="35" parent="10" name="patronymic">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="36" parent="10" name="photo">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="37" parent="10" name="birthday">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>date</data-type>
+      </column>
+      <column id="38" parent="10" name="user_id">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+      </column>
+      <column id="39" parent="10" name="created_at">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <column id="40" parent="10" name="updated_at">
+        <state-number>90375</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <index id="41" parent="10" name="profiles_pkey">
+        <object-id>111858</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="42" parent="10" name="profiles_pkey">
+        <columns>id</columns>
+        <underlying-index>profiles_pkey</underlying-index>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="43" parent="10" name="profiles_user_id_foreign">
+        <columns>user_id</columns>
+        <ref-key>~.users.users_pkey</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="44" parent="11" name="id">
+        <state-number>90378</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+        <default-expression>nextval(&apos;rars_id_seq&apos;::regclass)</default-expression>
+      </column>
+      <column id="45" parent="11" name="name">
+        <state-number>90378</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="46" parent="11" name="eternal_name">
+        <state-number>90378</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="47" parent="11" name="created_at">
+        <state-number>90378</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <column id="48" parent="11" name="updated_at">
+        <state-number>90378</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <index id="49" parent="11" name="rars_pkey">
+        <object-id>111874</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="50" parent="11" name="rars_pkey">
+        <columns>id</columns>
+        <underlying-index>rars_pkey</underlying-index>
+        <primary>1</primary>
+      </key>
+      <column id="51" parent="12" name="id">
+        <state-number>90368</state-number>
+        <mandatory>1</mandatory>
+        <data-type>integer</data-type>
+        <default-expression>nextval(&apos;users_id_seq&apos;::regclass)</default-expression>
+      </column>
+      <column id="52" parent="12" name="nickname">
+        <state-number>90368</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="53" parent="12" name="email">
+        <state-number>90368</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="54" parent="12" name="password">
+        <state-number>90368</state-number>
+        <mandatory>1</mandatory>
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="55" parent="12" name="remember_token">
+        <state-number>90368</state-number>
+        <data-type>varchar(100)</data-type>
+      </column>
+      <column id="56" parent="12" name="created_at">
+        <state-number>90368</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <column id="57" parent="12" name="updated_at">
+        <state-number>90368</state-number>
+        <mandatory>1</mandatory>
+        <data-type>timestamp(0)</data-type>
+      </column>
+      <index id="58" parent="12" name="users_pkey">
+        <object-id>111837</object-id>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <index id="59" parent="12" name="users_email_unique">
+        <object-id>111839</object-id>
+        <columns>email</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="60" parent="12" name="users_pkey">
+        <columns>id</columns>
+        <underlying-index>users_pkey</underlying-index>
+        <primary>1</primary>
+      </key>
+      <key id="61" parent="12" name="users_email_unique">
+        <columns>email</columns>
+        <underlying-index>users_email_unique</underlying-index>
+      </key>
+    </database-model>
   </data-source>
 </component>
