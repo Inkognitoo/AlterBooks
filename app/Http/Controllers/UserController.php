@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Profile;
 use App\User;
+use Auth;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -24,6 +25,8 @@ class UserController extends Controller
                 $user->save();
                 $profile = new Profile($request->all());
                 $user->profile()->save($profile);
+
+                Auth::loginUsingId($user->id);
 
                 return response($this->buildResponse('success', 'Пользователь успешно зарегистрирован'), 200)
                     ->header('Content-Type', 'text/json');

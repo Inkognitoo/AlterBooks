@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProfilesTable extends Migration
+class CreateOauthsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,15 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('oauths', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
-            $table->string('surname')->nullable();
-            $table->string('patronymic')->nullable();
-            $table->string('photo')->nullable();
-            $table->date('birthday')->nullable();
-            $table->string('gender')->nullable();
+            $table->string('provider');
+            $table->string('oauth_id');
 
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unique(['oauth_id', 'provider']);
 
             $table->timestamps();
         });
@@ -35,6 +33,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('profiles');
+        Schema::drop('oauths');
     }
 }

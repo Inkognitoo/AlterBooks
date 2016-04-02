@@ -12,6 +12,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Profile');
     }
 
+    public function oauth()
+    {
+        return $this->hasOne('App\Oauth');
+    }
+
     public function book()
     {
         return $this->hasMany('App\Book', 'user_id', 'author_id');

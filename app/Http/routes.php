@@ -15,13 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => ['web']], function () {
 
-
-//Social Login
-    Route::get('social/oauth/{provider?}', 'SocialController@getSocialAuth');
-    Route::get('social/oauth/redirect/{provider?}', 'SocialController@getSocialAuthCallback');
-});
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -32,10 +26,17 @@ Route::group(['middleware' => ['web']], function () {
 | kernel and includes session state, CSRF protection, and more.
 |
 */
+Route::group(['middleware' => ['web']], function () {
+    //Social Login
+    Route::get('social/oauth/{provider?}', 'SocialController@socialAuth');
+    Route::get('social/oauth/redirect/{provider?}', 'SocialController@socialAuthCallback');
+});
+
 Route::group(['prefix' => 'api'], function() {
     Route::post('registration', [
         'as' => 'registration', 'uses' => 'UserController@registration'
     ]);
+    //TODO: маршрут для ввода email( Oauth )
 });
 
 //Route::group(['middleware' => ['web']], function () {
