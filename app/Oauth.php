@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Log;
 use Validator;
 
@@ -118,7 +119,7 @@ class Oauth extends Model
         $user = new User();
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
-        $user->password = '';
+        $user->password = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
@@ -126,7 +127,7 @@ class Oauth extends Model
         $profile->surname = $social_user['surname'];
         $profile->gender = $social_user['gender'];
         $user->profile()->save($profile);
-        //TODO: локально сохранять аватар
+        //TODO: локально сохранять аватар ($social_user['photo'])
 
         return $user;
     }
@@ -136,13 +137,13 @@ class Oauth extends Model
         $user = new User();
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
-        $user->password = '';
+        $user->password = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
         $profile->name = $social_user['name'];
         $user->profile()->save($profile);
-        //TODO: локально сохранять аватар
+        //TODO: локально сохранять аватар ($social_user['photo'])
 
         return $user;
     }
@@ -152,14 +153,14 @@ class Oauth extends Model
         $user = new User();
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
-        $user->password = '';
+        $user->password = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
         $profile->name = $social_user['name'];
         $profile->gender = $social_user['gender'];
         $user->profile()->save($profile);
-        //TODO: локально сохранять аватар
+        //TODO: локально сохранять аватар ($social_user['photo'])
 
         return $user;
     }
@@ -169,14 +170,14 @@ class Oauth extends Model
         $user = new User();
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
-        $user->password = '';
+        $user->password = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
         $profile->name = $social_user['name'];
         $profile->surname = $social_user['surname'];
         $user->profile()->save($profile);
-        //TODO: локально сохранять аватар
+        //TODO: локально сохранять аватар ($social_user['photo'])
 
         return $user;
     }

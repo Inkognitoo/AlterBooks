@@ -39,7 +39,6 @@ class SocialController extends Controller {
                         //приступаем к регистрации пользователя
                         $user = $this->createUser($social_user, $provider);
                         if ($user) {
-                            //Log::info('Приступаю к сохранению oauth');
                             $user->save();
                             $oauth = new Oauth();
                             $oauth->oauth_id = $social_user->id;
@@ -60,7 +59,6 @@ class SocialController extends Controller {
                         $serialized_social_user = Oauth::serializeForSession($social_user, $provider);
                         if ($serialized_social_user) {
                             session(['social_user' => json_encode($serialized_social_user)]);
-
                             return response($this->buildResponse('error', 'Указанный email уже занят'), 402)
                                 ->header('Content-Type', 'text/json');
                         } else {
@@ -70,7 +68,7 @@ class SocialController extends Controller {
                     }
                 } else {
                     //авторизуем пользователя
-                    Auth::loginUsingId($oauth->user()->id);
+                    Auth::loginUsingId($oauth->user->id);
 
                     return response($this->buildResponse('success', 'Пользователь успешно авторизирован'), 200)
                         ->header('Content-Type', 'text/json');
@@ -84,26 +82,27 @@ class SocialController extends Controller {
             /* не знаю, какого чёрта валится именно исключение при отказе отдать свои данные, вероятно,
                косяк самих разработчиков Socialite.
             */
+            //херово, но сюда может свалиться любая ошибка
             Log::error('Не удалось получить данные от соц. сети: '.$e);
             return response($this->buildResponse('error', 'Не удалось получить данные из социальной сети'), 500)
                 ->header('Content-Type', 'text/json');
         }
     }
 
-    //TODO: протестировать
     public function enterEmail(Request $request)
     {
         if ($request->session()->has('social_user')) {
             $oauth =  new Oauth();
             if ($oauth->validate($request->all())) {
-                $social_user = json_decode($request->session()->pull('social_user'));
+                $social_user = json_decode($request->session()->pull('social_user'), true);
+                $social_user['email'] = $request['email'];
                 $user = $this->createUser($social_user);
                 if ($user) {
                     $user->save();
                     $oauth = new Oauth();
-                    $oauth->oauth_id = $social_user->id;
-                    $oauth->provider = $social_user->provider;
-                    $oauth->user()->save($user);
+                    $oauth->oauth_id = $social_user['oauth_id'];
+                    $oauth->provider = $social_user['provider'];
+                    $user->oauth()->save($oauth);
                     $oauth->save();
                     Auth::loginUsingId($user->id);
 

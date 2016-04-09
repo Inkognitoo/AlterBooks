@@ -33,10 +33,16 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::group(['prefix' => 'api'], function() {
-    Route::post('registration', [
-        'as' => 'registration', 'uses' => 'UserController@registration'
-    ]);
-    //TODO: маршрут для ввода email( Oauth )
+    Route::group(['prefix' => 'v1'], function() {
+        Route::post('user', [
+            'as' => 'registration', 'uses' => 'UserController@registration'
+        ]);
+        //Ввод email, когда он отсутствует или неуникален для Oauth
+        Route::post('user/email', [
+            'middleware' => 'web',
+            'as' => 'enter email', 'uses' => 'SocialController@enterEmail'
+        ]);
+    });
 });
 
 //Route::group(['middleware' => ['web']], function () {
