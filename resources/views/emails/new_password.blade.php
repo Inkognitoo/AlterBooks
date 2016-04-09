@@ -1,0 +1,1 @@
+Ваш новый пароль ― <strong>{{$password}}</strong>

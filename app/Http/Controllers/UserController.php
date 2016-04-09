@@ -50,18 +50,36 @@ class UserController extends Controller
     public function resetPasswordRequest(Request $request)
     {
         if ($request->has('email')) {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->where('email_verify', true)->first();
             if ($user !== null) {
                 $user->resetPasswordRequest();
                 return response($this->buildResponse('success', 'Код восстановления был выслан на указанный email'), 200)
                     ->header('Content-Type', 'text/json');
             } else {
-                return response($this->buildResponse('error', 'Указаного email не существует в базе'), 402)
+                return response($this->buildResponse('error', 'Указаного email не существует в базе либо email не был подтвержён'), 402)
                     ->header('Content-Type', 'text/json');
             }
         } else {
             return response($this->buildResponse('error', 'Необходимо указать email'), 402)
                 ->header('Content-Type', 'text/json');
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        if ($request->has('email') && $request->has('code')) {
+            $user = User::where('email', $request->email)->where('reset_code', $request->code)->first();
+            if ($user !== null) {
+                $user->resetPassword();
+                //TODO: нормальный шаблон
+                echo 'Ваш пароль был успешно сброшен, новый пароль был отправлен на Ваш email';
+            } else {
+                //TODO: нормальный шаблон
+                echo 'пшёл вон отседова';
+            }
+        } else {
+            //TODO: нормальный шаблон
+            echo 'пшёл вон отседова';
         }
     }
 

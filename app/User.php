@@ -2,6 +2,7 @@
 
 namespace App;
 use Illuminate\Support\Str;
+use Mail;
 use Validator;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,8 +28,38 @@ class User extends Authenticatable
     {
         //генерируем код восстановления
         $this->reset_code = bcrypt(Str::random(32));
+        $this->save();
         //посылаем его пользователю по email
-        //TODO: делать это в потоке
+        //TODO: делать это асинхронно
+        $user = $this;
+        Mail::queue('emails.reset_password_request',
+            [
+                'email' => $user->email,
+                'reset_code' => $user->reset_code,
+            ],
+        function($message) use ($user)
+        {
+            $message->to($user->email)->subject('Сброс пароля на AlterBooks');
+        });
+    }
+
+    public function resetPassword()
+    {
+        $this->reset_code = null;
+        $password = Str::random(10);
+        $this->password = bcrypt($password);
+        $this->save();
+        //посылаем его пользователю по email
+        //TODO: делать это асинхронно
+        $user = $this;
+        Mail::queue('emails.new_password',
+            [
+                'password' => $password,
+            ],
+        function($message) use ($user)
+        {
+            $message->to($user->email)->subject('Сброс пароля на AlterBooks');
+        });
     }
 
     public function validate($request)

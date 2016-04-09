@@ -47,6 +47,8 @@ Route::group(['prefix' => 'api'], function() {
         Route::post('user/password/reset', [
             'as' => 'password reset request', 'uses' => 'UserController@resetPasswordRequest'
         ]);
+
+        //TODO: запрос на повторную отправку верификационного кода для подтверждения email
     });
 });
 
@@ -55,12 +57,7 @@ Route::get('user/email/verify', [
     'as' => 'email verify', 'uses' => 'UserController@emailVerify'
 ]);
 
-//Route::group(['middleware' => ['web']], function () {
-//    //
-//});
-//
-//Route::group(['middleware' => 'web'], function () {
-//    Route::auth();
-//
-//    Route::get('/home', 'HomeController@index');
-//});
+//сброс пароля
+Route::get('user/password/reset', [
+    'as' => 'reset password', 'uses' => 'UserController@resetPassword'
+]);

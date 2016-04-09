@@ -1,0 +1,1 @@
+Для сброса пароля перейдите по адресу <a href="{{URL::to('/user/password/reset/?code='.$reset_code.'&email='.$email)}}">{{URL::to('/user/password/reset/?code='.$reset_code.'&email='.$email)}}</a>
