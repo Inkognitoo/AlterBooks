@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use Illuminate\Support\Str;
 use Validator;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,6 +21,14 @@ class User extends Authenticatable
     public function book()
     {
         return $this->hasMany('App\Book', 'user_id', 'author_id');
+    }
+
+    public function resetPasswordRequest()
+    {
+        //генерируем код восстановления
+        $this->reset_code = bcrypt(Str::random(32));
+        //посылаем его пользователю по email
+        //TODO: делать это в потоке
     }
 
     public function validate($request)

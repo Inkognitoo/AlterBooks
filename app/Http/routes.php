@@ -34,6 +34,7 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(['prefix' => 'api'], function() {
     Route::group(['prefix' => 'v1'], function() {
+        //обычная регистрация пользователя
         Route::post('user', [
             'as' => 'registration', 'uses' => 'UserController@registration'
         ]);
@@ -42,8 +43,17 @@ Route::group(['prefix' => 'api'], function() {
             'middleware' => 'web',
             'as' => 'enter email', 'uses' => 'SocialController@enterEmail'
         ]);
+        //Запрос на сборос пароля
+        Route::post('user/password/reset', [
+            'as' => 'password reset request', 'uses' => 'UserController@resetPasswordRequest'
+        ]);
     });
 });
+
+//верификация email
+Route::get('user/email/verify', [
+    'as' => 'email verify', 'uses' => 'UserController@emailVerify'
+]);
 
 //Route::group(['middleware' => ['web']], function () {
 //    //

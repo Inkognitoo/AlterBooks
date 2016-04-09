@@ -120,6 +120,7 @@ class Oauth extends Model
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
+        $user->email_verify_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
@@ -138,6 +139,7 @@ class Oauth extends Model
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
+        $user->email_verify_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
@@ -154,6 +156,7 @@ class Oauth extends Model
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
+        $user->email_verify_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
@@ -171,6 +174,7 @@ class Oauth extends Model
         $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
+        $user->email_verify_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();

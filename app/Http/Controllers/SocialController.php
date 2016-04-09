@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 use Log;
+use Mail;
 use Socialite;
 
 //TODO: очень много if-ов, подумать, как это можно отрефакторить
@@ -39,13 +40,21 @@ class SocialController extends Controller {
                         //приступаем к регистрации пользователя
                         $user = $this->createUser($social_user, $provider);
                         if ($user) {
-                            $user->save();
                             $oauth = new Oauth();
                             $oauth->oauth_id = $social_user->id;
                             $oauth->provider = $provider;
                             $user->oauth()->save($oauth);
-                            $oauth->save();
                             Auth::loginUsingId($user->id);
+                            //TODO: посылать email для подтверждения почты асинхронно
+                            Mail::queue('auth.emails.verify',
+                                [
+                                    'email' => $user->email,
+                                    'email_verify_code' => $user->email_verify_code,
+                                ],
+                            function($message) use ($user)
+                            {
+                                $message->to($user->email)->subject('Подтвердите Ваш email');
+                            });
 
                             return response($this->buildResponse('success', 'Пользователь успешно зарегистрирован'), 200)
                                 ->header('Content-Type', 'text/json');
@@ -53,7 +62,6 @@ class SocialController extends Controller {
                             return response($this->buildResponse('error', 'Не удалось обработать данные из социальной сети'), 500)
                                 ->header('Content-Type', 'text/json');
                         }
-
                     } else {
                         //сериализуем и сохраняем в сессию данные из соцсетей
                         $serialized_social_user = Oauth::serializeForSession($social_user, $provider);
@@ -98,13 +106,21 @@ class SocialController extends Controller {
                 $social_user['email'] = $request['email'];
                 $user = $this->createUser($social_user);
                 if ($user) {
-                    $user->save();
                     $oauth = new Oauth();
                     $oauth->oauth_id = $social_user['oauth_id'];
                     $oauth->provider = $social_user['provider'];
                     $user->oauth()->save($oauth);
-                    $oauth->save();
                     Auth::loginUsingId($user->id);
+                    //TODO: посылать email для подтверждения почты асинхронно
+                    Mail::queue('auth.emails.verify',
+                        [
+                            'email' => $user->email,
+                            'email_verify_code' => $user->email_verify_code,
+                        ],
+                        function($message) use ($user)
+                        {
+                            $message->to($user->email)->subject('Подтвердите Ваш email');
+                        });
 
                     return response($this->buildResponse('success', 'Пользователь успешно зарегистрирован'), 200)
                         ->header('Content-Type', 'text/json');
