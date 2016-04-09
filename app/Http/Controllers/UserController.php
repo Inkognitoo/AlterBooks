@@ -42,9 +42,33 @@ class UserController extends Controller
         }
     }
 
-    public function auth()
+    public function auth(Request $request)
     {
-
+        if ($request->has('login') && $request->has('password')) {
+            $user = User::where('email', $request->login)->orWhere('nickname', $request->login)->first();
+            if ($user !== null) {
+                if (password_verify($request->password, $user->password)) {
+                    if ($request->has('remember')) {
+                        Auth::login($user, (bool) $request->remember);
+                        return response($this->buildResponse('success', 'пользователь успешно авторизован'), 200)
+                            ->header('Content-Type', 'text/json');
+                    } else {
+                        Auth::login($user);
+                        return response($this->buildResponse('success', 'пользователь успешно авторизован'), 200)
+                            ->header('Content-Type', 'text/json');
+                    }
+                } else {
+                    return response($this->buildResponse('error', 'Неверный пароль'), 402)
+                        ->header('Content-Type', 'text/json');
+                }
+            } else {
+                return response($this->buildResponse('error', 'Пользовтеля не существует'), 402)
+                    ->header('Content-Type', 'text/json');
+            }
+        } else {
+            return response($this->buildResponse('error', 'Необходимо указать логин и пароль'), 402)
+                ->header('Content-Type', 'text/json');
+        }
     }
 
     public function resetPasswordRequest(Request $request)

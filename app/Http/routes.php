@@ -48,6 +48,10 @@ Route::group(['prefix' => 'api'], function() {
             'as' => 'password reset request', 'uses' => 'UserController@resetPasswordRequest'
         ]);
 
+        Route::post('user/session', [
+            'as' => 'Authentication user', 'uses' => 'UserController@auth'
+        ]);
+
         //TODO: запрос на повторную отправку верификационного кода для подтверждения email
     });
 });
