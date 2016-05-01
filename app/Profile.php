@@ -66,10 +66,11 @@ class Profile extends Model
     //TODO: разобраться с правилами валидирования даты
     //date_format:format
     private $rules = [
-        'name' => 'max:255',
-        'surname' => 'max:255',
-        'patronymic' => 'max:255',
-        'birthday' => 'date',
+        'nickname' => 'min:1|max:255|unique:users',
+        'name' => 'min:1|max:255',
+        'surname' => 'min:1|max:255',
+        'patronymic' => 'min:1|max:255',
+        'birthday' => 'date_format:"Y-m-d"',
         'gender' => ['regex:/^((man)|(woman))$/i']
     ];
 

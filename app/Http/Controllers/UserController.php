@@ -207,4 +207,32 @@ class UserController extends Controller
             echo 'пшёл вон отседова';
         }
     }
+
+    //Заполнение стандартных значений профиля
+    /*
+     * nickname (заполняем тоже через профиль)
+     * name
+     * surname
+     * patronymic
+     * birthday
+     * gender
+     */
+    public function fillingProfile(Request $request)
+    {
+        //Проверяем данные для профиля
+        $user = Auth::user();
+        if ($user->profile->validate($request->all())) {
+            if ($request->has('nickname')) {
+                $user->nickname = $request->nickname;
+                $user->save();
+            }
+            $user->profile->fill($request->all());
+            $user->profile->save();
+            return response($this->buildResponse('success', 'Данные успешно обновлены'), 200)
+                ->header('Content-Type', 'text/json');
+        } else {
+            return response($this->buildResponse('error', $user->profile->errors()), 400)
+                ->header('Content-Type', 'text/json');
+        }
+    }
 }

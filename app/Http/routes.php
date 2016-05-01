@@ -54,6 +54,10 @@ Route::group(['prefix' => 'api'], function() {
                 'as' => 'change email request', 'uses' => 'UserController@changeEmailRequest'
             ]);
 
+            //заполнение стандартных значений профиля
+            Route::put('user/profile', [
+                'as' => 'filling profile', 'uses' => 'UserController@fillingProfile'
+            ]);
         });
     });
 });
