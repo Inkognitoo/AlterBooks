@@ -135,6 +135,7 @@ class User extends Authenticatable
             });
         $user->email_change_code = bcrypt(Str::random(32));
         $user->email = $user->new_email;
+        $user->new_email = null;
         $user->save();
     }
 
@@ -154,6 +155,19 @@ class User extends Authenticatable
     public function validateEmail($request)
     {
         $v = Validator::make($request, $this->rulesEmail);
+
+        if ($v->fails())
+        {
+            $this->errors = $v->errors();
+            return false;
+        }
+
+        return true;
+    }
+
+    public function validatePassword($request)
+    {
+        $v = Validator::make($request, $this->rulesPassword);
 
         if ($v->fails())
         {
@@ -196,6 +210,12 @@ class User extends Authenticatable
 
     private $rulesEmail = [
         'email' => 'required|email|max:255|unique:users'
+    ];
+
+    private $rulesPassword = [
+        'old_password' => 'required|min:6|max:255',
+        'password' => 'required|confirmed|min:6|max:255',
+        'password_confirmation' => 'required|min:6|max:255'
     ];
 
     private $errors;

@@ -58,6 +58,11 @@ Route::group(['prefix' => 'api'], function() {
             Route::put('user/profile', [
                 'as' => 'filling profile', 'uses' => 'UserController@fillingProfile'
             ]);
+
+            //смена пароля
+            Route::put('user/profile/password', [
+                'as' => 'change password', 'uses' => 'UserController@changePassword'
+            ]);
         });
     });
 });

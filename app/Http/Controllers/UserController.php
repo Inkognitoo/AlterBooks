@@ -160,6 +160,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         if($user->email_verify) {
+            //TODO: это лишняя проверка?
             if ($request->has('email')) {
                 if ($user->validateEmail($request->all())) {
                     $user->new_email = $request->email;
@@ -234,5 +235,27 @@ class UserController extends Controller
             return response($this->buildResponse('error', $user->profile->errors()), 400)
                 ->header('Content-Type', 'text/json');
         }
+    }
+
+    //Смена пароля
+    public function changePassword(Request $request)
+    {
+        //TODO: создать в middleware глобальную переменную для авторизованного пользователя
+        $user = Auth::user();
+        if ($user->validatePassword($request->all())) {
+            if (password_verify($request->old_password, $user->password)) {
+                $user->password = $request->password;
+                $user->save();
+                return response($this->buildResponse('success', 'Пароль успешно изменён'), 200)
+                    ->header('Content-Type', 'text/json');
+            } else {
+                return response($this->buildResponse('error', 'Текущие пароли не совпадают'), 400)
+                    ->header('Content-Type', 'text/json');
+            }
+        } else {
+            return response($this->buildResponse('error', $user->errors()), 400)
+                ->header('Content-Type', 'text/json');
+        }
+
     }
 }
