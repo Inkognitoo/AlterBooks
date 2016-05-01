@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('reset_code', 60)->nullable();
             $table->boolean('email_verify')->default(false);
             $table->string('email_verify_code', 60);
+            $table->string('new_email')->nullable();
+            $table->string('email_change_code', 60);
 
             $table->rememberToken();
             $table->timestamps();

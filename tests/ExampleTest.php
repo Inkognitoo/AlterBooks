@@ -13,7 +13,16 @@ class ExampleTest extends TestCase
      */
     public function testBasicExample()
     {
-        $this->visit('/')
-             ->see('Laravel 5');
+//        $this->visit('/')
+//             ->see('Laravel 5');
+
+        //чистим бд
+        foreach (\App\Profile::all() as $profile) {
+            $profile->delete();
+        }
+
+        foreach (\App\User::all() as $user) {
+            $user->delete();
+        }
     }
 }

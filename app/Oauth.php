@@ -6,7 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Log;
 use Validator;
-
+/**
+ * App\Oauth
+ *
+ * @property integer $id
+ * @property string $provider
+ * @property string $oauth_id
+ * @property integer $user_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Query\Builder|\App\Oauth whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Oauth whereProvider($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Oauth whereOauthId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Oauth whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Oauth whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Oauth whereUpdatedAt($value)
+ */
 class Oauth extends Model
 {
     public function user()
@@ -59,6 +75,8 @@ class Oauth extends Model
                 $serialized_social_user['email'] = $social_user->email;
                 $serialized_social_user['name'] = $social_user->user['first_name'];
                 $serialized_social_user['surname'] = $social_user->user['last_name'];
+                //TODO: запрашивать оригильный размер аватары пользователя
+                //см. vk api https://vk.com/dev/users.get
                 $serialized_social_user['photo'] = $social_user->avatar;
 
                 return $serialized_social_user;
@@ -121,6 +139,7 @@ class Oauth extends Model
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
+        $user->email_change_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
@@ -140,6 +159,7 @@ class Oauth extends Model
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
+        $user->email_change_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
@@ -157,6 +177,7 @@ class Oauth extends Model
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
+        $user->email_change_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();
@@ -175,6 +196,7 @@ class Oauth extends Model
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
+        $user->email_change_code = bcrypt(Str::random(32));
         $user->save();
 
         $profile = new Profile();

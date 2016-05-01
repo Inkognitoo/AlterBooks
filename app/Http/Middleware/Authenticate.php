@@ -17,14 +17,28 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->guest()) {
-            if ($request->ajax()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect()->guest('login');
-            }
+        if (Auth::check()) {
+            return $next($request);
+        } else {
+            return response($this->buildResponse('error', 'Unauthorized'), 401)
+                ->header('Content-Type', 'text/json');
         }
+//        if (Auth::guard($guard)->guest()) {
+//            if ($request->ajax() || $request->wantsJson()) {
+//                return response('Unauthorized.', 401);
+//            } else {
+//                return redirect()->guest('login');
+//            }
+//        }
 
-        return $next($request);
+        //return $next($request);
+    }
+
+    private function buildResponse($status, $payload)
+    {
+        return json_encode([
+            'status' => $status,
+            'payload' => $payload
+        ]);
     }
 }

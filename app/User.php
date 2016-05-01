@@ -1,12 +1,37 @@
 <?php
 
 namespace App;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
 use Mail;
 use Validator;
-
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
+/**
+ * App\User
+ *
+ * @property integer $id
+ * @property string $nickname
+ * @property string $email
+ * @property string $password
+ * @property string $reset_code
+ * @property boolean $email_verify
+ * @property string $email_verify_code
+ * @property string $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Profile $profile
+ * @property-read \App\Oauth $oauth
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereNickname($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereResetCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereEmailVerify($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereEmailVerifyCode($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
+ */
 class User extends Authenticatable
 {
     public function profile()
@@ -18,11 +43,11 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Oauth');
     }
-
-    public function book()
-    {
-        return $this->hasMany('App\Book', 'user_id', 'author_id');
-    }
+//
+//    public function book()
+//    {
+//        return $this->hasMany('App\Book', 'user_id', 'author_id');
+//    }
 
     public function resetPasswordRequest()
     {
@@ -37,10 +62,10 @@ class User extends Authenticatable
                 'email' => $user->email,
                 'reset_code' => $user->reset_code,
             ],
-        function($message) use ($user)
-        {
-            $message->to($user->email)->subject('Сброс пароля на AlterBooks');
-        });
+            function($message) use ($user)
+            {
+                $message->to($user->email)->subject('Сброс пароля на AlterBooks');
+            });
     }
 
     public function resetPassword()
@@ -56,15 +81,79 @@ class User extends Authenticatable
             [
                 'password' => $password,
             ],
-        function($message) use ($user)
-        {
-            $message->to($user->email)->subject('Сброс пароля на AlterBooks');
-        });
+            function($message) use ($user)
+            {
+                $message->to($user->email)->subject('Сброс пароля на AlterBooks');
+            });
+    }
+
+    public function sendEmailVerify()
+    {
+        $user = $this;
+        $user->email_verify_code = bcrypt(Str::random(32));
+        $user->save();
+        //TODO: посылать email для подтверждения почты асинхронно
+        Mail::queue('auth.emails.verify',
+            [
+                'email' => $user->email,
+                'email_verify_code' => $user->email_verify_code,
+            ],
+            function($message) use ($user)
+            {
+                $message->to($user->email)->subject('Подтвердите Ваш email');
+            });
+    }
+
+    public function changeEmailRequest()
+    {
+        $user = $this;
+        $user->email_change_code = bcrypt(Str::random(32));
+        $user->save();
+        //TODO: посылать email для подтверждения почты асинхронно
+        Mail::queue('emails.change_email',
+            [
+                'email' => $user->new_email,
+                'email_change_code' => $user->email_change_code,
+            ],
+            function($message) use ($user)
+            {
+                $message->to($user->new_email)->subject('Подтвердите Ваш новый email');
+            });
+    }
+
+    public function changeEmail()
+    {
+        $user = $this;
+        //TODO: посылать email для уведомления асинхронно
+        Mail::queue('emails.change_email_success',
+            [
+                'email' => $user->new_email
+            ],
+            function($message) use ($user)
+            {
+                $message->to($user->email)->subject('Вы успешно сменили email');
+            });
+        $user->email_change_code = bcrypt(Str::random(32));
+        $user->email = $user->new_email;
+        $user->save();
     }
 
     public function validate($request)
     {
         $v = Validator::make($request, $this->rules);
+
+        if ($v->fails())
+        {
+            $this->errors = $v->errors();
+            return false;
+        }
+
+        return true;
+    }
+
+    public function validateEmail($request)
+    {
+        $v = Validator::make($request, $this->rulesEmail);
 
         if ($v->fails())
         {
@@ -101,10 +190,13 @@ class User extends Authenticatable
     private $rules = [
         'nickname' => 'required|max:255|unique:users',
         'email' => 'required|email|max:255|unique:users',
-        'password' => 'required|confirmed|min:6',
-        'password_confirmation' => 'required|min:6'
+        'password' => 'required|confirmed|min:6|max:255',
+        'password_confirmation' => 'required|min:6|max:255'
+    ];
+
+    private $rulesEmail = [
+        'email' => 'required|email|max:255|unique:users'
     ];
 
     private $errors;
-
 }

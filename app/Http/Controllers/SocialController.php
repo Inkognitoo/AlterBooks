@@ -8,20 +8,21 @@ use App\User;
 use Auth;
 use Log;
 use Mail;
-use Socialite;
+use Laravel\Socialite\Facades\Socialite;
 
-//TODO: очень много if-ов, подумать, как это можно отрефакторить
+
 class SocialController extends Controller {
 
     public function __construct(){
-        $this->middleware('guest');
+        //TODO: нужно ли оно вообще?
+        //$this->middleware('guest');
     }
 
     public function socialAuth($provider = null)
     {
         if(!config('services.'.$provider)) abort('404');
 
-        return Socialite::driver($provider)->redirect();
+        return Socialite::with($provider)->redirect();
     }
 
     public function socialAuthCallback($provider = null)
@@ -29,7 +30,7 @@ class SocialController extends Controller {
         if(!config('services.'.$provider)) abort('404');
 
         try {
-            if ($social_user = Socialite::driver($provider)->user()) {
+            if ($social_user = Socialite::with($provider)->user()) {
                 $oauth = Oauth::where('oauth_id', $social_user->id)->where('provider', $provider)->first();
 
                 //проверяем, регистрируется пользователь или авторизуется
@@ -46,15 +47,7 @@ class SocialController extends Controller {
                             $user->oauth()->save($oauth);
                             Auth::loginUsingId($user->id);
                             //TODO: посылать email для подтверждения почты асинхронно
-                            Mail::queue('auth.emails.verify',
-                                [
-                                    'email' => $user->email,
-                                    'email_verify_code' => $user->email_verify_code,
-                                ],
-                            function($message) use ($user)
-                            {
-                                $message->to($user->email)->subject('Подтвердите Ваш email');
-                            });
+                            $user->sendEmailVerify();
 
                             return response($this->buildResponse('success', 'Пользователь успешно зарегистрирован'), 200)
                                 ->header('Content-Type', 'text/json');
@@ -111,16 +104,7 @@ class SocialController extends Controller {
                     $oauth->provider = $social_user['provider'];
                     $user->oauth()->save($oauth);
                     Auth::loginUsingId($user->id);
-                    //TODO: посылать email для подтверждения почты асинхронно
-                    Mail::queue('auth.emails.verify',
-                        [
-                            'email' => $user->email,
-                            'email_verify_code' => $user->email_verify_code,
-                        ],
-                        function($message) use ($user)
-                        {
-                            $message->to($user->email)->subject('Подтвердите Ваш email');
-                        });
+                    $user->sendEmailVerify();
 
                     return response($this->buildResponse('success', 'Пользователь успешно зарегистрирован'), 200)
                         ->header('Content-Type', 'text/json');
@@ -147,13 +131,5 @@ class SocialController extends Controller {
             $social_user = Oauth::serializeForSession($social_user, $provider);
             return $oauth->createUser($social_user);
         }
-    }
-
-    private function buildResponse($status, $payload)
-    {
-        return json_encode([
-            'status' => $status,
-            'payload' => $payload
-        ]);
     }
 }
