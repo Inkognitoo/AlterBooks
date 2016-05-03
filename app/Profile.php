@@ -63,8 +63,12 @@ class Profile extends Model
         'name', 'surname', 'patronymic', 'birthday', 'gender'
     ];
 
-    //TODO: разобраться с правилами валидирования даты
-    //date_format:format
+    //TODO: regexp ограничение для ника
+    /*
+     * не явялется одним из списка зарезервированных
+     * не id[number]
+     * содержит только цифры, буквы, - и _
+     */
     private $rules = [
         'nickname' => 'min:1|max:255|unique:users',
         'name' => 'min:1|max:255',

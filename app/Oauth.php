@@ -43,7 +43,8 @@ class Oauth extends Model
                 $serialized_social_user['surname'] = $social_user->user['name']['familyName'];
                 $serialized_social_user['gender'] = $social_user->user['gender'];
                 //TODO: распарсить для подходящего размера автара
-                $serialized_social_user['photo'] = $social_user->avatar;
+                //TODO: загрузка аватара
+                $serialized_social_user['avatar'] = $social_user->avatar;
 
                 return $serialized_social_user;
                 break;
@@ -53,7 +54,8 @@ class Oauth extends Model
                 $serialized_social_user['nickname'] = $social_user->nickname;
                 $serialized_social_user['email'] = $social_user->email;
                 $serialized_social_user['name'] = $social_user->name;
-                $serialized_social_user['photo'] = $social_user->avatar_original;
+                //TODO: загрузка аватара
+                $serialized_social_user['avatar'] = $social_user->avatar_original;
 
                 return $serialized_social_user;
                 break;
@@ -64,7 +66,8 @@ class Oauth extends Model
                 $serialized_social_user['email'] = $social_user->email;
                 $serialized_social_user['name'] = $social_user->user['name'];
                 $serialized_social_user['gender'] = $social_user->user['gender'];
-                $serialized_social_user['photo'] = $social_user->avatar_original;
+                //TODO: загрузка аватара
+                $serialized_social_user['avatar'] = $social_user->avatar_original;
 
                 return $serialized_social_user;
                 break;
@@ -77,7 +80,8 @@ class Oauth extends Model
                 $serialized_social_user['surname'] = $social_user->user['last_name'];
                 //TODO: запрашивать оригильный размер аватары пользователя
                 //см. vk api https://vk.com/dev/users.get
-                $serialized_social_user['photo'] = $social_user->avatar;
+                //TODO: загрузка аватара
+                $serialized_social_user['avatar'] = $social_user->avatar;
 
                 return $serialized_social_user;
                 break;

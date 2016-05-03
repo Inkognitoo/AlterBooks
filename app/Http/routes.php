@@ -63,6 +63,11 @@ Route::group(['prefix' => 'api'], function() {
             Route::put('user/profile/password', [
                 'as' => 'change password', 'uses' => 'UserController@changePassword'
             ]);
+
+            //загрузка аватара
+            Route::post('user/profile/avatar', [
+                'as' => 'upload avatar', 'uses' => 'UserController@uploadAvatar'
+            ]);
         });
     });
 });

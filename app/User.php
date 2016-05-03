@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Mail;
 use Validator;
+use Storage;
 /**
  * App\User
  *
@@ -139,6 +141,23 @@ class User extends Authenticatable
         $user->save();
     }
 
+    public function saveAvatar(UploadedFile $avatar)
+    {
+        //удаляем старый аватар если он есть
+        if (!is_null($this->profile->avatar)) {
+            Storage::delete("avatars/{$this->id}/{$this->profile->avatar}");
+        }
+
+        //если нужно, создаём необходимую директорию
+        Storage::makeDirectory("avatars/{$this->id}");
+
+        //сохраняем новый аватар
+        $avatar_name = Str::random(32).'.'.$avatar->getClientOriginalExtension();
+        $avatar->move(storage_path("app/avatars/{$this->id}"), $avatar_name);
+        $this->profile->avatar = $avatar_name;
+        $this->profile->save();
+    }
+
     public function validate($request)
     {
         $v = Validator::make($request, $this->rules);
@@ -201,6 +220,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    //TODO: regexp ограничение для ника
+    /*
+     * не является одним из списка зарезервированных
+     * не id[number]
+     * содержит только цифры, буквы, - и _
+     */
     private $rules = [
         'nickname' => 'required|max:255|unique:users',
         'email' => 'required|email|max:255|unique:users',
