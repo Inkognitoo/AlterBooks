@@ -12,11 +12,19 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
-    public function buildResponse($status, $payload)
+    protected $reserved_page = [
+        'book',
+        'about',
+        'info'
+    ];
+
+    protected function buildResponse($status, $payload)
     {
         return json_encode([
             'status' => $status,
             'payload' => $payload
         ]);
     }
+
+
 }

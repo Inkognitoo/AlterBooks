@@ -35,6 +35,11 @@ Route::group(['prefix' => 'api'], function() {
             'as' => 'password reset request', 'uses' => 'UserController@resetPasswordRequest'
         ]);
 
+        //установка email для OAuth созданного пользователя
+        Route::post('user/email', [
+            'as' => 'set email for OAuth', 'uses' => 'SocialController@enterEmail'
+        ]);
+
         /**********************
          * Защищёные методы API
          **********************/

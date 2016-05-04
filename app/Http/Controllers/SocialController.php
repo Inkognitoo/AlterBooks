@@ -20,9 +20,12 @@ class SocialController extends Controller {
 
     public function socialAuth($provider = null)
     {
-        if(!config('services.'.$provider)) abort('404');
-
-        return Socialite::with($provider)->redirect();
+        if(!config('services.'.$provider)) {
+            return response($this->buildResponse('error', 'Данный провайдер не поддерживается'), 400)
+                ->header('Content-Type', 'text/json');
+        } else {
+            return Socialite::with($provider)->redirect();
+        }
     }
 
     public function socialAuthCallback($provider = null)
@@ -34,9 +37,12 @@ class SocialController extends Controller {
                 $oauth = Oauth::where('oauth_id', $social_user->id)->where('provider', $provider)->first();
 
                 //проверяем, регистрируется пользователь или авторизуется
-                if ($oauth === null) {
+                if (is_null($oauth)) {
                     //пытаемся зарегистрировать пользователя
                     //проверяем email на уникальность и нe null
+                    if (!is_null($social_user->email)) {
+                        $social_user->email = mb_strtolower($social_user->email);
+                    }
                     if ($social_user->email !== null && User::where('email', $social_user->email)->first() === null) {
                         //приступаем к регистрации пользователя
                         $user = $this->createUser($social_user, $provider);
@@ -60,7 +66,7 @@ class SocialController extends Controller {
                         $serialized_social_user = Oauth::serializeForSession($social_user, $provider);
                         if ($serialized_social_user) {
                             session(['social_user' => json_encode($serialized_social_user)]);
-                            return response($this->buildResponse('error', 'Указанный email уже занят'), 402)
+                            return response($this->buildResponse('error', 'Указанный email уже занят'), 409)
                                 ->header('Content-Type', 'text/json');
                         } else {
                             return response($this->buildResponse('error', 'Не удалось обработать данные из социальной сети'), 500)
@@ -94,6 +100,9 @@ class SocialController extends Controller {
     {
         if ($request->session()->has('social_user')) {
             $oauth =  new Oauth();
+            if ($request->has('email')) {
+                $request['email'] = mb_strtolower($request->email);
+            }
             if ($oauth->validate($request->all())) {
                 $social_user = json_decode($request->session()->pull('social_user'), true);
                 $social_user['email'] = $request['email'];
@@ -106,18 +115,18 @@ class SocialController extends Controller {
                     Auth::loginUsingId($user->id);
                     $user->sendEmailVerify();
 
-                    return response($this->buildResponse('success', 'Пользователь успешно зарегистрирован'), 200)
+                    return response($this->buildResponse('success', 'Регистрация почти завершена. Вам необходимо подтвердить email, указанный при регистрации, перейдя по ссылке в письме.'), 200)
                         ->header('Content-Type', 'text/json');
                 } else {
                     return response($this->buildResponse('error', 'Не удалось обработать данные из социальной сети'), 500)
                         ->header('Content-Type', 'text/json');
                 }
             } else {
-                return response($this->buildResponse('error', $oauth->errors()), 402)
+                return response($this->buildResponse('error', $oauth->errors()), 400)
                     ->header('Content-Type', 'text/json');
             }
         } else {
-            return response($this->buildResponse('error', 'Forbidden'), 403)
+            return response($this->buildResponse('error', 'Forbidden'), 401)
                 ->header('Content-Type', 'text/json');
         }
     }

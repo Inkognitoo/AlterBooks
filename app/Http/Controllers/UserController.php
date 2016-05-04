@@ -17,9 +17,14 @@ class UserController extends Controller
     {
         //Проверяем данные для пользователя
         $user = new User();
+        if ($request->has('email')) {
+            $request['email'] = mb_strtolower($request->email);
+        }
+
         if ($user->validate($request->all())) {
             $profile = new Profile();
             if ($profile->validate($request->all())) {
+
                 $user = new User($request->all());
                 $user->password = bcrypt($request['password']);
                 $user->email_verify_code = bcrypt(Str::random(32));
@@ -81,8 +86,10 @@ class UserController extends Controller
     public function auth(Request $request)
     {
         if ($request->has('login') && $request->has('password')) {
+            $request['email'] = mb_strtolower($request->login);
+
             $user = User::where('email', $request->login)->first();
-            if ($user !== null) {
+            if (!is_null($user)) {
                 if (password_verify($request->password, $user->password)) {
                     if ($request->has('remember')) {
                         Auth::login($user, (bool) $request->remember);
@@ -119,8 +126,10 @@ class UserController extends Controller
     public function resetPasswordRequest(Request $request)
     {
         if ($request->has('email')) {
+            $request['email'] = mb_strtolower($request->email);
+
             $user = User::where('email', $request->email)->where('email_verify', true)->first();
-            if ($user !== null) {
+            if (!is_null($user)) {
                 $user->resetPasswordRequest();
                 return response($this->buildResponse('success', 'Код восстановления был выслан на указанный email'), 200)
                     ->header('Content-Type', 'text/json');
@@ -139,7 +148,7 @@ class UserController extends Controller
     {
         if ($request->has('email') && $request->has('code')) {
             $user = User::where('email', $request->email)->where('reset_code', $request->code)->first();
-            if ($user !== null) {
+            if (!is_null($user)) {
                 $user->resetPassword();
                 //TODO: нормальный шаблон
                 //TODO: а что здесь собственно покызвать? Главную страницу с попапом?
@@ -159,21 +168,18 @@ class UserController extends Controller
     {
         $user = Auth::user();
         if($user->email_verify) {
-            //TODO: это лишняя проверка?
             if ($request->has('email')) {
-                if ($user->validateEmail($request->all())) {
-                    $user->new_email = $request->email;
-                    $user->save();
-                    $user->changeEmailRequest();
-                    return response($this->buildResponse('success', 'Запрос на смену email успешно отправлен'), 200)
-                        ->header('Content-Type', 'text/json');
+                $request['email'] = mb_strtolower($request->email);
+            }
+            if ($user->validateEmail($request->all())) {
+                $user->new_email = $request->email;
+                $user->save();
+                $user->changeEmailRequest();
+                return response($this->buildResponse('success', 'Запрос на смену email успешно отправлен'), 200)
+                    ->header('Content-Type', 'text/json');
 
-                } else {
-                    return response($this->buildResponse('error', $user->errors()), 400)
-                        ->header('Content-Type', 'text/json');
-                }
             } else {
-                return response($this->buildResponse('error', 'Необходимо указать email'), 400)
+                return response($this->buildResponse('error', $user->errors()), 400)
                     ->header('Content-Type', 'text/json');
             }
         } else {
@@ -187,7 +193,7 @@ class UserController extends Controller
     {
         if ($request->has('email') && $request->has('code')) {
             $user = User::where('new_email', $request->email)->where('email_change_code', $request->code)->first();
-            if ($user !== null) {
+            if (!is_null($user)) {
                 //проверяем на уникальность
                 if ($user->validateEmail($request->all())) {
                     $user->changeEmail();
@@ -268,8 +274,6 @@ class UserController extends Controller
             'image/jpeg',
             'image/png'
         ];
-
-
 
         if ($request->hasFile('avatar')) {
             if ($request->file('avatar')->isValid()){
