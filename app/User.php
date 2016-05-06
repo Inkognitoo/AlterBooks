@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Mail;
 use Validator;
-use Storage;
 /**
  * App\User
  *
@@ -139,23 +137,6 @@ class User extends Authenticatable
         $user->email = $user->new_email;
         $user->new_email = null;
         $user->save();
-    }
-
-    public function saveAvatar(UploadedFile $avatar)
-    {
-        //удаляем старый аватар если он есть
-        if (!is_null($this->profile->avatar)) {
-            Storage::delete("avatars/{$this->id}/{$this->profile->avatar}");
-        }
-
-        //если нужно, создаём необходимую директорию
-        Storage::makeDirectory("avatars/{$this->id}");
-
-        //сохраняем новый аватар
-        $avatar_name = Str::random(32).'.'.$avatar->getClientOriginalExtension();
-        $avatar->move(storage_path("app/avatars/{$this->id}"), $avatar_name);
-        $this->profile->avatar = $avatar_name;
-        $this->profile->save();
     }
 
     public function validate($request)

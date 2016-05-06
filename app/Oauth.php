@@ -151,7 +151,7 @@ class Oauth extends Model
         'nickname' => 'min:1|max:20|unique:users|not_id|not_reserved',
     ];
 
-    private $errors;
+    private $errors = [];
 
     //TODO: один, универсальный метод для создания пользователя
     private function createWithGoogle($social_user)

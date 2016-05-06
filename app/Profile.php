@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Validator;
+use Illuminate\Http\UploadedFile;
+use Storage;
+use Illuminate\Support\Str;
 /**
  * App\Profile
  *
@@ -36,9 +39,39 @@ class Profile extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function saveAvatar(UploadedFile $avatar)
+    {
+        //удаляем старый аватар если он есть
+        if (!is_null($this->avatar)) {
+            Storage::delete("avatars/{$this->user->id}/{$this->avatar}");
+        }
+
+        //если нужно, создаём необходимую директорию
+        Storage::makeDirectory("avatars/{$this->user->id}");
+
+        //сохраняем новый аватар
+        $avatar_name = Str::random(32).'.'.$avatar->getClientOriginalExtension();
+        $avatar->move(storage_path("app/avatars/{$this->user->id}"), $avatar_name);
+        $this->avatar = $avatar_name;
+        $this->save();
+    }
+
     public function validate($request)
     {
         $v = Validator::make($request, $this->rules);
+
+        if ($v->fails())
+        {
+            array_push($this->errors, $v->errors());
+            return false;
+        }
+
+        return true;
+    }
+
+    public function validateAvatar($request)
+    {
+        $v = Validator::make($request, $this->rulesAvater);
 
         if ($v->fails())
         {
@@ -72,5 +105,9 @@ class Profile extends Model
         'gender' => ['regex:/^((man)|(woman))$/i']
     ];
 
-    private $errors;
+    private $rulesAvater = [
+        'avatar' => 'required|max:2097152|mimes:jpeg,png'
+    ];
+
+    private $errors = [];
 }

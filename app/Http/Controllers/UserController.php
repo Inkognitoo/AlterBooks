@@ -268,36 +268,12 @@ class UserController extends Controller
     public function uploadAvatar(Request $request)
     {
         $user = Auth::user();
-
-        //поддерживаются jpeg и png файлы
-        $allowed_mime_type = [
-            'image/jpeg',
-            'image/png'
-        ];
-
-        if ($request->hasFile('avatar')) {
-            if ($request->file('avatar')->isValid()){
-                //размер файла не превышает двух мегабайт?
-                if ($request->file('avatar')->getClientSize() < (1024 * 1024 * 2)) {
-                    //файл имет допустимый тип?
-                    if (in_array($request->file('avatar')->getMimeType(), $allowed_mime_type)) {
-                        $user->saveAvatar($request->file('avatar'));
-                        return response($this->buildResponse('success', 'Файл успешно загружен'), 200)
-                            ->header('Content-Type', 'text/json');
-                    } else {
-                        return response($this->buildResponse('error', 'Данный тип файла не поддерживается'), 415)
-                            ->header('Content-Type', 'text/json');
-                    }
-                } else {
-                    return response($this->buildResponse('error', 'Размер файла не должен превышать двух мегабайт'), 413)
-                        ->header('Content-Type', 'text/json');
-                }
-            } else {
-                return response($this->buildResponse('error', 'Не удалось загрузить файл, попробуйте снова'), 500)
-                    ->header('Content-Type', 'text/json');
-            }
+        if ($user->profile->validateAvatar($request->all())) {
+            $user->profile->saveAvatar($request->file('avatar'));
+            return response($this->buildResponse('success', 'Файл успешно загружен'), 200)
+                ->header('Content-Type', 'text/json');
         } else {
-            return response($this->buildResponse('error', 'Необходимо указать файл для загрузки'), 400)
+            return response($this->buildResponse('error', $user->profile->errors()), 400)
                 ->header('Content-Type', 'text/json');
         }
     }
