@@ -162,39 +162,36 @@ class User extends Authenticatable
     {
         $v = Validator::make($request, $this->rules);
 
-        if ($v->fails())
-        {
-            $this->errors = $v->errors();
+        if ($v->fails()) {
+            array_push($this->errors, $v->errors());
             return false;
+        } else {
+            return true;
         }
-
-        return true;
     }
 
     public function validateEmail($request)
     {
         $v = Validator::make($request, $this->rulesEmail);
 
-        if ($v->fails())
-        {
-            $this->errors = $v->errors();
+        if ($v->fails()) {
+            array_push($this->errors, $v->errors());
             return false;
+        } else {
+            return true;
         }
-
-        return true;
     }
 
     public function validatePassword($request)
     {
         $v = Validator::make($request, $this->rulesPassword);
 
-        if ($v->fails())
-        {
-            $this->errors = $v->errors();
+        if ($v->fails()) {
+            array_push($this->errors, $v->errors());
             return false;
+        } else {
+            return true;
         }
-
-        return true;
     }
 
     public function errors()
@@ -220,14 +217,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    //TODO: regexp ограничение для ника
-    /*
-     * не является одним из списка зарезервированных
-     * не id[number]
-     * содержит только цифры, буквы, - и _
-     */
     private $rules = [
-        'nickname' => 'required|max:255|unique:users',
+        'nickname' => 'required|max:20|unique:users|not_id|not_reserved',
         'email' => 'required|email|max:255|unique:users',
         'password' => 'required|confirmed|min:6|max:255',
         'password_confirmation' => 'required|min:6|max:255'
@@ -243,5 +234,5 @@ class User extends Authenticatable
         'password_confirmation' => 'required|min:6|max:255'
     ];
 
-    private $errors;
+    private $errors = [];
 }

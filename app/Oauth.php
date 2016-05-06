@@ -118,7 +118,20 @@ class Oauth extends Model
 
         if ($v->fails())
         {
-            $this->errors = $v->errors();
+            array_push($this->errors, $v->errors());
+            return false;
+        }
+
+        return true;
+    }
+
+    public function validateNickname($request)
+    {
+        $v = Validator::make($request, $this->rulesNickname);
+
+        if ($v->fails())
+        {
+            array_push($this->errors, $v->errors());
             return false;
         }
 
@@ -134,16 +147,28 @@ class Oauth extends Model
         'email' => 'required|email|max:255|unique:users'
     ];
 
+    private $rulesNickname = [
+        'nickname' => 'min:1|max:20|unique:users|not_id|not_reserved',
+    ];
+
     private $errors;
 
+    //TODO: один, универсальный метод для создания пользователя
     private function createWithGoogle($social_user)
     {
         $user = new User();
-        $user->nickname = $social_user['nickname'];
+
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
         $user->email_change_code = bcrypt(Str::random(32));
+        $user->save();
+
+        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
+            $user->nickname = $social_user['nickname'];
+        } else {
+            $user->nickname = "id{$user->id}";
+        }
         $user->save();
 
         $profile = new Profile();
@@ -159,11 +184,17 @@ class Oauth extends Model
     private function createWithTwitter($social_user)
     {
         $user = new User();
-        $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
         $user->email_change_code = bcrypt(Str::random(32));
+        $user->save();
+
+        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
+            $user->nickname = $social_user['nickname'];
+        } else {
+            $user->nickname = "id{$user->id}";
+        }
         $user->save();
 
         $profile = new Profile();
@@ -177,11 +208,17 @@ class Oauth extends Model
     private function createWithFacebook($social_user)
     {
         $user = new User();
-        $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
         $user->email_change_code = bcrypt(Str::random(32));
+        $user->save();
+
+        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
+            $user->nickname = $social_user['nickname'];
+        } else {
+            $user->nickname = "id{$user->id}";
+        }
         $user->save();
 
         $profile = new Profile();
@@ -196,11 +233,17 @@ class Oauth extends Model
     private function createWithVkontakte($social_user)
     {
         $user = new User();
-        $user->nickname = $social_user['nickname'];
         $user->email = $social_user['email'];
         $user->password = bcrypt(Str::random(32));
         $user->email_verify_code = bcrypt(Str::random(32));
         $user->email_change_code = bcrypt(Str::random(32));
+        $user->save();
+
+        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
+            $user->nickname = $social_user['nickname'];
+        } else {
+            $user->nickname = "id{$user->id}";
+        }
         $user->save();
 
         $profile = new Profile();

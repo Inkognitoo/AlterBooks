@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('/', function(){
+   $oatu = new \App\Oauth();
+    dd($oatu->validateNickname(['nickname' => 'id22']));
+});
+
 //социальная авторизация
 Route::get('social/oauth/{provider?}', 'SocialController@socialAuth');
 Route::get('social/oauth/redirect/{provider?}', 'SocialController@socialAuthCallback');

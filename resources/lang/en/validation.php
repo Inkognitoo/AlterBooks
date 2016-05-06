@@ -91,6 +91,9 @@ return [
     |
     */
 
+    'not_id'               => 'The :attribute can not be of the form \'id numeric\'',
+    'not_reserved'         => 'The :attribute should not contain reserved words',
+
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

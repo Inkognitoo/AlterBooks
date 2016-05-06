@@ -42,7 +42,7 @@ class Profile extends Model
 
         if ($v->fails())
         {
-            $this->errors = $v->errors();
+            array_push($this->errors, $v->errors());
             return false;
         }
 
@@ -63,14 +63,8 @@ class Profile extends Model
         'name', 'surname', 'patronymic', 'birthday', 'gender'
     ];
 
-    //TODO: regexp ограничение для ника
-    /*
-     * не явялется одним из списка зарезервированных
-     * не id[number]
-     * содержит только цифры, буквы, - и _
-     */
     private $rules = [
-        'nickname' => 'min:1|max:255|unique:users',
+        'nickname' => 'min:1|max:20|unique:users|not_id|not_reserved',
         'name' => 'min:1|max:255',
         'surname' => 'min:1|max:255',
         'patronymic' => 'min:1|max:255',
