@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Log;
 use Validator;
+use Illuminate\Http\UploadedFile;
+use Storage;
 /**
  * App\Oauth
  *
@@ -42,9 +44,7 @@ class Oauth extends Model
                 $serialized_social_user['name'] = $social_user->user['name']['givenName'];
                 $serialized_social_user['surname'] = $social_user->user['name']['familyName'];
                 $serialized_social_user['gender'] = $social_user->user['gender'];
-                //TODO: распарсить для подходящего размера автара
-                //TODO: загрузка аватара
-                $serialized_social_user['avatar'] = $social_user->avatar;
+                $serialized_social_user['avatar'] = preg_replace('/\?sz=50/', '?sz=200', $social_user->avatar);
 
                 return $serialized_social_user;
                 break;
@@ -54,7 +54,6 @@ class Oauth extends Model
                 $serialized_social_user['nickname'] = $social_user->nickname;
                 $serialized_social_user['email'] = $social_user->email;
                 $serialized_social_user['name'] = $social_user->name;
-                //TODO: загрузка аватара
                 $serialized_social_user['avatar'] = $social_user->avatar_original;
 
                 return $serialized_social_user;
@@ -66,7 +65,6 @@ class Oauth extends Model
                 $serialized_social_user['email'] = $social_user->email;
                 $serialized_social_user['name'] = $social_user->user['name'];
                 $serialized_social_user['gender'] = $social_user->user['gender'];
-                //TODO: загрузка аватара
                 $serialized_social_user['avatar'] = $social_user->avatar_original;
 
                 return $serialized_social_user;
@@ -81,7 +79,9 @@ class Oauth extends Model
                 //TODO: запрашивать оригильный размер аватары пользователя
                 //см. vk api https://vk.com/dev/users.get
                 //TODO: загрузка аватара
-                $serialized_social_user['avatar'] = $social_user->avatar;
+                $response = file_get_contents("https://api.vk.com/method/users.get?user_ids={$social_user->id}&fields=photo_200&version=5.52");
+                $json = json_decode($response, true);
+                $serialized_social_user['avatar'] = $json['response'][0]['photo_200'];
 
                 return $serialized_social_user;
                 break;
@@ -93,23 +93,42 @@ class Oauth extends Model
 
     public function createUser($social_user)
     {
-        switch ($social_user['provider']) {
-            case 'google':
-                return $this->createWithGoogle($social_user);
-                break;
-            case 'twitter':
-                return $this->createWithTwitter($social_user);
-                break;
-            case 'facebook':
-                return $this->createWithFacebook($social_user);
-                break;
-            case 'vkontakte':
-                return $this->createWithVkontakte($social_user);
-                break;
-            default:
-                Log::error('Неизвестный провайдер в createUser: '.$social_user['provider']);
-                return false;
+        $user = new User();
+
+        $user->email = $social_user['email'];
+        $user->password = bcrypt(Str::random(32));
+        $user->email_verify_code = bcrypt(Str::random(32));
+        $user->email_change_code = bcrypt(Str::random(32));
+        $user->save();
+
+        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
+            $user->nickname = $social_user['nickname'];
+        } else {
+            $user->nickname = "id{$user->id}";
         }
+        $user->save();
+        $profile = new Profile($social_user);
+        $user->profile()->save($profile);
+
+        $this->oauth_id = $social_user['oauth_id'];
+        $this->provider = $social_user['provider'];
+        $user->oauth()->save($this);
+
+        //TODO: локально сохранять аватар ($social_user['photo'])
+        //если нужно, создаём необходимую директорию
+        Storage::makeDirectory("avatars/{$user->id}");
+        $avatar_name = Str::random(32);
+        $tmp_avatar_name = storage_path("app/avatars/{$user->id}/").$avatar_name;
+        file_put_contents($tmp_avatar_name, fopen($social_user['avatar'], 'r'));
+        //TODO: найти какой-то более верный способ для этого
+        $avatar = new UploadedFile($tmp_avatar_name, $avatar_name);
+        //сохраняем новый аватар
+        $new_avatar_name = $avatar_name.'.'.$avatar->guessExtension();
+        Storage::move("avatars/{$user->id}/{$avatar_name}", "avatars/{$user->id}/{$new_avatar_name}");
+        $user->profile->avatar = $new_avatar_name;
+        $user->profile->save();
+
+        return $user;
     }
 
     public function validate($request)
@@ -148,110 +167,8 @@ class Oauth extends Model
     ];
 
     private $rulesNickname = [
-        'nickname' => 'min:1|max:20|unique:users|not_id|not_reserved',
+        'nickname' => 'required|max:20|unique:users|not_id|not_reserved',
     ];
 
     private $errors = [];
-
-    //TODO: один, универсальный метод для создания пользователя
-    private function createWithGoogle($social_user)
-    {
-        $user = new User();
-
-        $user->email = $social_user['email'];
-        $user->password = bcrypt(Str::random(32));
-        $user->email_verify_code = bcrypt(Str::random(32));
-        $user->email_change_code = bcrypt(Str::random(32));
-        $user->save();
-
-        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
-            $user->nickname = $social_user['nickname'];
-        } else {
-            $user->nickname = "id{$user->id}";
-        }
-        $user->save();
-
-        $profile = new Profile();
-        $profile->name = $social_user['name'];
-        $profile->surname = $social_user['surname'];
-        $profile->gender = $social_user['gender'];
-        $user->profile()->save($profile);
-        //TODO: локально сохранять аватар ($social_user['photo'])
-
-        return $user;
-    }
-
-    private function createWithTwitter($social_user)
-    {
-        $user = new User();
-        $user->email = $social_user['email'];
-        $user->password = bcrypt(Str::random(32));
-        $user->email_verify_code = bcrypt(Str::random(32));
-        $user->email_change_code = bcrypt(Str::random(32));
-        $user->save();
-
-        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
-            $user->nickname = $social_user['nickname'];
-        } else {
-            $user->nickname = "id{$user->id}";
-        }
-        $user->save();
-
-        $profile = new Profile();
-        $profile->name = $social_user['name'];
-        $user->profile()->save($profile);
-        //TODO: локально сохранять аватар ($social_user['photo'])
-
-        return $user;
-    }
-
-    private function createWithFacebook($social_user)
-    {
-        $user = new User();
-        $user->email = $social_user['email'];
-        $user->password = bcrypt(Str::random(32));
-        $user->email_verify_code = bcrypt(Str::random(32));
-        $user->email_change_code = bcrypt(Str::random(32));
-        $user->save();
-
-        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
-            $user->nickname = $social_user['nickname'];
-        } else {
-            $user->nickname = "id{$user->id}";
-        }
-        $user->save();
-
-        $profile = new Profile();
-        $profile->name = $social_user['name'];
-        $profile->gender = $social_user['gender'];
-        $user->profile()->save($profile);
-        //TODO: локально сохранять аватар ($social_user['photo'])
-
-        return $user;
-    }
-
-    private function createWithVkontakte($social_user)
-    {
-        $user = new User();
-        $user->email = $social_user['email'];
-        $user->password = bcrypt(Str::random(32));
-        $user->email_verify_code = bcrypt(Str::random(32));
-        $user->email_change_code = bcrypt(Str::random(32));
-        $user->save();
-
-        if ($this->validateNickname(['nickname' => $social_user['nickname']])) {
-            $user->nickname = $social_user['nickname'];
-        } else {
-            $user->nickname = "id{$user->id}";
-        }
-        $user->save();
-
-        $profile = new Profile();
-        $profile->name = $social_user['name'];
-        $profile->surname = $social_user['surname'];
-        $user->profile()->save($profile);
-        //TODO: локально сохранять аватар ($social_user['photo'])
-
-        return $user;
-    }
 }

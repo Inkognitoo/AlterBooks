@@ -39,7 +39,7 @@ class Profile extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function saveAvatar(UploadedFile $avatar)
+    public function saveAvatar($avatar)
     {
         //удаляем старый аватар если он есть
         if (!is_null($this->avatar)) {
@@ -50,7 +50,7 @@ class Profile extends Model
         Storage::makeDirectory("avatars/{$this->user->id}");
 
         //сохраняем новый аватар
-        $avatar_name = Str::random(32).'.'.$avatar->getClientOriginalExtension();
+        $avatar_name = Str::random(32).'.'.$avatar->guessExtension();
         $avatar->move(storage_path("app/avatars/{$this->user->id}"), $avatar_name);
         $this->avatar = $avatar_name;
         $this->save();
@@ -98,9 +98,9 @@ class Profile extends Model
 
     private $rules = [
         'nickname' => 'min:1|max:20|unique:users|not_id|not_reserved',
-        'name' => 'min:1|max:255',
-        'surname' => 'min:1|max:255',
-        'patronymic' => 'min:1|max:255',
+        'name' => 'min:1|max:20',
+        'surname' => 'min:1|max:20',
+        'patronymic' => 'min:1|max:20',
         'birthday' => 'date_format:"Y-m-d"',
         'gender' => ['regex:/^((man)|(woman))$/i']
     ];

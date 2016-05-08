@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Str;
+use App\User;
+use App\Profile;
+use Illuminate\Http\UploadedFile;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,10 +14,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function(){
-   $oatu = new \App\Oauth();
-    dd($oatu->validateNickname(['nickname' => 'id22']));
+
+    echo 'hello AlterBooks!';
 });
 
 //социальная авторизация

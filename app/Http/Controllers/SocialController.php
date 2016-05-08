@@ -30,31 +30,31 @@ class SocialController extends Controller {
 
     public function socialAuthCallback($provider = null)
     {
+
         if(!config('services.'.$provider)) abort('404');
 
         try {
+
             if ($social_user = Socialite::with($provider)->user()) {
+
                 $oauth = Oauth::where('oauth_id', $social_user->id)->where('provider', $provider)->first();
 
                 //проверяем, регистрируется пользователь или авторизуется
                 if (is_null($oauth)) {
+
                     //пытаемся зарегистрировать пользователя
                     //проверяем email на уникальность и нe null
                     if (!is_null($social_user->email)) {
                         $social_user->email = mb_strtolower($social_user->email);
                     }
+
                     if ($social_user->email !== null && User::where('email', $social_user->email)->first() === null) {
                         //приступаем к регистрации пользователя
                         $user = $this->createUser($social_user, $provider);
                         if ($user) {
-                            $oauth = new Oauth();
-                            $oauth->oauth_id = $social_user->id;
-                            $oauth->provider = $provider;
-                            $user->oauth()->save($oauth);
                             Auth::loginUsingId($user->id);
                             //TODO: посылать email для подтверждения почты асинхронно
                             $user->sendEmailVerify();
-
                             return response($this->buildResponse('success', 'Пользователь успешно зарегистрирован'), 200)
                                 ->header('Content-Type', 'text/json');
                         } else {
@@ -99,7 +99,7 @@ class SocialController extends Controller {
     public function enterEmail(Request $request)
     {
         if ($request->session()->has('social_user')) {
-            $oauth =  new Oauth();
+            $oauth = new Oauth();
             if ($request->has('email')) {
                 $request['email'] = mb_strtolower($request->email);
             }
@@ -108,10 +108,6 @@ class SocialController extends Controller {
                 $social_user['email'] = $request['email'];
                 $user = $this->createUser($social_user);
                 if ($user) {
-                    $oauth = new Oauth();
-                    $oauth->oauth_id = $social_user['oauth_id'];
-                    $oauth->provider = $social_user['provider'];
-                    $user->oauth()->save($oauth);
                     Auth::loginUsingId($user->id);
                     $user->sendEmailVerify();
 
@@ -131,6 +127,7 @@ class SocialController extends Controller {
         }
     }
 
+    //TODO: а не стоит ли прямо здесь создавать Oauth и возвращать уже его?
     private function createUser($social_user, $provider = null)
     {
         $oauth = new Oauth();
