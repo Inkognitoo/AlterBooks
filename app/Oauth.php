@@ -76,9 +76,6 @@ class Oauth extends Model
                 $serialized_social_user['email'] = $social_user->email;
                 $serialized_social_user['name'] = $social_user->user['first_name'];
                 $serialized_social_user['surname'] = $social_user->user['last_name'];
-                //TODO: запрашивать оригильный размер аватары пользователя
-                //см. vk api https://vk.com/dev/users.get
-                //TODO: загрузка аватара
                 $response = file_get_contents("https://api.vk.com/method/users.get?user_ids={$social_user->id}&fields=photo_200&version=5.52");
                 $json = json_decode($response, true);
                 $serialized_social_user['avatar'] = $json['response'][0]['photo_200'];
@@ -114,7 +111,6 @@ class Oauth extends Model
         $this->provider = $social_user['provider'];
         $user->oauth()->save($this);
 
-        //TODO: локально сохранять аватар ($social_user['photo'])
         //если нужно, создаём необходимую директорию
         Storage::makeDirectory("avatars/{$user->id}");
         $avatar_name = Str::random(32);

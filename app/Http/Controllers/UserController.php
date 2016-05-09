@@ -36,7 +36,7 @@ class UserController extends Controller
                 Auth::loginUsingId($user->id);
                 $user->sendEmailVerify();
 
-                return response($this->buildResponse('success', 'Регистрация почти завершена. Вам необходимо подтвердить email, указанный при регистрации, перейдя по ссылке в письме.'), 200)
+                return response($this->buildResponse('success', trans('messages.registration_success')), 200)
                     ->header('Content-Type', 'text/json');
             } else {
                 return response($this->buildResponse('error', $profile->errors()), 400)
@@ -74,10 +74,10 @@ class UserController extends Controller
         $user = Auth::user();
         if (!$user->email_verify) {
             $user->sendEmailVerify();
-            return response($this->buildResponse('success', 'Новый запрос на подтверждение почты был успешно отправлен'), 200)
+            return response($this->buildResponse('success', trans('messages.send_email_verify_success')), 200)
                 ->header('Content-Type', 'text/json');
         } else {
-            return response($this->buildResponse('error', 'Ваш email уже прошёл верификацию'), 409)
+            return response($this->buildResponse('error', trans('messages.send_email_verify_error')), 409)
                 ->header('Content-Type', 'text/json');
         }
     }
@@ -93,23 +93,23 @@ class UserController extends Controller
                 if (password_verify($request->password, $user->password)) {
                     if ($request->has('remember')) {
                         Auth::login($user, (bool) $request->remember);
-                        return response($this->buildResponse('success', 'Пользователь успешно авторизован'), 200)
+                        return response($this->buildResponse('success', trans('messages.auth_success')), 200)
                             ->header('Content-Type', 'text/json');
                     } else {
                         Auth::login($user);
-                        return response($this->buildResponse('success', 'Пользователь успешно авторизован'), 200)
+                        return response($this->buildResponse('success', trans('messages.auth_success')), 200)
                             ->header('Content-Type', 'text/json');
                     }
                 } else {
-                    return response($this->buildResponse('error', 'Неверный пароль'), 400)
+                    return response($this->buildResponse('error', trans('messages.auth_bad_password')), 400)
                         ->header('Content-Type', 'text/json');
                 }
             } else {
-                return response($this->buildResponse('error', 'Пользовтеля не существует'), 400)
+                return response($this->buildResponse('error', trans('messages.auth_user_not_found')), 400)
                     ->header('Content-Type', 'text/json');
             }
         } else {
-            return response($this->buildResponse('error', 'Необходимо указать логин и пароль'), 400)
+            return response($this->buildResponse('error', trans('messages.auth_not_enter_login_and_password')), 400)
                 ->header('Content-Type', 'text/json');
         }
     }
@@ -118,7 +118,7 @@ class UserController extends Controller
     public function unauth()
     {
         Auth::logout();
-        return response($this->buildResponse('success', 'Сессия пользователя была успешно прекращена'), 200)
+        return response($this->buildResponse('success', trans('messages.unauth_success')), 200)
             ->header('Content-Type', 'text/json');
     }
 
@@ -131,14 +131,14 @@ class UserController extends Controller
             $user = User::where('email', $request->email)->where('email_verify', true)->first();
             if (!is_null($user)) {
                 $user->resetPasswordRequest();
-                return response($this->buildResponse('success', 'Код восстановления был выслан на указанный email'), 200)
+                return response($this->buildResponse('success', trans('messages.reset_password_request_success')), 200)
                     ->header('Content-Type', 'text/json');
             } else {
-                return response($this->buildResponse('error', 'Указаного email не существует в базе либо email не был подтвержён'), 400)
+                return response($this->buildResponse('error', trans('messages.reset_password_request_email_not_found')), 400)
                     ->header('Content-Type', 'text/json');
             }
         } else {
-            return response($this->buildResponse('error', 'Необходимо указать email'), 400)
+            return response($this->buildResponse('error', trans('messages.reset_password_request_email_not_enter')), 400)
                 ->header('Content-Type', 'text/json');
         }
     }
@@ -175,7 +175,7 @@ class UserController extends Controller
                 $user->new_email = $request->email;
                 $user->save();
                 $user->changeEmailRequest();
-                return response($this->buildResponse('success', 'Запрос на смену email успешно отправлен'), 200)
+                return response($this->buildResponse('success', trans('messages.change_email_request_success')), 200)
                     ->header('Content-Type', 'text/json');
 
             } else {
@@ -183,7 +183,7 @@ class UserController extends Controller
                     ->header('Content-Type', 'text/json');
             }
         } else {
-            return response($this->buildResponse('error', 'Указаная при регистрации почта не подтверждена'), 403)
+            return response($this->buildResponse('error', trans('messages.change_email_request_not_verify')), 403)
                 ->header('Content-Type', 'text/json');
         }
     }
@@ -234,7 +234,7 @@ class UserController extends Controller
             }
             $user->profile->fill($request->all());
             $user->profile->save();
-            return response($this->buildResponse('success', 'Данные успешно обновлены'), 200)
+            return response($this->buildResponse('success', trans('messages.filling_profile_success')), 200)
                 ->header('Content-Type', 'text/json');
         } else {
             return response($this->buildResponse('error', $user->profile->errors()), 400)
@@ -251,10 +251,10 @@ class UserController extends Controller
             if (password_verify($request->old_password, $user->password)) {
                 $user->password = $request->password;
                 $user->save();
-                return response($this->buildResponse('success', 'Пароль успешно изменён'), 200)
+                return response($this->buildResponse('success', trans('messages.change_password_success')), 200)
                     ->header('Content-Type', 'text/json');
             } else {
-                return response($this->buildResponse('error', 'Текущие пароли не совпадают'), 400)
+                return response($this->buildResponse('error', trans('messages.change_password_not_match')), 400)
                     ->header('Content-Type', 'text/json');
             }
         } else {
@@ -270,7 +270,7 @@ class UserController extends Controller
         $user = Auth::user();
         if ($user->profile->validateAvatar($request->all())) {
             $user->profile->saveAvatar($request->file('avatar'));
-            return response($this->buildResponse('success', 'Файл успешно загружен'), 200)
+            return response($this->buildResponse('success', trans('messages.upload_avatar_success')), 200)
                 ->header('Content-Type', 'text/json');
         } else {
             return response($this->buildResponse('error', $user->profile->errors()), 400)
