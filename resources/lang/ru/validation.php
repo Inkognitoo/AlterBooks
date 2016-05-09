@@ -97,7 +97,8 @@ return [
     */
 
     'not_id'               => 'Поле :attribute не должно быть вида \'id число\'',
-    'not_reserved'         => 'Поле :attribute Не должно содержать зарезервированных слов',
+    'not_reserved'         => 'Поле :attribute не должно содержать зарезервированных слов',
+    'language'             => 'Язык :attribute не поддерживается',
 
     'custom'               => [
         'attribute-name' => [

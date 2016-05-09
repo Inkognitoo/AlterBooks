@@ -10,6 +10,11 @@ class CustomValidator extends Validator {
 
     public function validateNotReserved($attribute, $value, $parameters)
     {
-        return !in_array($value, config('custom.reserved_page'));
+        return !in_array($value, config('custom.reserved_pages'));
+    }
+
+    public function validateLanguage($attribute, $value, $parameters)
+    {
+        return in_array($value, config('custom.languages'));
     }
 }

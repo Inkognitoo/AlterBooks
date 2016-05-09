@@ -28,6 +28,11 @@ Route::group(['prefix' => 'api'], function() {
         /*********************
          * Открытые методы API
          *********************/
+        //смена языка
+        Route::put('language', [
+            'as' => 'change language', 'uses' => 'UserController@changeLanguage'
+        ]);
+
         //обычная регистрация пользователя
         Route::post('user', [
             'as' => 'registration', 'uses' => 'UserController@registration'

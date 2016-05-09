@@ -1,9 +1,14 @@
 <?php
 
 return [
-    'reserved_page' => [
+    'reserved_pages' => [
         'book',
         'about',
         'info'
+    ],
+
+    'languages' => [
+        'ru',
+        'en'
     ]
 ];

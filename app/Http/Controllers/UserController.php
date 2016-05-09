@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Profile;
 use Auth;
 use Illuminate\Http\Request;
-
+use Validator;
 use App\Http\Requests;
 use App\User;
 use Illuminate\Support\Str;
@@ -277,4 +277,43 @@ class UserController extends Controller
                 ->header('Content-Type', 'text/json');
         }
     }
+
+    //Смена языка
+    public function changeLanguage(Request $request)
+    {
+        //TODO: найти ещё какой-нибудь способ искать языки
+        if ($this->validateLanguage($request->all())) {
+            \App::setLocale($request->language);
+            setcookie('locale', $request->language, time()*2, '/');
+            return response($this->buildResponse('success', trans('messages.change_language_success')), 200)
+                ->header('Content-Type', 'text/json');
+        } else {
+            return response($this->buildResponse('error', $this->errors()), 400)
+                ->header('Content-Type', 'text/json');
+        }
+
+    }
+
+    private function validateLanguage($request)
+    {
+        $v = Validator::make($request, $this->rulesLanguage);
+
+        if ($v->fails()) {
+            array_push($this->errors, $v->errors());
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private function errors()
+    {
+        return $this->errors;
+    }
+
+    private $rulesLanguage = [
+        'language' => 'required|language',
+    ];
+
+    private $errors = [];
 }

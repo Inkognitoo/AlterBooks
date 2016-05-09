@@ -31,6 +31,8 @@ return [
 
     'upload_avatar_success' => 'Файл успешно загружен',
 
+    'change_language_success' => 'Язык успешно установлен',
+
     /*
      * SocialController
      */

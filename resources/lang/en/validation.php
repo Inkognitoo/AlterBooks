@@ -93,6 +93,7 @@ return [
 
     'not_id'               => 'The :attribute can not be of the form \'id numeric\'',
     'not_reserved'         => 'The :attribute should not contain reserved words',
+    'language'             => 'The :attribute is not supported',
 
     'custom' => [
         'attribute-name' => [
