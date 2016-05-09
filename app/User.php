@@ -64,7 +64,7 @@ class User extends Authenticatable
             ],
             function($message) use ($user)
             {
-                $message->to($user->email)->subject('Сброс пароля на AlterBooks');
+                $message->to($user->email)->subject(trans('emails.user_Request reset password for AlterBooks'));
             });
     }
 
@@ -83,7 +83,7 @@ class User extends Authenticatable
             ],
             function($message) use ($user)
             {
-                $message->to($user->email)->subject('Сброс пароля на AlterBooks');
+                $message->to($user->email)->subject(trans('emails.user_New password for AlterBooks'));
             });
     }
 
@@ -100,7 +100,7 @@ class User extends Authenticatable
             ],
             function($message) use ($user)
             {
-                $message->to($user->email)->subject('Подтвердите Ваш email');
+                $message->to($user->email)->subject(trans('emails.user_Confirm your email'));
             });
     }
 
@@ -117,7 +117,7 @@ class User extends Authenticatable
             ],
             function($message) use ($user)
             {
-                $message->to($user->new_email)->subject('Подтвердите Ваш новый email');
+                $message->to($user->new_email)->subject(trans('emails.user_Confirm your new email'));
             });
     }
 
@@ -131,7 +131,7 @@ class User extends Authenticatable
             ],
             function($message) use ($user)
             {
-                $message->to($user->email)->subject('Вы успешно сменили email');
+                $message->to($user->email)->subject(trans('emails.user_Changing the email is successful'));
             });
         $user->email_change_code = bcrypt(Str::random(32));
         $user->email = $user->new_email;

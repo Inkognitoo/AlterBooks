@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Запрос на сброс пароля</title>
+    <title>{{trans('emails.new_password_New password')}}</title>
 </head>
 <body>
 <div class="container">
     <div class="content">
         <p>
-            Ваш новый пароль ― <strong>{{$password}}</strong>
+            {{trans('emails.new_password_Your new password')}} ― <strong>{{$password}}</strong>
         </p>
     </div>
 </div>

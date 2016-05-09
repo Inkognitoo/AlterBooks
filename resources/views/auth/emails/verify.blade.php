@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Подтвердите Ваш email</title>
+    <title>{{trans('emails.verify_Confirm your email')}}</title>
 </head>
 <body>
 <div class="container">
     <div class="content">
         <p>
-            Спасибо за регистрацию на <a href="http://alterbooks.ru"><strong>AlterBooks</strong></a>!<br>
-            Для подтверждения своего email, перейдите по адресу: <a href="{{ URL::to('/user/email/verify?code='.$email_verify_code.'&email='.$email) }}">{{ URL::to('/user/email/verify?code='.$email_verify_code.'&email='.$email) }}</a><br>
-            <small>Если Вы не регистрировались на сайте, то просто проигнорируйте это письмо.</small>
+            {{trans('emails.verify_Thank you for registering on the')}} <a href="http://alterbooks.ru"><strong>AlterBooks</strong></a>!<br>
+            {{trans('emails.verify_To confirm your email, please visit')}}: <a href="{{ URL::to('/user/email/verify?code='.$email_verify_code.'&email='.$email) }}">{{ URL::to('/user/email/verify?code='.$email_verify_code.'&email='.$email) }}</a><br>
+            <small>{{trans('emails.verify_If you have not registered on the site, then just ignore this email')}}</small>
         </p>
     </div>
 </div>

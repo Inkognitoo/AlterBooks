@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Смена email успешна</title>
+    <title>{{trans('emails.change_email_success_Changing the email is successful')}}</title>
 </head>
 <body>
 <div class="container">
     <div class="content">
         <p>
-            Вы успешно сменили Ваш старый email на новый ― {{$email}}. <br>
+            {{trans('emails.change_email_success_You have successfully changed your old email, new')}} ― {{$email}}. <br>
         </p>
     </div>
 </div>
