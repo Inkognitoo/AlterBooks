@@ -16,7 +16,7 @@ use Illuminate\Http\UploadedFile;
 */
 Route::get('/', function(){
 
-    echo 'hello AlterBooks!';
+    echo trans('messages.change_language_success');
 });
 
 //социальная авторизация
