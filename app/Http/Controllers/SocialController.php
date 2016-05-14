@@ -50,7 +50,6 @@ class SocialController extends Controller {
                         $user = $this->createUser($social_user, $provider);
                         if ($user) {
                             Auth::loginUsingId($user->id);
-                            //TODO: посылать email для подтверждения почты асинхронно
                             $user->sendEmailVerify();
                             return response($this->buildResponse('success', trans('messages.social_auth_callback_registration_success')), 200)
                                 ->header('Content-Type', 'text/json');
