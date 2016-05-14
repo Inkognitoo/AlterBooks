@@ -10,7 +10,8 @@
         "barryvdh/laravel-ide-helper": "v2.1.4",
         "laravel/socialite": "^2.0",
         "socialiteproviders/vkontakte": "^2.0",
-        "doctrine/dbal": "2.3.5"
+        "doctrine/dbal": "2.3.5",
+        "rap2hpoutre/laravel-log-viewer": "v0.6.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

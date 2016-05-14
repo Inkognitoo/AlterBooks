@@ -108,3 +108,5 @@ Route::get('user/password/reset', [
 Route::get('user/email/change', [
     'as' => 'change email', 'uses' => 'UserController@changeEmail'
 ]);
+
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
