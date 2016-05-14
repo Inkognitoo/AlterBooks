@@ -88,7 +88,7 @@ class UserController extends Controller
         if ($request->has('login') && $request->has('password')) {
             $request['email'] = mb_strtolower($request->login);
 
-            $user = User::where('email', $request->login)->first();
+            $user = User::where('email', $request['email'])->first();
             if (!is_null($user)) {
                 if (password_verify($request->password, $user->password)) {
                     if ($request->has('remember')) {
