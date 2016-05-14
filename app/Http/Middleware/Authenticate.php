@@ -20,7 +20,7 @@ class Authenticate
         if (Auth::check()) {
             return $next($request);
         } else {
-            return response($this->buildResponse('error', 'Unauthorized'), 401)
+            return response($this->buildResponse('error', trans('auth.fail')), 401)
                 ->header('Content-Type', 'text/json');
         }
 //        if (Auth::guard($guard)->guest()) {
