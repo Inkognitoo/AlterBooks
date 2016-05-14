@@ -73,7 +73,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         if (!$user->email_verify) {
-            $user->sendEmailVerify();
+            $user->sendEmailVerify(false);
             return response($this->buildResponse('success', trans('messages.send_email_verify_success')), 200)
                 ->header('Content-Type', 'text/json');
         } else {

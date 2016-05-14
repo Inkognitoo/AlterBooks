@@ -55,7 +55,6 @@ class User extends Authenticatable
         $this->reset_code = bcrypt(Str::random(32));
         $this->save();
         //посылаем его пользователю по email
-        //TODO: делать это асинхронно
         $user = $this;
         Mail::queue('emails.reset_password_request',
             [
@@ -75,7 +74,6 @@ class User extends Authenticatable
         $this->password = bcrypt($password);
         $this->save();
         //посылаем его пользователю по email
-        //TODO: делать это асинхронно
         $user = $this;
         Mail::queue('emails.new_password',
             [
@@ -87,21 +85,30 @@ class User extends Authenticatable
             });
     }
 
-    public function sendEmailVerify()
+    public function sendEmailVerify($sync = true)
     {
         $user = $this;
         $user->email_verify_code = bcrypt(Str::random(32));
         $user->save();
-        //TODO: посылать email для подтверждения почты асинхронно
-        Mail::queue('auth.emails.verify',
-            [
-                'email' => $user->email,
-                'email_verify_code' => $user->email_verify_code,
-            ],
-            function($message) use ($user)
-            {
-                $message->to($user->email)->subject(trans('emails.user_Confirm your email'));
-            });
+        if ($sync) {
+            Mail::queue('auth.emails.verify',
+                [
+                    'email' => $user->email,
+                    'email_verify_code' => $user->email_verify_code,
+                ],
+                function ($message) use ($user) {
+                    $message->to($user->email)->subject(trans('emails.user_Confirm your email'));
+                });
+        } else {
+            Mail::send('auth.emails.verify',
+                [
+                    'email' => $user->email,
+                    'email_verify_code' => $user->email_verify_code,
+                ],
+                function ($message) use ($user) {
+                    $message->to($user->email)->subject(trans('emails.user_Confirm your email'));
+                });
+        }
     }
 
     public function changeEmailRequest()
@@ -109,7 +116,6 @@ class User extends Authenticatable
         $user = $this;
         $user->email_change_code = bcrypt(Str::random(32));
         $user->save();
-        //TODO: посылать email для подтверждения почты асинхронно
         Mail::queue('emails.change_email',
             [
                 'email' => $user->new_email,
@@ -124,7 +130,6 @@ class User extends Authenticatable
     public function changeEmail()
     {
         $user = $this;
-        //TODO: посылать email для уведомления асинхронно
         Mail::queue('emails.change_email_success',
             [
                 'email' => $user->new_email
