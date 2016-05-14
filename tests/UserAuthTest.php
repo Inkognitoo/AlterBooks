@@ -12,7 +12,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserAuthTest extends TestCase
 {
-    public $user = null;
     //простое создание пользователя
     public function testNewUser()
     {
@@ -33,8 +32,6 @@ class UserAuthTest extends TestCase
         $this->assertResponseOk();
         $json = json_decode($response->original, true);
         $this->assertEquals('success', $json['status']);
-
-        $this->user = \App\User::whereEmail($user_date['email'])->first();
     }
 
     public function testAuth()
@@ -91,6 +88,49 @@ class UserAuthTest extends TestCase
         ];
         $response = $this->action('POST', 'UserController@auth', $auth_date);
         $this->assertResponseStatus(400);
+        $json = json_decode($response->original, true);
+        $this->assertEquals('error', $json['status']);
+    }
+
+    public function testAuthWithWrongParameters()
+    {
+        $auth_date = [
+            'login' => 'test@yandex.ru',
+            'password' => '1234567'
+        ];
+        $response = $this->action('POST', 'UserController@auth', $auth_date);
+        $this->assertResponseStatus(400);
+        $json = json_decode($response->original, true);
+        $this->assertEquals('error', $json['status']);
+
+        $auth_date = [
+            'login' => 'tests@yandex.ru',
+            'password' => '123456'
+        ];
+        $response = $this->action('POST', 'UserController@auth', $auth_date);
+        $this->assertResponseStatus(400);
+        $json = json_decode($response->original, true);
+        $this->assertEquals('error', $json['status']);
+    }
+
+    public function testUnauth()
+    {
+        $auth_date = [
+            'login' => 'test@yandex.ru',
+            'password' => '123456'
+        ];
+        $response = $this->action('POST', 'UserController@auth', $auth_date);
+        $this->assertResponseOk();
+        $json = json_decode($response->original, true);
+        $this->assertEquals('success', $json['status']);
+
+        $response = $this->action('DELETE', 'UserController@unauth');
+        $this->assertResponseOk();
+        $json = json_decode($response->original, true);
+        $this->assertEquals('success', $json['status']);
+
+        $response = $this->action('DELETE', 'UserController@unauth');
+        $this->assertResponseStatus(401);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
     }
