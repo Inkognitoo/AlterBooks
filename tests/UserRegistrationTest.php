@@ -45,7 +45,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
 
@@ -63,7 +63,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
 
@@ -81,7 +81,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
     }
@@ -100,7 +100,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
 
@@ -117,7 +117,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
 
@@ -134,7 +134,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
 
@@ -151,7 +151,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
     }
@@ -172,7 +172,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
 
@@ -190,7 +190,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
 
@@ -208,7 +208,7 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->action('POST', 'UserController@registration', $user_date);
-        $this->assertResponseStatus(402);
+        $this->assertResponseStatus(400);
         $json = json_decode($response->original, true);
         $this->assertEquals('error', $json['status']);
     }
