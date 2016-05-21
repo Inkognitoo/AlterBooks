@@ -43,11 +43,11 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Oauth');
     }
-//
-//    public function book()
-//    {
-//        return $this->hasMany('App\Book', 'user_id', 'author_id');
-//    }
+
+    public function books()
+    {
+        return $this->hasMany('App\Book', 'author_id');
+    }
 
     public function resetPasswordRequest()
     {
@@ -85,12 +85,12 @@ class User extends Authenticatable
             });
     }
 
-    public function sendEmailVerify($sync = true)
+    public function sendEmailVerify($async = true)
     {
         $user = $this;
         $user->email_verify_code = bcrypt(Str::random(32));
         $user->save();
-        if ($sync) {
+        if ($async) {
             Mail::queue('auth.emails.verify',
                 [
                     'email' => $user->email,
