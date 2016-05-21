@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Language;
 
 class SetLanguage
 {
@@ -16,7 +17,11 @@ class SetLanguage
     public function handle($request, Closure $next)
     {
         //сначала проверяем куку
-        if (array_key_exists('locale', $_COOKIE) && in_array($_COOKIE['locale'], config('custom.languages'))) {
+        $this->languages = Language::all()->map(function ($language) {
+            return $language->internal_name;
+        })->toArray();
+
+        if (array_key_exists('locale', $_COOKIE) && in_array($_COOKIE['locale'], $this->languages)) {
             \App::setLocale($_COOKIE['locale']);
         } else {
             $this->setLanguageByBrowser();
@@ -24,6 +29,8 @@ class SetLanguage
 
         return $next($request);
     }
+
+    private $languages = [];
 
     //Установка предпочитаемого пользователем языка (определяем через браузер)
     private function setLanguageByBrowser() {
@@ -49,7 +56,7 @@ class SetLanguage
                     foreach ($siteLanguage as $siteLanguageValue) {
                         if (in_array($l, $siteLanguageValue)) {
                             //Проверяем наличие языка в нашей языковой базе, если есть ― подключаем
-                            if (in_array($siteLanguageValue[0], config('custom.languages'))) {
+                            if (in_array($siteLanguageValue[0], $this->languages)) {
                                 \App::setLocale($siteLanguageValue[0]);
                                 return true;
                             }

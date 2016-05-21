@@ -1,6 +1,8 @@
 <?php
 namespace App;
 use Illuminate\Validation\Validator;
+use App\Language;
+
 class CustomValidator extends Validator {
 
     public function validateNotId($attribute, $value, $parameters)
@@ -15,6 +17,10 @@ class CustomValidator extends Validator {
 
     public function validateLanguage($attribute, $value, $parameters)
     {
-        return in_array($value, config('custom.languages'));
+        $languages = Language::all()->map(function ($language) {
+            return $language->internal_name;
+        })->toArray();
+
+        return in_array($value, $languages);
     }
 }
