@@ -34,6 +34,14 @@ use Validator;
  */
 class User extends Authenticatable
 {
+    function __construct($attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $status = UserStatus::where('internal_name', 'standard')->first();
+        $this->status()->associate($status);
+    }
+
     public function profile()
     {
         return $this->hasOne('App\Profile');
@@ -47,6 +55,11 @@ class User extends Authenticatable
     public function books()
     {
         return $this->hasMany('App\Book', 'author_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo('App\UserStatus', 'status_id');
     }
 
     public function resetPasswordRequest()

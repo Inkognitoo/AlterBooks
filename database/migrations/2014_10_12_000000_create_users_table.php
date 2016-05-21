@@ -23,6 +23,9 @@ class CreateUsersTable extends Migration
             $table->string('new_email')->nullable();
             $table->string('email_change_code', 60);
 
+            $table->integer('status_id');
+            $table->foreign('status_id')->references('id')->on('user_statuses');
+
             $table->rememberToken();
             $table->timestamps();
         });
