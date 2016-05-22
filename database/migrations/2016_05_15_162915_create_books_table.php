@@ -15,17 +15,19 @@ class CreateBooksTable extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('ru_name')->nullable();
-            $table->string('en_name')->nullable();
-            $table->string('ru_description')->nullable();
-            $table->string('en_description')->nullable();
-            $table->string('ru_cover')->nullable();
-            $table->string('en_cover')->nullable();
+            $table->integer('group_id');
+            $table->string('name');
+            $table->string('description');
+            $table->string('cover')->nullable();
 
             $table->integer('author_id');
             $table->foreign('author_id')->references('id')->on('users');
             $table->integer('rars_id');
             $table->foreign('rars_id')->references('id')->on('rars');
+            $table->integer('status_id');
+            $table->foreign('status_id')->references('id')->on('book_statuses');
+            $table->integer('language_id');
+            $table->foreign('language_id')->references('id')->on('languages');
 
             $table->timestamps();
         });

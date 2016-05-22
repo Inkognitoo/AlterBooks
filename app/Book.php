@@ -15,4 +15,9 @@ class Book extends Model
     {
         return $this->belongsTo('App\User', 'author_id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo('App\BookStatus', 'status_id');
+    }
 }
