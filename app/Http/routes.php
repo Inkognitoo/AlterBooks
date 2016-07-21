@@ -15,8 +15,7 @@ use Illuminate\Http\UploadedFile;
 |
 */
 Route::get('/', function(){
-
-    echo trans('messages.change_language_success');
+    return view('welcome');
 });
 
 //социальная авторизация
