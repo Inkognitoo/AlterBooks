@@ -11,14 +11,17 @@
 <body>
 <div class="auth-box">
     <h2>Авторизация</h2>
+    <hr />
     <form class="auth-form">
         <h3>введите логин и пароль</h3>
         <input name="name" type="text" placeholder="логин / e-mail">
         <input name="password" type="password" placeholder="пароль">
-        <input id="remember_me" name="remember_me" type="checkbox">
-        <label for="remember_me">запомнить</label>
+        <div class="checkbox-box">
+            <input id="remember_me" name="remember_me" type="checkbox" class="checkbox checkbox--red">
+            <label for="remember_me">запомнить</label>
+        </div>
         <button class="btn">войти</button>
-        <div>
+        <div class="link-box">
             <a href="#" class="forget-password-link">забыли пароль?</a>
             <a href="#" class="registration-link">регистрация</a>
         </div>
