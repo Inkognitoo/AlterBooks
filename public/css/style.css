@@ -145,6 +145,15 @@ input[name="name"], input[name="password"] {
     font-size: 21px;
     padding-left: 20px;
     color: #513b25;
+    transition: .3s ease-out;
+
+}
+
+input[name="name"]:focus, input[name="password"]:focus {
+    transition: .3s ease-out;
+    outline-offset: 0;
+    outline: 0;
+    border: 1px solid #513b25; /* Рамка при получении фокуса */
 }
 
 .auth-form-sn {

@@ -30,11 +30,11 @@
     <form class="auth-form-sn">
         <h3>используйте аккаунт в соц. сети:</h3>
         <div>
-            <div class="vk-link"></div>
-            <div class="fb-link"></div>
-            <div class="tw-link"></div>
-            <div class="gg-link"></div>
-            <div class="ok-link"></div>
+            <a href="#" class="vk-link"></a>
+            <a href="#" class="fb-link"></a>
+            <a href="#" class="tw-link"></a>
+            <a href="#" class="gg-link"></a>
+            <a href="#" class="ok-link"></a>
         </div>
     </form>
 </div>
