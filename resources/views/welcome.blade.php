@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"content="width=device-width">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
     <title>
         AlterBooks
     </title>
@@ -12,26 +12,26 @@
 <div class="auth-box">
     <h2>Авторизация</h2>
     <form class="auth-form">
-        <h3>введите логин и пароль:</h3>
-        <input id="name" type="text">
-        <input id="password" type="password">
-        <label for="remember_me">запомнить</label>
+        <h3>введите логин и пароль</h3>
+        <input name="name" type="text" placeholder="логин / e-mail">
+        <input name="password" type="password" placeholder="пароль">
         <input id="remember_me" name="remember_me" type="checkbox">
-        <button>ВОЙТИ</button>
+        <label for="remember_me">запомнить</label>
+        <button class="btn">войти</button>
         <div>
             <a href="#" class="forget-password-link">забыли пароль?</a>
             <a href="#" class="registration-link">регистрация</a>
         </div>
     </form>
-    <h3>или</h3>
+    <span>или</span>
     <form class="auth-form-sn">
         <h3>используйте аккаунт в соц. сети:</h3>
         <div>
-            <div class="social-button"></div>
-            <div class="social-button"></div>
-            <div class="social-button"></div>
-            <div class="social-button"></div>
-            <div class="social-button"></div>
+            <div class="vk-link"></div>
+            <div class="fb-link"></div>
+            <div class="tw-link"></div>
+            <div class="gg-link"></div>
+            <div class="ok-link"></div>
         </div>
     </form>
 </div>
