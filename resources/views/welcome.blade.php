@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/ripple.css" rel="stylesheet" type="text/css">
+    <script src="/js/ripple.js"></script>
     <title>
         AlterBooks
     </title>
@@ -20,7 +22,7 @@
             <input id="remember_me" name="remember_me" type="checkbox" class="checkbox checkbox--red">
             <label for="remember_me">запомнить</label>
         </div>
-        <button class="btn">войти</button>
+        <button data-ripple class="btn">войти</button>
         <div class="link-box">
             <a href="#" class="forget-password-link">забыли пароль?</a>
             <a href="#" class="registration-link">регистрация</a>
@@ -38,5 +40,14 @@
         </div>
     </form>
 </div>
+
+<script>
+    //применение эффекта к кнопкам
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
+        new RippleEffect(element);
+    });
+</script>
+
 </body>
+
 </html>
