@@ -160,6 +160,14 @@ input[name="name"]:focus, input[name="password"]:focus {
     border: 1px solid #513b25; /* Рамка при получении фокуса */
 }
 
+.err-input {
+    border: 1px solid #ff2727 !important;
+}
+
+.err-text {
+    color: #ff2727 !important;
+}
+
 .auth-form-sn {
     width: 398px;
     height: 117px;
