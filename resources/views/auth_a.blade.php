@@ -29,7 +29,7 @@
         </div>
     </form>
     <span>или</span>
-    <form class="auth-form-sn">
+    <div class="auth-form-sn">
         <h3>используйте аккаунт в соц. сети:</h3>
         <div>
             <a href="#" class="vk-link"></a>
@@ -38,7 +38,7 @@
             <a href="#" class="gg-link"></a>
             <a href="#" class="ok-link"></a>
         </div>
-    </form>
+    </div>
 </div>
 
 <script>

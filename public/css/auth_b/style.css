@@ -1,0 +1,129 @@
+@font-face {
+    font-family: 'Kurale';
+    src: url('/fonts/kurale-regular/Kurale-Regular.eot');
+    src: url('/fonts/kurale-regular/Kurale-Regular.eot') format('embedded-opentype'),
+    url('/fonts/kurale-regular/Kurale-Regular.woff2') format('woff2'),
+    url('/fonts/kurale-regular/Kurale-Regular.woff') format('woff'),
+    url('/fonts/kurale-regular/Kurale-Regular.ttf') format('truetype'),
+    url('/fonts/kurale-regular/Kurale-Regular.svg#Kurale-Regular') format('svg');
+}
+
+@font-face {
+    font-family: 'MyriadPro';
+    src: url('/fonts/myriadpro-regular/MyriadPro-Regular.eot');
+    src: url('/fonts/myriadpro-regular/MyriadPro-Regular.eot') format('embedded-opentype'),
+    url('/fonts/myriadpro-regular/MyriadPro-Regular.woff2') format('woff2'),
+    url('/fonts/myriadpro-regular/MyriadPro-Regular.woff') format('woff'),
+    url('/fonts/myriadpro-regular/MyriadPro-Regular.ttf') format('truetype'),
+    url('/fonts/myriadpro-regular/MyriadPro-Regular.svg#MyriadPro-Regular.svg') format('svg');
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    font-family: "MyriadPro", serif;
+}
+
+.auth-box {
+    width: 836px;
+    border-radius: 10px;
+    background-color: #e5d3c1;
+    border: solid 1px #231f20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-box > h2 {
+    margin: 8px 0 -5px 0;
+    font-size: 32px;
+    font-weight: normal;
+    line-height: 1.19;
+    font-family: "Kurale", serif;
+    color: #513b25;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.auth-box > hr {
+    background-color: #513b25;
+    color: #513b25;
+    width: 210px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 2px;
+}
+
+.auth-social {
+    width: 804px;
+    background-color: #eddfd3;
+    margin-top: 18px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-social > h3 {
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 1.73;
+    color: #513b25;
+    margin: 5px 0 19px 0;
+    align-self: center;
+}
+
+.auth-social > div {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 41px 17px 41px;
+    width: 316px;
+    align-self: center;
+}
+
+.vk-link,
+.fb-link,
+.tw-link,
+.gg-link,
+.ok-link {
+    width: 44px;
+    height: 44px;
+}
+
+.vk-link {
+    background-color: #46587d;
+}
+.fb-link {
+    background-color: #444d8b;
+}
+.tw-link {
+    background-color: #409dd1;
+}
+.gg-link {
+    background-color: #c33920;
+}
+.ok-link {
+    background-color: #f39336;
+}
+
+.text-or {
+    margin: 13px 0 12px 0;
+    font-size: 22px;
+    color: #513b25;
+}
+
+.auth-email {
+    width: 804px;
+    background-color: #eddfd3;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-email > h3 {
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 1.73;
+    color: #513b25;
+    margin: 5px 0 19px 0;
+    align-self: center;
+}
