@@ -150,7 +150,6 @@ input[name="name"], input[name="password"] {
     padding-left: 20px;
     color: #513b25;
     transition: .3s ease-out;
-
 }
 
 input[name="name"]:focus, input[name="password"]:focus {

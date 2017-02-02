@@ -25,13 +25,13 @@
         </div>
     </div>
     <span class="text-or">или</span>
-    <form class="auth-email">
+    <div class="auth-email">
         <h3>введите логин / электронную почту от существующего аккаунта:</h3>
-        <div>
+        <form>
             <input name="name" type="text" placeholder="логин / e-mail">
             <button data-ripple class="btn">далее</button>
-        </div>
-    </form>
+        </form>
+    </div>
     <span class="text-or">или</span>
     <div class="auth-registration">
         <h3>пройдите регистрацию</h3>
