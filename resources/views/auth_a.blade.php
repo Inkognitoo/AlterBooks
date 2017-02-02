@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <link href="/css/style.css" rel="stylesheet" type="text/css">
-    <link href="/css/ripple.css" rel="stylesheet" type="text/css">
-    <script src="/js/ripple.js"></script>
+    <link href="/css/auth_a/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/lib/ripple.css" rel="stylesheet" type="text/css">
+    <script src="/js/lib/ripple.js"></script>
     <title>
         AlterBooks
     </title>
@@ -29,7 +29,7 @@
         </div>
     </form>
     <span>или</span>
-    <form class="auth-form-sn">
+    <div class="auth-form-sn">
         <h3>используйте аккаунт в соц. сети:</h3>
         <div>
             <a href="#" class="vk-link"></a>
@@ -38,7 +38,7 @@
             <a href="#" class="gg-link"></a>
             <a href="#" class="ok-link"></a>
         </div>
-    </form>
+    </div>
 </div>
 
 <script>

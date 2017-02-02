@@ -150,7 +150,6 @@ input[name="name"], input[name="password"] {
     padding-left: 20px;
     color: #513b25;
     transition: .3s ease-out;
-
 }
 
 input[name="name"]:focus, input[name="password"]:focus {
@@ -158,6 +157,14 @@ input[name="name"]:focus, input[name="password"]:focus {
     outline-offset: 0;
     outline: 0;
     border: 1px solid #513b25; /* Рамка при получении фокуса */
+}
+
+.err-input {
+    border: 1px solid #ff2727 !important;
+}
+
+.err-text {
+    color: #ff2727 !important;
 }
 
 .auth-form-sn {
