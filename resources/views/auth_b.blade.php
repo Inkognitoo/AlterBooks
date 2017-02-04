@@ -17,11 +17,11 @@
     <div class="auth-social">
         <h3>войдите, используя свой аккаунт в соц. сети:</h3>
         <div>
-            <a href="#" class="vk-link"></a>
-            <a href="#" class="fb-link"></a>
-            <a href="#" class="tw-link"></a>
-            <a href="#" class="gg-link"></a>
-            <a href="#" class="ok-link"></a>
+            <a href="#" class="vk-link"><img src="img/vk.svg"></a>
+            <a href="#" class="fb-link"><img src="img/facebook.svg"></a>
+            <a href="#" class="tw-link"><img src="img/twitter.svg"></a>
+            <a href="#" class="gg-link"><img src="img/google.svg"></a>
+            <a href="#" class="ok-link"><img src="img/ok.svg"></a>
         </div>
     </div>
     <span class="text-or">или</span>
