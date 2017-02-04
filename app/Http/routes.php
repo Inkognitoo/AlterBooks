@@ -15,7 +15,15 @@ use Illuminate\Http\UploadedFile;
 |
 */
 Route::get('/', function(){
-    return view('welcome');
+    return view('auth_a');
+});
+
+Route::get('/auth_a', function(){
+    return view('auth_a');
+});
+
+Route::get('/auth_b', function(){
+    return view('auth_b');
 });
 
 //социальная авторизация

@@ -22,6 +22,7 @@ body {
     display: flex;
     justify-content: center;
     font-family: "MyriadPro", serif;
+    background-color: #544e4b;       //*Временно*//
 }
 
 .auth-box {
@@ -33,13 +34,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 40px;       //*Временно*//
 }
 
 .auth-box > h2 {
     margin: 8px 0 -5px 0;
     font-size: 32px;
     font-weight: normal;
-    line-height: 1.19;
+    line-height: 1.25;
     font-family: "Kurale", serif;
     color: #513b25;
     padding-left: 3px;
@@ -49,7 +51,7 @@ body {
 .auth-box > hr {
     background-color: #513b25;
     color: #513b25;
-    width: 210px;
+    width: 192px;
     margin: 0;
     padding: 0;
     border: none;
@@ -65,7 +67,7 @@ body {
 .auth-form {
     width: 398px;
     height: 305px;
-    background-color: #eddfd3;
+    background-color: #f9eade;
     margin-top: 18px;
     border-radius: 10px 10px 0 0;
     display: flex;
@@ -86,11 +88,11 @@ body {
     font-size: 19px;
     display: flex;
     align-items: baseline;
-    margin: 0 0 15px 15px;
+    margin: 3px 0 15px 15px;
 }
 
 .checkbox-box > label {
-    margin-left: 5px;
+    margin-left: 1px;
 }
 
 .auth-form > button {
@@ -103,16 +105,16 @@ body {
 }
 
 .btn {
-    background-color: #26a69a;
+    background-color: #2fd1b2;
     cursor: pointer;
     border: none;
-    border-radius: 2px;
+    border-radius: 4px;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
     transition: .3s ease-out;
 }
 
 .btn:hover {
-    background-color: #2bbbad;
+    background-color: #5dd8c0;
     box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);
 }
 
@@ -150,7 +152,6 @@ input[name="name"], input[name="password"] {
     padding-left: 20px;
     color: #513b25;
     transition: .3s ease-out;
-
 }
 
 input[name="name"]:focus, input[name="password"]:focus {
@@ -160,10 +161,34 @@ input[name="name"]:focus, input[name="password"]:focus {
     border: 1px solid #513b25; /* Рамка при получении фокуса */
 }
 
+input::-moz-placeholder{
+    color: #e0e0e1;
+}
+
+input::-webkit-input-placeholder{
+    color: #e0e0e1;
+}
+
+input:-moz-placeholder{
+    color: #e0e0e1;
+}
+
+input:-ms-input-placeholder{
+    color: #e0e0e1;
+}
+
+.err-input {
+    border: 1px solid #ff2727 !important;
+}
+
+.err-text {
+    color: #ff2727 !important;
+}
+
 .auth-form-sn {
     width: 398px;
     height: 117px;
-    background-color: #eddfd3;
+    background-color: #f9eade;
     border-radius: 0 0 10px 10px;
     display: flex;
     flex-direction: column;
@@ -194,18 +219,47 @@ input[name="name"]:focus, input[name="password"]:focus {
 
 .vk-link {
     background-color: #46587d;
+    transition: .2s ease-out;
 }
+
+.vk-link:hover{
+    background-color: #5873a3;
+}
+
 .fb-link {
     background-color: #444d8b;
+    transition: .2s ease-out;
 }
+
+.fb-link:hover {
+    background-color: #606fb7;
+}
+
 .tw-link {
     background-color: #409dd1;
+    transition: .2s ease-out;
 }
+
+.tw-link:hover {
+    background-color: #65aedc;
+}
+
 .gg-link {
     background-color: #c33920;
+    transition: .2s ease-out;
 }
+
+.gg-link:hover {
+    background-color: #dd3e0f;
+}
+
 .ok-link {
     background-color: #f39336;
+    transition: .2s ease-out;
+}
+
+.ok-link:hover {
+    background-color: #f2ae53;
 }
 
 
@@ -231,7 +285,7 @@ input[name="name"]:focus, input[name="password"]:focus {
     z-index: 1;
     width: 100%;
     height: 100%;
-    border: 2px solid #c4a28c;
+    border: 2px solid #9d866f;
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
@@ -243,5 +297,5 @@ input[name="name"]:focus, input[name="password"]:focus {
     border-right-style: none;
 }
 .checkbox--red:checked:before {
-    border-color: #c4a28c;
+    border-color: #0fc89e;
 }
