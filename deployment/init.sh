@@ -12,11 +12,11 @@ php artisan migrate
 
 echo "накатываю сиды"
 php artisan db:seed --class=RarsTableSeeder
-echo -e "${YELLOW}Seeding: ${RESET}RarsTableSeeder"
+echo "${YELLOW}Seeding: ${RESET}RarsTableSeeder"
 php artisan db:seed --class=UserStatusesTableSeeder
-echo -e "${YELLOW}Seeding: ${RESET}UserStatusesTableSeeder"
+echo "${YELLOW}Seeding: ${RESET}UserStatusesTableSeeder"
 php artisan db:seed --class=LanguageTableSeeder
-echo -e "${YELLOW}Seeding: ${RESET}LanguageTableSeeder"
+echo "${YELLOW}Seeding: ${RESET}LanguageTableSeeder"
 php artisan db:seed --class=BookStatusesTableSeeder
-echo -e "${YELLOW}Seeding: ${RESET}BookStatusesTableSeeder"
+echo "${YELLOW}Seeding: ${RESET}BookStatusesTableSeeder"
 echo "___________ end deployment ____________"
