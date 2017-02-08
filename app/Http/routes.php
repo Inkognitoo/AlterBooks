@@ -22,10 +22,6 @@ Route::get('/auth_a', function(){
     return view('auth_a');
 });
 
-Route::get('/auth_b', function(){
-    return view('auth_b');
-});
-
 //социальная авторизация
 Route::get('social/oauth/{provider?}', 'SocialController@socialAuth');
 Route::get('social/oauth/redirect/{provider?}', 'SocialController@socialAuthCallback');
