@@ -38,8 +38,8 @@ body {
 */
 
 .auth-box {
+    margin: 2% 0 2% 0;
     max-width: 96%;
-    max-height: 96%;
     width: 476px;
     border-radius: 10px;
     background-color: #e5d3c1;
