@@ -18,9 +18,17 @@
     url('/fonts/myriadpro-regular/MyriadPro-Regular.svg#MyriadPro-Regular.svg') format('svg');
 }
 
+html{
+    height: 100%;
+}
+
 body {
+    margin: 0;
+    height: inherit;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     font-family: "MyriadPro", serif;
     background-color: #544e4b;       /*Временно*/
 }
@@ -30,7 +38,8 @@ body {
 */
 
 .auth-box {
-    max-width: 100%;
+    max-width: 96%;
+    max-height: 96%;
     width: 476px;
     border-radius: 10px;
     background-color: #e5d3c1;
@@ -38,7 +47,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 40px;       /*Временно*/
 }
 
 .auth-box > h2 {
@@ -206,6 +214,7 @@ input:-ms-input-placeholder{
 }
 
 .auth-form-sn > h3 {
+    max-width: 96%;
     text-align: center;
     font-size: 22px;
     margin: 10px 0 18px 0;
