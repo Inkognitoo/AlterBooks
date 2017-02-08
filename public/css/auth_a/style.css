@@ -18,17 +18,10 @@
     url('/fonts/myriadpro-regular/MyriadPro-Regular.svg#MyriadPro-Regular.svg') format('svg');
 }
 
-html{
-    height: 100%;
-}
-
 body {
     margin: 0;
-    height: inherit;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
     font-family: "MyriadPro", serif;
     background-color: #544e4b;       /*Временно*/
 }
