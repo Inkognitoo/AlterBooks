@@ -20,7 +20,7 @@
         <input name="password" type="password" placeholder="пароль">
         <div class="checkbox checkbox-box">
         <label>
-            <input type="checkbox"><span class="checkbox-material"><span class="check"></span></span><span class="remember-me-text">запомнить</span>
+            <input type="checkbox" id="remember-me"><span class="checkbox-material"><span class="check"></span></span><span class="remember-me-text">запомнить</span>
         </label>
         </div>
         <button data-ripple class="btn">войти</button>
@@ -47,6 +47,23 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function(element){
         new RippleEffect(element);
     });
+
+    //анимация для чекбокса
+    document.getElementById("remember-me").addEventListener("click", function(){
+        var css = '.checkbox input[type=checkbox]:not(:checked) + .checkbox-material:before { -webkit-animation: rippleOff 700ms forwards ease-out; animation: rippleOff 700ms forwards ease-out; } ';
+        css += '.checkbox .checkbox-material .check:before { -webkit-animation: checkbox-off 0.3s forwards ease-out; animation: checkbox-off 0.3s forwards ease-out; }'
+        var style = document.createElement('style');
+
+        if (style.styleSheet) {
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
+
+        document.getElementsByTagName('head')[0].appendChild(style);
+
+        this.removeEventListener("click", arguments.callee, false);
+    }, false);
 </script>
 
 </body>
