@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link href="/css/auth_a/style.css?v=1.0.3" rel="stylesheet" type="text/css">
+    <link href="/css/auth_a/style.css?v=1.0.4" rel="stylesheet" type="text/css">
     <link href="/css/lib/ripple.css" rel="stylesheet" type="text/css">
     <script src="/js/lib/ripple.js"></script>
     <title>
@@ -20,7 +20,7 @@
         <input name="password" type="password" placeholder="пароль">
         <div class="checkbox checkbox-box">
         <label>
-            <input type="checkbox"><span class="checkbox-material"><span class="check"></span></span> запомнить
+            <input type="checkbox"><span class="checkbox-material"><span class="check"></span></span><span class="remember-me-text">запомнить</span>
         </label>
         </div>
         <button data-ripple class="btn">войти</button>
