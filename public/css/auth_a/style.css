@@ -92,10 +92,14 @@ body {
 .checkbox-box {
     color: #b09f89;
     font-size: 19px;
-    display: flex;
-    align-items: baseline;
     margin: 3px 0 15px 15px;
 }
+
+.checkbox-box > label {
+    display: flex;
+    align-items: center;
+}
+
 
 input[name="name"], input[name="password"] {
     margin: 8px 15px 8px 15px;
@@ -301,6 +305,7 @@ input:-ms-input-placeholder{
     pointer-events: none;
 }
 .checkbox .checkbox-material {
+    margin-right: 8px;
     box-sizing: border-box;
     vertical-align: middle;
     position: relative;
