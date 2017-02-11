@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <link href="/css/auth_a/style.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href="/css/auth_a/style.css?v=1.0.3" rel="stylesheet" type="text/css">
     <link href="/css/lib/ripple.css" rel="stylesheet" type="text/css">
     <script src="/js/lib/ripple.js"></script>
     <title>
@@ -18,9 +18,10 @@
         <h3>введите логин и пароль</h3>
         <input name="name" type="text" placeholder="логин / e-mail">
         <input name="password" type="password" placeholder="пароль">
-        <div class="checkbox-box">
-            <input id="remember_me" name="remember_me" type="checkbox" class="checkbox checkbox--red">
-            <label for="remember_me">запомнить</label>
+        <div class="checkbox checkbox-box">
+        <label>
+            <input type="checkbox"><span class="checkbox-material"><span class="check"></span></span> запомнить
+        </label>
         </div>
         <button data-ripple class="btn">войти</button>
         <div class="link-box">
