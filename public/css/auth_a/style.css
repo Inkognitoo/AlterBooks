@@ -365,6 +365,7 @@ input:-ms-input-placeholder{
     animation: checkbox-on 0.3s forwards ease-out;
 }
 .checkbox input[type=checkbox]:not(:checked) + .checkbox-material:before {
+    box-sizing: border-box;
     /*-webkit-animation: rippleOff 700ms forwards ease-out;*/
     /*animation: rippleOff 700ms forwards ease-out;*/
 }

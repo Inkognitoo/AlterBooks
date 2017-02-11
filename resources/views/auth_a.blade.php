@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link href="/css/auth_a/style.css?v=1.0.4" rel="stylesheet" type="text/css">
+    <link href="/css/auth_a/style.css?v=1.0.5" rel="stylesheet" type="text/css">
     <link href="/css/lib/ripple.css" rel="stylesheet" type="text/css">
     <script src="/js/lib/ripple.js"></script>
     <title>
