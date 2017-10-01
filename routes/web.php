@@ -12,9 +12,20 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $users = \App\User::all()
+        ->map(function($user) {
+            return [
+                'name' => $user->name,
+                'href' => route('user', ['id' => $user->id]),
+            ];
+        })
+        ->toArray()
+    ;
+    return view('welcome', ['users' => $users]);
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('user/id{id}', 'UserController@show')->name('user');
