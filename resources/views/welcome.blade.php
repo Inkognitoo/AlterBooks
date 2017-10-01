@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>AlterBooks</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -69,10 +69,10 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ $home }}">Home</a>
+                        <a href="{{ $home }}">Профиль</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
+                        <a href="{{ route('login') }}">Вход</a>
+                        <a href="{{ route('register') }}">Регистрация</a>
                     @endauth
                 </div>
             @endif
@@ -83,14 +83,14 @@
                 </div>
 
                 <div>
-                    <h2>User list</h2>
+                    <h2>Список пользователей</h2>
                     @foreach ($users as $user)
                         <a href="{{ $user['href'] }}">{{ $user['name'] }}</a>
                     @endforeach
                 </div>
 
                 <div>
-                    <h2>Books list</h2>
+                    <h2>Список книг</h2>
                 </div>
             </div>
         </div>
