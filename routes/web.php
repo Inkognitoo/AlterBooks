@@ -15,7 +15,7 @@ Route::get('/', function () {
     $users = \App\User::all()
         ->map(function($user) {
             return [
-                'name' => $user->name,
+                'nickname' => $user->nickname,
                 'href' => route('user', ['id' => $user->id]),
             ];
         })

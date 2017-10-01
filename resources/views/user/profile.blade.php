@@ -8,7 +8,7 @@
                 <div class="panel-heading">Профиль пользователя</div>
 
                 <div class="panel-body">
-                    Добро пожаловать на страницу пользователя {{ $user->name }}!
+                    Добро пожаловать на страницу пользователя {{ $user->nickname }}!
                     @auth
                         @if(Auth::user()->id == $user->id)
                             (И да, это ваша страница)
