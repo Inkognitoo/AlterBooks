@@ -85,7 +85,7 @@
                 <div>
                     <h2>Список пользователей</h2>
                     @foreach ($users as $user)
-                        <a href="{{ $user['href'] }}">{{ $user['name'] }}</a>
+                        <a href="{{ $user['href'] }}">{{ $user['nickname'] }}</a>
                     @endforeach
                 </div>
 
