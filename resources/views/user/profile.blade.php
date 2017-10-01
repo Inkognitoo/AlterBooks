@@ -10,6 +10,9 @@
                 <div class="panel-body">
 
                     Welcome to {{$user->name}}'s page!
+                    @if ($isOwner)
+                        (And yes, this is you)
+                    @endif
                 </div>
             </div>
         </div>

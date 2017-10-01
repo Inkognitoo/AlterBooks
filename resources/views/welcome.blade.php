@@ -69,7 +69,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ $home }}">Home</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
@@ -85,7 +85,7 @@
                 <div>
                     <h2>User list</h2>
                     @foreach ($users as $user)
-                        <a href="{{$user['href']}}">{{$user['name']}}</a>
+                        <a href="{{ $user['href'] }}">{{ $user['name'] }}</a>
                     @endforeach
                 </div>
 

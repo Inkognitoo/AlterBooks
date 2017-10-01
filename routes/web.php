@@ -21,11 +21,12 @@ Route::get('/', function () {
         })
         ->toArray()
     ;
-    return view('welcome', ['users' => $users]);
+
+    $home = !empty(Auth::user()) ? route('user', ['id' => Auth::user()->id]) : null;
+
+    return view('welcome', ['users' => $users, 'home' => $home]);
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('user/id{id}', 'UserController@show')->name('user');
