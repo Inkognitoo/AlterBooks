@@ -16,17 +16,20 @@ Route::get('/', function () {
         ->map(function($user) {
             return [
                 'nickname' => $user->nickname,
-                'href' => route('user', ['id' => $user->id]),
+                'href' => route('user_show', ['id' => $user->id]),
             ];
         })
         ->toArray()
     ;
 
-    $home = !empty(Auth::user()) ? route('user', ['id' => Auth::user()->id]) : null;
-
-    return view('welcome', ['users' => $users, 'home' => $home]);
+    return view('welcome', ['users' => $users]);
 });
 
 Auth::routes();
 
-Route::get('user/id{id}', 'UserController@show')->name('user');
+Route::get('user/id{id}', 'UserController@show')->name('user_show');
+
+Route::get('user/id{id}/edit', 'UserController@editShow')->name('user_edit_show');
+
+Route::post('user/id{id}/edit', 'UserController@edit')->name('user_edit');
+
