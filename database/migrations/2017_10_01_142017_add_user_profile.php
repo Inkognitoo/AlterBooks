@@ -16,6 +16,7 @@ class AddUserProfile extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('surname')->nullable();
             $table->string('patronymic')->nullable();
+            $table->enum('gender', ['m', 'f', 'n'])->default('n');
             $table->string('nickname')->unique();
             $table->date('birthday_date')->nullable();
             $table->string('avatar')->nullable();

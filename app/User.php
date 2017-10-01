@@ -7,6 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+
+    const GENDER_MALE = 'm';
+
+    const GENDER_FEMALE = 'f';
+
+    const GENDER_NOT_INDICATED = 'n';
+
     use Notifiable;
 
     /**
@@ -17,7 +24,7 @@ class User extends Authenticatable
     protected $fillable = [
         'nickname', 'email', 'password',
         'surname', 'patronymic', 'birthday_date',
-        'avatar',
+        'avatar', 'gender',
     ];
 
     /**
