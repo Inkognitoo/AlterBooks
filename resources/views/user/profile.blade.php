@@ -10,7 +10,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <img src="/img/{{ $user->gender == \App\User::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg' }}" style="width: 200px" alt="avatar" class="img-rounded">
+                            <img src="{{ $user->getAvatarUrl() }}" style="width: 200px" alt="avatar" class="img-rounded">
                         </div>
                         <div class="col-md-8">
                             <div class="panel panel-default">

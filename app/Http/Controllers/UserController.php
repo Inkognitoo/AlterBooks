@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Storage;
 
 class UserController extends Controller
 {
@@ -62,6 +63,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nickname' => 'nullable|max:255|unique:users',
+            'avatar' => 'mimes:jpeg,png,jpg,gif,svg|max:5120',
             'name' => 'nullable|max:255',
             'surname' => 'nullable|max:255',
             'patronymic' => 'nullable|max:255',
@@ -82,6 +84,11 @@ class UserController extends Controller
 
         if (!empty($request['nickname'])) {
             Auth::user()->nickname = $request['nickname'];
+        }
+        if (!empty($request['avatar'])) {
+            $image_name = 'avatars/' . Auth::user()->id;
+            $storagePath = Storage::disk('public')->put($image_name, $request['avatar']);
+            Auth::user()->avatar = basename($storagePath);
         }
         if (!empty($request['name'])) {
             Auth::user()->name = $request['name'];
