@@ -69,7 +69,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ $home }}">Профиль</a>
+                        <a href="{{ route('user_show', ['id' => Auth::user()->id]) }}">Профиль</a>
                     @else
                         <a href="{{ route('login') }}">Вход</a>
                         <a href="{{ route('register') }}">Регистрация</a>
@@ -85,7 +85,7 @@
                 <div>
                     <h2>Список пользователей</h2>
                     @foreach ($users as $user)
-                        <a href="{{ $user['href'] }}">{{ $user['name'] }}</a>
+                        <a href="{{ $user['href'] }}">{{ $user['nickname'] }}</a>
                     @endforeach
                 </div>
 

@@ -28,7 +28,7 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-        return route('user', ['id' => Auth::user()->id]);
+        return route('user_show', ['id' => Auth::user()->id]);
     }
 
     /**
