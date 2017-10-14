@@ -40,7 +40,7 @@ class User extends Authenticatable
     public function getAvatarUrl()
     {
         if (!empty($this->avatar)) {
-            return asset(Storage::url('avatars/' . $this->id . '/' . $this->avatar));
+            return Storage::disk('s3')->url('avatars/' . $this->id . '/' . $this->avatar);
         } else {
             return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');
         }
