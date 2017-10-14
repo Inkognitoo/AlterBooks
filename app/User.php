@@ -37,12 +37,25 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Получить url аватары пользователя
+     *
+     * @return string
+     */
     public function getAvatarUrl()
     {
         if (!empty($this->avatar)) {
             return Storage::disk('s3')->url('avatars/' . $this->id . '/' . $this->avatar);
-        } else {
-            return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');
         }
+
+        return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');
+    }
+
+    /**
+     * Получить все книги, автором которых является пользователь
+     */
+    public function books()
+    {
+        return $this->hasMany('App\Book', 'author_id');
     }
 }

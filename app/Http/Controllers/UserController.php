@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nickname' => 'nullable|max:255|unique:users',
-            'avatar' => 'mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'avatar' => 'image|max:5120',
             'name' => 'nullable|max:255',
             'surname' => 'nullable|max:255',
             'patronymic' => 'nullable|max:255',

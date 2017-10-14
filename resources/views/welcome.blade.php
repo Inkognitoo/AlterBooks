@@ -91,6 +91,9 @@
 
                 <div>
                     <h2>Список книг</h2>
+                    @foreach ($books as $book)
+                        <a href="{{ $book['href'] }}">{{ $book['title'] }}</a>
+                    @endforeach
                 </div>
             </div>
         </div>

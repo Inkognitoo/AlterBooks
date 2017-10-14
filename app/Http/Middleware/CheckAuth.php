@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckUserGranted
+class CheckAuth
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,8 @@ class CheckUserGranted
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->id != $request->id) {
-            return response(view('errors.401'), 401);
+        if (!Auth::user()) {
+            return response(view('errors.403'), 403);
         }
 
         return $next($request);
