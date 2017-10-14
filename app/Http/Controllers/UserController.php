@@ -21,7 +21,7 @@ class UserController extends Controller
     public function show($id)
     {
         return view('user.profile', [
-            'user' => User::findOrFail($id),
+            'user' => User::find($id),
         ]);
     }
 
@@ -31,16 +31,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function editShow($id)
+    public function editShow()
     {
-        if (!Auth::user()) {
-            return response(403, 403);
-        }
-
-        if (Auth::user()->id != $id) {
-            return response(401, 401);
-        }
-
         return view('user.edit');
     }
 
@@ -53,17 +45,9 @@ class UserController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        if (!Auth::user()) {
-            return response(403, 403);
-        }
-
-        if (Auth::user()->id != $id) {
-            return response(401, 401);
-        }
-
         $validator = Validator::make($request->all(), [
             'nickname' => 'nullable|max:255|unique:users',
-            'avatar' => 'mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'avatar' => 'image|max:5120',
             'name' => 'nullable|max:255',
             'surname' => 'nullable|max:255',
             'patronymic' => 'nullable|max:255',
@@ -86,8 +70,13 @@ class UserController extends Controller
             Auth::user()->nickname = $request['nickname'];
         }
         if (!empty($request['avatar'])) {
-            $image_name = 'avatars/' . Auth::user()->id;
-            $storagePath = Storage::disk('s3')->put($image_name, $request['avatar']);
+            $imageName = 'avatars/' . Auth::user()->id . '/' . Auth::user()->avatar;
+            if (Storage::disk('s3')->exists($imageName)) {
+                Storage::disk('s3')->delete($imageName);
+            }
+
+            $imageName = 'avatars/' . Auth::user()->id;
+            $storagePath = Storage::disk('s3')->put($imageName, $request['avatar']);
             Auth::user()->avatar = basename($storagePath);
         }
         if (!empty($request['name'])) {
