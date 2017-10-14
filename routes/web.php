@@ -27,9 +27,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('user/id{id}', 'UserController@show')->name('user_show');
-
-Route::get('user/id{id}/edit', 'UserController@editShow')->name('user_edit_show');
-
-Route::post('user/id{id}/edit', 'UserController@edit')->name('user_edit');
-
+Route::get('user/id{id}', 'UserController@show')
+    ->name('user_show')
+    ->middleware('checkUserExist')
+;
+Route::get('user/id{id}/edit', 'UserController@editShow')
+    ->name('user_edit_show')
+    ->middleware('checkUserExist')
+    ->middleware('checkUserGranted')
+;
+Route::post('user/id{id}/edit', 'UserController@edit')
+    ->name('user_edit')
+    ->middleware('checkUserExist')
+    ->middleware('checkUserGranted')
+;
