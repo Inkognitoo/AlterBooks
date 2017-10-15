@@ -70,7 +70,6 @@ Route::get('book/id{id}/edit', 'BookController@editShow')
 ;
 Route::post('book/id{id}/edit', 'BookController@edit')
     ->name('book_edit')
-    ->middleware('auth')
     ->middleware('checkBookExist')
     ->middleware('checkAuth')
     ->middleware('checkUserBookGranted')
