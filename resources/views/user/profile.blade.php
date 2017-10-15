@@ -32,8 +32,8 @@
 
                         </div>
                     </div>
-                    <div class="row">
 
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -51,6 +51,21 @@
                                     <a type="button" class="btn btn-default" href="{{ route('book_create_show') }}">Загрузить новую</a>
                                 @endif
                             @endauth
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    {{ (Auth::user() && (Auth::user()->id == $user->id)) ? 'Моя библиотека' : 'Библиотека пользователя' }}
+                                </div>
+                                <div class="panel-body">
+                                    @foreach ($user->libraryBooks as $book)
+                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
