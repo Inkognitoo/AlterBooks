@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="panel-body">
                                     @foreach ($user->books as $book)
-                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>
+                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
                                     @endforeach
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="panel-body">
                                     @foreach ($user->libraryBooks as $book)
-                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>
+                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
                                     @endforeach
                                 </div>
                             </div>
