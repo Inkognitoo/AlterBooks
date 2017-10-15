@@ -7,12 +7,23 @@ use Storage;
 
 class Book extends Model
 {
+
     /**
      * Получить автора книги
      */
     public function author()
     {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Пользователи, добавившие книгу к себе в библиотеку
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'users_library')
+            ->withTimestamps()
+        ;
     }
 
     /**

@@ -44,8 +44,9 @@
                             <label for="description" class="col-md-4 control-label">Описание</label>
 
                             <div class="col-md-6">
-                                <input id="description" type="text" class="form-control" name="description"
-                                       value="{{ old('description') }}" autofocus>
+                                <textarea id="description" class="form-control" name="description"
+                                          autofocus rows="5">
+                                </textarea>
 
                                 @if ($errors->has('description'))
                                     <span class="help-block">

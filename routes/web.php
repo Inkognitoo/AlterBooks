@@ -57,6 +57,7 @@ Route::post('user/id{id}/edit', 'UserController@edit')
     ->middleware('checkUserGranted')
 ;
 
+
 Route::get('book/id{id}', 'BookController@show')
     ->name('book_show')
     ->middleware('checkBookExist')
@@ -81,4 +82,16 @@ Route::get('book', 'BookController@createShow')
 Route::post('book', 'BookController@create')
     ->name('book_create')
     ->middleware('checkAuth')
+;
+
+//MVP
+Route::get('library/id{id}/add', 'UserController@addBookToLibrary')
+    ->name('add_book_to_library')
+    ->middleware('checkAuth')
+    ->middleware('checkBookExist')
+;
+Route::get('library/id{id}/delete', 'UserController@deleteBookFromLibrary')
+    ->name('delete_book_from_library')
+    ->middleware('checkAuth')
+    ->middleware('checkBookExist')
 ;
