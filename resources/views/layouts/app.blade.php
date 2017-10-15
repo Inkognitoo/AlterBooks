@@ -52,6 +52,13 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    @if (Request::route()->getName() !== 'user_show')
+                                        <li>
+                                            <a href="{{ route('user_show', ['id' => Auth::user()->id]) }}">
+                                                Профиль
+                                            </a>
+                                        </li>
+                                    @endif
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
