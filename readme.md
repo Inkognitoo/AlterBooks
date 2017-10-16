@@ -2,4 +2,4 @@
 
 MVP версия сервиса
 
-[alterbooks.herokuapp.com](http://alterbooks.herokuapp.com/)
+[alterbooks.herokuapp.com](https://alterbooks.herokuapp.com/)
