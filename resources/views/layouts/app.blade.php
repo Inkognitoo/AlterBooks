@@ -52,7 +52,7 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    @if (Request::route()->getName() !== 'user_show')
+                                    @if (Request::route()->named('user_show') && Auth::user()->id !== $user->id)
                                         <li>
                                             <a href="{{ route('user_show', ['id' => Auth::user()->id]) }}">
                                                 Профиль
