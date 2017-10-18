@@ -8,7 +8,7 @@
                 <div class="panel-heading">Редактирование профиля</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('user_edit', ['id' => Auth::user()->id]) }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('user_edit', ['id' => Auth::user()->id]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('nickname') ? ' has-error' : '' }}">
@@ -21,6 +21,20 @@
                                 @if ($errors->has('nickname'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nickname') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('avatar') ? ' has-error' : '' }}">
+                            <label for="avatar" class="col-md-4 control-label">Аватар</label>
+
+                            <div class="col-md-6">
+                                <input id="avatar" type="file" class="form-control" name="avatar">
+
+                                @if ($errors->has('avatar'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('avatar') }}</strong>
                                     </span>
                                 @endif
                             </div>

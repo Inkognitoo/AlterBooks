@@ -85,12 +85,15 @@
                 <div>
                     <h2>Список пользователей</h2>
                     @foreach ($users as $user)
-                        <a href="{{ $user['href'] }}">{{ $user['nickname'] }}</a>
+                        <a href="{{ $user['href'] }}">{{ $user['nickname'] }}</a>{{ !$loop->last ? ',' : '' }}
                     @endforeach
                 </div>
 
                 <div>
                     <h2>Список книг</h2>
+                    @foreach ($books as $book)
+                        <a href="{{ $book['href'] }}">{{ $book['title'] }}</a>{{ !$loop->last ? ',' : '' }}
+                    @endforeach
                 </div>
             </div>
         </div>

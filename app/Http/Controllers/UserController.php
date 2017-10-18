@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Storage;
 
 class UserController extends Controller
 {
@@ -20,7 +22,7 @@ class UserController extends Controller
     public function show($id)
     {
         return view('user.profile', [
-            'user' => User::findOrFail($id),
+            'user' => User::find($id),
         ]);
     }
 
@@ -30,16 +32,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function editShow($id)
+    public function editShow()
     {
-        if (!Auth::user()) {
-            return response(403, 403);
-        }
-
-        if (Auth::user()->id != $id) {
-            return response(401, 401);
-        }
-
         return view('user.edit');
     }
 
@@ -52,16 +46,9 @@ class UserController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        if (!Auth::user()) {
-            return response(403, 403);
-        }
-
-        if (Auth::user()->id != $id) {
-            return response(401, 401);
-        }
-
         $validator = Validator::make($request->all(), [
             'nickname' => 'nullable|max:255|unique:users',
+            'avatar' => 'image|max:5120',
             'name' => 'nullable|max:255',
             'surname' => 'nullable|max:255',
             'patronymic' => 'nullable|max:255',
@@ -82,6 +69,16 @@ class UserController extends Controller
 
         if (!empty($request['nickname'])) {
             Auth::user()->nickname = $request['nickname'];
+        }
+        if (!empty($request['avatar'])) {
+            $imageName = 'avatars/' . Auth::user()->id . '/' . Auth::user()->avatar;
+            if (Storage::disk('s3')->exists($imageName)) {
+                Storage::disk('s3')->delete($imageName);
+            }
+
+            $imageName = 'avatars/' . Auth::user()->id;
+            $storagePath = Storage::disk('s3')->put($imageName, $request['avatar']);
+            Auth::user()->avatar = basename($storagePath);
         }
         if (!empty($request['name'])) {
             Auth::user()->name = $request['name'];
@@ -108,5 +105,42 @@ class UserController extends Controller
         Auth::user()->save();
 
         return view('user.edit');
+    }
+
+    /**
+     * Добавить книгу в библиотеку.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function addBookToLibrary($id)
+    {
+        $book = Book::find($id);
+        if (Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0) {
+            return redirect(route('book_show', ['id' => $id]));
+        }
+
+        Auth::user()->libraryBooks()->save($book);
+
+        return redirect(route('book_show', ['id' => $id]));
+    }
+
+    /**
+     * Удалить книгу из библиотеки
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function deleteBookFromLibrary($id)
+    {
+        $book = Book::find($id);
+        $libraryBook = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
+        if ($libraryBook->count() === 0) {
+            return redirect(route('book_show', ['id' => $id]));
+        }
+
+        $libraryBook->first()->pivot->delete();
+
+        return redirect(route('book_show', ['id' => $id]));
     }
 }
