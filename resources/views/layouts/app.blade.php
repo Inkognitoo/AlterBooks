@@ -12,6 +12,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!--Icons-->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/img/icon-16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/img/icon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/img/icon-180.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="/img/icon-192.png" sizes="192x192">
 </head>
 <body>
     <div id="app">
