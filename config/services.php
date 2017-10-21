@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'mongodb' => [
+        'uri' => env('MONGODB_URI'),
+        'uriOptions' => env('MONGODB_URI_OPTIONS'),
+        'driverOptions' => env('MONGODB_DRIVER_OPTIONS'),
+    ],
+
 ];
