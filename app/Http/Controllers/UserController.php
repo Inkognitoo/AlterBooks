@@ -71,14 +71,7 @@ class UserController extends Controller
             Auth::user()->nickname = $request['nickname'];
         }
         if (!empty($request['avatar'])) {
-            $imageName = 'avatars/' . Auth::user()->id . '/' . Auth::user()->avatar;
-            if (Storage::disk('s3')->exists($imageName)) {
-                Storage::disk('s3')->delete($imageName);
-            }
-
-            $imageName = 'avatars/' . Auth::user()->id;
-            $storagePath = Storage::disk('s3')->put($imageName, $request['avatar']);
-            Auth::user()->avatar = basename($storagePath);
+            Auth::user()->setAvatar($request['avatar']);
         }
         if (!empty($request['name'])) {
             Auth::user()->name = $request['name'];

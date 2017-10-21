@@ -2,15 +2,17 @@
 
 namespace App;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Mockery\Exception;
 use Storage;
 
 /**
  * App\User
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $books
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $libraryBooks
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $books Список книг созданных пользователем
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $libraryBooks Список книг добавленных пользователем в свою библиотеку
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @mixin \Eloquent
  * @property int $id
@@ -25,7 +27,8 @@ use Storage;
  * @property string $gender
  * @property string $nickname
  * @property string|null $birthday_date
- * @property string|null $avatar
+ * @property string|null $avatar Название аватарки пользователя
+ * @property string $avatarPath Путь до аватара пользователя в рамках Amazon S3
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -44,10 +47,11 @@ class User extends Authenticatable
 {
 
     const GENDER_MALE = 'm';
-
     const GENDER_FEMALE = 'f';
-
     const GENDER_NOT_INDICATED = 'n';
+
+    //Путь по которому хранятся аватары для пользователей на Amazon S3
+    const AVATAR_PATH = 'avatars';
 
     use Notifiable;
 
@@ -97,7 +101,7 @@ class User extends Authenticatable
     public function getAvatarUrl(): string
     {
         if (!empty($this->avatar)) {
-            return Storage::disk('s3')->url('avatars/' . $this->id . '/' . $this->avatar);
+            return Storage::disk('s3')->url($this->avatarPath);
         }
 
         return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');
@@ -112,5 +116,55 @@ class User extends Authenticatable
     public function hasBookAtLibrary(Book $book): bool
     {
         return ($this->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0);
+    }
+
+    /**
+     * Установить аватар для пользователя
+     *
+     * @param UploadedFile $avatar Аватар пользователя
+     * @param bool $save Сохранять ли состояние модели после записи
+     * @return bool
+     */
+    public function setAvatar(UploadedFile $avatar, bool $save = false) : bool
+    {
+        if (empty($this->id) && !$save) {
+            throw new Exception('For setting avatar path, user must be present');
+        }
+
+        if ($save) {
+            $this->save();
+        }
+
+        if (Storage::disk('s3')->exists($this->avatarPath)) {
+            Storage::disk('s3')->delete($this->avatarPath);
+        }
+
+        $imageName = $this::AVATAR_PATH . '/' . $this->id;
+        $storagePath = Storage::disk('s3')->put($imageName, $avatar);
+        $this->avatar = basename($storagePath);
+
+        if ($save) {
+            $this->save();
+        }
+
+        return true;
+    }
+
+    /**
+     * Получаем путь до аватарки пользователя на Amazon S3
+     *
+     * @return string
+     */
+    public function getAvatarPathAttribute()
+    {
+        if (empty($this->id)) {
+            throw new Exception('For getting avatar path, user must be present');
+        }
+
+        if (empty($this->avatar)) {
+            throw new Exception('For getting avatar path, user\'s avatar must be present');
+        }
+
+        return $this::AVATAR_PATH . '/' . $this->id . '/' . $this->avatar;
     }
 }

@@ -65,14 +65,7 @@ class BookController extends Controller
             $book->title = $request['title'];
         }
         if (!empty($request['cover'])) {
-            $imageName = 'book_covers/' . $book->id . '/' . $book->avatar;
-            if (Storage::disk('s3')->exists($imageName)) {
-                Storage::disk('s3')->delete($imageName);
-            }
-
-            $imageName = 'book_covers/' . $book->id;
-            $storagePath = Storage::disk('s3')->put($imageName, $request['cover']);
-            $book->cover = basename($storagePath);
+            $book->setCover($request['cover']);
         }
         if (!empty($request['description'])) {
             $book->description = $request['description'];
@@ -118,15 +111,15 @@ class BookController extends Controller
         $book = new Book();
 
         $book->title = $request['title'];
-        if (!empty($request['cover'])) {
-            $imageName = 'book_covers/' . $book->id;
-            $storagePath = Storage::disk('s3')->put($imageName, $request['cover']);
-            $book->cover = basename($storagePath);
-        }
         if (!empty($request['description'])) {
             $book->description = $request['description'];
         }
+
         Auth::user()->books()->save($book);
+
+        if (!empty($request['cover'])) {
+            $book->setCover($request['cover']);
+        }
 
         $book->save();
 
