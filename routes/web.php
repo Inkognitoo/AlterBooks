@@ -94,3 +94,8 @@ Route::get('library/id{id}/delete', 'UserController@deleteBookFromLibrary')
     ->middleware('checkAuth')
     ->middleware('checkBookExist')
 ;
+
+Route::get('book/id{id}/page/{pageNumber}', 'BookController@readPage')
+    ->name('read_book_page')
+    ->middleware('checkBookExist')
+;

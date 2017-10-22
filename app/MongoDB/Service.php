@@ -8,8 +8,7 @@ class Service {
     private $mongoDB;
 
     public function __construct($uri, $uriOptions, $driverOptions) {
-        $this->mongoDB = new Client($uri = null, $uriOptions = [],
-            $driverOptions = []);
+        $this->mongoDB = new Client($uri, (array)$uriOptions, (array)$driverOptions);
     }
 
     public function get() {

@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use MongoDB;
+use MongoDB\BSON\ObjectID;
 use Storage;
 use Mockery\Exception;
 
@@ -18,6 +21,7 @@ use Mockery\Exception;
  * @property string|null $description
  * @property string|null $cover Название обложки книги
  * @property int $author_id
+ * @property int $mongodb_book_id Идентификатор документа в MongoDB
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string $coverPath Путь до обложки книги в рамках Amazon S3
@@ -126,4 +130,99 @@ class Book extends Model
         return $this::COVER_PATH . '/' . $this->id . '/' . $this->cover;
     }
 
+    /**
+     * Сохраняем книгу в mongoDB
+     *
+     * @param UploadedFile $text Текст книги
+     * @param bool $save Сохранять ли состояние модели после записи
+     * @return bool
+     */
+    public function setText(UploadedFile $text, bool $save = false): bool
+    {
+        if (empty($this->id) && !$save) {
+            throw new Exception('For setting text, book must be present');
+        }
+
+        if ($save) {
+            $this->save();
+        }
+
+        $encoding = [
+            'UTF-8',
+            'cp1251',
+        ];
+        mb_detect_order($encoding);
+
+        $text = File::get($text);
+        $text = mb_convert_encoding($text, 'UTF-8', mb_detect_encoding($text));
+
+        $collection = MongoDB::get()->alterbooks->books;
+        $count = iconv_strlen($text);
+        $pageSize = 1800; //килобайты
+        $pages = [];
+        $j = 0;
+        $i = 0;
+        do {
+            $i++;
+            $page = mb_substr($text, $j, $pageSize);
+            $j += $pageSize;
+            $pages[] = [
+                'page' => $i,
+                'text' => $page,
+            ];
+        } while ($j < $count);
+        $insertOneResult = $collection->insertOne([
+            'pages' => $pages,
+        ]);
+        $this->mongodb_book_id = $insertOneResult->getInsertedId();
+
+        if ($save) {
+            $this->save();
+        }
+
+        return true;
+    }
+
+    /**
+     * Получить конкретную страницу книги
+     *
+     * @param int $pageNumber Номер запрашиваемой страницы
+     * @return null|string
+     */
+    public function getPage(int $pageNumber)
+    {
+        if (blank($this->mongodb_book_id)) {
+            return null;
+        }
+
+        $document = MongoDB::get()->alterbooks->books->findOne(
+            [
+                '_id' => new ObjectID($this->mongodb_book_id),
+                'pages' => [
+                    '$elemMatch' => [
+                        'page' => $pageNumber
+                    ]
+                ]
+            ],
+            [
+                'projection' => [
+                    'pages' => [
+                        '$elemMatch' => [
+                            'page' => $pageNumber
+                        ]
+                    ],
+                ]
+            ]
+        );
+
+        if (blank($document)) {
+            return null;
+        }
+
+        foreach ($document->pages as $page) {
+            return $page->text;
+        }
+
+        return null;
+    }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Mockery\Exception;
 use Storage;
 
 class BookController extends Controller
@@ -51,6 +52,7 @@ class BookController extends Controller
             'title' => 'nullable|max:255',
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
+            'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
         ]);
 
         if ($validator->fails()) {
@@ -70,7 +72,13 @@ class BookController extends Controller
         if (!empty($request['description'])) {
             $book->description = $request['description'];
         }
-
+        if (!empty($request['text'])) {
+            try {
+            $book->setText($request['text']);
+            } catch (Exception $e){
+                dd($e);
+            }
+        }
         $book->save();
 
         return view('book.edit', [
@@ -124,5 +132,20 @@ class BookController extends Controller
         $book->save();
 
         return redirect(route('book_show', ['id' => $book->id]));
+    }
+
+    /**
+     * Возвращаем конкретную страницу книги
+     *
+     * @param Request $request
+     * @param int $id
+     * @param int $pageNumber
+     * @return Response
+     */
+    public function readPage(Request $request, int $id, int $pageNumber)
+    {
+        $book = Book::find($id);
+
+        return response($book->getPage($pageNumber));
     }
 }
