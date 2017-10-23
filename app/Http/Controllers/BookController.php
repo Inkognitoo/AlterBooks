@@ -14,6 +14,20 @@ use Storage;
 class BookController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('checkAuth')->except(['show']);
+
+        $this->middleware('checkBookExist')->except(['createShow', 'create']);
+
+        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit']);
+    }
+
+    /**
      * Показываем профиль текущей книги.
      *
      * @param  int  $id

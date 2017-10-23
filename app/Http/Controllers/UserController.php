@@ -14,6 +14,22 @@ use Storage;
 class UserController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('checkAuth')->except(['show']);
+
+        $this->middleware('checkUserExist')->except(['addBookToLibrary', 'deleteBookToLibrary']);
+
+        $this->middleware('checkUserGranted')->only(['editShow', 'edit']);
+
+        $this->middleware('checkBookExist')->only(['addBookToLibrary', 'deleteBookToLibrary']);
+    }
+
+    /**
      * Show the profile for the given user.
      *
      * @param  int  $id
