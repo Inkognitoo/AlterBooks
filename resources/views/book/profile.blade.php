@@ -10,7 +10,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4" style="margin-bottom: 10px">
-                            <img src="{{ $book->getCoverUrl() }}" style="width: 200px" alt="cover" class="img-rounded">
+                            <img src="{{ $book->coverUrl }}" style="width: 200px" alt="cover" class="img-rounded">
                         </div>
                         <div class="col-md-8">
                             <div class="panel panel-default">

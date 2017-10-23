@@ -70,23 +70,23 @@ class BookController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('book_edit_show', ['id' => $id]))
+            return redirect(route('book.edit.show', ['id' => $id]))
                 ->withErrors($validator)
                 ->withInput();
         }
 
         $book = Book::find($id);
 
-        if (!empty($request['title'])) {
+        if (filled($request['title'])) {
             $book->title = $request['title'];
         }
-        if (!empty($request['cover'])) {
+        if (filled($request['cover'])) {
             $book->setCover($request['cover']);
         }
-        if (!empty($request['description'])) {
+        if (filled($request['description'])) {
             $book->description = $request['description'];
         }
-        if (!empty($request['text'])) {
+        if (filled($request['text'])) {
             $book->setText($request['text']);
         }
         $book->save();
@@ -129,13 +129,13 @@ class BookController extends Controller
         $book = new Book();
 
         $book->title = $request['title'];
-        if (!empty($request['description'])) {
+        if (filled($request['description'])) {
             $book->description = $request['description'];
         }
 
         Auth::user()->books()->save($book);
 
-        if (!empty($request['cover'])) {
+        if (filled($request['cover'])) {
             $book->setCover($request['cover']);
         }
 

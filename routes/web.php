@@ -16,7 +16,7 @@ Route::get('/', function () {
         ->map(function($user) {
             return [
                 'nickname' => $user->nickname,
-                'href' => route('user_show', ['id' => $user->id]),
+                'href' => $user->url,
             ];
         })
         ->toArray()
@@ -26,7 +26,7 @@ Route::get('/', function () {
         ->map(function($book) {
             return [
                 'title' => $book->title,
-                'href' => route('book_show', ['id' => $book->id]),
+                'href' => $book->url,
             ];
         })
         ->toArray()

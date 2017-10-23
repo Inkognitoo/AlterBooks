@@ -83,31 +83,31 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        if (!empty($request['nickname'])) {
+        if (filled($request['nickname'])) {
             Auth::user()->nickname = $request['nickname'];
         }
-        if (!empty($request['avatar'])) {
+        if (filled($request['avatar'])) {
             Auth::user()->setAvatar($request['avatar']);
         }
-        if (!empty($request['name'])) {
+        if (filled($request['name'])) {
             Auth::user()->name = $request['name'];
         }
-        if (!empty($request['surname'])) {
+        if (filled($request['surname'])) {
             Auth::user()->surname = $request['surname'];
         }
-        if (!empty($request['patronymic'])) {
+        if (filled($request['patronymic'])) {
             Auth::user()->patronymic = $request['patronymic'];
         }
-        if (!empty($request['email'])) {
+        if (filled($request['email'])) {
             Auth::user()->email = $request['email'];
         }
-        if (!empty($request['password'])) {
+        if (filled($request['password'])) {
             Auth::user()->password = bcrypt($request['password']);
         }
-        if (!empty($request['gender'])) {
+        if (filled($request['gender'])) {
             Auth::user()->gender = $request['gender'];
         }
-        if (!empty($request['birthday_date'])) {
+        if (filled($request['birthday_date'])) {
             Auth::user()->birthday_date = $request['birthday_date'];
         }
 

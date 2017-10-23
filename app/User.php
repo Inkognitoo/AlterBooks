@@ -29,6 +29,8 @@ use Storage;
  * @property string|null $birthday_date
  * @property string|null $avatar Название аватарки пользователя
  * @property string $avatarPath Путь до аватара пользователя в рамках Amazon S3
+ * @property string $avatarUrl Ссылка на аватар пользователя
+ * @property string $url Ссылка на пользователя
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -94,20 +96,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Получить url аватары пользователя
-     *
-     * @return string
-     */
-    public function getAvatarUrl(): string
-    {
-        if (!empty($this->avatar)) {
-            return Storage::disk('s3')->url($this->avatarPath);
-        }
-
-        return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');
-    }
-
-    /**
      * Проверить есть ли у пользователя в библиотеке данная книга
      *
      * @param $book Book
@@ -127,7 +115,7 @@ class User extends Authenticatable
      */
     public function setAvatar(UploadedFile $avatar, bool $save = false) : bool
     {
-        if (empty($this->id) && !$save) {
+        if (blank($this->id) && !$save) {
             throw new Exception('For setting avatar path, user must be present');
         }
 
@@ -151,17 +139,41 @@ class User extends Authenticatable
     }
 
     /**
+     * Получить url аватары пользователя
+     *
+     * @return string
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if (filled($this->avatar)) {
+            return Storage::disk('s3')->url($this->avatarPath);
+        }
+
+        return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');
+    }
+
+    /**
+     * Получить url пользователя
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        return route('user.show', ['id' => $this->id]);
+    }
+
+    /**
      * Получаем путь до аватарки пользователя на Amazon S3
      *
      * @return string
      */
-    public function getAvatarPathAttribute()
+    public function getAvatarPathAttribute(): string
     {
-        if (empty($this->id)) {
+        if (blank($this->id)) {
             throw new Exception('For getting avatar path, user must be present');
         }
 
-        if (empty($this->avatar)) {
+        if (blank($this->avatar)) {
             throw new Exception('For getting avatar path, user\'s avatar must be present');
         }
 

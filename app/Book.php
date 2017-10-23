@@ -25,6 +25,8 @@ use Mockery\Exception;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string $coverPath Путь до обложки книги в рамках Amazon S3
+ * @property string $coverUrl Ссылка на обложку книги
+ * @property string $url Ссылка на книгу
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCreatedAt($value)
@@ -57,30 +59,6 @@ class Book extends Model
     }
 
     /**
-     * Получить url обложки книги
-     *
-     * @return string
-     */
-    public function getCoverUrl(): string
-    {
-        if (!empty($this->cover)) {
-            return Storage::disk('s3')->url($this->coverPath);
-        }
-
-        return '/img/default_book_cover.png';
-    }
-
-    /**
-     * Получить url книги
-     *
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return route('book.show', ['id' => $this->id]);
-    }
-
-    /**
      * Установить обложку для книги
      *
      * @param UploadedFile $cover Обложка книги
@@ -89,7 +67,7 @@ class Book extends Model
      */
     public function setCover(UploadedFile $cover, bool $save = false): bool
     {
-        if (empty($this->id) && !$save) {
+        if (blank($this->id) && !$save) {
             throw new Exception('For setting cover, book must be present');
         }
 
@@ -113,17 +91,41 @@ class Book extends Model
     }
 
     /**
+     * Получить url обложки книги
+     *
+     * @return string
+     */
+    public function getCoverUrlAttribute(): string
+    {
+        if (filled($this->cover)) {
+            return Storage::disk('s3')->url($this->coverPath);
+        }
+
+        return '/img/default_book_cover.png';
+    }
+
+    /**
+     * Получить url книги
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        return route('book.show', ['id' => $this->id]);
+    }
+
+    /**
      * Получаем путь до обложки книги на Amazon S3
      *
      * @return string
      */
-    public function getCoverPathAttribute()
+    public function getCoverPathAttribute(): string
     {
-        if (empty($this->id)) {
+        if (blank($this->id)) {
             throw new Exception('For getting cover path, book must be present');
         }
 
-        if (empty($this->cover)) {
+        if (blank($this->cover)) {
             throw new Exception('For getting cover path, book\'s cover must be present');
         }
 
@@ -139,7 +141,7 @@ class Book extends Model
      */
     public function setText(UploadedFile $text, bool $save = false): bool
     {
-        if (empty($this->id) && !$save) {
+        if (blank($this->id) && !$save) {
             throw new Exception('For setting text, book must be present');
         }
 
