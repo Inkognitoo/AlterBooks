@@ -26,7 +26,7 @@
 
                             @auth
                                 @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="btn btn-default" href="{{ route('user_edit_show', ['id' => $user->id]) }}">Редактировать</a>
+                                    <a type="button" class="btn btn-default" href="{{ route('user.edit.show', ['id' => $user->id]) }}">Редактировать</a>
                                 @endif
                             @endauth
 
@@ -37,7 +37,7 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    {{ (Auth::user() && (Auth::user()->id == $user->id)) ? 'Мои книги' : 'Книги автора' }}
+                                    {{ optional(Auth::user())->id == $user->id ? 'Мои книги' : 'Книги автора' }}
                                 </div>
                                 <div class="panel-body">
                                     @foreach ($user->books as $book)
@@ -48,7 +48,7 @@
 
                             @auth
                                 @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="btn btn-default" href="{{ route('book_create_show') }}">Загрузить новую</a>
+                                    <a type="button" class="btn btn-default" href="{{ route('book.create.show') }}">Загрузить новую</a>
                                 @endif
                             @endauth
                         </div>
@@ -58,7 +58,7 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    {{ (Auth::user() && (Auth::user()->id == $user->id)) ? 'Моя библиотека' : 'Библиотека пользователя' }}
+                                    {{ optional(Auth::user())->id == $user->id  ? 'Моя библиотека' : 'Библиотека пользователя' }}
                                 </div>
                                 <div class="panel-body">
                                     @foreach ($user->libraryBooks as $book)

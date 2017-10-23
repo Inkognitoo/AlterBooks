@@ -78,7 +78,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('user_edit_show', ['id' => $id]))
+            return redirect(route('user.edit.show', ['id' => $id]))
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -126,12 +126,12 @@ class UserController extends Controller
     {
         $book = Book::find($id);
         if (Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0) {
-            return redirect(route('book_show', ['id' => $id]));
+            return redirect(route('book.show', ['id' => $id]));
         }
 
         Auth::user()->libraryBooks()->save($book);
 
-        return redirect(route('book_show', ['id' => $id]));
+        return redirect(route('book.show', ['id' => $id]));
     }
 
     /**
@@ -145,11 +145,11 @@ class UserController extends Controller
         $book = Book::find($id);
         $libraryBook = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
         if ($libraryBook->count() === 0) {
-            return redirect(route('book_show', ['id' => $id]));
+            return redirect(route('book.show', ['id' => $id]));
         }
 
         $libraryBook->first()->pivot->delete();
 
-        return redirect(route('book_show', ['id' => $id]));
+        return redirect(route('book.show', ['id' => $id]));
     }
 }

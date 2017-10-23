@@ -77,7 +77,7 @@ class Book extends Model
      */
     public function getUrl(): string
     {
-        return route('book_show', ['id' => $this->id]);
+        return route('book.show', ['id' => $this->id]);
     }
 
     /**

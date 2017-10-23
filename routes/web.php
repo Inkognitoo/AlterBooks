@@ -41,39 +41,39 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('user/id{id}', 'UserController@show')
-    ->name('user_show')
+    ->name('user.show')
 ;
 Route::get('user/id{id}/edit', 'UserController@editShow')
-    ->name('user_edit_show')
+    ->name('user.edit.show')
 ;
 Route::post('user/id{id}/edit', 'UserController@edit')
-    ->name('user_edit')
+    ->name('user.edit')
 ;
 
 Route::get('book/id{id}', 'BookController@show')
-    ->name('book_show')
+    ->name('book.show')
 ;
 Route::get('book/id{id}/edit', 'BookController@editShow')
-    ->name('book_edit_show')
+    ->name('book.edit.show')
 ;
 Route::post('book/id{id}/edit', 'BookController@edit')
-    ->name('book_edit')
+    ->name('book.edit')
 ;
 Route::get('book', 'BookController@createShow')
-    ->name('book_create_show')
+    ->name('book.create.show')
 ;
 Route::post('book', 'BookController@create')
-    ->name('book_create')
+    ->name('book.create')
 ;
 
 //MVP
 Route::get('library/id{id}/add', 'UserController@addBookToLibrary')
-    ->name('add_book_to_library')
+    ->name('library.add')
 ;
 Route::get('library/id{id}/delete', 'UserController@deleteBookFromLibrary')
-    ->name('delete_book_from_library')
+    ->name('library.delete')
 ;
 
 Route::get('book/id{id}/page/{pageNumber}', 'BookController@readPage')
-    ->name('read_book_page')
+    ->name('book.read.page')
 ;

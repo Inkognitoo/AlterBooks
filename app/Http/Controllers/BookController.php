@@ -87,11 +87,7 @@ class BookController extends Controller
             $book->description = $request['description'];
         }
         if (!empty($request['text'])) {
-            try {
             $book->setText($request['text']);
-            } catch (Exception $e){
-                dd($e);
-            }
         }
         $book->save();
 
@@ -125,7 +121,7 @@ class BookController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('book_create_show'))
+            return redirect(route('book.create.show'))
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -145,7 +141,7 @@ class BookController extends Controller
 
         $book->save();
 
-        return redirect(route('book_show', ['id' => $book->id]));
+        return redirect(route('book.show', ['id' => $book->id]));
     }
 
     /**
