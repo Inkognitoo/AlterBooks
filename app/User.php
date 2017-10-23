@@ -28,8 +28,8 @@ use Storage;
  * @property string $nickname
  * @property string|null $birthday_date
  * @property string|null $avatar Название аватарки пользователя
- * @property string $avatarPath Путь до аватара пользователя в рамках Amazon S3
- * @property string $avatarUrl Ссылка на аватар пользователя
+ * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
+ * @property string $avatar_url Ссылка на аватар пользователя
  * @property string $url Ссылка на пользователя
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
@@ -123,13 +123,13 @@ class User extends Authenticatable
             $this->save();
         }
 
-        if (Storage::disk('s3')->exists($this->avatarPath)) {
-            Storage::disk('s3')->delete($this->avatarPath);
+        if (Storage::disk('s3')->exists($this->avatar_path)) {
+            Storage::disk('s3')->delete($this->avatar_path);
         }
 
-        $imageName = $this::AVATAR_PATH . '/' . $this->id;
-        $storagePath = Storage::disk('s3')->put($imageName, $avatar);
-        $this->avatar = basename($storagePath);
+        $image_name = $this::AVATAR_PATH . '/' . $this->id;
+        $storage_path = Storage::disk('s3')->put($image_name, $avatar);
+        $this->avatar = basename($storage_path);
 
         if ($save) {
             $this->save();
@@ -146,7 +146,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): string
     {
         if (filled($this->avatar)) {
-            return Storage::disk('s3')->url($this->avatarPath);
+            return Storage::disk('s3')->url($this->avatar_path);
         }
 
         return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');

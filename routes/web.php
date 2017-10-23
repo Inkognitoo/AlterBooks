@@ -74,6 +74,6 @@ Route::get('library/id{id}/delete', 'UserController@deleteBookFromLibrary')
     ->name('library.delete')
 ;
 
-Route::get('book/id{id}/page/{pageNumber}', 'BookController@readPage')
+Route::get('book/id{id}/page/{page_number}', 'BookController@readPage')
     ->name('book.read.page')
 ;

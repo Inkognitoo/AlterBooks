@@ -24,8 +24,8 @@ use Mockery\Exception;
  * @property int $mongodb_book_id Идентификатор документа в MongoDB
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property string $coverPath Путь до обложки книги в рамках Amazon S3
- * @property string $coverUrl Ссылка на обложку книги
+ * @property string $cover_path Путь до обложки книги в рамках Amazon S3
+ * @property string $cover_url Ссылка на обложку книги
  * @property string $url Ссылка на книгу
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
@@ -75,13 +75,13 @@ class Book extends Model
             $this->save();
         }
 
-        if (Storage::disk('s3')->exists($this->coverPath)) {
-            Storage::disk('s3')->delete($this->coverPath);
+        if (Storage::disk('s3')->exists($this->cover_path)) {
+            Storage::disk('s3')->delete($this->cover_path);
         }
 
-        $imageName = $this::COVER_PATH . '/' . $this->id;
-        $storagePath = Storage::disk('s3')->put($imageName, $cover);
-        $this->cover = basename($storagePath);
+        $image_name = $this::COVER_PATH . '/' . $this->id;
+        $storage_path = Storage::disk('s3')->put($image_name, $cover);
+        $this->cover = basename($storage_path);
 
         if ($save) {
             $this->save();
@@ -98,7 +98,7 @@ class Book extends Model
     public function getCoverUrlAttribute(): string
     {
         if (filled($this->cover)) {
-            return Storage::disk('s3')->url($this->coverPath);
+            return Storage::disk('s3')->url($this->cover_path);
         }
 
         return '/img/default_book_cover.png';
@@ -160,23 +160,23 @@ class Book extends Model
 
         $collection = MongoDB::get()->alterbooks->books;
         $count = iconv_strlen($text);
-        $pageSize = 1800; //килобайты
+        $page_size = 1800; //килобайты
         $pages = [];
         $j = 0;
         $i = 0;
         do {
             $i++;
-            $page = mb_substr($text, $j, $pageSize);
-            $j += $pageSize;
+            $page = mb_substr($text, $j, $page_size);
+            $j += $page_size;
             $pages[] = [
                 'page' => $i,
                 'text' => $page,
             ];
         } while ($j < $count);
-        $insertOneResult = $collection->insertOne([
+        $insert_one_result = $collection->insertOne([
             'pages' => $pages,
         ]);
-        $this->mongodb_book_id = $insertOneResult->getInsertedId();
+        $this->mongodb_book_id = $insert_one_result->getInsertedId();
 
         if ($save) {
             $this->save();
@@ -188,10 +188,10 @@ class Book extends Model
     /**
      * Получить конкретную страницу книги
      *
-     * @param int $pageNumber Номер запрашиваемой страницы
+     * @param int $page_number Номер запрашиваемой страницы
      * @return null|string
      */
-    public function getPage(int $pageNumber)
+    public function getPage(int $page_number)
     {
         if (blank($this->mongodb_book_id)) {
             return null;
@@ -202,7 +202,7 @@ class Book extends Model
                 '_id' => new ObjectID($this->mongodb_book_id),
                 'pages' => [
                     '$elemMatch' => [
-                        'page' => $pageNumber
+                        'page' => $page_number
                     ]
                 ]
             ],
@@ -210,7 +210,7 @@ class Book extends Model
                 'projection' => [
                     'pages' => [
                         '$elemMatch' => [
-                            'page' => $pageNumber
+                            'page' => $page_number
                         ]
                     ],
                 ]

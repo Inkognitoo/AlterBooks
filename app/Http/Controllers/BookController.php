@@ -149,13 +149,13 @@ class BookController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @param int $pageNumber
+     * @param int $page_number
      * @return Response
      */
-    public function readPage(Request $request, int $id, int $pageNumber)
+    public function readPage(Request $request, int $id, int $page_number)
     {
         $book = Book::find($id);
 
-        return response($book->getPage($pageNumber));
+        return response($book->getPage($page_number));
     }
 }

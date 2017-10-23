@@ -143,12 +143,12 @@ class UserController extends Controller
     public function deleteBookFromLibrary($id)
     {
         $book = Book::find($id);
-        $libraryBook = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
-        if ($libraryBook->count() === 0) {
+        $library_book = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
+        if ($library_book->count() === 0) {
             return redirect(route('book.show', ['id' => $id]));
         }
 
-        $libraryBook->first()->pivot->delete();
+        $library_book->first()->pivot->delete();
 
         return redirect(route('book.show', ['id' => $id]));
     }
