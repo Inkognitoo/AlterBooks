@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Создать книгу
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
