@@ -26,6 +26,7 @@ use Storage;
  * @property string $nickname
  * @property string|null $birthday_date
  * @property string|null $avatar
+ * @property string $full_name ФИО пользователя
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -112,5 +113,18 @@ class User extends Authenticatable
     public function hasBookAtLibrary(Book $book): bool
     {
         return ($this->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0);
+    }
+
+    /**
+     * Проверить есть ли у пользователя какие-то данные о фамиилии, имени и отчестве
+     *
+     * @return string
+     * */
+    public function getFullNameAttribute(): string
+    {
+        if (blank($this->name) && blank($this->surname) && blank($this->patronymic)) {
+            return 'Пользователь';
+        }
+        return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
     }
 }
