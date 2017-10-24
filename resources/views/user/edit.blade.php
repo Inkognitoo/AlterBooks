@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Редактирование профиля
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -40,21 +44,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Имя</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name"
-                                       value="{{ old('name') }}" autofocus placeholder="{{ Auth::user()->name }}">
-
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
                         <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Фамилия</label>
 
@@ -65,6 +54,21 @@
                                 @if ($errors->has('surname'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('surname') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                            <label for="name" class="col-md-4 control-label">Имя</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control" name="name"
+                                       value="{{ old('name') }}" autofocus placeholder="{{ Auth::user()->name }}">
+
+                                @if ($errors->has('name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
                             </div>
