@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
-    {{ $book->title }}
-@endsection
+@section('title', $book->title)
 
 @section('content')
 <div class="container">

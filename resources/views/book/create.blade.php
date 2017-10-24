@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
-    Создать книгу
-@endsection
+@section('title', 'Создать книгу')
 
 @section('content')
 <div class="container">
