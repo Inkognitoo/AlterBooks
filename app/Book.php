@@ -149,34 +149,8 @@ class Book extends Model
             $this->save();
         }
 
-        $encoding = [
-            'UTF-8',
-            'cp1251',
-        ];
-        mb_detect_order($encoding);
-
-        $text = File::get($text);
-        $text = mb_convert_encoding($text, 'UTF-8', mb_detect_encoding($text));
-
-        $collection = MongoDB::get()->alterbooks->books;
-        $count = iconv_strlen($text);
-        $page_size = 1800; //килобайты
-        $pages = [];
-        $j = 0;
-        $i = 0;
-        do {
-            $i++;
-            $page = mb_substr($text, $j, $page_size);
-            $j += $page_size;
-            $pages[] = [
-                'page' => $i,
-                'text' => $page,
-            ];
-        } while ($j < $count);
-        $insert_one_result = $collection->insertOne([
-            'pages' => $pages,
-        ]);
-        $this->mongodb_book_id = $insert_one_result->getInsertedId();
+        $mongodb_book = new MongoBook($this);
+        $this->mongodb_book_id = $mongodb_book->setText($text);
 
         if ($save) {
             $this->save();
@@ -193,38 +167,8 @@ class Book extends Model
      */
     public function getPage(int $page_number)
     {
-        if (blank($this->mongodb_book_id)) {
-            return null;
-        }
+        $mongodb_book = new MongoBook($this);
 
-        $document = MongoDB::get()->alterbooks->books->findOne(
-            [
-                '_id' => new ObjectID($this->mongodb_book_id),
-                'pages' => [
-                    '$elemMatch' => [
-                        'page' => $page_number
-                    ]
-                ]
-            ],
-            [
-                'projection' => [
-                    'pages' => [
-                        '$elemMatch' => [
-                            'page' => $page_number
-                        ]
-                    ],
-                ]
-            ]
-        );
-
-        if (blank($document)) {
-            return null;
-        }
-
-        foreach ($document->pages as $page) {
-            return $page->text;
-        }
-
-        return null;
+        return $mongodb_book->getPage($page_number);
     }
 }
