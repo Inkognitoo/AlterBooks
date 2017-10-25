@@ -31,6 +31,7 @@ use Storage;
  * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
  * @property string $avatar_url Ссылка на аватар пользователя
  * @property string $url Ссылка на пользователя
+ * @property string $full_name ФИО пользователя
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -178,5 +179,18 @@ class User extends Authenticatable
         }
 
         return $this::AVATAR_PATH . '/' . $this->id . '/' . $this->avatar;
+    }
+
+    /**
+     * Вернуть ФИО пользователя, либо значение по умолчанию
+     *
+     * @return string
+     * */
+    public function getFullNameAttribute(): string
+    {
+        if (blank($this->name) && blank($this->surname) && blank($this->patronymic)) {
+            return 'Пользователь';
+        }
+        return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
     }
 }
