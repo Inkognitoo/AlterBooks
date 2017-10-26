@@ -16,7 +16,7 @@ Route::get('/', function () {
         ->map(function($user) {
             return [
                 'nickname' => $user->nickname,
-                'href' => route('user_show', ['id' => $user->id]),
+                'href' => $user->url,
             ];
         })
         ->toArray()
@@ -26,7 +26,7 @@ Route::get('/', function () {
         ->map(function($book) {
             return [
                 'title' => $book->title,
-                'href' => route('book_show', ['id' => $book->id]),
+                'href' => $book->url,
             ];
         })
         ->toArray()
@@ -41,56 +41,39 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('user/id{id}', 'UserController@show')
-    ->name('user_show')
-    ->middleware('checkUserExist')
+    ->name('user.show')
 ;
 Route::get('user/id{id}/edit', 'UserController@editShow')
-    ->name('user_edit_show')
-    ->middleware('checkUserExist')
-    ->middleware('checkAuth')
-    ->middleware('checkUserGranted')
+    ->name('user.edit.show')
 ;
 Route::post('user/id{id}/edit', 'UserController@edit')
-    ->name('user_edit')
-    ->middleware('checkUserExist')
-    ->middleware('checkAuth')
-    ->middleware('checkUserGranted')
+    ->name('user.edit')
 ;
-
 
 Route::get('book/id{id}', 'BookController@show')
-    ->name('book_show')
-    ->middleware('checkBookExist')
+    ->name('book.show')
 ;
 Route::get('book/id{id}/edit', 'BookController@editShow')
-    ->name('book_edit_show')
-    ->middleware('checkBookExist')
-    ->middleware('checkAuth')
-    ->middleware('checkUserBookGranted')
+    ->name('book.edit.show')
 ;
 Route::post('book/id{id}/edit', 'BookController@edit')
-    ->name('book_edit')
-    ->middleware('checkBookExist')
-    ->middleware('checkAuth')
-    ->middleware('checkUserBookGranted')
+    ->name('book.edit')
 ;
 Route::get('book', 'BookController@createShow')
-    ->name('book_create_show')
-    ->middleware('checkAuth')
+    ->name('book.create.show')
 ;
 Route::post('book', 'BookController@create')
-    ->name('book_create')
-    ->middleware('checkAuth')
+    ->name('book.create')
 ;
 
 //MVP
 Route::get('library/id{id}/add', 'UserController@addBookToLibrary')
-    ->name('add_book_to_library')
-    ->middleware('checkAuth')
-    ->middleware('checkBookExist')
+    ->name('library.add')
 ;
 Route::get('library/id{id}/delete', 'UserController@deleteBookFromLibrary')
-    ->name('delete_book_from_library')
-    ->middleware('checkAuth')
-    ->middleware('checkBookExist')
+    ->name('library.delete')
+;
+
+Route::get('book/id{id}/page/{page_number}', 'BookController@readPage')
+    ->name('book.read.page')
 ;

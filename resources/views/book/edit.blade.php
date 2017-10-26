@@ -10,7 +10,7 @@
                 <div class="panel-heading">Редактирование профиля</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('book_edit', ['id' => $book->id]) }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="POST" action="{{ route('book.edit', ['id' => $book->id]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -42,6 +42,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
+                            <label for="text" class="col-md-4 control-label">Текст книги</label>
+
+                            <div class="col-md-6">
+                                <input id="text" type="file" class="form-control" name="text">
+
+                                @if ($errors->has('text'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('text') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-4 control-label">Описание</label>
 
@@ -63,7 +77,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     Сохранить
                                 </button>
-                                <a type="button" href="{{ route('book_show', ['id' => $book->id]) }}" class="btn btn-primary">
+                                <a type="button" href="{{ route('book.show', ['id' => $book->id]) }}" class="btn btn-primary">
                                     К профилю
                                 </a>
                             </div>

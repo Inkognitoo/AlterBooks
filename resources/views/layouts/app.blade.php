@@ -59,9 +59,9 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    @if (!Request::route()->named('user_show') || (Request::route()->named('user_show') && Auth::user()->id !== $user->id))
+                                    @if (!Request::route()->named('user.show') || (Request::route()->named('user.show') && Auth::user()->id !== $user->id))
                                         <li>
-                                            <a href="{{ route('user_show', ['id' => Auth::user()->id]) }}">
+                                            <a href="{{ route('user.show', ['id' => Auth::user()->id]) }}">
                                                 Профиль
                                             </a>
                                         </li>
