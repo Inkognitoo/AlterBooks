@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use MongoDB;
@@ -18,15 +17,6 @@ class MongoBook
     /** @var Book Книга */
     private $book;
 
-    /** @var string id книги в рамках mongoDB */
-    private $mongodb_book_id;
-
-    /** @var integer Количество страниц в книге */
-    private $page_count;
-
-    /** @var array Поля доступные через геттер */
-    private $accessible_fields = ['mongodb_book_id', 'page_count'];
-
     /**
      * MongoBook constructor.
      * @param Book $book
@@ -37,27 +27,12 @@ class MongoBook
     }
 
     /**
-     * Геттер для получения приватных свойств
-     *
-     * @param $property
-     * @return mixed
-     * @throws Exception
-     */
-    public function __get($property) {
-        if (property_exists($this, $property) && in_array($property, $this->accessible_fields, true)) {
-            return $this->$property;
-        }
-
-        throw new Exception('Undefined property ' . $property . ' referenced.');
-    }
-
-    /**
      * Сохраняем книгу в mongoDB
      *
      * @param UploadedFile $text_file Текст книги
-     * @return string id книги в рамках MongoDB
+     * @return void
      */
-    public function setText(UploadedFile $text_file): string
+    public function setText(UploadedFile $text_file)
     {
         $collection = MongoDB::get()->alterbooks->books;
 
@@ -75,9 +50,7 @@ class MongoBook
             'pages' => $pages,
         ]);
 
-        $this->mongodb_book_id = $result->getInsertedId();
-
-        return $result->getInsertedId();
+        $this->book->mongodb_book_id = $result->getInsertedId();
     }
 
     /**
@@ -151,20 +124,46 @@ class MongoBook
         $full_size = iconv_strlen($text);
         $page_size = 1800; //символы
         $pages = [];
-        $start_symbol = 0;
+        $start_symbol_number = 0;
         $i = 0;
         do {
             $i++;
-            $page = mb_substr($text, $start_symbol, $page_size);
-            $start_symbol += $page_size;
+            $current_page_size = $page_size;
+
+            list($page, $current_page_size) = $this->extractPage($text, $start_symbol_number, $current_page_size);
+            $start_symbol_number += $current_page_size;
             $pages[] = [
                 'page' => $i,
                 'text' => $page,
             ];
-        } while ($start_symbol < $full_size);
+        } while ($start_symbol_number < $full_size);
 
-        $this->page_count = $i;
+        $this->book->page_count = $i;
 
         return $pages;
+    }
+
+    /**
+     * Извлечь отдельную страницу из текста
+     *
+     * @param string $text
+     * @param int $start_symbol_number
+     * @param int $page_size
+     * @return array
+     */
+    private function extractPage(string $text, int $start_symbol_number, int $page_size): array
+    {
+        $attempt_count = 5;
+        for ($i = 0; $i < $attempt_count; $i++) {
+            $divide_symbol = mb_substr($text, $start_symbol_number + $page_size + $i, 1);
+            if ($divide_symbol == ' ') {
+                $page = mb_substr($text, $start_symbol_number, $page_size + $i);
+                return [$page, $page_size + $i];
+            }
+        }
+
+        $page = mb_substr($text, $start_symbol_number, $page_size - $attempt_count);
+        return [($page . '-'), $page_size - $attempt_count];
+
     }
 }

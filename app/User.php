@@ -112,10 +112,10 @@ class User extends Authenticatable
      *
      * @param UploadedFile $avatar Аватар пользователя
      * @param bool $save Сохранять ли состояние модели после записи
-     * @return bool
+     * @return void
      * @throws Exception
      */
-    public function setAvatar(UploadedFile $avatar, bool $save = false) : bool
+    public function setAvatar(UploadedFile $avatar, bool $save = false)
     {
         if (blank($this->id) && !$save) {
             throw new Exception('For setting avatar path, user must be present');
@@ -136,8 +136,6 @@ class User extends Authenticatable
         if ($save) {
             $this->save();
         }
-
-        return true;
     }
 
     /**

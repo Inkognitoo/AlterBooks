@@ -19,6 +19,7 @@ use Exception;
  * @property string|null $cover Название обложки книги
  * @property int $author_id
  * @property int $mongodb_book_id Идентификатор документа в MongoDB
+ * @property int $page_count Количество страниц в книге
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property string $cover_path Путь до обложки книги в рамках Amazon S3
@@ -60,10 +61,10 @@ class Book extends Model
      *
      * @param UploadedFile $cover Обложка книги
      * @param bool $save Сохранять ли состояние модели после записи
-     * @return bool
+     * @return void
      * @throws Exception
      */
-    public function setCover(UploadedFile $cover, bool $save = false): bool
+    public function setCover(UploadedFile $cover, bool $save = false)
     {
         if (blank($this->id) && !$save) {
             throw new Exception('For setting cover, book must be present');
@@ -84,8 +85,6 @@ class Book extends Model
         if ($save) {
             $this->save();
         }
-
-        return true;
     }
 
     /**
@@ -136,10 +135,10 @@ class Book extends Model
      *
      * @param UploadedFile $text Текст книги
      * @param bool $save Сохранять ли состояние модели после записи
-     * @return bool
+     * @return void
      * @throws Exception
      */
-    public function setText(UploadedFile $text, bool $save = false): bool
+    public function setText(UploadedFile $text, bool $save = false)
     {
         if (blank($this->id) && !$save) {
             throw new Exception('For setting text, book must be present');
@@ -150,13 +149,11 @@ class Book extends Model
         }
 
         $mongodb_book = new MongoBook($this);
-        $this->mongodb_book_id = $mongodb_book->setText($text);
+        $mongodb_book->setText($text);
 
         if ($save) {
             $this->save();
         }
-
-        return true;
     }
 
     /**
