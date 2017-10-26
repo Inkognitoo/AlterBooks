@@ -4,11 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
-use MongoDB;
-use MongoDB\BSON\ObjectID;
 use Storage;
-use Mockery\Exception;
+use Exception;
 
 /**
  * App\Book
@@ -64,6 +61,7 @@ class Book extends Model
      * @param UploadedFile $cover Обложка книги
      * @param bool $save Сохранять ли состояние модели после записи
      * @return bool
+     * @throws Exception
      */
     public function setCover(UploadedFile $cover, bool $save = false): bool
     {
@@ -118,6 +116,7 @@ class Book extends Model
      * Получаем путь до обложки книги на Amazon S3
      *
      * @return string
+     * @throws Exception
      */
     public function getCoverPathAttribute(): string
     {
@@ -138,6 +137,7 @@ class Book extends Model
      * @param UploadedFile $text Текст книги
      * @param bool $save Сохранять ли состояние модели после записи
      * @return bool
+     * @throws Exception
      */
     public function setText(UploadedFile $text, bool $save = false): bool
     {

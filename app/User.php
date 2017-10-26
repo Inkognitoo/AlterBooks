@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Mockery\Exception;
+use Exception;
 use Storage;
 
 /**
@@ -113,6 +113,7 @@ class User extends Authenticatable
      * @param UploadedFile $avatar Аватар пользователя
      * @param bool $save Сохранять ли состояние модели после записи
      * @return bool
+     * @throws Exception
      */
     public function setAvatar(UploadedFile $avatar, bool $save = false) : bool
     {
@@ -167,6 +168,7 @@ class User extends Authenticatable
      * Получаем путь до аватарки пользователя на Amazon S3
      *
      * @return string
+     * @throws Exception
      */
     public function getAvatarPathAttribute(): string
     {

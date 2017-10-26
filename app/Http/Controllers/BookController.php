@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Mockery\Exception;
-use Storage;
 
 class BookController extends Controller
 {
@@ -20,7 +17,7 @@ class BookController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('checkAuth')->except(['show']);
+        $this->middleware('checkAuth')->except(['show', 'readPage']);
 
         $this->middleware('checkBookExist')->except(['createShow', 'create']);
 
@@ -156,6 +153,10 @@ class BookController extends Controller
     {
         $book = Book::find($id);
 
-        return response($book->getPage($page_number));
+        return view('book.reader', [
+            'book' => $book,
+            'current_page' => $page_number,
+            'text' => $book->getPage($page_number)
+        ]);
     }
 }
