@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default" style="max-width: 600px">
+                <div class="book-reader-block panel panel-default">
                     <div class="panel-heading">
                         <a href="{{ route('book.show', ['id' => $book->id]) }}">
                             {{ $book->title }}
@@ -18,7 +18,7 @@
                         <p>
                             {!! $text !!}
                         </p>
-                        <div class="center-block" style="text-align: center">
+                        <div class="book-reader-pagination center-block">
                         <a type="button" class="btn btn-default text-center {{ ($current_page == 1) ? 'disabled' : '' }}"
                            href="{{ ($current_page != 1) ? route('book.read.page', ['id' => $book->id, 'page_number' => ($current_page - 1)]) : '' }}">
                             {{ ($current_page != 1) ? $current_page - 1 : '&nbsp;' }}
