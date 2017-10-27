@@ -64,9 +64,6 @@ class UserController extends Controller
         if (filled($request['nickname'])) {
             Auth::user()->nickname = $request['nickname'];
         }
-        if (filled($request['avatar'])) {
-            Auth::user()->setAvatar($request['avatar']);
-        }
         if (filled($request['name'])) {
             Auth::user()->name = $request['name'];
         }
@@ -88,10 +85,15 @@ class UserController extends Controller
         if (filled($request['birthday_date'])) {
             Auth::user()->birthday_date = $request['birthday_date'];
         }
+        if (filled($request['avatar'])) {
+            Auth::user()->setAvatar($request['avatar']);
+        }
 
         Auth::user()->save();
 
-        return view('user.edit');
+        return view('user.edit', [
+            'status' => 'Данные были успешно обновлены'
+        ]);
     }
 
     /**

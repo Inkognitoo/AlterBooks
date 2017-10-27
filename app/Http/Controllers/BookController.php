@@ -77,7 +77,8 @@ class BookController extends Controller
         $book->save();
 
         return view('book.edit', [
-            'book' => $book
+            'book' => $book,
+            'status' => 'Данные были успешно обновлены'
         ]);
     }
 

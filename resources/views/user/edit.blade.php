@@ -12,6 +12,13 @@
                 </div>
 
                 <div class="user-edit-block-content panel-body">
+
+                    @if (!empty($status))
+                        <div class="alert alert-success">
+                            {{ $status }}
+                        </div>
+                    @endif
+
                     <form class="user-edit-block__form form-horizontal" method="POST"
                           action="{{ route('user.edit', ['id' => Auth::user()->id]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
