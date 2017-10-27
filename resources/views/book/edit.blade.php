@@ -10,6 +10,13 @@
                 <div class="panel-heading">Редактирование профиля</div>
 
                 <div class="panel-body">
+
+                    @if (!empty($status))
+                        <div class="alert alert-success">
+                            {{ $status }}
+                        </div>
+                    @endif
+
                     <form class="form-horizontal" method="POST" action="{{ route('book.edit', ['id' => $book->id]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 

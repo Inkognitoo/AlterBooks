@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -55,38 +56,13 @@ class UserController extends Controller
     /**
      * Редактируем профиль пользователя
      *
-     * @param Request $request
-     * @param int $id
+     * @param UserUpdateRequest $request
      * @return Response
      */
-    public function edit(Request $request, $id)
+    public function edit(UserUpdateRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nickname' => 'nullable|max:255|unique:users',
-            'avatar' => 'image|max:5120',
-            'name' => 'nullable|max:255',
-            'surname' => 'nullable|max:255',
-            'patronymic' => 'nullable|max:255',
-            'email' => 'nullable|email|max:255|unique:users',
-            'password' => 'nullable|min:6|confirmed',
-            'gender' => [
-                'nullable',
-                Rule::in([User::GENDER_MALE, User::GENDER_FEMALE, User::GENDER_NOT_INDICATED]),
-            ],
-            'birthday_date' => 'nullable|date',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect(route('user.edit.show', ['id' => $id]))
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         if (filled($request['nickname'])) {
             Auth::user()->nickname = $request['nickname'];
-        }
-        if (filled($request['avatar'])) {
-            Auth::user()->setAvatar($request['avatar']);
         }
         if (filled($request['name'])) {
             Auth::user()->name = $request['name'];
@@ -109,10 +85,15 @@ class UserController extends Controller
         if (filled($request['birthday_date'])) {
             Auth::user()->birthday_date = $request['birthday_date'];
         }
+        if (filled($request['avatar'])) {
+            Auth::user()->setAvatar($request['avatar']);
+        }
 
         Auth::user()->save();
 
-        return view('user.edit');
+        return view('user.edit', [
+            'status' => 'Данные были успешно обновлены'
+        ]);
     }
 
     /**

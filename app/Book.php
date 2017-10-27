@@ -39,6 +39,15 @@ class Book extends Model
     const COVER_PATH = 'book_covers';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title', 'description',
+    ];
+
+    /**
      * Получить автора книги
      */
     public function author()
