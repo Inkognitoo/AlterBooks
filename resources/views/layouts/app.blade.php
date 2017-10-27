@@ -70,8 +70,7 @@
                                 </a>
 
                                 <ul class="temp-header-users-menu-content dropdown-menu" role="menu">
-                                    @if (!Request::route()->named('user.show') || (Request::route()->named('user.show')
-                                    && Auth::user()->id !== $user->id))
+                                    @if (!Request::route()->named('user.show') || (Request::route()->named('user.show') && Auth::user()->id !== $user->id))
                                         <li>
                                             <a class="temp-header-users-menu-content__element"
                                                href="{{ route('user.show', ['id' => Auth::user()->id]) }}">
