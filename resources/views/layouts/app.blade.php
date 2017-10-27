@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fix.css') }}" rel="stylesheet">
 
     <!--Icons-->
     <link rel="manifest" href="/manifest.json">
@@ -20,60 +21,73 @@
     <link rel="icon" type="image/png" href="/img/icon-180.png" sizes="180x180">
     <link rel="icon" type="image/png" href="/img/icon-192.png" sizes="192x192">
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+<body class="temp-body">
+    <div class="temp-content" id="app">
+        <nav class="temp-header navbar navbar-default navbar-static-top">
+            <div class="temp-header__container container">
+                <div class="temp-header-navigation navbar-header">
 
                     <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Навигация</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                    <button type="button" class="temp-header-navigation-button navbar-toggle collapsed"
+                            data-toggle="collapse" data-target="#app-navbar-collapse">
+                        <span class="temp-header-navigation-button__element-main sr-only">Навигация</span>
+                        <span class="temp-header-navigation-button__element icon-bar"></span>
+                        <span class="temp-header-navigation-button__element icon-bar"></span>
+                        <span class="temp-header-navigation-button__element icon-bar"></span>
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="temp-header-navigation__logo navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <div class="temp-header-users collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
+                    <ul class="temp-header-users-element nav navbar-nav">
                         &nbsp;
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="temp-header-users-element temp-header-users-element_right nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('login') }}">Вход</a></li>
-                            <li><a href="{{ route('register') }}">Регистрация</a></li>
+                            <li>
+                                <a class="temp-header-users-menu__element" href="{{ route('login') }}">
+                                Вход
+                                </a>
+                            </li>
+                            <li>
+                                <a class="temp-header-users-menu__element" href="{{ route('register') }}">
+                                Регистрация
+                                </a>
+                            </li>
                         @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <li class="temp-header-users-menu dropdown">
+                                <a href="#" class="temp-header-users-menu__name-placeholder dropdown-toggle"
+                                   data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->nickname }} <span class="caret"></span>
                                 </a>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    @if (!Request::route()->named('user.show') || (Request::route()->named('user.show') && Auth::user()->id !== $user->id))
+                                <ul class="temp-header-users-menu-content dropdown-menu" role="menu">
+                                    @if (!Request::route()->named('user.show') || (Request::route()->named('user.show')
+                                    && Auth::user()->id !== $user->id))
                                         <li>
-                                            <a href="{{ route('user.show', ['id' => Auth::user()->id]) }}">
+                                            <a class="temp-header-users-menu-content__element"
+                                               href="{{ route('user.show', ['id' => Auth::user()->id]) }}">
                                                 Профиль
                                             </a>
                                         </li>
                                     @endif
                                     <li>
-                                        <a href="{{ route('logout') }}"
+                                        <a class="temp-header-users-menu-content__element" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Выход
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        <form class="temp-header-users-menu-content__logout-form" id="logout-form"
+                                              action="{{ route('logout') }}" method="POST">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>

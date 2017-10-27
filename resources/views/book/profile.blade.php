@@ -11,8 +11,9 @@
 
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-4" style="margin-bottom: 10px">
-                            <img src="{{ $book->cover_url }}" style="width: 200px" alt="cover" class="img-rounded">
+                        <div class="book-cover col-md-4">
+                            <img src="{{ $book->cover_url }}" alt="cover"
+                                 class="book-cover__image img-rounded">
                         </div>
                         <div class="col-md-8">
                             <div class="panel panel-default">
