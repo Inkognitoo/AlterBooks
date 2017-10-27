@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <div class="row" style="margin-bottom: 10px">
                         <div class="col-md-4" style="margin-bottom: 10px">
-                            <img src="{{ $user->getAvatarUrl() }}" style="width: 200px" alt="avatar" class="img-rounded">
+                            <img src="{{ $user->avatar_url }}" style="width: 200px" alt="avatar" class="img-rounded">
                         </div>
                         <div class="col-md-8">
                             <div class="panel panel-default">
@@ -28,7 +28,7 @@
 
                             @auth
                                 @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="btn btn-default" href="{{ route('user_edit_show', ['id' => $user->id]) }}">Редактировать</a>
+                                    <a type="button" class="btn btn-default" href="{{ route('user.edit.show', ['id' => $user->id]) }}">Редактировать</a>
                                 @endif
                             @endauth
 
@@ -39,18 +39,18 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    {{ (Auth::user() && (Auth::user()->id == $user->id)) ? 'Мои книги' : 'Книги автора' }}
+                                    {{ optional(Auth::user())->id == $user->id ? 'Мои книги' : 'Книги автора' }}
                                 </div>
                                 <div class="panel-body">
                                     @foreach ($user->books as $book)
-                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
+                                        <a href="{{ $book->url }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
                                     @endforeach
                                 </div>
                             </div>
 
                             @auth
                                 @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="btn btn-default" href="{{ route('book_create_show') }}">Загрузить новую</a>
+                                    <a type="button" class="btn btn-default" href="{{ route('book.create.show') }}">Загрузить новую</a>
                                 @endif
                             @endauth
                         </div>
@@ -60,11 +60,11 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    {{ (Auth::user() && (Auth::user()->id == $user->id)) ? 'Моя библиотека' : 'Библиотека пользователя' }}
+                                    {{ optional(Auth::user())->id == $user->id  ? 'Моя библиотека' : 'Библиотека пользователя' }}
                                 </div>
                                 <div class="panel-body">
                                     @foreach ($user->libraryBooks as $book)
-                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
+                                        <a href="{{ $book->url }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
                                     @endforeach
                                 </div>
                             </div>

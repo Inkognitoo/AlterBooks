@@ -9,10 +9,25 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Storage;
 
 class UserController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('checkAuth')->except(['show']);
+
+        $this->middleware('checkUserExist')->except(['addBookToLibrary', 'deleteBookToLibrary']);
+
+        $this->middleware('checkUserGranted')->only(['editShow', 'edit']);
+
+        $this->middleware('checkBookExist')->only(['addBookToLibrary', 'deleteBookToLibrary']);
+    }
+
     /**
      * Show the profile for the given user.
      *
@@ -62,43 +77,36 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('user_edit_show', ['id' => $id]))
+            return redirect(route('user.edit.show', ['id' => $id]))
                 ->withErrors($validator)
                 ->withInput();
         }
 
-        if (!empty($request['nickname'])) {
+        if (filled($request['nickname'])) {
             Auth::user()->nickname = $request['nickname'];
         }
-        if (!empty($request['avatar'])) {
-            $imageName = 'avatars/' . Auth::user()->id . '/' . Auth::user()->avatar;
-            if (Storage::disk('s3')->exists($imageName)) {
-                Storage::disk('s3')->delete($imageName);
-            }
-
-            $imageName = 'avatars/' . Auth::user()->id;
-            $storagePath = Storage::disk('s3')->put($imageName, $request['avatar']);
-            Auth::user()->avatar = basename($storagePath);
+        if (filled($request['avatar'])) {
+            Auth::user()->setAvatar($request['avatar']);
         }
-        if (!empty($request['name'])) {
+        if (filled($request['name'])) {
             Auth::user()->name = $request['name'];
         }
-        if (!empty($request['surname'])) {
+        if (filled($request['surname'])) {
             Auth::user()->surname = $request['surname'];
         }
-        if (!empty($request['patronymic'])) {
+        if (filled($request['patronymic'])) {
             Auth::user()->patronymic = $request['patronymic'];
         }
-        if (!empty($request['email'])) {
+        if (filled($request['email'])) {
             Auth::user()->email = $request['email'];
         }
-        if (!empty($request['password'])) {
+        if (filled($request['password'])) {
             Auth::user()->password = bcrypt($request['password']);
         }
-        if (!empty($request['gender'])) {
+        if (filled($request['gender'])) {
             Auth::user()->gender = $request['gender'];
         }
-        if (!empty($request['birthday_date'])) {
+        if (filled($request['birthday_date'])) {
             Auth::user()->birthday_date = $request['birthday_date'];
         }
 
@@ -117,12 +125,12 @@ class UserController extends Controller
     {
         $book = Book::find($id);
         if (Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0) {
-            return redirect(route('book_show', ['id' => $id]));
+            return redirect(route('book.show', ['id' => $id]));
         }
 
         Auth::user()->libraryBooks()->save($book);
 
-        return redirect(route('book_show', ['id' => $id]));
+        return redirect(route('book.show', ['id' => $id]));
     }
 
     /**
@@ -134,13 +142,13 @@ class UserController extends Controller
     public function deleteBookFromLibrary($id)
     {
         $book = Book::find($id);
-        $libraryBook = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
-        if ($libraryBook->count() === 0) {
-            return redirect(route('book_show', ['id' => $id]));
+        $library_book = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
+        if ($library_book->count() === 0) {
+            return redirect(route('book.show', ['id' => $id]));
         }
 
-        $libraryBook->first()->pivot->delete();
+        $library_book->first()->pivot->delete();
 
-        return redirect(route('book_show', ['id' => $id]));
+        return redirect(route('book.show', ['id' => $id]));
     }
 }

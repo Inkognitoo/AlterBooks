@@ -16,8 +16,7 @@ class CheckBookExist
      */
     public function handle($request, Closure $next)
     {
-
-        if (empty(Book::find($request->id))) {
+        if (blank(Book::find($request->id))) {
             return response(view('errors.404'), 404);
         }
 
