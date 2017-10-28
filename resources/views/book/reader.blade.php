@@ -3,28 +3,28 @@
 @section('title', $book->title)
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="book-reader-block panel panel-default">
-                    <div class="panel-heading">
+    <div class="book-reader-content container">
+        <div class="book-reader-content__area row">
+            <div class="book-reader-block__area col-md-8 col-md-offset-2">
+                <div class="book-reader-block book-reader-block panel panel-default">
+                    <div class="book-reader-block__title panel-heading">
                         <a href="{{ route('book.show', ['id' => $book->id]) }}">
                             {{ $book->title }}
                         </a> |
                         {{ $current_page }}
                     </div>
 
-                    <div class="panel-body">
+                    <div class="book-reader-block-content panel-body">
                         <p>
                             {!! $text !!}
                         </p>
                         <div class="book-reader-pagination center-block">
-                        <a type="button" class="btn btn-default text-center {{ ($current_page == 1) ? 'disabled' : '' }}"
+                        <a type="button" class="book-reader-pagination-page book-reader-pagination-page__current btn btn-default text-center {{ ($current_page == 1) ? 'disabled' : '' }}"
                            href="{{ ($current_page != 1) ? route('book.read.page', ['id' => $book->id, 'page_number' => ($current_page - 1)]) : '' }}">
                             {{ ($current_page != 1) ? $current_page - 1 : '&nbsp;' }}
                         </a>
 
-                        <a type="button" class="btn btn-default text-center {{ ($current_page == $book->page_count) ? 'disabled' : '' }}"
+                        <a type="button" class="book-reader-pagination-page btn btn-default text-center {{ ($current_page == $book->page_count) ? 'disabled' : '' }}"
                            href="{{ ($current_page != $book->page_count) ? route('book.read.page', ['id' => $book->id, 'page_number' => ($current_page + 1)]) : '' }}">
                             {{ ($current_page != $book->page_count) ? $current_page + 1 : '&nbsp;' }}
                         </a>
