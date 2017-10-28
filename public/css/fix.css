@@ -33,3 +33,10 @@
 .book-reader-pagination {
     text-align: center;
 }
+
+
+/*book-reader*/
+.book-reader-block-content p {
+    min-height: 700px;
+    text-align: justify;
+}
