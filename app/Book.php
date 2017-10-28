@@ -83,7 +83,7 @@ class Book extends Model
             $this->save();
         }
 
-        if (Storage::disk('s3')->exists($this->cover_path)) {
+        if (filled($this->cover) && Storage::disk('s3')->exists($this->cover_path)) {
             Storage::disk('s3')->delete($this->cover_path);
         }
 
