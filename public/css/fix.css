@@ -37,6 +37,6 @@
 
 /*book-reader*/
 .book-reader-block-content p {
-    height: 700px;
+    min-height: 700px;
     text-align: justify;
 }
