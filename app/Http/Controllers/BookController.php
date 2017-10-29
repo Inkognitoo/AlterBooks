@@ -112,6 +112,9 @@ class BookController extends Controller
         if (filled($request['cover'])) {
             $book->setCover($request['cover']);
         }
+        if (filled($request['text'])) {
+            $book->setText($request['text']);
+        }
 
         $book->save();
 
