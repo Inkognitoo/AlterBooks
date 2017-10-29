@@ -75,5 +75,13 @@ Route::get('library/id{id}/delete', 'UserController@deleteBookFromLibrary')
 ;
 
 Route::get('book/id{id}/page/{page_number}', 'BookController@readPage')
-    ->name('book.read.page')
+    ->name('book.page.show')
+;
+
+Route::get('book/id{id}/page/{page_number}/edit', 'BookController@editPageShow')
+    ->name('book.page.edit.show')
+;
+
+Route::post('book/id{id}/page/{page_number}/edit', 'BookController@editPage')
+    ->name('book.page.edit')
 ;

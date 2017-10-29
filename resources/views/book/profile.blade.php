@@ -31,7 +31,7 @@
                             </div>
 
                             @if(filled($book->mongodb_book_id))
-                                <a type="button" class="btn btn-default" href="{{ route('book.read.page', ['id' => $book->id, 'page_number' => 1]) }}">Читать</a>
+                                <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">Читать</a>
                             @endif
                             @auth
                                 @if(Auth::user()->id == $book->author->id)
