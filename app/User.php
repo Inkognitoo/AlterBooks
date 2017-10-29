@@ -188,8 +188,8 @@ class User extends Authenticatable
      * */
     public function getFullNameAttribute(): string
     {
-        if (blank($this->name) && blank($this->surname) && blank($this->patronymic)) {
-            return 'Пользователь';
+        if (blank($this->name)) {
+            return $this->nickname;
         }
         return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
     }
