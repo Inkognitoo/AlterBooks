@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Requests\BookUpdateRequest;
+use App\Http\Requests\PageUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class BookController extends Controller
 
         $this->middleware('checkBookExist')->except(['createShow', 'create']);
 
-        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit']);
+        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage']);
     }
 
     /**
@@ -133,10 +134,47 @@ class BookController extends Controller
     {
         $book = Book::find($id);
 
-        return view('book.reader', [
+        return view('book.reader.page', [
             'book' => $book,
             'current_page' => $page_number,
             'text' => $book->getPage($page_number)
         ]);
+    }
+
+    /**
+     * Показываем страницу редактирования конкретной страницы книги
+     *
+     * @param Request $request
+     * @param int $id
+     * @param int $page_number
+     * @return Response
+     */
+    public function editPageShow(Request $request, int $id, int $page_number)
+    {
+        $book = Book::find($id);
+
+        return view('book.reader.edit', [
+            'book' => $book,
+            'current_page' => $page_number,
+            'text' => $book->getPage($page_number, false)
+        ]);
+    }
+
+    /**
+     * Показываем страницу редактирования конкретной страницы книги
+     *
+     * @param PageUpdateRequest $request
+     * @param int $id
+     * @param int $page_number
+     * @return Response
+     */
+    public function editPage(PageUpdateRequest $request, int $id, int $page_number)
+    {
+        $book = Book::find($id);
+
+        $book->editPage($page_number, $request['text']);
+
+        return redirect(route('book.page.show', ['id' => $id, 'current_page' => $page_number]))
+            ->with(['status' => 'Данные были успешно обновлены']);
     }
 }

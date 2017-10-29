@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use MongoDB;
@@ -57,12 +58,14 @@ class MongoBook
      * Получить конкретную страницу книги
      *
      * @param int $page_number Номер запрашиваемой страницы
-     * @return null|string
+     * @param bool $format Нужно ли форматировать возвращаемый текст в html
+     * @return string
+     * @throws Exception
      */
-    public function getPage(int $page_number)
+    public function getPage(int $page_number, bool $format = true): string
     {
         if (blank($this->book->mongodb_book_id)) {
-            return null;
+            throw new Exception('For getting page, book\'s text must be present');
         }
 
         $document = MongoDB::get()->alterbooks->books->findOne(
@@ -86,14 +89,43 @@ class MongoBook
         );
 
         if (blank($document)) {
-            return null;
+            throw new Exception('Book\'s text not found in mongoDB');
         }
 
         foreach ($document->pages as $page) {
-            return preg_replace("/[\n\r]+/s","<br/>", $page->text);
+            return $format ? $this->format($page->text) : $page->text;
+        }
+    }
+
+    /**
+     * Обновить конкретную страницу книги
+     *
+     * @param int $page_number Номер редактируемой страницы
+     * @param string $text Новый текст страницы
+     * @return void
+     * @throws Exception
+     */
+    public function editPage(int $page_number, string $text)
+    {
+        if (blank($this->book->mongodb_book_id)) {
+            throw new Exception('For updating page, book\'s text must be present');
         }
 
-        return null;
+        MongoDB::get()->alterbooks->books->updateOne(
+            [
+                '_id' => new ObjectID($this->book->mongodb_book_id),
+                'pages' => [
+                    '$elemMatch' => [
+                        'page' => $page_number
+                    ]
+                ]
+            ],
+            [
+                '$set' => [
+                    'pages.$.text' => $text
+                ]
+            ]
+        );
     }
 
     /**
@@ -164,6 +196,16 @@ class MongoBook
 
         $page = mb_substr($text, $start_symbol_number, $page_size - $attempt_count);
         return [($page . '-'), $page_size - $attempt_count];
+    }
 
+    /**
+     * Форматируем страницу в html код
+     *
+     * @param string $text
+     * @return string
+     */
+    private function format(string $text): string
+    {
+        return preg_replace("/[\n\r]+/s","<br/>", $text);
     }
 }
