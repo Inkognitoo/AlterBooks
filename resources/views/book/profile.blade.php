@@ -23,8 +23,7 @@
                                 <div class="panel-body">
 
                                     <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
-                                        {{ $book->author->name }}
-                                    </a>
+                                        {{ $book->author->full_name }}
                                     <br>
                                     {{ $book->description }}
                                 </div>
