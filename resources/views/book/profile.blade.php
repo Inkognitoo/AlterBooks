@@ -24,6 +24,7 @@
 
                                     <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
                                         {{ $book->author->full_name }}
+                                    </a>
                                     <br>
                                     {{ $book->description }}
                                 </div>
