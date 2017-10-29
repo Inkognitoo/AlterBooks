@@ -3,23 +3,22 @@
 @section('title', $user->full_name)
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Профиль пользователя</div>
+<div class="user-content container">
+    <div class="user-content__area row">
+        <div class="user-block__area col-md-8 col-md-offset-2">
+            <div class="user-block panel panel-default">
+                <div class="user-block__title panel-heading">Профиль пользователя</div>
 
-                <div class="panel-body">
-                    <div class="row" style="margin-bottom: 10px">
-                        <div class="col-md-4" style="margin-bottom: 10px">
-                            <img src="{{ $user->getAvatarUrl() }}" style="width: 200px" alt="avatar" class="img-rounded">
+                <div class="user-block-content panel-body">
+                    <div class="user-info row">
+                        <div class="user-info-avatar col-md-4">
+                            <img src="{{ $user->avatar_url }}" class="user-info-avatar__image img-rounded"
+                                 alt="avatar">
                         </div>
-                        <div class="col-md-8">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    {{ $user->surname }}
-                                    {{ $user->name }}
-                                    {{ $user->patronymic }}
+                        <div class="user-info-area col-md-8">
+                            <div class="user-info-content panel panel-default">
+                                <div class="user-info-content__name-date panel-body">
+                                    {{ $user->full_name }}
                                     <br>
                                     {{ date('d.m.Y', strtotime($user->birthday_date)) }}
                                     ({{date('Y', time()) - date('Y', strtotime($user->birthday_date))}})
@@ -28,43 +27,55 @@
 
                             @auth
                                 @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="btn btn-default" href="{{ route('user_edit_show', ['id' => $user->id]) }}">Редактировать</a>
+                                    <a type="button" class="user-info-edit__button btn btn-default"
+                                       href="{{ route('user.edit.show', ['id' => $user->id]) }}">
+                                        Редактировать
+                                    </a>
                                 @endif
                             @endauth
 
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    {{ (Auth::user() && (Auth::user()->id == $user->id)) ? 'Мои книги' : 'Книги автора' }}
+                    <div class="user-block-books__area row">
+                        <div class="user-block-books col-md-12">
+                            <div class="user-block-books-content panel panel-default">
+                                <div class="user-block-books__title panel-heading">
+                                    {{ optional(Auth::user())->id == $user->id ? 'Мои книги' : 'Книги автора' }}
                                 </div>
-                                <div class="panel-body">
+                                <div class="user-block-books-elements panel-body">
                                     @foreach ($user->books as $book)
-                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
+                                        <a href="{{ $book->url }}" class="user-block-books__element">
+                                            {{ $book->title }}
+                                        </a>
+                                        {{ !$loop->last ? ',' : '' }}
                                     @endforeach
                                 </div>
                             </div>
 
                             @auth
                                 @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="btn btn-default" href="{{ route('book_create_show') }}">Загрузить новую</a>
+                                    <a type="button" class="user-block-books-load__button btn btn-default"
+                                       href="{{ route('book.create.show') }}">
+                                        Загрузить новую
+                                    </a>
                                 @endif
                             @endauth
                         </div>
                     </div>
 
-                    <div class="row" style="margin-top: 10px">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    {{ (Auth::user() && (Auth::user()->id == $user->id)) ? 'Моя библиотека' : 'Библиотека пользователя' }}
+                    <div class="user-block-library__area row">
+                        <div class="user-block-library col-md-12">
+                            <div class="user-block-library-content panel panel-default">
+                                <div class="user-block-library__title panel-heading">
+                                    {{ optional(Auth::user())->id == $user->id  ? 'Моя библиотека' : 'Библиотека пользователя' }}
                                 </div>
-                                <div class="panel-body">
+                                <div class="user-block-library-elements panel-body">
                                     @foreach ($user->libraryBooks as $book)
-                                        <a href="{{ $book->getUrl() }}">{{ $book->title }}</a>{{ !$loop->last ? ',' : '' }}
+                                        <a href="{{ $book->url }}" class="user-block-library__elements">
+                                            {{ $book->title }}
+                                        </a>
+                                        {{ !$loop->last ? ',' : '' }}
                                     @endforeach
                                 </div>
                             </div>

@@ -16,7 +16,7 @@ class CheckAuth
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()) {
+        if (blank(Auth::user())) {
             return response(view('errors.401'), 401);
         }
 

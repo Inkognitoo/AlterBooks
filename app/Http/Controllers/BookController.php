@@ -3,15 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Requests\BookCreateRequest;
+use App\Http\Requests\BookUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Storage;
 
 class BookController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('checkAuth')->except(['show', 'readPage']);
+
+        $this->middleware('checkBookExist')->except(['createShow', 'create']);
+
+        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit']);
+    }
+
     /**
      * Показываем профиль текущей книги.
      *
@@ -41,47 +54,31 @@ class BookController extends Controller
     /**
      * Редактируем профиль книги
      *
-     * @param Request $request
+     * @param BookUpdateRequest $request
      * @param int $id
      * @return Response
      */
-    public function edit(Request $request, $id)
+    public function edit(BookUpdateRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'nullable|max:255',
-            'cover' => 'image|max:5120',
-            'description' => 'nullable|max:5000',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect(route('book_edit_show', ['id' => $id]))
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         $book = Book::find($id);
 
-        if (!empty($request['title'])) {
+        if (filled($request['title'])) {
             $book->title = $request['title'];
         }
-        if (!empty($request['cover'])) {
-            $imageName = 'book_covers/' . $book->id . '/' . $book->avatar;
-            if (Storage::disk('s3')->exists($imageName)) {
-                Storage::disk('s3')->delete($imageName);
-            }
-
-            $imageName = 'book_covers/' . $book->id;
-            $storagePath = Storage::disk('s3')->put($imageName, $request['cover']);
-            $book->cover = basename($storagePath);
+        if (filled($request['cover'])) {
+            $book->setCover($request['cover']);
         }
-        if (!empty($request['description'])) {
+        if (filled($request['description'])) {
             $book->description = $request['description'];
         }
-
+        if (filled($request['text'])) {
+            $book->setText($request['text']);
+        }
         $book->save();
 
         return view('book.edit', [
-            'book' => $book
+            'book' => $book,
+            'status' => 'Данные были успешно обновлены'
         ]);
     }
 
@@ -98,38 +95,48 @@ class BookController extends Controller
     /**
      * Создаём профиль книги
      *
-     * @@param Request $request
+     * @@param BookCreateRequest $request
      * @return Response
      */
-    public function create(Request $request)
+    public function create(BookCreateRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'cover' => 'image|max:5120',
-            'description' => 'nullable|max:5000',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect(route('book_create_show'))
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         $book = new Book();
 
         $book->title = $request['title'];
-        if (!empty($request['cover'])) {
-            $imageName = 'book_covers/' . $book->id;
-            $storagePath = Storage::disk('s3')->put($imageName, $request['cover']);
-            $book->cover = basename($storagePath);
-        }
-        if (!empty($request['description'])) {
+        if (filled($request['description'])) {
             $book->description = $request['description'];
         }
+
         Auth::user()->books()->save($book);
+
+        if (filled($request['cover'])) {
+            $book->setCover($request['cover']);
+        }
+        if (filled($request['text'])) {
+            $book->setText($request['text']);
+        }
 
         $book->save();
 
-        return redirect(route('book_show', ['id' => $book->id]));
+        return redirect(route('book.show', ['id' => $book->id]));
+    }
+
+    /**
+     * Возвращаем конкретную страницу книги
+     *
+     * @param Request $request
+     * @param int $id
+     * @param int $page_number
+     * @return Response
+     */
+    public function readPage(Request $request, int $id, int $page_number)
+    {
+        $book = Book::find($id);
+
+        return view('book.reader', [
+            'book' => $book,
+            'current_page' => $page_number,
+            'text' => $book->getPage($page_number)
+        ]);
     }
 }

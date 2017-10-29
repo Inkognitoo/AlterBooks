@@ -3,14 +3,24 @@
 @section('title', 'Редактирование профиля')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Редактирование профиля</div>
+<div class="user-edit-content container">
+    <div class="user-edit-content__area row">
+        <div class="user-edit-block__area col-md-8 col-md-offset-2">
+            <div class="user-edit-block panel panel-default">
+                <div class="user-edit-block_title panel-heading">
+                    Редактирование профиля
+                </div>
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('user_edit', ['id' => Auth::user()->id]) }}" enctype="multipart/form-data">
+                <div class="user-edit-block-content panel-body">
+
+                    @if (!empty($status))
+                        <div class="alert alert-success">
+                            {{ $status }}
+                        </div>
+                    @endif
+
+                    <form class="user-edit-block__form form-horizontal" method="POST"
+                          action="{{ route('user.edit', ['id' => Auth::user()->id]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('nickname') ? ' has-error' : '' }}">
@@ -170,7 +180,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     Сохранить
                                 </button>
-                                <a type="button" href="{{ route('user_show', ['id' => Auth::user()->id]) }}" class="btn btn-primary">
+                                <a type="button" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" class="btn btn-primary">
                                     К профилю
                                 </a>
                             </div>

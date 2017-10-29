@@ -10,7 +10,7 @@
                 <div class="panel-heading">Создание книги</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('book_create') }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="POST" action="{{ route('book.create') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -37,6 +37,20 @@
                                 @if ($errors->has('cover'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('cover') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
+                            <label for="text" class="col-md-4 control-label">Текст книги</label>
+
+                            <div class="col-md-6">
+                                <input id="text" type="file" class="form-control" name="text">
+
+                                @if ($errors->has('text'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('text') }}</strong>
                                     </span>
                                 @endif
                             </div>
