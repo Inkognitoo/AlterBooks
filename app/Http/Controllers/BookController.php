@@ -8,7 +8,7 @@ use App\Http\Requests\BookUpdateRequest;
 use App\Http\Requests\PageUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class BookController extends Controller
 {
@@ -40,6 +40,32 @@ class BookController extends Controller
     }
 
     /**
+     * Создаём профиль книги
+     *
+     * @@param BookCreateRequest $request
+     * @return Response
+     */
+    public function create(BookCreateRequest $request)
+    {
+        $book = new Book();
+
+        $book->fill($request->all());
+
+        Auth::user()->books()->save($book);
+
+        if (filled($request['cover'])) {
+            $book->setCover($request['cover']);
+        }
+        if (filled($request['text'])) {
+            $book->setText($request['text']);
+        }
+
+        $book->save();
+
+        return redirect(route('book.show', ['id' => $book->id]));
+    }
+
+    /**
      * Показываем страницу редактирования профиля книги
      *
      * @param  int  $id
@@ -63,14 +89,10 @@ class BookController extends Controller
     {
         $book = Book::find($id);
 
-        if (filled($request['title'])) {
-            $book->title = $request['title'];
-        }
+        $book->fill($request->all());
+
         if (filled($request['cover'])) {
             $book->setCover($request['cover']);
-        }
-        if (filled($request['description'])) {
-            $book->description = $request['description'];
         }
         if (filled($request['text'])) {
             $book->setText($request['text']);
@@ -91,35 +113,6 @@ class BookController extends Controller
     public function createShow()
     {
         return view('book.create');
-    }
-
-    /**
-     * Создаём профиль книги
-     *
-     * @@param BookCreateRequest $request
-     * @return Response
-     */
-    public function create(BookCreateRequest $request)
-    {
-        $book = new Book();
-
-        $book->title = $request['title'];
-        if (filled($request['description'])) {
-            $book->description = $request['description'];
-        }
-
-        Auth::user()->books()->save($book);
-
-        if (filled($request['cover'])) {
-            $book->setCover($request['cover']);
-        }
-        if (filled($request['text'])) {
-            $book->setText($request['text']);
-        }
-
-        $book->save();
-
-        return redirect(route('book.show', ['id' => $book->id]));
     }
 
     /**
