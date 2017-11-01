@@ -206,6 +206,6 @@ class MongoBook
      */
     private function format(string $text): string
     {
-        return preg_replace("/[\n\r]+/s","<br/>", $text);
+        return preg_replace("/(\r\n)/","<br/>", $text);
     }
 }
