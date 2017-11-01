@@ -28,7 +28,7 @@
 
                             <div class="col-md-6">
                                 <input id="nickname" type="text" class="form-control" name="nickname"
-                                       value="{{ old('nickname') }}" autofocus placeholder="{{ Auth::user()->nickname }}">
+                                       value="{{ old('nickname') ?? Auth::user()->nickname }}" autofocus>
 
                                 @if ($errors->has('nickname'))
                                     <span class="help-block">
@@ -57,7 +57,7 @@
 
                             <div class="col-md-6">
                                 <input id="nickname" type="text" class="form-control" name="surname"
-                                       value="{{ old('surname') }}" autofocus placeholder="{{ Auth::user()->surname }}">
+                                       value="{{ old('surname') ?? Auth::user()->surname }}">
 
                                 @if ($errors->has('surname'))
                                     <span class="help-block">
@@ -72,7 +72,7 @@
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name"
-                                       value="{{ old('name') }}" autofocus placeholder="{{ Auth::user()->name }}">
+                                       value="{{ old('name') ?? Auth::user()->name}}">
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -87,7 +87,7 @@
 
                             <div class="col-md-6">
                                 <input id="patronymic" type="text" class="form-control" name="patronymic"
-                                       value="{{ old('patronymic') }}" autofocus placeholder="{{ Auth::user()->patronymic }}">
+                                       value="{{ old('patronymic') ?? Auth::user()->patronymic }}">
 
                                 @if ($errors->has('patronymic'))
                                     <span class="help-block">
@@ -129,7 +129,7 @@
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email"
-                                       value="{{ old('email') }}" placeholder="{{ Auth::user()->email }}">
+                                       value="{{ old('email') ?? Auth::user()->email }}">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -143,7 +143,10 @@
                             <label for="birthday_date" class="col-md-4 control-label">Дата рождения</label>
                             <div class="col-md-6">
                                 <input id="birthday_date" type="date" class="form-control" name="birthday_date"
-                                       value="{{ old('birthday_date') ?? date('Y-m-d', strtotime(Auth::user()->birthday_date)) }}">
+                                       value="{{ old('birthday_date') ??
+                                        filled(Auth::user()->birthday_date)
+                                            ? date('Y-m-d', strtotime(Auth::user()->birthday_date))
+                                            : '' }}">
 
                                 @if ($errors->has('birthday_date'))
                                     <span class="help-block">
