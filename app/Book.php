@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Storage;
 use Exception;
@@ -22,6 +23,7 @@ use Exception;
  * @property int $page_count Количество страниц в книге
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
  * @property string $cover_path Путь до обложки книги в рамках Amazon S3
  * @property string $cover_url Ссылка на обложку книги
  * @property string $url Ссылка на книгу
@@ -35,6 +37,8 @@ use Exception;
  */
 class Book extends Model
 {
+    use SoftDeletes;
+
     //Путь по которому хранятся обложки для книг на Amazon S3
     const COVER_PATH = 'book_covers';
 
@@ -46,6 +50,13 @@ class Book extends Model
     protected $fillable = [
         'title', 'description',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * Получить автора книги

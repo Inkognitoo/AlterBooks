@@ -36,6 +36,7 @@
                             @auth
                                 @if(Auth::user()->id == $book->author->id)
                                     <a type="button" class="btn btn-default" href="{{ route('book.edit.show', ['id' => $book->id]) }}">Редактировать</a>
+                                    <button class="btn btn-default" data-toggle="modal" data-target="#deleteBookModal">Удалить</button>
                                 @else
                                     @if(Auth::user()->hasBookAtLibrary($book))
                                         <a type="button" class="btn btn-default" href="{{ route('library.delete', ['id' => $book->id]) }}">Удалить из библиотеки</a>
@@ -48,6 +49,24 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteBookModal" tabindex="-1" role="dialog" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="deleteBookModalLabel">Подтвердите удаление</h4>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить книгу <strong>{{ $book->title }}</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <a type="button" class="btn btn-danger" href="{{ route('book.delete', ['id' => $book->id]) }}">Удалить</a>
             </div>
         </div>
     </div>

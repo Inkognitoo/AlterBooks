@@ -24,7 +24,7 @@ class BookUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'nullable|max:255',
+            'title' => 'required|max:255',
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
             'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
