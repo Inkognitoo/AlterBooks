@@ -20,8 +20,10 @@
                                 <div class="user-info-content__name-date panel-body">
                                     {{ $user->full_name }}
                                     <br>
-                                    {{ date('d.m.Y', strtotime($user->birthday_date)) }}
-                                    ({{date('Y', time()) - date('Y', strtotime($user->birthday_date))}})
+                                    @if(filled($user->birthday_date))
+                                        {{ date('d.m.Y', strtotime($user->birthday_date)) }}
+                                        ({{date('Y', time()) - date('Y', strtotime($user->birthday_date))}})
+                                    @endif
                                 </div>
                             </div>
 
