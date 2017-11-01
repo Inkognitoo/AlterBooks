@@ -169,12 +169,27 @@ class Book extends Model
      * Получить конкретную страницу книги
      *
      * @param int $page_number Номер запрашиваемой страницы
+     * @param bool $format Нужно ли форматировать возвращаемый текст в html
      * @return null|string
      */
-    public function getPage(int $page_number)
+    public function getPage(int $page_number, bool $format = true)
     {
         $mongodb_book = new MongoBook($this);
 
-        return $mongodb_book->getPage($page_number);
+        return $mongodb_book->getPage($page_number, $format);
+    }
+
+    /**
+     * Обновить конкретную страницу книги
+     *
+     * @param int $page_number Номер редактируемой страницы
+     * @param string $text Новый текст страницы
+     * @return null|string
+     */
+    public function editPage(int $page_number, string $text)
+    {
+        $mongodb_book = new MongoBook($this);
+
+        return $mongodb_book->editPage($page_number, $text);
     }
 }
