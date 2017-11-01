@@ -23,7 +23,7 @@ class BookController extends Controller
 
         $this->middleware('checkBookExist')->except(['createShow', 'create']);
 
-        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage']);
+        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage', 'delete']);
     }
 
     /**
@@ -103,6 +103,23 @@ class BookController extends Controller
             'book' => $book,
             'status' => 'Данные были успешно обновлены'
         ]);
+    }
+
+    /**
+     * Удаляем профиль книги
+     *
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function delete(Request $request, $id)
+    {
+        $book = Book::find($id);
+
+        $book->delete();
+
+        return redirect(route('user.show', ['id' => Auth::user()->id]))
+            ->with(['status' => 'Книга была успешно удалена']);
     }
 
     /**

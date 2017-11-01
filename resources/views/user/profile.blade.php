@@ -41,6 +41,12 @@
 
                     <div class="user-block-books__area row">
                         <div class="user-block-books col-md-12">
+                            @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
+
                             <div class="user-block-books-content panel panel-default">
                                 <div class="user-block-books__title panel-heading">
                                     {{ optional(Auth::user())->id == $user->id ? 'Мои книги' : 'Книги автора' }}
