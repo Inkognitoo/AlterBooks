@@ -40,3 +40,7 @@
     min-height: 700px;
     text-align: justify;
 }
+
+#dots-1, #dots-2 {
+    padding: 6px 8px;
+}
