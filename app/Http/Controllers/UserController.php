@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Http\Requests\UserUpdateRequest;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Auth;
 
 class UserController extends Controller
 {
@@ -61,29 +58,10 @@ class UserController extends Controller
      */
     public function edit(UserUpdateRequest $request)
     {
-        if (filled($request['nickname'])) {
-            Auth::user()->nickname = $request['nickname'];
-        }
-        if (filled($request['name'])) {
-            Auth::user()->name = $request['name'];
-        }
-        if (filled($request['surname'])) {
-            Auth::user()->surname = $request['surname'];
-        }
-        if (filled($request['patronymic'])) {
-            Auth::user()->patronymic = $request['patronymic'];
-        }
-        if (filled($request['email'])) {
-            Auth::user()->email = $request['email'];
-        }
+        Auth::user()->fill($request->all());
+
         if (filled($request['password'])) {
             Auth::user()->password = bcrypt($request['password']);
-        }
-        if (filled($request['gender'])) {
-            Auth::user()->gender = $request['gender'];
-        }
-        if (filled($request['birthday_date'])) {
-            Auth::user()->birthday_date = $request['birthday_date'];
         }
         if (filled($request['avatar'])) {
             Auth::user()->setAvatar($request['avatar']);

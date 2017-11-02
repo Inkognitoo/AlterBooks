@@ -25,7 +25,7 @@
 
                             <div class="col-md-6">
                                 <input id="title" type="text" class="form-control" name="title"
-                                       value="{{ old('title') }}" autofocus placeholder="{{ $book->title }}">
+                                       value="{{ old('title') ?? $book->title  }}" autofocus>
 
                                 @if ($errors->has('title'))
                                     <span class="help-block">
@@ -67,9 +67,7 @@
                             <label for="description" class="col-md-4 control-label">Описание</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" class="form-control" name="description"
-                                        autofocus placeholder="{{ $book->description }}" rows="5">
-                                    {{ old('description') }}
+                                <textarea id="description" class="form-control" name="description" rows="5">{{ old('description') ?? $book->description}}
                                 </textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">

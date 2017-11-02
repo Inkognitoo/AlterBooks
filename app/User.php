@@ -64,9 +64,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nickname', 'email', 'password',
-        'surname', 'patronymic', 'birthday_date',
-        'gender',
+        'nickname', 'email', 'surname',
+        'patronymic', 'birthday_date', 'gender',
     ];
 
     /**
@@ -149,7 +148,11 @@ class User extends Authenticatable
             return Storage::disk('s3')->url($this->avatar_path);
         }
 
-        return '/img/' . ($this->gender == $this::GENDER_FEMALE ? 'default_avatar_woman.jpg' : 'default_avatar_man.jpg');
+        switch ($this->gender) {
+            case $this::GENDER_MALE: return '/img/avatar_man.png'; break;
+            case $this::GENDER_FEMALE: return '/img/avatar_woman.png'; break;
+            default: return '/img/avatar_default.png'; break;
+        }
     }
 
     /**

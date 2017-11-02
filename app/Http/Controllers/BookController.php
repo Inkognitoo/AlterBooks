@@ -8,7 +8,7 @@ use App\Http\Requests\BookUpdateRequest;
 use App\Http\Requests\PageUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class BookController extends Controller
 {
@@ -23,7 +23,7 @@ class BookController extends Controller
 
         $this->middleware('checkBookExist')->except(['createShow', 'create']);
 
-        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage']);
+        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage', 'delete']);
     }
 
     /**
@@ -37,6 +37,32 @@ class BookController extends Controller
         return view('book.profile', [
             'book' => Book::find($id),
         ]);
+    }
+
+    /**
+     * Создаём профиль книги
+     *
+     * @@param BookCreateRequest $request
+     * @return Response
+     */
+    public function create(BookCreateRequest $request)
+    {
+        $book = new Book();
+
+        $book->fill($request->all());
+
+        Auth::user()->books()->save($book);
+
+        if (filled($request['cover'])) {
+            $book->setCover($request['cover']);
+        }
+        if (filled($request['text'])) {
+            $book->setText($request['text']);
+        }
+
+        $book->save();
+
+        return redirect(route('book.show', ['id' => $book->id]));
     }
 
     /**
@@ -63,14 +89,10 @@ class BookController extends Controller
     {
         $book = Book::find($id);
 
-        if (filled($request['title'])) {
-            $book->title = $request['title'];
-        }
+        $book->fill($request->all());
+
         if (filled($request['cover'])) {
             $book->setCover($request['cover']);
-        }
-        if (filled($request['description'])) {
-            $book->description = $request['description'];
         }
         if (filled($request['text'])) {
             $book->setText($request['text']);
@@ -84,6 +106,23 @@ class BookController extends Controller
     }
 
     /**
+     * Удаляем профиль книги
+     *
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function delete(Request $request, $id)
+    {
+        $book = Book::find($id);
+
+        $book->delete();
+
+        return redirect(route('user.show', ['id' => Auth::user()->id]))
+            ->with(['status' => 'Книга была успешно удалена']);
+    }
+
+    /**
      * Показываем страницу создания профиля книги
      *
      * @return Response
@@ -91,35 +130,6 @@ class BookController extends Controller
     public function createShow()
     {
         return view('book.create');
-    }
-
-    /**
-     * Создаём профиль книги
-     *
-     * @@param BookCreateRequest $request
-     * @return Response
-     */
-    public function create(BookCreateRequest $request)
-    {
-        $book = new Book();
-
-        $book->title = $request['title'];
-        if (filled($request['description'])) {
-            $book->description = $request['description'];
-        }
-
-        Auth::user()->books()->save($book);
-
-        if (filled($request['cover'])) {
-            $book->setCover($request['cover']);
-        }
-        if (filled($request['text'])) {
-            $book->setText($request['text']);
-        }
-
-        $book->save();
-
-        return redirect(route('book.show', ['id' => $book->id]));
     }
 
     /**
