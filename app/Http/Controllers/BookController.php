@@ -19,10 +19,13 @@ class BookController extends Controller
      */
     public function __construct()
     {
+        //Проверяем факт того, что пользователь авторизован для всех кроме
         $this->middleware('checkAuth')->except(['show', 'readPage']);
 
+        //Проверяем факт того, что книга с данным id существует для всех кроме
         $this->middleware('checkBookExist')->except(['createShow', 'create']);
 
+        //Проверяем факт того, что пользователь имеет право на работу с книгой только для
         $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage', 'delete']);
     }
 
