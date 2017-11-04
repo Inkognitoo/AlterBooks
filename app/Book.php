@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\StatusScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
@@ -18,6 +19,7 @@ use Exception;
  * @property string|null $title
  * @property string|null $description
  * @property string|null $cover Название обложки книги
+ * @property string $status Статус текущей книги (черновик/чистовик)
  * @property int $author_id
  * @property int $mongodb_book_id Идентификатор документа в MongoDB
  * @property int $page_count Количество страниц в книге
@@ -26,6 +28,7 @@ use Exception;
  * @property \Carbon\Carbon|null $deleted_at
  * @property string $cover_path Путь до обложки книги в рамках Amazon S3
  * @property string $cover_url Ссылка на обложку книги
+ * @property string $status_css css класс соответствующий текущему статусу книги
  * @property string $url Ссылка на книгу
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
@@ -42,13 +45,18 @@ class Book extends Model
     //Путь по которому хранятся обложки для книг на Amazon S3
     const COVER_PATH = 'book_covers';
 
+    //Возможные статусы книги
+    const OPEN_STATUS = 'open_by_author';
+
+    const CLOSE_STATUS = 'close_by_author';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title', 'description',
+        'title', 'description', 'status',
     ];
 
     /**
@@ -57,6 +65,32 @@ class Book extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new StatusScope);
+    }
+
+    /**
+     * Находим книгу с любым статусом
+     *
+     * @param $id int
+     * @return Book|null
+     */
+    public static function findAny(int $id)
+    {
+        return self::withoutGlobalScope(StatusScope::class)
+            ->where('id', $id)
+            ->first()
+        ;
+    }
 
     /**
      * Получить автора книги
@@ -151,6 +185,27 @@ class Book extends Model
     }
 
     /**
+     * Получаем css класс для текущего статуса книги
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getStatusCssAttribute(): string
+    {
+        switch ($this->status) {
+            case $this::OPEN_STATUS:
+
+                return '';
+            case $this::CLOSE_STATUS:
+
+                return 'user-block-books__element_status_close';
+            default:
+
+                return 'user-block-books__element_status_close';
+        }
+    }
+
+    /**
      * Сохраняем книгу в mongoDB
      *
      * @param UploadedFile $text Текст книги
@@ -195,12 +250,12 @@ class Book extends Model
      *
      * @param int $page_number Номер редактируемой страницы
      * @param string $text Новый текст страницы
-     * @return null|string
+     * @return void
      */
     public function editPage(int $page_number, string $text)
     {
         $mongodb_book = new MongoBook($this);
 
-        return $mongodb_book->editPage($page_number, $text);
+        $mongodb_book->editPage($page_number, $text);
     }
 }

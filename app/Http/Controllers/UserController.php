@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Http\Requests\UserUpdateRequest;
+use App\Scopes\StatusScope;
 use App\User;
 use Illuminate\Http\Response;
 use Auth;
@@ -38,8 +39,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $user = User::find($id);
+
+        $books = optional(Auth::user())->id == $id
+            ? $user->books()->withoutGlobalScope(StatusScope::class)->get()
+            : $user->books;
+
         return view('user.profile', [
-            'user' => User::find($id),
+            'user' => $user,
+            'books' => $books
         ]);
     }
 

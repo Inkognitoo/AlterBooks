@@ -38,7 +38,7 @@ class BookController extends Controller
     public function show($id)
     {
         return view('book.profile', [
-            'book' => Book::find($id),
+            'book' => Book::findAny($id),
         ]);
     }
 
@@ -77,7 +77,7 @@ class BookController extends Controller
     public function editShow($id)
     {
         return view('book.edit', [
-            'book' => Book::find($id)
+            'book' => Book::findAny($id)
         ]);
     }
 
@@ -90,7 +90,7 @@ class BookController extends Controller
      */
     public function edit(BookUpdateRequest $request, $id)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         $book->fill($request->all());
 
@@ -117,7 +117,7 @@ class BookController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         $book->delete();
 
@@ -145,7 +145,7 @@ class BookController extends Controller
      */
     public function readPage(Request $request, int $id, int $page_number)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         return view('book.reader.page', [
             'book' => $book,
@@ -164,7 +164,7 @@ class BookController extends Controller
      */
     public function editPageShow(Request $request, int $id, int $page_number)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         return view('book.reader.edit', [
             'book' => $book,
@@ -183,7 +183,7 @@ class BookController extends Controller
      */
     public function editPage(PageUpdateRequest $request, int $id, int $page_number)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         $book->editPage($page_number, $request['text']);
 

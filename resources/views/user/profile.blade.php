@@ -52,8 +52,8 @@
                                     {{ optional(Auth::user())->id == $user->id ? 'Мои книги' : 'Книги автора' }}
                                 </div>
                                 <div class="user-block-books-elements panel-body">
-                                    @foreach ($user->books as $book)
-                                        <a href="{{ $book->url }}" class="user-block-books__element">
+                                    @foreach ($books as $book)
+                                        <a href="{{ $book->url }}" class="user-block-books__element {{ $book->status_css }}">
                                             {{ $book->title }}
                                         </a>
                                         {{ !$loop->last ? ',' : '' }}
