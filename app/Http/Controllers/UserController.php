@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Http\Requests\UserUpdateRequest;
+use App\Scopes\StatusScope;
 use App\User;
 use Illuminate\Http\Response;
 use Auth;
@@ -17,12 +18,16 @@ class UserController extends Controller
      */
     public function __construct()
     {
+        //Проверяем факт того, что пользователь авторизован для всех кроме
         $this->middleware('checkAuth')->except(['show']);
 
+        //Проверяем факт того, что пользователь с данным id существует для всех кроме
         $this->middleware('checkUserExist')->except(['addBookToLibrary', 'deleteBookToLibrary']);
 
+        //Проверяем факт того, что текущий пользователь имеет права на работу с профайлом только для
         $this->middleware('checkUserGranted')->only(['editShow', 'edit']);
 
+        //Проверяем факт того, что книга с данным id существует только для
         $this->middleware('checkBookExist')->only(['addBookToLibrary', 'deleteBookToLibrary']);
     }
 
@@ -34,8 +39,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $user = User::find($id);
+
+        $books = optional(Auth::user())->id == $id
+            ? $user->books()->withoutGlobalScope(StatusScope::class)->get()
+            : $user->books;
+
         return view('user.profile', [
-            'user' => User::find($id),
+            'user' => $user,
+            'books' => $books
         ]);
     }
 

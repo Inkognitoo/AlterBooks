@@ -72,6 +72,29 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
+                            <label for="status" class="col-md-4 control-label">Статус</label>
+
+                            <div class="col-md-6">
+                                <select id="status" class="form-control" name="status">
+                                    <option value="{{ \App\Book::CLOSE_STATUS }}"
+                                            {{ (old('status')) == \App\Book::CLOSE_STATUS ? 'selected' : '' }} >
+                                        Черновик (видите только вы)
+                                    </option>
+                                    <option value="{{ \App\Book::OPEN_STATUS }}"
+                                            {{ (old('status')) == \App\Book::OPEN_STATUS ? 'selected' : ''}} >
+                                        Чистовик (видят все)
+                                    </option>
+                                </select>
+
+                                @if ($errors->has('status'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('status') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

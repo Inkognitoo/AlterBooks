@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Book;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BookCreateRequest extends FormRequest
 {
@@ -28,6 +30,10 @@ class BookCreateRequest extends FormRequest
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
             'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
+            'status' => [
+                'required',
+                Rule::in([Book::OPEN_STATUS, Book::CLOSE_STATUS]),
+            ],
         ];
     }
 }

@@ -45,3 +45,7 @@
     padding: 6px 8px;
     border-color: white;
 }
+
+.user-block-books__element_status_close {
+    color: #8c8c8c;
+}
