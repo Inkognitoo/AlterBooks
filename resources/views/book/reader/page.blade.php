@@ -39,10 +39,10 @@
                         </p>
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8 book-reader-pagination center-block">
+                            <div class="book-reader-pagination col-md-8 center-block">
                                     @if($current_page - 1 > 1)
                                         <a type="button" class="book-reader-pagination-page book-reader-pagination-page__first btn btn-default text-center"
-                                           href="{{ ($current_page != 1) ? route('book.page.show', ['id' => $book->id, 'page_number' => (1)]) : '' }}">
+                                           href="{{  route('book.page.show', ['id' => $book->id, 'page_number' => (1)]) }}">
                                             1
                                         </a>
                                         <a type="button" class="book-reader-pagination-page book-reader-pagination-page__dots btn btn-default text-center disabled" id="dots-1">
@@ -58,7 +58,7 @@
                                     @endif
 
                                     <a type="button" class="book-reader-pagination-page book-reader-pagination-page__current btn btn-default text-center disabled"
-                                       href="{{ ($current_page != 1) ? route('book.page.show', ['id' => $book->id, 'page_number' => ($current_page)]) : '' }}">
+                                       href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => ($current_page)]) }}">
                                         {{ $current_page }}
                                     </a>
 
@@ -73,8 +73,8 @@
                                         <a type="button" class="book-reader-pagination-page book-reader-pagination-page__dots btn btn-default text-center disabled" id="dots-2">
                                             ...
                                         </a>
-                                        <a type="button" class="book-reader-pagination-page book-reader-pagination-page__last btn btn-default text-center"
-                                            href="{{ ($current_page != 1) ? route('book.page.show', ['id' => $book->id, 'page_number' => ($book->page_count)]) : '' }}">
+                                        <a type="button" class="book-reader-pagin   on-page book-reader-pagination-page__last btn btn-default text-center"
+                                            href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => ($book->page_count)])}}">
                                             {{ $book->page_count }}
                                         </a>
                                     @endif
