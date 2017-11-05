@@ -149,9 +149,15 @@ class User extends Authenticatable
         }
 
         switch ($this->gender) {
-            case $this::GENDER_MALE: return '/img/avatar_man.png'; break;
-            case $this::GENDER_FEMALE: return '/img/avatar_woman.png'; break;
-            default: return '/img/avatar_default.png'; break;
+            case $this::GENDER_MALE:
+                return '/img/avatar_man.png';
+                break;
+            case $this::GENDER_FEMALE:
+                return '/img/avatar_woman.png';
+                break;
+            default:
+                return '/img/avatar_default.png';
+                break;
         }
     }
 
