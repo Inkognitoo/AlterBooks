@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Book;
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class CheckUserBookGranted
 {
@@ -17,7 +17,7 @@ class CheckUserBookGranted
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->id != Book::find($request->id)->author->id) {
+        if (Auth::user()->id != Book::findAny($request->id)->author_id) {
             return response(view('errors.403'), 403);
         }
 
