@@ -87,3 +87,7 @@ Route::post('book/id{id}/page/{page_number}/edit', 'BookController@editPage')
 Route::get('book/id{id}/delete', 'BookController@delete')
     ->name('book.delete')
 ;
+
+Route::get('books', 'BookController@showBooks')
+    ->name('book.books-list')
+;
