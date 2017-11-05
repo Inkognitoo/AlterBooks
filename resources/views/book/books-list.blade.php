@@ -9,13 +9,20 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Список книг</div>
                     <div class="panel-body">
-                        @section('book-profile-mini', '123')
-                        @overwrite
-                        @include('book.book-profile-mini')
+                        <div>
+                            @if(!blank($books))
+                                @foreach ($books as $book)
+                                    @include('book.book-profile-mini')
+                                @endforeach
+                            @else
+                                <div class="text-center">
+                                    Нет ни одной книги, доступной для чтения
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-
