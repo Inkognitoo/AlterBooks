@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Book;
+use Auth;
 use Closure;
 
 class CheckBookExist
@@ -16,7 +17,13 @@ class CheckBookExist
      */
     public function handle($request, Closure $next)
     {
-        if (blank(Book::find($request->id))) {
+        $book = Book::findAny($request->id);
+
+        if (blank($book)) {
+            return response(view('errors.404'), 404);
+        }
+
+        if ($book->status == Book::CLOSE_STATUS && optional(Auth::user())->id != $book->author_id) {
             return response(view('errors.404'), 404);
         }
 
