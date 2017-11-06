@@ -20,7 +20,7 @@ class BookController extends Controller
     public function __construct()
     {
         //Проверяем факт того, что пользователь авторизован для всех кроме
-        $this->middleware('checkAuth')->except(['show', 'readPage']);
+        $this->middleware('checkAuth')->except(['show', 'readPage', 'showBooks']);
 
         //Проверяем факт того, что книга с данным id существует для всех кроме
         $this->middleware('checkBookExist')->except(['createShow', 'create', 'showBooks']);
@@ -198,7 +198,6 @@ class BookController extends Controller
      */
     public function showBooks()
     {
-        $books = Book::all();
-        return view('book.books-list', ['books' => $books]);
+        return view('book.books-list', ['books' => Book::all()]);
     }
 }

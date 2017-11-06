@@ -17,7 +17,7 @@
                     <div class="col-md-8 panel panel-default">
                         <div class="panel-heading">Описание книги</div>
                         <div class="panel-body text-justify">
-                            @if(!blank($book->description))
+                            @if(filled($book->description))
                                 {{ $book->description }}
                             @else
                                 -описание отсутствует-
@@ -29,10 +29,10 @@
                             <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">
                                 Читать
                             </a>
-                            <a type="button" class="btn btn-default" href="{{ route('book.show', ['id' => $book->id]) }}">
-                                К профилю книги
-                            </a>
                         @endif
+                        <a type="button" class="btn btn-default" href="{{ route('book.show', ['id' => $book->id]) }}">
+                            К профилю книги
+                        </a>
                     </div>
                 </div>
             </div>
