@@ -49,3 +49,7 @@
 .user-block-books__element_status_close {
     color: #8c8c8c;
 }
+
+.books-list-cover__img {
+    width: 150px;
+}

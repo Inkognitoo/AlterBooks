@@ -20,10 +20,10 @@ class BookController extends Controller
     public function __construct()
     {
         //Проверяем факт того, что пользователь авторизован для всех кроме
-        $this->middleware('checkAuth')->except(['show', 'readPage']);
+        $this->middleware('checkAuth')->except(['show', 'readPage', 'showBooks']);
 
         //Проверяем факт того, что книга с данным id существует для всех кроме
-        $this->middleware('checkBookExist')->except(['createShow', 'create']);
+        $this->middleware('checkBookExist')->except(['createShow', 'create', 'showBooks']);
 
         //Проверяем факт того, что пользователь имеет право на работу с книгой только для
         $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage', 'delete']);
@@ -189,5 +189,15 @@ class BookController extends Controller
 
         return redirect(route('book.page.show', ['id' => $id, 'current_page' => $page_number]))
             ->with(['status' => 'Данные были успешно обновлены']);
+    }
+
+    /**
+     * Показываем страницу со списком существующих книг
+     *
+     * @return Response
+     */
+    public function showBooks()
+    {
+        return view('book.books-list', ['books' => Book::all()]);
     }
 }
