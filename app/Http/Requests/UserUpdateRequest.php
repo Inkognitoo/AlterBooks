@@ -5,8 +5,22 @@ namespace App\Http\Requests;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
+/**
+ * App\Http\Requests\UserUpdateRequest
+ *
+ * @property string $nickname
+ * @property UploadedFile|null $avatar
+ * @property string|null $name
+ * @property string|null $surname
+ * @property string|null $patronymic
+ * @property string $email
+ * @property string $password
+ * @property string $gender
+ * @property string|null $birthday_date
+ */
 class UserUpdateRequest extends FormRequest
 {
     /**

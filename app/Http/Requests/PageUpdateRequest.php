@@ -4,6 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * App\Http\Requests\PageUpdateRequest
+ *
+ * @property string $text
+ */
 class PageUpdateRequest extends FormRequest
 {
     /**

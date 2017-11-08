@@ -72,11 +72,11 @@ class UserController extends Controller
     {
         Auth::user()->fill($request->all());
 
-        if (filled($request['password'])) {
-            Auth::user()->password = bcrypt($request['password']);
+        if (filled($request->password)) {
+            Auth::user()->password = bcrypt($request->password);
         }
-        if (filled($request['avatar'])) {
-            Auth::user()->setAvatar($request['avatar']);
+        if (filled($request->avatar)) {
+            Auth::user()->setAvatar($request->avatar);
         }
 
         Auth::user()->save();

@@ -4,8 +4,18 @@ namespace App\Http\Requests;
 
 use App\Book;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
+/**
+ * App\Http\Requests\BookCreateRequest
+ *
+ * @property string $title
+ * @property UploadedFile|null $cover
+ * @property string|null $description
+ * @property UploadedFile|null $text
+ * @property string $status
+ */
 class BookCreateRequest extends FormRequest
 {
     /**
