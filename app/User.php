@@ -45,10 +45,11 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereSurname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  */
 class User extends Authenticatable
 {
-
+    //Возможные гендеры пользователя
     const GENDER_MALE = 'm';
     const GENDER_FEMALE = 'f';
     const GENDER_NOT_INDICATED = 'n';
@@ -93,6 +94,14 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Book', 'users_library')
             ->withTimestamps()
         ;
+    }
+
+    /**
+     * Получить все рецензии текущего пользователя
+     */
+    public function reviews()
+    {
+        return $this->hasMany('App\Review', 'user_id');
     }
 
     /**
