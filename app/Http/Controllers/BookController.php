@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Requests\BookUpdateRequest;
 use App\Http\Requests\PageUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Auth;
 
 class BookController extends Controller
