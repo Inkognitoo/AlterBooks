@@ -48,6 +48,12 @@
 
                         </div>
                     </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @include('review.create')
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
