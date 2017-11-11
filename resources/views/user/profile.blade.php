@@ -27,6 +27,15 @@
                                 </div>
                             </div>
 
+                            @if(filled($user->about))
+                            <div class="user-info-content-about panel panel-default">
+                                <div class="user-info-content-about__title panel-heading">О себе</div>
+                                <div class="user-info-content-about__content panel-body">
+                                    {{ $user->about }}
+                                </div>
+                            </div>
+                            @endif
+
                             @auth
                                 @if(Auth::user()->id == $user->id)
                                     <a type="button" class="user-info-edit__button btn btn-default"
