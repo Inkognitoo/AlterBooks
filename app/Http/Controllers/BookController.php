@@ -56,11 +56,11 @@ class BookController extends Controller
 
         Auth::user()->books()->save($book);
 
-        if (filled($request['cover'])) {
-            $book->setCover($request['cover']);
+        if (filled($request->cover)) {
+            $book->setCover($request->cover);
         }
-        if (filled($request['text'])) {
-            $book->setText($request['text']);
+        if (filled($request->text)) {
+            $book->setText($request->text);
         }
 
         $book->save();
@@ -94,11 +94,11 @@ class BookController extends Controller
 
         $book->fill($request->all());
 
-        if (filled($request['cover'])) {
-            $book->setCover($request['cover']);
+        if (filled($request->cover)) {
+            $book->setCover($request->cover);
         }
-        if (filled($request['text'])) {
-            $book->setText($request['text']);
+        if (filled($request->text)) {
+            $book->setText($request->text);
         }
         $book->save();
 
@@ -185,7 +185,7 @@ class BookController extends Controller
     {
         $book = Book::findAny($id);
 
-        $book->editPage($page_number, $request['text']);
+        $book->editPage($page_number, $request->text);
 
         return redirect(route('book.page.show', ['id' => $id, 'current_page' => $page_number]))
             ->with(['status' => 'Данные были успешно обновлены']);

@@ -37,6 +37,15 @@ use Exception;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
+ * @method static \Illuminate\Database\Query\Builder|\App\Book onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereMongodbBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book wherePageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
  */
 class Book extends Model
 {
@@ -108,6 +117,14 @@ class Book extends Model
         return $this->belongsToMany('App\User', 'users_library')
             ->withTimestamps()
         ;
+    }
+
+    /**
+     * Получить все рецензии на текущую книгу
+     */
+    public function reviews()
+    {
+        return $this->hasMany('App\Review', 'book_id');
     }
 
     /**
