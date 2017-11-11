@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Requests\BookUpdateRequest;
 use App\Http\Requests\PageUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 class BookController extends Controller
@@ -194,10 +196,13 @@ class BookController extends Controller
     /**
      * Показываем страницу со списком существующих книг
      *
+     * @param $page_number
      * @return Response
      */
-    public function showBooks()
+    public function showBooks(int $page_number)
     {
-        return view('book.books-list', ['books' => Book::all()]);
+        $books = Book::paginate(10);
+
+        return view('book.books-list', ['books' => $books]);
     }
 }

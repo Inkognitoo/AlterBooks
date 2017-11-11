@@ -88,6 +88,6 @@ Route::get('book/id{id}/delete', 'BookController@delete')
     ->name('book.delete')
 ;
 
-Route::get('books', 'BookController@showBooks')
+Route::get('books/page/{page_number}', 'BookController@showBooks')
     ->name('book.books-list')
 ;
