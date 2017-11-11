@@ -20,9 +20,6 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="col-md-12 text-center">
-                            {{ $books->links() }}
-                        </div>
                     </div>
                 </div>
             </div>
