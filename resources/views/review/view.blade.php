@@ -6,7 +6,7 @@
     <div class='panel-body'>
         <div class="row">
             <div class="col-md-4">
-                <img src="{{ $review->user->avatar_url }}" alt="avatar">
+                <img src="{{ $review->user->avatar_url }}" class="user-info-avatar__image img-rounded" alt="avatar">
             </div>
             <div class="col-md-8">
                 <div class="row">
