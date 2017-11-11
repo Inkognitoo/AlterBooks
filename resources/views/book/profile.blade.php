@@ -54,6 +54,14 @@
                             @include('review.create')
                         </div>
                     </div>
+
+                    <div class="row">
+                        @foreach($book->reviews as $review)
+                            <div class="col-md-12">
+                                @include('review.view', compact($review))
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
