@@ -196,10 +196,9 @@ class BookController extends Controller
     /**
      * Показываем страницу со списком существующих книг
      *
-     * @param $page_number
      * @return Response
      */
-    public function showBooks(int $page_number)
+    public function showBooks()
     {
         $books = Book::paginate(10);
 
