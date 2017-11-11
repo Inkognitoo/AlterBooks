@@ -10,7 +10,7 @@
                     <div class="panel-heading">Список книг</div>
                     <div class="panel-body">
                         <div>
-                            @if(!blank($books))
+                            @if(!$books->isEmpty())
                                 @foreach ($books as $book)
                                     @include('book.book-profile-mini')
                                 @endforeach
