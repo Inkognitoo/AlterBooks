@@ -25,8 +25,12 @@
                                     <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
                                         {{ $book->author->full_name }}
                                     </a>
-                                    <br>
-                                    {{ $book->description }}
+                                    <br><br>
+                                    @if(filled($book->description))
+                                        {{ $book->description }}
+                                    @else
+                                        <span class="no-description">-описание отсутствует-</span>
+                                    @endif
                                 </div>
                             </div>
 

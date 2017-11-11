@@ -20,7 +20,7 @@
                             @if(filled($book->description))
                                 {{ $book->description }}
                             @else
-                                -описание отсутствует-
+                                <span class="no-description">-описание отсутствует-</span>
                             @endif
                         </div>
                     </div>
