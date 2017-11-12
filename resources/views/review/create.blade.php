@@ -65,7 +65,7 @@
                 <label for="text" class="col-md-4 control-label">Текст</label>
 
                 <div class="col-md-6">
-                    <textarea id="text" class="form-control" name="text" rows="5">{{ old('text') }}
+                    <textarea id="text" class="form-control review-edit-textarea" name="text" rows="5">{{ old('text') }}
                     </textarea>
                     @if ($errors->has('text'))
                         <span class="help-block">

@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="book-cover col-md-4">
-                            <img src="{{ $book->cover_url }}" alt="-{{ $book->title }}-"
+                            <img src="{{ $book->cover_url }}" alt="{{ $book->title }}"
                                  class="book-cover__image img-rounded">
                         </div>
                         <div class="col-md-8">
@@ -60,11 +60,22 @@
                     </div>
 
                     <div class="row">
-                        @foreach($book->reviews as $review)
-                            <div class="col-md-12">
-                                @include('review.view', compact($review))
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Рецензии</div>
+                                <div class="panel-body">
+                                    @if (filled($book->reviews))
+                                        @foreach($book->reviews as $review)
+                                            <div class="col-md-12">
+                                                @include('review.view', compact($review))
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        Тут пока нет ни одной рецензии. Оставьте отзыв первым!
+                                    @endif
+                                </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
                 </div>
             </div>

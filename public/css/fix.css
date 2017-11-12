@@ -61,6 +61,12 @@
 .book-image {
     margin-bottom: 10px;
 }
-.user-edit-about {
+.user-edit-about,
+.review-edit-textarea {
+    min-width: 100%;
     max-width: 100%;
+    min-height: 50px;
+}
+.review-avatar__image {
+    width: 120px;
 }
