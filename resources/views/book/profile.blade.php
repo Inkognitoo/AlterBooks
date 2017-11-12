@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="book-cover col-md-4">
-                            <img src="{{ $book->cover_url }}" alt="cover"
+                            <img src="{{ $book->cover_url }}" alt="-{{ $book->title }}-"
                                  class="book-cover__image img-rounded">
                         </div>
                         <div class="col-md-8">
