@@ -23,16 +23,8 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-md-offset-0 text-right">
-                    @if(filled($book->mongodb_book_id))
-                        <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">
-                            Читать
-                        </a>
-
-                    @endif
-                </div>
             </div>
-            <div class="col-md-offset-0 text-right">
+            <div class="col-md-12 text-right">
                 @if(filled($book->mongodb_book_id))
                     <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">
                         Читать
