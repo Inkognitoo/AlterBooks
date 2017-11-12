@@ -275,4 +275,18 @@ class Book extends Model
 
         $mongodb_book->editPage($page_number, $text);
     }
+
+    /**
+     * Проверить, оставлял ли пользователь рецензию к книге
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function hasReview(User $user): bool
+    {
+        return filled($this->reviews()
+            ->where(['user_id' => $user->id])
+            ->first()
+        );
+    }
 }

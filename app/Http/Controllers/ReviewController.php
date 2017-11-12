@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
+use App\Http\Middleware\CheckUserCanReview;
 use App\Http\Requests\ReviewCreateRequest;
 use App\Review;
 use Auth;
@@ -18,11 +19,11 @@ class ReviewController extends Controller
      */
     public function __construct()
     {
-        //Проверяем факт того, что пользователь авторизован
         $this->middleware(CheckAuth::class);
 
-        //Проверяем факт того, что книга с данным id существует
         $this->middleware(CheckBookExist::class);
+
+        $this->middleware(CheckUserCanReview::class);
     }
 
     /**
