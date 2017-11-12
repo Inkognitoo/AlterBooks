@@ -11,7 +11,6 @@ use Closure;
  *
  * Class CheckUserCanReview
  * @package App\Http\Middleware
- *
  */
 class CheckUserCanReview
 {

@@ -6,6 +6,12 @@ use App\Book;
 use Auth;
 use Closure;
 
+/**
+ * Проверям, существует ли книга
+ *
+ * Class CheckBookExist
+ * @package App\Http\Middleware
+ */
 class CheckBookExist
 {
     /**
