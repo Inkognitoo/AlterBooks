@@ -60,11 +60,22 @@
                     </div>
 
                     <div class="row">
-                        @foreach($book->reviews as $review)
-                            <div class="col-md-12">
-                                @include('review.view', compact($review))
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Рецензии</div>
+                                <div class="panel-body">
+                                    @if (filled($book->reviews))
+                                        @foreach($book->reviews as $review)
+                                            <div class="col-md-12">
+                                                @include('review.view', compact($review))
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        Тут пока нет ни одной рецензии. Оставьте отзыв первым!
+                                    @endif
+                                </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
