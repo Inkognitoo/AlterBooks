@@ -55,24 +55,56 @@
                     <br>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('review.create')
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">Рецензии</div>
                                 <div class="panel-body">
                                     @if (filled($book->reviews))
-                                        @foreach($book->reviews as $review)
+                                        <div class="row">
                                             <div class="col-md-12">
-                                                @include('review.view', compact($review))
+                                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                    Добавить рецензию
+                                                </button>
+                                                <div class="collapse" id="collapseExample">
+                                                    <div class="well">
+                                                        @include('review.create')
+                                                    </div>
+                                                </div>
                                             </div>
-                                        @endforeach
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            @foreach($book->reviews as $review)
+                                                <div class="col-md-12">
+                                                    @include('review.view', compact($review))
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     @else
-                                        Тут пока нет ни одной рецензии. Оставьте отзыв первым!
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                Тут пока нет ни одной рецензии. Оставьте отзыв первым!
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                    Добавить рецензию
+                                                </button>
+                                                <div class="collapse" id="collapseExample">
+                                                    <div class="well">
+                                                        @include('review.create')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endif
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
