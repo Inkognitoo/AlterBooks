@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
+ * Валидируем запрос на создание рецензии
+ *
  * App\Http\Requests\ReviewCreateRequest
  *
  * @property int $rating

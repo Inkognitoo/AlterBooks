@@ -8,6 +8,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
 /**
+ * Валидируем запрос на создание книги
+ *
  * App\Http\Requests\BookCreateRequest
  *
  * @property string $title

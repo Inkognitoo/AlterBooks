@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
+ * Валидируем запрос на обновление страницы книги
+ *
  * App\Http\Requests\PageUpdateRequest
  *
  * @property string $text
