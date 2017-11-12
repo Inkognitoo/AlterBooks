@@ -5,11 +5,12 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * App\Http\Requests\PageUpdateRequest
+ * App\Http\Requests\ReviewCreateRequest
  *
+ * @property int $rating
  * @property string $text
  */
-class PageUpdateRequest extends FormRequest
+class ReviewCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,6 +30,7 @@ class PageUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'rating' => 'required|integer|between:1,10',
             'text' => 'required|max:2000',
         ];
     }
