@@ -25,10 +25,11 @@
                                     {{ $book->title }}
                                 </div>
                                 <div class="panel-body">
-
                                     <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
                                         {{ $book->author->full_name }}
                                     </a>
+                                    <br>
+                                    Оценка: {{ $book->rating }}/10
                                     <br><br>
                                     @if(filled($book->description))
                                         {{ $book->description }}

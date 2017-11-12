@@ -30,6 +30,7 @@ use Exception;
  * @property string $cover_url Ссылка на обложку книги
  * @property string $status_css css класс соответствующий текущему статусу книги
  * @property string $url Ссылка на книгу
+ * @property float $rating Средняя оценка книги
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCreatedAt($value)
@@ -205,7 +206,6 @@ class Book extends Model
      * Получаем css класс для текущего статуса книги
      *
      * @return string
-     * @throws Exception
      */
     public function getStatusCssAttribute(): string
     {
@@ -220,6 +220,16 @@ class Book extends Model
 
                 return 'user-block-books__element_status_close';
         }
+    }
+
+    /**
+     * Получаем средний рейтинг книги
+     *
+     * @return float
+     */
+    public function getRatingAttribute(): float
+    {
+        return round($this->reviews->average('rating'), 1);
     }
 
     /**
