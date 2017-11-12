@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="col-md-4 book-image">
-                    <img src="{{ $book->cover_url }}" class="books-list-cover__img img-rounded" alt="cover">
+                    <img src="{{ $book->cover_url }}" class="books-list-cover__img img-rounded" alt="-{{ $book->title }}-">
                 </div>
                 <div class="col-md-8 panel panel-default">
                     <div class="panel-heading">Описание книги</div>
