@@ -9,6 +9,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
 /**
+ * Валидируем запрос на обновление пользователя
+ *
  * App\Http\Requests\UserUpdateRequest
  *
  * @property string $nickname

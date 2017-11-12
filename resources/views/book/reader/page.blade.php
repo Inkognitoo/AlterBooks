@@ -1,3 +1,7 @@
+@php
+    /** @var \App\Book $book */
+@endphp
+
 @extends('layouts.app')
 
 @section('title', $book->title)
@@ -78,7 +82,6 @@
                                             {{ $book->page_count }}
                                         </a>
                                     @endif
-
                             </div>
                         </div>
                     </div>

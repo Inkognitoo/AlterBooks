@@ -5,6 +5,12 @@ namespace App\Http\Middleware;
 use App\User;
 use Closure;
 
+/**
+ * Проверяем, существует ли пользователь
+ *
+ * Class CheckUserExist
+ * @package App\Http\Middleware
+ */
 class CheckUserExist
 {
     /**
