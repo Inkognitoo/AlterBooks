@@ -61,7 +61,7 @@
                                     @if (filled($book->reviews))
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                                     Добавить рецензию
                                                 </button>
                                                 <div class="collapse" id="collapseExample">
@@ -88,7 +88,7 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                                     Добавить рецензию
                                                 </button>
                                                 <div class="collapse" id="collapseExample">
