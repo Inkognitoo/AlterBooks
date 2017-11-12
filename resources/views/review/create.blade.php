@@ -1,3 +1,7 @@
+@php
+    /** @var \Illuminate\Support\ViewErrorBag $errors */
+@endphp
+
 <div class="panel panel-default">
     <div class="panel-heading">
         Новая рецензия
