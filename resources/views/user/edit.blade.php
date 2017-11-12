@@ -178,6 +178,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
+                            <label for="about" class="col-md-4 control-label">О себе</label>
+
+                            <div class="col-md-6">
+                                <textarea id="about" class="form-control user-edit-about" name="about">{{ old('about') ?? Auth::user()->about }}</textarea>
+
+                                @if ($errors->has('about'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('about') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

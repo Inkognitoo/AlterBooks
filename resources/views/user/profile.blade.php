@@ -13,7 +13,7 @@
                     <div class="user-info row">
                         <div class="user-info-avatar col-md-4">
                             <img src="{{ $user->avatar_url }}" class="user-info-avatar__image img-rounded"
-                                 alt="avatar">
+                                 alt="{{ $user->full_name }}">
                         </div>
                         <div class="user-info-area col-md-8">
                             <div class="user-info-content panel panel-default">
@@ -26,6 +26,15 @@
                                     @endif
                                 </div>
                             </div>
+
+                            @if(filled($user->about))
+                            <div class="user-info-content-about panel panel-default">
+                                <div class="user-info-content-about__title panel-heading">О себе</div>
+                                <div class="user-info-content-about__content panel-body">
+                                    {{ $user->about }}
+                                </div>
+                            </div>
+                            @endif
 
                             @auth
                                 @if(Auth::user()->id == $user->id)

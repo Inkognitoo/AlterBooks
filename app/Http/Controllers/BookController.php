@@ -198,6 +198,8 @@ class BookController extends Controller
      */
     public function showBooks()
     {
-        return view('book.books-list', ['books' => Book::all()]);
+        $books = Book::paginate(10);
+
+        return view('book.books-list', ['books' => $books]);
     }
 }

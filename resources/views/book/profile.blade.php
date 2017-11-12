@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="book-cover col-md-4">
-                            <img src="{{ $book->cover_url }}" alt="cover"
+                            <img src="{{ $book->cover_url }}" alt="{{ $book->title }}"
                                  class="book-cover__image img-rounded">
                         </div>
                         <div class="col-md-8">
@@ -25,8 +25,12 @@
                                     <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
                                         {{ $book->author->full_name }}
                                     </a>
-                                    <br>
-                                    {{ $book->description }}
+                                    <br><br>
+                                    @if(filled($book->description))
+                                        {{ $book->description }}
+                                    @else
+                                        <span class="no-description">-описание отсутствует-</span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -51,16 +55,59 @@
                     <br>
                     <div class="row">
                         <div class="col-md-12">
-                            @include('review.create')
-                        </div>
-                    </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Рецензии</div>
+                                <div class="panel-body">
+                                    @if (filled($book->reviews))
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                    Добавить рецензию
+                                                </button>
+                                                <div class="collapse" id="collapseExample">
+                                                    <div class="well">
+                                                        @include('review.create')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            @foreach($book->reviews as $review)
+                                                <div class="col-md-12">
+                                                    @include('review.view', compact($review))
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                Тут пока нет ни одной рецензии. Оставьте отзыв первым!
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                    Добавить рецензию
+                                                </button>
+                                                <div class="collapse" id="collapseExample">
+                                                    <div class="well">
+                                                        @include('review.create')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
 
-                    <div class="row">
-                        @foreach($book->reviews as $review)
-                            <div class="col-md-12">
-                                @include('review.view', compact($review))
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
                 </div>
             </div>

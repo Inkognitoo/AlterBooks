@@ -62,6 +62,7 @@ class UserUpdateRequest extends FormRequest
                 Rule::in([User::GENDER_MALE, User::GENDER_FEMALE, User::GENDER_NOT_INDICATED]),
             ],
             'birthday_date' => 'nullable|date',
+            'about' => 'nullable|max:5000',
         ];
     }
 }
