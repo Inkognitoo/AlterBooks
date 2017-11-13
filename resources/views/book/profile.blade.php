@@ -1,3 +1,7 @@
+@php
+    /** @var \App\Book $book */
+@endphp
+
 @extends('layouts.app')
 
 @section('title', $book->title)
@@ -12,7 +16,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="book-cover col-md-4">
-                            <img src="{{ $book->cover_url }}" alt="cover"
+                            <img src="{{ $book->cover_url }}" alt="{{ $book->title }}"
                                  class="book-cover__image img-rounded">
                         </div>
                         <div class="col-md-8">
@@ -21,12 +25,17 @@
                                     {{ $book->title }}
                                 </div>
                                 <div class="panel-body">
-
                                     <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
                                         {{ $book->author->full_name }}
                                     </a>
                                     <br>
-                                    {{ $book->description }}
+                                    Оценка: {{ $book->rating }}/10
+                                    <br><br>
+                                    @if(filled($book->description))
+                                        {{ $book->description }}
+                                    @else
+                                        <span class="no-description">-описание отсутствует-</span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -46,6 +55,51 @@
                                 @endif
                             @endauth
 
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Рецензии</div>
+                                <div class="panel-body">
+                                    @if(blank($book->reviews))
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                Тут пока нет ни одной рецензии. Оставьте отзыв первым!
+                                            </div>
+                                        </div>
+                                        <br>
+                                    @endif
+
+                                    @auth
+                                        @unless($book->hasReview(Auth::user()) || Auth::user()->id == $book->author_id)
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <button class="btn btn-default" type="button" data-toggle="collapse"
+                                                            data-target="#collapseReview" aria-expanded="false" aria-controls="collapseReview">
+                                                        Добавить рецензию
+                                                    </button>
+                                                    <div class="collapse" id="collapseReview">
+                                                        <div class="well">
+                                                            @include('review.create')
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                        @endunless
+                                    @endauth
+
+                                    <div class="row">
+                                        @foreach($book->reviews as $review)
+                                            <div class="col-md-12">
+                                                @include('review.view', compact($review))
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

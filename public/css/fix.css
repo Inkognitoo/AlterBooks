@@ -53,3 +53,20 @@
 .books-list-cover__img {
     width: 150px;
 }
+
+.no-description {
+    color: #9b9b9b;
+}
+
+.book-image {
+    margin-bottom: 10px;
+}
+.user-edit-about,
+.review-edit-textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 50px;
+}
+.review-avatar__image {
+    width: 120px;
+}

@@ -5,6 +5,12 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Проверяем, имеет пользователь право на работу с сущностью
+ *
+ * Class CheckUserGranted
+ * @package App\Http\Middleware
+ */
 class CheckUserGranted
 {
     /**

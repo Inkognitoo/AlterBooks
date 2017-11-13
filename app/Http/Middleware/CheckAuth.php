@@ -5,6 +5,12 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
+/**
+ * Проверяем, авторизован ли пользователь
+ *
+ * Class CheckAuth
+ * @package App\Http\Middleware
+ */
 class CheckAuth
 {
     /**

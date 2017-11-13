@@ -1,3 +1,7 @@
+@php
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Book[] $books */
+@endphp
+
 @extends('layouts.app')
 
 @section('title', 'Список книг')
@@ -10,15 +14,18 @@
                     <div class="panel-heading">Список книг</div>
                     <div class="panel-body">
                         <div>
-                            @if(!$books->isEmpty())
-                                @foreach ($books as $book)
-                                    @include('book.book-profile-mini')
-                                @endforeach
-                            @else
+                            @if($books->isEmpty())
                                 <div class="text-center">
                                     Нет ни одной книги, доступной для чтения
                                 </div>
                             @endif
+
+                            @foreach ($books as $book)
+                                @include('book.book-profile-mini')
+                            @endforeach
+                        </div>
+                        <div class="col-md-12 text-center">
+                            {{ $books->links() }}
                         </div>
                     </div>
                 </div>

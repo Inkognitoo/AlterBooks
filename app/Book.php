@@ -30,6 +30,7 @@ use Exception;
  * @property string $cover_url Ссылка на обложку книги
  * @property string $status_css css класс соответствующий текущему статусу книги
  * @property string $url Ссылка на книгу
+ * @property float $rating Средняя оценка книги
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCreatedAt($value)
@@ -37,6 +38,15 @@ use Exception;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
+ * @method static \Illuminate\Database\Query\Builder|\App\Book onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereMongodbBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book wherePageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
  */
 class Book extends Model
 {
@@ -108,6 +118,14 @@ class Book extends Model
         return $this->belongsToMany('App\User', 'users_library')
             ->withTimestamps()
         ;
+    }
+
+    /**
+     * Получить все рецензии на текущую книгу
+     */
+    public function reviews()
+    {
+        return $this->hasMany('App\Review', 'book_id');
     }
 
     /**
@@ -188,7 +206,6 @@ class Book extends Model
      * Получаем css класс для текущего статуса книги
      *
      * @return string
-     * @throws Exception
      */
     public function getStatusCssAttribute(): string
     {
@@ -203,6 +220,16 @@ class Book extends Model
 
                 return 'user-block-books__element_status_close';
         }
+    }
+
+    /**
+     * Получаем средний рейтинг книги
+     *
+     * @return float
+     */
+    public function getRatingAttribute(): float
+    {
+        return round($this->reviews->average('rating'), 1);
     }
 
     /**
@@ -257,5 +284,19 @@ class Book extends Model
         $mongodb_book = new MongoBook($this);
 
         $mongodb_book->editPage($page_number, $text);
+    }
+
+    /**
+     * Проверить, оставлял ли пользователь рецензию к книге
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function hasReview(User $user): bool
+    {
+        return filled($this->reviews()
+            ->where(['user_id' => $user->id])
+            ->first()
+        );
     }
 }

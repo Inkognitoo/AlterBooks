@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckBookExist;
+use App\Http\Middleware\CheckUserBookGranted;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Requests\BookUpdateRequest;
 use App\Http\Requests\PageUpdateRequest;
@@ -19,14 +22,11 @@ class BookController extends Controller
      */
     public function __construct()
     {
-        //Проверяем факт того, что пользователь авторизован для всех кроме
-        $this->middleware('checkAuth')->except(['show', 'readPage', 'showBooks']);
+        $this->middleware(CheckAuth::class)->except(['show', 'readPage', 'showBooks']);
 
-        //Проверяем факт того, что книга с данным id существует для всех кроме
-        $this->middleware('checkBookExist')->except(['createShow', 'create', 'showBooks']);
+        $this->middleware(CheckBookExist::class)->except(['createShow', 'create', 'showBooks']);
 
-        //Проверяем факт того, что пользователь имеет право на работу с книгой только для
-        $this->middleware('checkUserBookGranted')->only(['editShow', 'edit', 'editPageShow', 'editPage', 'delete']);
+        $this->middleware(CheckUserBookGranted::class)->only(['editShow', 'edit', 'editPageShow', 'editPage', 'delete']);
     }
 
     /**
@@ -56,11 +56,11 @@ class BookController extends Controller
 
         Auth::user()->books()->save($book);
 
-        if (filled($request['cover'])) {
-            $book->setCover($request['cover']);
+        if (filled($request->cover)) {
+            $book->setCover($request->cover);
         }
-        if (filled($request['text'])) {
-            $book->setText($request['text']);
+        if (filled($request->text)) {
+            $book->setText($request->text);
         }
 
         $book->save();
@@ -94,11 +94,11 @@ class BookController extends Controller
 
         $book->fill($request->all());
 
-        if (filled($request['cover'])) {
-            $book->setCover($request['cover']);
+        if (filled($request->cover)) {
+            $book->setCover($request->cover);
         }
-        if (filled($request['text'])) {
-            $book->setText($request['text']);
+        if (filled($request->text)) {
+            $book->setText($request->text);
         }
         $book->save();
 
@@ -185,7 +185,7 @@ class BookController extends Controller
     {
         $book = Book::findAny($id);
 
-        $book->editPage($page_number, $request['text']);
+        $book->editPage($page_number, $request->text);
 
         return redirect(route('book.page.show', ['id' => $id, 'current_page' => $page_number]))
             ->with(['status' => 'Данные были успешно обновлены']);
@@ -198,6 +198,8 @@ class BookController extends Controller
      */
     public function showBooks()
     {
-        return view('book.books-list', ['books' => Book::all()]);
+        $books = Book::paginate(10);
+
+        return view('book.books-list', ['books' => $books]);
     }
 }

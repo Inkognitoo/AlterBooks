@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckBookExist;
+use App\Http\Middleware\CheckUserExist;
+use App\Http\Middleware\CheckUserGranted;
 use App\Http\Requests\UserUpdateRequest;
 use App\Scopes\StatusScope;
 use App\User;
@@ -18,17 +22,13 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        //Проверяем факт того, что пользователь авторизован для всех кроме
-        $this->middleware('checkAuth')->except(['show']);
+        $this->middleware(CheckAuth::class)->except(['show']);
 
-        //Проверяем факт того, что пользователь с данным id существует для всех кроме
-        $this->middleware('checkUserExist')->except(['addBookToLibrary', 'deleteBookToLibrary']);
+        $this->middleware(CheckUserExist::class)->except(['addBookToLibrary', 'deleteBookToLibrary']);
 
-        //Проверяем факт того, что текущий пользователь имеет права на работу с профайлом только для
-        $this->middleware('checkUserGranted')->only(['editShow', 'edit']);
+        $this->middleware(CheckUserGranted::class)->only(['editShow', 'edit']);
 
-        //Проверяем факт того, что книга с данным id существует только для
-        $this->middleware('checkBookExist')->only(['addBookToLibrary', 'deleteBookToLibrary']);
+        $this->middleware(CheckBookExist::class)->only(['addBookToLibrary', 'deleteBookToLibrary']);
     }
 
     /**
@@ -72,11 +72,11 @@ class UserController extends Controller
     {
         Auth::user()->fill($request->all());
 
-        if (filled($request['password'])) {
-            Auth::user()->password = bcrypt($request['password']);
+        if (filled($request->password)) {
+            Auth::user()->password = bcrypt($request->password);
         }
-        if (filled($request['avatar'])) {
-            Auth::user()->setAvatar($request['avatar']);
+        if (filled($request->avatar)) {
+            Auth::user()->setAvatar($request->avatar);
         }
 
         Auth::user()->save();

@@ -32,6 +32,7 @@ use Storage;
  * @property string $avatar_url Ссылка на аватар пользователя
  * @property string $url Ссылка на пользователя
  * @property string $full_name ФИО пользователя
+ * @property string $about Информация "О себе"
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -45,10 +46,11 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereSurname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  */
 class User extends Authenticatable
 {
-
+    //Возможные гендеры пользователя
     const GENDER_MALE = 'm';
     const GENDER_FEMALE = 'f';
     const GENDER_NOT_INDICATED = 'n';
@@ -65,7 +67,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'nickname', 'email', 'surname',
-        'patronymic', 'birthday_date', 'gender',
+        'patronymic', 'birthday_date', 'gender', 'about',
     ];
 
     /**
@@ -93,6 +95,14 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Book', 'users_library')
             ->withTimestamps()
         ;
+    }
+
+    /**
+     * Получить все рецензии текущего пользователя
+     */
+    public function reviews()
+    {
+        return $this->hasMany('App\Review', 'user_id');
     }
 
     /**
@@ -202,4 +212,19 @@ class User extends Authenticatable
         }
         return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
     }
+
+    /**
+     * Проверить, оставлял ли пользователь рецензию к книге
+     *
+     * @param Book $book
+     * @return bool
+     */
+    public function hasReview(Book $book): bool
+    {
+        return filled($this->reviews()
+            ->where(['book_id' => $book->id])
+            ->first()
+        );
+    }
+
 }

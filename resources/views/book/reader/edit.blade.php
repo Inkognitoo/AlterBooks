@@ -1,3 +1,8 @@
+@php
+    /** @var \App\Book $book */
+    /** @var \Illuminate\Support\ViewErrorBag $errors */
+@endphp
+
 @extends('layouts.app')
 
 @section('title', $book->title)

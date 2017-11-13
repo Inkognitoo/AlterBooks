@@ -1,3 +1,7 @@
+@php
+    /** @var \Illuminate\Support\ViewErrorBag $errors */
+@endphp
+
 @extends('layouts.app')
 
 @section('title', 'Редактирование профиля')
@@ -175,6 +179,20 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
+                            <label for="about" class="col-md-4 control-label">О себе</label>
+
+                            <div class="col-md-6">
+                                <textarea id="about" class="form-control user-edit-about" name="about">{{ old('about') ?? Auth::user()->about }}</textarea>
+
+                                @if ($errors->has('about'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('about') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 

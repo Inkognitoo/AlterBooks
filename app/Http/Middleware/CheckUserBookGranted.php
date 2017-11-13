@@ -6,6 +6,12 @@ use App\Book;
 use Closure;
 use Auth;
 
+/**
+ * Проверяем, имеет ли пользователь право на работу с книгой
+ *
+ * Class CheckUserBookGranted
+ * @package App\Http\Middleware
+ */
 class CheckUserBookGranted
 {
     /**

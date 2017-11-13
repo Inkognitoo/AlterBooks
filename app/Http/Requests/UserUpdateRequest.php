@@ -5,8 +5,24 @@ namespace App\Http\Requests;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
+/**
+ * Валидируем запрос на обновление пользователя
+ *
+ * App\Http\Requests\UserUpdateRequest
+ *
+ * @property string $nickname
+ * @property UploadedFile|null $avatar
+ * @property string|null $name
+ * @property string|null $surname
+ * @property string|null $patronymic
+ * @property string $email
+ * @property string $password
+ * @property string $gender
+ * @property string|null $birthday_date
+ */
 class UserUpdateRequest extends FormRequest
 {
     /**
@@ -48,6 +64,7 @@ class UserUpdateRequest extends FormRequest
                 Rule::in([User::GENDER_MALE, User::GENDER_FEMALE, User::GENDER_NOT_INDICATED]),
             ],
             'birthday_date' => 'nullable|date',
+            'about' => 'nullable|max:5000',
         ];
     }
 }
