@@ -299,4 +299,14 @@ class Book extends Model
             ->first()
         );
     }
+
+    /**
+     * Проверить, закрыт ли доступ к книге
+     *
+     * @return bool
+     */
+    public function isClose(): bool
+    {
+        return $this->status === self::CLOSE_STATUS;
+    }
 }
