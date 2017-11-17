@@ -30,7 +30,7 @@
 
                             <div class="col-md-6">
                                 <input id="title" type="text" class="form-control" name="title"
-                                       value="{{ old('title') ?? $book->title  }}" autofocus>
+                                       value="{{ old('title', $book->title) }}" autofocus>
 
                                 @if ($errors->has('title'))
                                     <span class="help-block">
@@ -72,7 +72,7 @@
                             <label for="description" class="col-md-4 control-label">Описание</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" class="form-control" name="description" rows="5">{{ old('description') ?? $book->description}}
+                                <textarea id="description" class="form-control" name="description" rows="5">{{ old('description', $book->description) }}
                                 </textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
@@ -88,11 +88,11 @@
                             <div class="col-md-6">
                                 <select id="status" class="form-control" name="status">
                                     <option value="{{ \App\Book::CLOSE_STATUS }}"
-                                            {{ (old('status') ?? $book->status) == \App\Book::CLOSE_STATUS ? 'selected' : '' }} >
+                                            {{ old('status', $book->status) == \App\Book::CLOSE_STATUS ? 'selected' : '' }} >
                                         Черновик (видите только вы)
                                     </option>
                                     <option value="{{ \App\Book::OPEN_STATUS }}"
-                                            {{ (old('status') ?? $book->status) == \App\Book::OPEN_STATUS ? 'selected' : ''}} >
+                                            {{ old('status', $book->status) == \App\Book::OPEN_STATUS ? 'selected' : ''}} >
                                         Чистовик (видят все)
                                     </option>
                                 </select>
