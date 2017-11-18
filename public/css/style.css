@@ -4,7 +4,9 @@
   justify-content: flex-start;
 }
 .landing-button {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 80%;
   height: 30px;
   margin: 0;
@@ -15,7 +17,7 @@
   background-color: #fff;
   font-size: 14px;
   color: #636b6f;
-  -ms-touch-action: manipulation;
+  text-decoration: none;
   touch-action: manipulation;
   cursor: pointer;
 }
