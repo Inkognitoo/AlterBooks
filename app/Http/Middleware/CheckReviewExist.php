@@ -2,17 +2,16 @@
 
 namespace App\Http\Middleware;
 
-use App\Book;
-use Auth;
+use App\Review;
 use Closure;
 
 /**
- * Проверям, существует ли книга
+ * Проверям, существует ли рецензия
  *
- * Class CheckBookExist
+ * Class CheckReviewExist
  * @package App\Http\Middleware
  */
-class CheckBookExist
+class CheckReviewExist
 {
     /**
      * Handle an incoming request.
@@ -23,15 +22,11 @@ class CheckBookExist
      */
     public function handle($request, Closure $next)
     {
-        $book_id = $request->book_id ?? $request->id;
+        $review_id = $request->review_id ?? $request->id;
 
-        $book = Book::findAny($book_id);
+        $review = Review::find($review_id);
 
-        if (blank($book)) {
-            return response(view('errors.404'), 404);
-        }
-
-        if ($book->status == Book::CLOSE_STATUS && optional(Auth::user())->id != $book->author_id) {
+        if (blank($review)) {
             return response(view('errors.404'), 404);
         }
 

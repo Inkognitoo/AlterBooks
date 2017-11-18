@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Review;
 use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckReviewExist;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserCanReview;
+use App\Http\Middleware\CheckUserReviewGranted;
 use App\Http\Requests\ReviewCreateRequest;
-use App\Review;
-use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Redirect;
+use Auth;
 
 class ReviewController extends Controller
 {
@@ -23,7 +27,11 @@ class ReviewController extends Controller
 
         $this->middleware(CheckBookExist::class);
 
-        $this->middleware(CheckUserCanReview::class);
+        $this->middleware(CheckReviewExist::class)->only(['delete']);
+
+        $this->middleware(CheckUserCanReview::class)->except(['delete']);
+
+        $this->middleware(CheckUserReviewGranted::class)->only(['delete']);
     }
 
     /**
@@ -44,5 +52,22 @@ class ReviewController extends Controller
         $review->save();
 
         return redirect(route('book.show', ['id' => $book_id]));
+    }
+
+    /**
+     * Удаляем рецензию
+     *
+     * @param int $book_id
+     * @param int $id
+     * @return Redirect
+     */
+    public function delete($book_id, $id)
+    {
+        Review::find($id)
+            ->delete()
+        ;
+
+        return redirect(route('book.show', ['id' => $book_id]))
+            ->with(['status' => 'Рецензия была успешно удалена']);
     }
 }

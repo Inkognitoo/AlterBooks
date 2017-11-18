@@ -219,7 +219,7 @@ class User extends Authenticatable
      * @param Book $book
      * @return bool
      */
-    public function hasReview(Book $book): bool
+    public function hasBookReview(Book $book): bool
     {
         return filled($this->reviews()
             ->where(['book_id' => $book->id])
@@ -227,4 +227,16 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * Проверить, оставлял ли пользователь конкретную рецензию
+     *
+     * @param Review $review
+     * @return bool
+     */
+    public function hasReview(Review $review): bool
+    {
+        return filled($this->reviews()
+            ->find($review->id)
+        );
+    }
 }
