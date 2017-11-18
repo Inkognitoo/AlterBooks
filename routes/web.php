@@ -26,8 +26,8 @@ Route::get('/', function () {
         ->map(function($book) {
             return [
                 'title' => $book->title,
-                'href' => $book->url,
-                'cover' => $book->cover,
+                'id' => $book->id,
+                'cover' => $book->cover_url,
             ];
         })
         ->toArray()

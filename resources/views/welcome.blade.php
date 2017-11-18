@@ -74,35 +74,16 @@
             <div class="landing-books__area">
                 <div class="landing-books-elements">
                     @foreach($books as $book)
-                        <div class="landing-book">
-                            <div class="landing-book-cover">
-                                <img src="
-                                    @if (filled($book['cover']))
-                                        {{ $book['cover']}}
-                                    @else
-                                        /img/default_book_cover.png
-                                    @endif
-                                " class="landing-book-cover__image">
-                            </div>
-                            <div class="landing-book__title">
-                                {{ $book['title']}}
-                            </div>
-                            <div class="landing-book__read">
-                                <form class="landing-book__read landing-form" action="{{ $book['href'] }}">
-                                    <button class="landing-button">
-                                        Профиль
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+                        @include('landing.book', ['book' => $book])
                     @endforeach
                 </div>
                 <div class="landing-books-more">
-                    <form class="landing-form landing-books-more" action="{{ route('book.books-list') }}">
-                        <button class="landing-button landing-books-more__button">
+                    <div class="landing-form landing-books-more">
+                        <a type="button" class="landing-button landing-books-more__button"
+                           href="{{ route('book.books-list') }}">
                             Больше книг
-                        </button>
-                    </form>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
