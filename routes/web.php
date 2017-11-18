@@ -22,11 +22,12 @@ Route::get('/', function () {
         ->toArray()
     ;
 
-    $books = \App\Book::all()
+    $books = App\Book::orderBy('created_at', 'desc')->paginate(6)
         ->map(function($book) {
             return [
                 'title' => $book->title,
                 'href' => $book->url,
+                'cover' => $book->cover,
             ];
         })
         ->toArray()
