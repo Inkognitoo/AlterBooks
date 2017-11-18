@@ -90,7 +90,7 @@
                             <div class="landing-book__read">
                                 <form class="landing-book__read landing-form" action="{{ $book['href'] }}">
                                     <button class="landing-button">
-                                        Читать
+                                        Профиль
                                     </button>
                                 </form>
                             </div>
