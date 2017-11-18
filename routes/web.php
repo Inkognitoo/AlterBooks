@@ -101,6 +101,6 @@ Route::post('book/id{id}/page/{page_number}/edit', 'BookController@editPage')
 Route::post('book/id{id}/review', 'ReviewController@create')
     ->name('review.create')
 ;
-Route::get('book/id{book_id}/review-delete', 'ReviewController@delete')
+Route::get('book/id{book_id}/review/id{id}/delete', 'ReviewController@delete')
     ->name('review.delete')
 ;

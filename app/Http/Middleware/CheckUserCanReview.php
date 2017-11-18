@@ -29,7 +29,7 @@ class CheckUserCanReview
             return response(view('errors.405'), 405);
         }
 
-        if ($user->hasReview($book)) {
+        if ($user->hasBookReview($book)) {
             return response(view('errors.405'), 405);
         }
 
