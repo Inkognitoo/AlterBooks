@@ -213,4 +213,18 @@ class User extends Authenticatable
         return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
     }
 
+    /**
+     * Проверить, оставлял ли пользователь рецензию к книге
+     *
+     * @param Book $book
+     * @return bool
+     */
+    public function hasReview(Book $book): bool
+    {
+        return filled($this->reviews()
+            ->where(['book_id' => $book->id])
+            ->first()
+        );
+    }
+
 }

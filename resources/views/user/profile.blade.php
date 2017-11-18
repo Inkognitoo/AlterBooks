@@ -1,3 +1,8 @@
+@php
+    /** @var \App\User $user */
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Book[] $books */
+@endphp
+
 @extends('layouts.app')
 
 @section('title', $user->full_name)
