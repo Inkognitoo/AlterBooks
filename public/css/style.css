@@ -172,6 +172,15 @@
   background: cornflowerblue;
   color: white;
 }
+.landing-books-more__button:hover {
+  background-color: #587ecb;
+  color: white;
+}
+.landing-books-more__button:active {
+  background-color: #4c69aa;
+  color: white;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
 @media screen and (max-width: 910px) {
   .landing-books-more {
     margin-top: 5px;
