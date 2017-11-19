@@ -67,4 +67,36 @@ class Review extends Model
     {
         return $this->belongsTo('App\Book');
     }
+
+    /**
+     * Экранировать опасные символы в тексте рецензии
+     *
+     * @param string $value
+     */
+    public function setTextAttribute($value)
+    {
+        $this->attributes['text'] = htmlspecialchars($value, ENT_HTML5);
+    }
+
+    /** Вывести текст рецензии, заменяя переводя строки на <br>
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getTextAttribute($value)
+    {
+        $pattern = '/(\r\n)/i';
+        $replacement = '<br>';
+        return preg_replace($pattern, $replacement, $value);
+    }
+
+    /**
+     * Вывести текст рецензии, сохраняя переводя строки
+     *
+     * @return string
+     */
+    public function getTextPlaintAttribute(): string
+    {
+        return $this->attributes['text'];
+    }
 }
