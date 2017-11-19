@@ -32,7 +32,7 @@
                                     Оценка: {{ $book->rating }}/10
                                     <br><br>
                                     @if(filled($book->description))
-                                        {{ $book->description }}
+                                        {!! $book->description !!}
                                     @else
                                         <span class="no-description">-описание отсутствует-</span>
                                     @endif

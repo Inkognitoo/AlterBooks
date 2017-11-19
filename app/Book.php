@@ -299,4 +299,37 @@ class Book extends Model
             ->first()
         );
     }
+
+    /**
+     * Экранировать опасные символы в опсиании книги
+     *
+     * @param string $value
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = htmlspecialchars($value, ENT_HTML5);
+    }
+
+    /**
+     * Вывести описание книги, заменяя переводя строки на <br>
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getDescriptionAttribute($value)
+    {
+        $pattern = '/(\r\n)/i';
+        $replacement = '<br>';
+        return preg_replace($pattern, $replacement, $value);
+    }
+
+    /**
+     * Вывести описание книги, сохраняя переводя строки
+     *
+     * @return string
+     */
+    public function getDescriptionTextAttribute(): string
+    {
+        return $this->attributes['description'];
+    }
 }
