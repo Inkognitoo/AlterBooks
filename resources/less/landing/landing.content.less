@@ -1,0 +1,29 @@
+.landing-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 150px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 991px) {
+  .landing-content {
+    &__title {
+      font-size: 8vw;
+    }
+  }
+}
+@media screen and (max-width: 910px) {
+  .landing-content {
+    margin-top: 100px;
+  }
+}
+@media screen and (max-width: 700px) {
+  .landing-content {
+    &__title {
+      font-size: 12vw;
+    }
+  }
+}

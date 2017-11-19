@@ -32,7 +32,8 @@ use Storage;
  * @property string $avatar_url Ссылка на аватар пользователя
  * @property string $url Ссылка на пользователя
  * @property string $full_name ФИО пользователя
- * @property string $about Информация "О себе"
+ * @property string $about Информация "О себе" с переводами строки заменёными на <br>
+ * @property string $about_plain Информация "О себе" как она есть в бд
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -114,6 +115,17 @@ class User extends Authenticatable
     public function hasBookAtLibrary(Book $book): bool
     {
         return ($this->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0);
+    }
+
+    /**
+     * Получить экземпляр книги в библиотеке пользователя, если таковой имеется
+     *
+     * @param Book $book
+     * @return Book|null
+     */
+    public function getLibraryBook(Book $book)
+    {
+        return $this->libraryBooks()->where(['book_id' => $book->id])->first();
     }
 
     /**
@@ -219,7 +231,7 @@ class User extends Authenticatable
      * @param Book $book
      * @return bool
      */
-    public function hasReview(Book $book): bool
+    public function hasBookReview(Book $book): bool
     {
         return filled($this->reviews()
             ->where(['book_id' => $book->id])
@@ -227,4 +239,60 @@ class User extends Authenticatable
         );
     }
 
+    /**
+     * Проверить, является ли текущий пользователь автором указанной книги
+     *
+     * @param Book $book
+     * @return bool
+     */
+    public function isAuthor(Book $book): bool
+    {
+        return $this->id === $book->author_id;
+    }
+
+    /**
+     * Проверить, оставлял ли пользователь конкретную рецензию
+     *
+     * @param Review $review
+     * @return bool
+     */
+    public function hasReview(Review $review): bool
+    {
+        return filled($this->reviews()
+            ->find($review->id)
+        );
+    }
+
+    /**
+     * Экранировать опасные символы в записываемой информации "О себе"
+     *
+     * @param string $value
+     */
+    public function setAboutAttribute($value)
+    {
+        $this->attributes['about'] = htmlspecialchars($value, ENT_HTML5);
+    }
+
+    /**
+     * Вывести информацию "О себе", заменяя переводы строки на <br>
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getAboutAttribute($value)
+    {
+        $pattern = '/(\r\n)/i';
+        $replacement = '<br>';
+        return preg_replace($pattern, $replacement, $value);
+    }
+
+    /**
+     * Вывести информацию "О себе" как есть в бд
+     *
+     * @return string
+     */
+    public function getAboutPlainAttribute()
+    {
+        return $this->attributes['about'];
+    }
 }

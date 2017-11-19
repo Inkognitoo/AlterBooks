@@ -26,7 +26,7 @@
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                {{ $review->text }}
+                                {!! $review->text !!}
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,43 @@
                         {{ $review->created_at -> format('Y-m-d H:i')}}
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        @auth
+                            @if(Auth::user()->hasReview($review))
+                                <button class="btn btn-default" data-toggle="modal" data-target="#deleteReviewModal{{ $review->id }}">Удалить</button>
+                            @endif
+                        @endauth
+                    </div>
+                </div>
             </div>
+
+            @auth
+                @if(Auth::user()->hasReview($review))
+                    <div class="modal fade" id="deleteReviewModal{{ $review->id }}" tabindex="-1" role="dialog"
+                         aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="deleteReviewModalLabel">Подтвердите удаление</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Вы уверены, что хотите удалить рецензию к книге <strong>{{ $book->title }}</strong>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                    <a type="button" class="btn btn-danger"
+                                       href="{{ route('review.delete', ['book_id' => $book->id, 'id' => $review->id]) }}">
+                                        Удалить
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endauth
+
         </div>
     </div>
 </div>

@@ -17,7 +17,8 @@ use Exception;
  * @mixin \Eloquent
  * @property int $id
  * @property string|null $title
- * @property string|null $description
+ * @property string|null $description Описание книги с переводами строки заменёными на <br>
+ * @property string|null $description_plain Описание книги как оно есть в бд
  * @property string|null $cover Название обложки книги
  * @property string $status Статус текущей книги (черновик/чистовик)
  * @property int $author_id
@@ -298,5 +299,48 @@ class Book extends Model
             ->where(['user_id' => $user->id])
             ->first()
         );
+    }
+
+    /**
+     * Проверить, закрыт ли доступ к книге
+     *
+     * @return bool
+     */
+    public function isClose(): bool
+    {
+        return $this->status === self::CLOSE_STATUS;
+    }
+
+    /**
+     * Сохранить описание книги с экранированием опасных символов
+     *
+     * @param string $value
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = htmlspecialchars($value, ENT_HTML5);
+    }
+
+    /**
+     * Вывести описание книги, заменяя переводы строки на <br>
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getDescriptionAttribute($value)
+    {
+        $pattern = '/(\r\n)/i';
+        $replacement = '<br>';
+        return preg_replace($pattern, $replacement, $value);
+    }
+
+    /**
+     * Вывести описание книги как есть
+     *
+     * @return string
+     */
+    public function getDescriptionPlainAttribute()
+    {
+        return $this->attributes['description'];
     }
 }
