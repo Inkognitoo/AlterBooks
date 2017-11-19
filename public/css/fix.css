@@ -65,7 +65,7 @@
 .review-edit-textarea {
     min-width: 100%;
     max-width: 100%;
-    min-height: 50px;
+    min-height: 200px;
 }
 .review-avatar__image {
     width: 120px;

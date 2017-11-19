@@ -239,4 +239,37 @@ class User extends Authenticatable
             ->find($review->id)
         );
     }
+
+    /**
+     * Экранировать опасные символы в записываемой информации "О себе"
+     *
+     * @param string $value
+     */
+    public function setAboutAttribute($value)
+    {
+        $this->attributes['about'] = htmlspecialchars($value, ENT_HTML5);
+    }
+
+    /**
+     * Вывести информацию "О себе", заменяя переводя строки на <br>
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getAboutAttribute($value)
+    {
+        $pattern = '/(\r\n)/i';
+        $replacement = '<br>';
+        return preg_replace($pattern, $replacement, $value);
+    }
+
+    /**
+     * Вывести информацию "О себе", сохраняя переводя строки (для textarea)
+     *
+     * @return string
+     */
+    public function getAboutTextAttribute(): string
+    {
+        return $this->attributes['about'];
+    }
 }

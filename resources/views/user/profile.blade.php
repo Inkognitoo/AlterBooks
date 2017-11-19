@@ -36,7 +36,7 @@
                             <div class="user-info-content-about panel panel-default">
                                 <div class="user-info-content-about__title panel-heading">О себе</div>
                                 <div class="user-info-content-about__content panel-body">
-                                    {{ $user->about }}
+                                    {!! $user->about !!}
                                 </div>
                             </div>
                             @endif
