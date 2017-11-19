@@ -186,7 +186,7 @@
                             <label for="about" class="col-md-4 control-label">О себе</label>
 
                             <div class="col-md-6">
-                                <textarea id="about" class="form-control user-edit-about" name="about">{{ old('about') ?? Auth::user()->about }}</textarea>
+                                <textarea id="about" class="form-control user-edit-about" name="about">{{ old('about_text') ?? Auth::user()->about_text }}</textarea>
 
                                 @if ($errors->has('about'))
                                     <span class="help-block">
