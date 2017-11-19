@@ -111,11 +111,10 @@ class BookController extends Controller
     /**
      * Удаляем профиль книги
      *
-     * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
         $book = Book::findAny($id);
 
@@ -138,12 +137,11 @@ class BookController extends Controller
     /**
      * Возвращаем конкретную страницу книги
      *
-     * @param Request $request
      * @param int $id
      * @param int $page_number
      * @return Response
      */
-    public function readPage(Request $request, int $id, int $page_number)
+    public function readPage(int $id, int $page_number)
     {
         $book = Book::findAny($id);
 
@@ -157,12 +155,11 @@ class BookController extends Controller
     /**
      * Показываем страницу редактирования конкретной страницы книги
      *
-     * @param Request $request
      * @param int $id
      * @param int $page_number
      * @return Response
      */
-    public function editPageShow(Request $request, int $id, int $page_number)
+    public function editPageShow(int $id, int $page_number)
     {
         $book = Book::findAny($id);
 
