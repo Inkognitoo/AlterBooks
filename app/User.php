@@ -32,7 +32,8 @@ use Storage;
  * @property string $avatar_url Ссылка на аватар пользователя
  * @property string $url Ссылка на пользователя
  * @property string $full_name ФИО пользователя
- * @property string $about Информация "О себе"
+ * @property string $about Информация "О себе" с переводами строки заменёными на <br>
+ * @property string $about_plain Информация "О себе" как она есть в бд
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -251,7 +252,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Вывести информацию "О себе", заменяя переводя строки на <br>
+     * Вывести информацию "О себе", заменяя переводы строки на <br>
      *
      * @param string $value
      * @return string
@@ -264,11 +265,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Вывести информацию "О себе", сохраняя переводя строки (для textarea)
+     * Вывести информацию "О себе" как есть в бд
      *
      * @return string
      */
-    public function getAboutTextAttribute(): string
+    public function getAboutPlainAttribute()
     {
         return $this->attributes['about'];
     }

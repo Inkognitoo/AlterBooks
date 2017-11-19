@@ -72,7 +72,7 @@
                             <label for="description" class="col-md-4 control-label">Описание</label>
 
                             <div class="col-md-6">
-                                <textarea id="description" class="book-edit-description form-control" name="description" rows="5">{{ old('description_text') ?? $book->description_text}}
+                                <textarea id="description" class="book-edit-description form-control" name="description" rows="5">{{ old('description_plain') ?? $book->description_plain}}
                                 </textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
