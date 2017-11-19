@@ -12,30 +12,13 @@
 */
 
 Route::get('/', function () {
-    $users = \App\User::all()
-        ->map(function($user) {
-            return [
-                'nickname' => $user->nickname,
-                'href' => $user->url,
-            ];
-        })
-        ->toArray()
+    $users = \App\User::all();
+
+    $books = App\Book::orderBy('created_at', 'desc')
+        ->paginate(6)
     ;
 
-    $books = \App\Book::all()
-        ->map(function($book) {
-            return [
-                'title' => $book->title,
-                'href' => $book->url,
-            ];
-        })
-        ->toArray()
-    ;
-
-    return view('welcome', [
-        'users' => $users,
-        'books' => $books,
-    ]);
+    return view('welcome', compact('users', 'books'));
 });
 
 Auth::routes();
@@ -117,4 +100,7 @@ Route::post('book/id{id}/page/{page_number}/edit', 'BookController@editPage')
 */
 Route::post('book/id{id}/review', 'ReviewController@create')
     ->name('review.create')
+;
+Route::get('book/id{book_id}/review/id{id}/delete', 'ReviewController@delete')
+    ->name('review.delete')
 ;

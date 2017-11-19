@@ -62,10 +62,14 @@
     margin-bottom: 10px;
 }
 .user-edit-about,
+.book-edit-description,
 .review-edit-textarea {
     min-width: 100%;
     max-width: 100%;
-    min-height: 50px;
+    min-height: 200px;
+}
+.book-edit-description {
+    min-height: 400px;
 }
 .review-avatar__image {
     width: 120px;

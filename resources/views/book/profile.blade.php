@@ -32,7 +32,7 @@
                                     Оценка: {{ $book->rating }}/10
                                     <br><br>
                                     @if(filled($book->description))
-                                        {{ $book->description }}
+                                        {!! $book->description !!}
                                     @else
                                         <span class="no-description">-описание отсутствует-</span>
                                     @endif
@@ -63,6 +63,11 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">Рецензии</div>
                                 <div class="panel-body">
+                                    @if (session('status'))
+                                        <div class="alert alert-success">
+                                            {{ session('status') }}
+                                        </div>
+                                    @endif
                                     @if(blank($book->reviews))
                                         <div class="row">
                                             <div class="col-md-12">
