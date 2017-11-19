@@ -118,6 +118,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Получить экземпляр книги в библиотеке пользователя, если таковой имеется
+     *
+     * @param Book $book
+     * @return Book|null
+     */
+    public function getLibraryBook(Book $book)
+    {
+        return $this->libraryBooks()->where(['book_id' => $book->id])->first();
+    }
+
+    /**
      * Установить аватар для пользователя
      *
      * @param UploadedFile $avatar Аватар пользователя
@@ -226,6 +237,17 @@ class User extends Authenticatable
             ->where(['book_id' => $book->id])
             ->first()
         );
+    }
+
+    /**
+     * Проверить, является ли текущий пользователь автором указанной книги
+     *
+     * @param Book $book
+     * @return bool
+     */
+    public function isAuthor(Book $book): bool
+    {
+        return $this->id === $book->author_id;
     }
 
     /**

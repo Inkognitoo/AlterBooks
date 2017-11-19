@@ -302,6 +302,16 @@ class Book extends Model
     }
 
     /**
+     * Проверить, закрыт ли доступ к книге
+     *
+     * @return bool
+     */
+    public function isClose(): bool
+    {
+        return $this->status === self::CLOSE_STATUS;
+    }
+
+    /**
      * Сохранить описание книги с экранированием опасных символов
      *
      * @param string $value
