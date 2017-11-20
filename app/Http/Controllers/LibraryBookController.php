@@ -37,7 +37,8 @@ class LibraryBookController extends Controller
         $book = Book::find($id);
 
         if (Auth::user()->hasBookAtLibrary($book)) {
-            $this->out['code'] = 203;
+            $this->out['success'] = false;
+            $this->out['code'] = 400;
             $this->out['data']['message'] = 'book already exist in the library';
 
             return response()->json($this->out);
@@ -45,6 +46,8 @@ class LibraryBookController extends Controller
 
         Auth::user()->libraryBooks()->save($book);
 
+        $this->out['success'] = true;
+        $this->out['code'] = 200;
         $this->out['data']['message'] = 'book was successfully added';
 
         return response()->json($this->out);
@@ -62,7 +65,7 @@ class LibraryBookController extends Controller
 
         if (!Auth::user()->hasBookAtLibrary($book)) {
             $this->out['success'] = false;
-            $this->out['code'] = 403;
+            $this->out['code'] = 400;
             $this->out['data']['message'] = 'book does not exist in the library';
 
             return response()->json($this->out);
@@ -73,6 +76,8 @@ class LibraryBookController extends Controller
             ->delete()
         ;
 
+        $this->out['success'] = true;
+        $this->out['code'] = 200;
         $this->out['data']['message'] = 'book was successfully deleted';
 
         return response()->json($this->out);
