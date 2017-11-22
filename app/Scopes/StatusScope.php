@@ -18,6 +18,6 @@ class StatusScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('status', Book::OPEN_STATUS);
+        $builder->where('status', Book::STATUS_OPEN);
     }
 }

@@ -14,7 +14,7 @@ class LibraryTestSeeder extends Seeder
         factory(App\User::class, 10)->create()->each(function ($u) {
             $count = rand(1, 5);
             for ($i = 0; $i < $count; $i++) {
-                $u->books()->save(factory(App\Book::class)->make(['status' => \App\Book::OPEN_STATUS]));
+                $u->books()->save(factory(App\Book::class)->make(['status' => \App\Book::STATUS_OPEN]));
             }
         });
     }

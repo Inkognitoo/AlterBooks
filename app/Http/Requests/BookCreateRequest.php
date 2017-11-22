@@ -44,7 +44,7 @@ class BookCreateRequest extends FormRequest
             'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
             'status' => [
                 'required',
-                Rule::in([Book::OPEN_STATUS, Book::CLOSE_STATUS]),
+                Rule::in([Book::STATUS_OPEN, Book::STATUS_CLOSE]),
             ],
         ];
     }
