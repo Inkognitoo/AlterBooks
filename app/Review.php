@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  * @property int $id
  * @property int $rating
- * @property string $text
+ * @property string $text Текст рецензии с переводами строки заменёными на <br>
+ * @property string $text_plain Текст рецензии как он есть в бд
  * @property int $user_id
  * @property int $book_id
  * @property \Carbon\Carbon|null $deleted_at
@@ -69,7 +70,7 @@ class Review extends Model
     }
 
     /**
-     * Экранировать опасные символы в тексте рецензии
+     * Сохранить текст рецензии с экранированием опасных символов
      *
      * @param string $value
      */
@@ -78,7 +79,7 @@ class Review extends Model
         $this->attributes['text'] = htmlspecialchars($value, ENT_HTML5);
     }
 
-    /** Вывести текст рецензии, заменяя переводя строки на <br>
+    /** Вывести текст рецензии, заменяя переводы строки на <br>
      *
      * @param string $value
      * @return string
@@ -91,11 +92,11 @@ class Review extends Model
     }
 
     /**
-     * Вывести текст рецензии, сохраняя переводя строки
+     * Вывести текст рецензии как есть
      *
      * @return string
      */
-    public function getTextPlaintAttribute(): string
+    public function getTextPlainAttribute()
     {
         return $this->attributes['text'];
     }

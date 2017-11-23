@@ -32,7 +32,7 @@
 
                             <div class="col-md-6">
                                 <input id="nickname" type="text" class="form-control" name="nickname"
-                                       value="{{ old('nickname') ?? Auth::user()->nickname }}" autofocus>
+                                       value="{{ old('nickname', Auth::user()->nickname) }}" autofocus>
 
                                 @if ($errors->has('nickname'))
                                     <span class="help-block">
@@ -61,7 +61,7 @@
 
                             <div class="col-md-6">
                                 <input id="nickname" type="text" class="form-control" name="surname"
-                                       value="{{ old('surname') ?? Auth::user()->surname }}">
+                                       value="{{ old('surname', Auth::user()->surname) }}">
 
                                 @if ($errors->has('surname'))
                                     <span class="help-block">
@@ -76,7 +76,7 @@
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name"
-                                       value="{{ old('name') ?? Auth::user()->name}}">
+                                       value="{{ old('name', Auth::user()->name) }}">
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -91,7 +91,7 @@
 
                             <div class="col-md-6">
                                 <input id="patronymic" type="text" class="form-control" name="patronymic"
-                                       value="{{ old('patronymic') ?? Auth::user()->patronymic }}">
+                                       value="{{ old('patronymic', Auth::user()->patronymic) }}">
 
                                 @if ($errors->has('patronymic'))
                                     <span class="help-block">
@@ -107,15 +107,15 @@
                             <div class="col-md-6">
                                 <select id="gender" class="form-control" name="gender">
                                     <option value="{{ \App\User::GENDER_NOT_INDICATED }}"
-                                            {{ (old('gender') ?? Auth::user()->gender) == \App\User::GENDER_NOT_INDICATED ? 'selected' : ''}} >
+                                            {{ old('gender', Auth::user()->gender) == \App\User::GENDER_NOT_INDICATED ? 'selected' : ''}} >
                                         Не указан
                                     </option>
                                     <option value="{{ \App\User::GENDER_MALE }}"
-                                            {{ (old('gender') ?? Auth::user()->gender) == \App\User::GENDER_MALE ? 'selected' : '' }} >
+                                            {{ old('gender', Auth::user()->gender) == \App\User::GENDER_MALE ? 'selected' : '' }} >
                                         Мужской
                                     </option>
                                     <option value="{{ \App\User::GENDER_FEMALE }}"
-                                            {{ (old('gender') ?? Auth::user()->gender) == \App\User::GENDER_FEMALE ? 'selected' : '' }} >
+                                            {{ old('gender', Auth::user()->gender) == \App\User::GENDER_FEMALE ? 'selected' : '' }} >
                                         Женский
                                     </option>
                                 </select>
@@ -133,7 +133,7 @@
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email"
-                                       value="{{ old('email') ?? Auth::user()->email }}">
+                                       value="{{ old('email', Auth::user()->email) }}">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -186,7 +186,7 @@
                             <label for="about" class="col-md-4 control-label">О себе</label>
 
                             <div class="col-md-6">
-                                <textarea id="about" class="form-control user-edit-about" name="about">{{ old('about_text') ?? Auth::user()->about_text }}</textarea>
+                                <textarea id="about" class="form-control user-edit-about" name="about">{{ old('about_plain', Auth::user()->about_plain) }}</textarea>
 
                                 @if ($errors->has('about'))
                                     <span class="help-block">
