@@ -11,15 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    $users = \App\User::all();
-
-    $books = App\Book::orderBy('created_at', 'desc')
-        ->paginate(6)
-    ;
-
-    return view('welcome', compact('users', 'books'));
-});
+Route::get('/', 'LandingPageController@index');
 
 Auth::routes();
 
