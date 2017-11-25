@@ -2,8 +2,10 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 /**
  * App\Review
@@ -99,5 +101,18 @@ class Review extends Model
     public function getTextPlainAttribute()
     {
         return $this->attributes['text'];
+    }
+
+    /**
+     * Вывести дату создания рецензии в соответствии с часовым поясом
+     *
+     * @param string $value
+     * @return string
+    */
+    public function getCreatedAtAttribute($value)
+    {
+        $dt = new Carbon($value, 'UTC');
+        $dt->tz = Auth::user()->timezone;
+        return $dt;
     }
 }
