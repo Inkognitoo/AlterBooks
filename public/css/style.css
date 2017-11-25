@@ -64,6 +64,32 @@
   width: 100%;
   margin-top: auto;
 }
+.landing-more {
+  display: block;
+  width: 150px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+}
+.landing-more__button {
+  width: 100%;
+  background: cornflowerblue;
+  color: white;
+}
+.landing-more__button:hover {
+  background-color: #587ecb;
+  color: white;
+}
+.landing-more__button:active {
+  background-color: #4c69aa;
+  color: white;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+@media screen and (max-width: 910px) {
+  .landing-more {
+    margin-top: 5px;
+  }
+}
 .landing-element {
   display: flex;
   flex-direction: column;
@@ -204,32 +230,6 @@
   .landing-book-cover {
     width: 200px;
     height: 240px;
-  }
-}
-.landing-books-more {
-  display: block;
-  width: 150px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: auto;
-}
-.landing-books-more__button {
-  width: 100%;
-  background: cornflowerblue;
-  color: white;
-}
-.landing-books-more__button:hover {
-  background-color: #587ecb;
-  color: white;
-}
-.landing-books-more__button:active {
-  background-color: #4c69aa;
-  color: white;
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
-@media screen and (max-width: 910px) {
-  .landing-books-more {
-    margin-top: 5px;
   }
 }
 .landing-user {
