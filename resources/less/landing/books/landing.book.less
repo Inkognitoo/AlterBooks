@@ -8,12 +8,13 @@
   min-height: 200px;
 
   &-cover {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
-
-    &__image {
-      width: 100px;
-    }
+    width: 100px;
+    height: 120px;
+    background-size: cover;
   }
 
   &__title {
@@ -47,11 +48,9 @@
     margin: 8px;
 
     &-cover {
+      width: 150px;
+      height: 180px;
       margin-bottom: 5px;
-
-      &__image {
-        width: 150px;
-      }
     }
   }
 }
@@ -60,9 +59,8 @@
     flex-basis: 80%;
 
     &-cover {
-      &__image {
-        width: 200px;
-      }
+      width: 200px;
+      height: 240px;
     }
   }
 }

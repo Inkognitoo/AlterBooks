@@ -1,7 +1,5 @@
 <div class="landing-book">
-    <div class="landing-book-cover">
-        <img src="{{ $book->cover_url }}" class="landing-book-cover__image">
-    </div>
+    <div class="landing-book-cover" style="background-image: url({{ $book->cover_url }});"></div>
     <div class="landing-book__title">
         {{ $book->title }}
     </div>
