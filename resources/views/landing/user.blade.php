@@ -5,7 +5,7 @@
     </div>
     <div class="landing-user__profile">
         <div class="landing-user__profile landing-form">
-            <a type="button" class="landing-button" href="user/id{{ $user->id }}">
+            <a type="button" class="landing-button" href="{{ $user->url }}">
                 Профиль
             </a>
         </div>
