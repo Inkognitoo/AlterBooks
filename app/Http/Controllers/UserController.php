@@ -22,9 +22,9 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(CheckAuth::class)->except(['show']);
+        $this->middleware(CheckAuth::class)->except(['show', 'showUsers']);
 
-        $this->middleware(CheckUserExist::class)->except(['addBookToLibrary', 'deleteBookToLibrary']);
+        $this->middleware(CheckUserExist::class)->except(['addBookToLibrary', 'deleteBookToLibrary', 'showUsers']);
 
         $this->middleware(CheckUserGranted::class)->only(['editShow', 'edit']);
 
@@ -121,5 +121,17 @@ class UserController extends Controller
         $library_book->first()->pivot->delete();
 
         return redirect(route('book.show', ['id' => $id]));
+    }
+
+    /**
+     * Показываем страницу со списком существующих пользователей
+     *
+     * @return Response
+     */
+    public function showUsers()
+    {
+        $users = User::paginate(10);
+
+        return view('user.users-list', ['users' => $users]);
     }
 }
