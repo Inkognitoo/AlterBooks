@@ -22,6 +22,7 @@ use Illuminate\Validation\Rule;
  * @property string $password
  * @property string $gender
  * @property string|null $birthday_date
+ * @property string $timezone
  */
 class UserUpdateRequest extends FormRequest
 {
@@ -65,6 +66,10 @@ class UserUpdateRequest extends FormRequest
             ],
             'birthday_date' => 'nullable|date',
             'about' => 'nullable|max:5000',
+            'timezone' => [
+                'required',
+                Rule::in(config('app.timezones')),
+            ],
         ];
     }
 }
