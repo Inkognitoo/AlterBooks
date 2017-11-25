@@ -1,7 +1,3 @@
-@php
-    /** @var \App\Book book */
-@endphp
-
 <div class="landing-book">
     <div class="landing-book-cover">
         <img src="{{ $book->cover_url }}" class="landing-book-cover__image">
