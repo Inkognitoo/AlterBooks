@@ -44,7 +44,7 @@
             width: 100px;
         }
     </style>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href=" {{ mix('/css/style.css') }}">
 
     <!--Icons-->
     <link rel="manifest" href="/manifest.json">
