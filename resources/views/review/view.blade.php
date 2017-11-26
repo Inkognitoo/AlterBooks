@@ -33,7 +33,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        {{ $review->created_at -> format('Y-m-d H:i')}}
+                        {{ $review->created_at->format('Y-m-d H:i')}}
                     </div>
                 </div>
                 <div class="row">
