@@ -11,15 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    $users = \App\User::all();
-
-    $books = App\Book::orderBy('created_at', 'desc')
-        ->paginate(6)
-    ;
-
-    return view('welcome', compact('users', 'books'));
-});
+Route::get('/', 'LandingPageController@index');
 
 Auth::routes();
 
@@ -39,6 +31,9 @@ Route::get('user/id{id}/edit', 'UserController@editShow')
 ;
 Route::post('user/id{id}/edit', 'UserController@edit')
     ->name('user.edit')
+;
+Route::get('users', 'UserController@showUsers')
+    ->name('user.users-list')
 ;
 
 /*

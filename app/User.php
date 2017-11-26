@@ -32,6 +32,7 @@ use Storage;
  * @property string $avatar_url Ссылка на аватар пользователя
  * @property string $url Ссылка на пользователя
  * @property string $full_name ФИО пользователя
+ * @property string $timezone таймзона пользователя
  * @property string $about Информация "О себе" с переводами строки заменёными на <br>
  * @property string $about_plain Информация "О себе" как она есть в бд
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
@@ -68,7 +69,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'nickname', 'email', 'surname',
-        'patronymic', 'birthday_date', 'gender', 'about',
+        'patronymic', 'birthday_date', 'gender',
+        'about', 'timezone',
     ];
 
     /**

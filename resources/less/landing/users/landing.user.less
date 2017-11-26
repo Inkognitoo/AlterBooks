@@ -1,23 +1,25 @@
-.landing-book {
+.landing-user {
   display: flex;
   flex-direction: column;
   flex-basis: 15%;
   justify-content: flex-start;
   align-items: center;
   margin: 5px;
+  padding-bottom: 15px;
   min-height: 200px;
 
-  &-cover {
+  &-avatar {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-    width: 100px;
+    width: 120px;
     height: 120px;
+    border-radius: 50%;
     background-size: cover;
   }
 
-  &__title {
+  &__name {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -25,7 +27,7 @@
     text-align: center;
   }
 
-  &__read {
+  &__profile {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -36,31 +38,24 @@
 }
 
 @media screen and (max-width: 991px) {
-  .landing-book {
-    &__title {
+  .landing-user {
+    &__name {
       font-size: 14px;
     }
   }
 }
 @media screen and (max-width: 910px) {
-  .landing-book {
+  .landing-user {
     flex-basis: 30%;
     margin: 8px;
 
-    &-cover {
-      width: 150px;
-      height: 180px;
+    &-avatar {
       margin-bottom: 5px;
     }
   }
 }
 @media screen and (max-width: 450px) {
-  .landing-book {
+  .landing-user {
     flex-basis: 80%;
-
-    &-cover {
-      width: 200px;
-      height: 240px;
-    }
   }
 }

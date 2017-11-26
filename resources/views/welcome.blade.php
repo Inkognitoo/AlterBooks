@@ -67,21 +67,41 @@
     @endif
     <main class="landing-content">
         <div class="landing-content__title title m-b-md">AlterBooks</div>
-        <div class="landing-books">
-            <div class="landing-books__title">
+        <div class="landing-element landing-books">
+            <div class="landing-element__title landing-books__title">
                 Новинки
             </div>
-            <div class="landing-books__area">
-                <div class="landing-books-elements">
+            <div class="landing-element__area landing-books__area">
+                <div class="landing-element__part">
                     @foreach($books as $book)
                         @include('landing.book', ['book' => $book])
                     @endforeach
                 </div>
-                <div class="landing-books-more">
-                    <div class="landing-form landing-books-more">
-                        <a type="button" class="landing-button landing-books-more__button"
+                <div class="landing-more">
+                    <div class="landing-form landing-more">
+                        <a type="button" class="landing-button landing-more__button"
                            href="{{ route('book.books-list') }}">
                             Больше книг
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="landing-element landing-users">
+            <div class="landing-element__title landing-users__title">
+                Пользователи
+            </div>
+            <div class="landing-element__area landing-users__area">
+                <div class="landing-element__part">
+                    @foreach($users as $user)
+                        @include('landing.user', ['user' => $user])
+                    @endforeach
+                </div>
+                <div class="landing-more">
+                    <div class="landing-form landing-more">
+                        <a type="button" class="landing-button landing-more__button"
+                           href="{{ route('user.users-list') }}">
+                            Все пользователи
                         </a>
                     </div>
                 </div>

@@ -182,6 +182,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('timezone') ? ' has-error' : '' }}">
+                            <label for="timezone" class="col-md-4 control-label">Таймзона</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control user-edit-timezone" id="timezone" name="timezone">
+                                    @foreach(config('app.timezones') as $timezone)
+                                        <option value="{{ $timezone }}"
+                                            {{ ($timezone == Auth::user()->timezone) ? 'selected' : '' }} >
+                                            {{ $timezone }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
                             <label for="about" class="col-md-4 control-label">О себе</label>
 
