@@ -224,13 +224,13 @@ class Book extends Model
     }
 
     /**
-     * Получаем средний рейтинг книги
+     * Получаем медианный рейтинг книги
      *
      * @return float
      */
     public function getRatingAttribute(): float
     {
-        return round($this->reviews->average('rating'), 1);
+        return round($this->reviews->median('rating'), 1);
     }
 
     /**
