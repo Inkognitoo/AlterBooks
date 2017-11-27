@@ -35,6 +35,7 @@ use Storage;
  * @property string $timezone таймзона пользователя
  * @property string $about Информация "О себе" с переводами строки заменёными на <br>
  * @property string $about_plain Информация "О себе" как она есть в бд
+ * @property float $rating Средняя оценка книги
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -296,5 +297,15 @@ class User extends Authenticatable
     public function getAboutPlainAttribute()
     {
         return $this->attributes['about'];
+    }
+
+    /**
+     * Получаем медианный рейтинг пользователя
+     *
+     * @return float
+     */
+    public function getRatingAttribute(): float
+    {
+        return round($this->books->median('rating'), 1);
     }
 }

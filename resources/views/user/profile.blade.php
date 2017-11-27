@@ -29,6 +29,8 @@
                                         {{ date('d.m.Y', strtotime($user->birthday_date)) }}
                                         ({{date('Y', time()) - date('Y', strtotime($user->birthday_date))}})
                                     @endif
+                                    <br>
+                                    Рейтинг: {{ $user->rating }}/10
                                 </div>
                             </div>
 
