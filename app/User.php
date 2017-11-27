@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,7 +27,8 @@ use Storage;
  * @property string|null $patronymic
  * @property string $gender
  * @property string $nickname
- * @property string|null $birthday_date
+ * @property Carbon|null $birthday_date
+ * @property string|null $birthday_date_plain
  * @property string|null $avatar Название аватарки пользователя
  * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
  * @property string $avatar_url Ссылка на аватар пользователя
@@ -307,5 +309,26 @@ class User extends Authenticatable
     public function getRatingAttribute(): float
     {
         return round($this->books->median('rating'), 1);
+    }
+
+    /**
+     * Вывести дату рождения пользователя, если указана
+     *
+     * @param string $value
+     * @return \Carbon\Carbon|null
+     */
+    public function getBirthdayDateAttribute($value)
+    {
+        return is_null($value) ? null : new Carbon($value);
+    }
+
+    /**
+     * Вывести дату рождения пользователя как есть в бд
+     *
+     * @return string|null
+     */
+    public function getBirthdayDatePlainAttribute()
+    {
+        return $this->attributes['birthday_date'];
     }
 }

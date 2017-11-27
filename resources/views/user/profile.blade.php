@@ -26,8 +26,8 @@
                                     {{ $user->full_name }}
                                     <br>
                                     @if(filled($user->birthday_date))
-                                        {{ date('d.m.Y', strtotime($user->birthday_date)) }}
-                                        ({{date('Y', time()) - date('Y', strtotime($user->birthday_date))}})
+                                        {{ $user->birthday_date->format('d.m.Y') }}
+                                        ({{ $user->birthday_date->diffInYears(\Carbon\Carbon::now()) }})
                                     @endif
                                     <br>
                                     Рейтинг: {{ $user->rating }}/10
