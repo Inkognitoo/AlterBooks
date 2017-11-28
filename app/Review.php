@@ -35,6 +35,8 @@ use Carbon\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Review withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Review withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
+ * @method static bool|null forceDelete()
  */
 class Review extends Model
 {
@@ -70,6 +72,14 @@ class Review extends Model
     public function book()
     {
         return $this->belongsTo('App\Book');
+    }
+
+    /**
+     * Получить все оценки текущей рецензии
+     */
+    public function reviewEstimates()
+    {
+        return $this->hasMany('App\ReviewEstimate', 'review_id');
     }
 
     /**

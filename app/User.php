@@ -52,6 +52,7 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereSurname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
  */
 class User extends Authenticatable
 {
@@ -109,6 +110,14 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany('App\Review', 'user_id');
+    }
+
+    /**
+     * Получить все оставленные оценки на рецензии текущим пользователем
+     */
+    public function reviewEstimates()
+    {
+        return $this->hasMany('App\ReviewEstimate', 'user_id');
     }
 
     /**
