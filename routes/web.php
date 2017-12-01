@@ -63,14 +63,6 @@ Route::get('books', 'BookController@showBooks')
     ->name('book.books-list')
 ;
 
-// Library
-Route::get('library/id{id}/add', 'UserController@addBookToLibrary')
-    ->name('library.add')
-;
-Route::get('library/id{id}/delete', 'UserController@deleteBookFromLibrary')
-    ->name('library.delete')
-;
-
 // Reader
 Route::get('book/id{id}/page/{page_number}', 'BookController@readPage')
     ->name('book.page.show')
