@@ -17,11 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'v1'], function(){
-    Route::post('library/id{id}', 'LibraryBookController@create')
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
+    Route::post('library/book/id{id}', 'LibraryBookController@create')
         ->name('api.library.add')
     ;
-    Route::delete('library/id{id}', 'LibraryBookController@destroy')
+    Route::delete('library/book/id{id}', 'LibraryBookController@destroy')
         ->name('api.library.delete')
     ;
 });

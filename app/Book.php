@@ -58,9 +58,9 @@ class Book extends Model
     const COVER_PATH = 'book_covers';
 
     //Возможные статусы книги
-    const OPEN_STATUS = 'open_by_author';
+    const STATUS_OPEN = 'open_by_author';
 
-    const CLOSE_STATUS = 'close_by_author';
+    const STATUS_CLOSE = 'close_by_author';
 
     /**
      * The attributes that are mass assignable.
@@ -212,10 +212,10 @@ class Book extends Model
     public function getStatusCssAttribute(): string
     {
         switch ($this->status) {
-            case $this::OPEN_STATUS:
+            case $this::STATUS_OPEN:
 
                 return '';
-            case $this::CLOSE_STATUS:
+            case $this::STATUS_CLOSE:
 
                 return 'user-block-books__element_status_close';
             default:
@@ -309,7 +309,7 @@ class Book extends Model
      */
     public function isClose(): bool
     {
-        return $this->status === self::CLOSE_STATUS;
+        return $this->status === self::STATUS_CLOSE;
     }
 
     /**

@@ -37,6 +37,7 @@ use Storage;
  * @property string $timezone таймзона пользователя
  * @property string $about Информация "О себе" с переводами строки заменёными на <br>
  * @property string $about_plain Информация "О себе" как она есть в бд
+ * @property string $api_token Токен пользователя для api запросов
  * @property float $rating Средняя оценка книги
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)

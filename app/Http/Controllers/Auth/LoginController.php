@@ -28,6 +28,9 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
+        Auth::user()->api_token = str_random(60);
+        Auth::user()->save();
+
         return route('user.show', ['id' => Auth::user()->id]);
     }
 
