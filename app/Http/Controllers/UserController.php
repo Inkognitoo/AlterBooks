@@ -54,7 +54,6 @@ class UserController extends Controller
     /**
      * Показываем страницу редактирования профиля пользователя
      *
-     * @param  int  $id
      * @return Response
      */
     public function editShow()
@@ -84,42 +83,5 @@ class UserController extends Controller
         return view('user.edit', [
             'status' => 'Данные были успешно обновлены'
         ]);
-    }
-
-    /**
-     * Добавить книгу в библиотеку.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function addBookToLibrary($id)
-    {
-        $book = Book::find($id);
-        if (Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0) {
-            return redirect(route('book.show', ['id' => $id]));
-        }
-
-        Auth::user()->libraryBooks()->save($book);
-
-        return redirect(route('book.show', ['id' => $id]));
-    }
-
-    /**
-     * Удалить книгу из библиотеки
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function deleteBookFromLibrary($id)
-    {
-        $book = Book::find($id);
-        $library_book = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
-        if ($library_book->count() === 0) {
-            return redirect(route('book.show', ['id' => $id]));
-        }
-
-        $library_book->first()->pivot->delete();
-
-        return redirect(route('book.show', ['id' => $id]));
     }
 }

@@ -48,6 +48,7 @@ use Exception;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereStatus($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
+ * @method static bool|null forceDelete()
  */
 class Book extends Model
 {

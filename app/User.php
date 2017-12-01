@@ -34,6 +34,7 @@ use Storage;
  * @property string $full_name ФИО пользователя
  * @property string $about Информация "О себе" с переводами строки заменёными на <br>
  * @property string $about_plain Информация "О себе" как она есть в бд
+ * @property string $api_token Токен пользователя для api запросов
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
