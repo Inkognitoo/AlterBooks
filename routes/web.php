@@ -32,6 +32,9 @@ Route::get('user/id{id}/edit', 'UserController@editShow')
 Route::post('user/id{id}/edit', 'UserController@edit')
     ->name('user.edit')
 ;
+Route::get('users', 'UserController@showUsers')
+    ->name('user.users-list')
+;
 
 /*
 |--------------------------------------------------------------------------

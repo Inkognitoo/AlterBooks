@@ -77,9 +77,9 @@
                         @include('landing.book', ['book' => $book])
                     @endforeach
                 </div>
-                <div class="landing-books-more">
-                    <div class="landing-form landing-books-more">
-                        <a type="button" class="landing-button landing-books-more__button"
+                <div class="landing-more">
+                    <div class="landing-form landing-more">
+                        <a type="button" class="landing-button landing-more__button"
                            href="{{ route('book.books-list') }}">
                             Больше книг
                         </a>
@@ -96,6 +96,14 @@
                     @foreach($users as $user)
                         @include('landing.user', ['user' => $user])
                     @endforeach
+                </div>
+                <div class="landing-more">
+                    <div class="landing-form landing-more">
+                        <a type="button" class="landing-button landing-more__button"
+                           href="{{ route('user.users-list') }}">
+                            Все пользователи
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

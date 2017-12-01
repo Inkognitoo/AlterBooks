@@ -74,3 +74,33 @@
 .review-avatar__image {
     width: 120px;
 }
+
+/*user-list*/
+.users-list-avatar {
+    display: block;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-size: cover;
+}
+.users-list-info {
+    display: flex;
+    flex-direction: column;
+
+}
+.users-list-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 1.5em;
+}
+.users-list-nickname {
+    display: block;
+    margin-left: 10px;
+    margin-bottom: 30px;
+    color: grey;
+}
+.users-list-button {
+    display: block;
+    margin-left: auto;
+    margin-top: auto;
+}

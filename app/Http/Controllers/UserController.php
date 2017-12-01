@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserExist;
@@ -22,9 +21,9 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(CheckAuth::class)->except(['show']);
+        $this->middleware(CheckAuth::class)->except(['show', 'showUsers']);
 
-        $this->middleware(CheckUserExist::class)->except(['addBookToLibrary', 'deleteBookToLibrary']);
+        $this->middleware(CheckUserExist::class)->except(['showUsers']);
 
         $this->middleware(CheckUserGranted::class)->only(['editShow', 'edit']);
 
@@ -83,5 +82,17 @@ class UserController extends Controller
         return view('user.edit', [
             'status' => 'Данные были успешно обновлены'
         ]);
+    }
+
+    /**
+     * Показываем страницу со списком существующих пользователей
+     *
+     * @return Response
+     */
+    public function showUsers()
+    {
+        $users = User::paginate(10);
+
+        return view('user.users-list', ['users' => $users]);
     }
 }
