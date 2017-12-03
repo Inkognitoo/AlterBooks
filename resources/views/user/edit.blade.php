@@ -147,11 +147,8 @@
                             <label for="birthday_date" class="col-md-4 control-label">Дата рождения</label>
                             <div class="col-md-6">
                                 <input id="birthday_date" type="date" class="form-control" name="birthday_date"
-                                       value="{{ old('birthday_date') ??
-                                        filled(Auth::user()->birthday_date)
-                                            ? date('Y-m-d', strtotime(Auth::user()->birthday_date))
-                                            : '' }}">
-
+                                       value="{{ old('birthday_date',
+                                                 optional(Auth::user()->birthday_date)->format('Y-m-d')) }}">
                                 @if ($errors->has('birthday_date'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('birthday_date') }}</strong>

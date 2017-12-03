@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,7 +27,8 @@ use Storage;
  * @property string|null $patronymic
  * @property string $gender
  * @property string $nickname
- * @property string|null $birthday_date
+ * @property Carbon|null $birthday_date
+ * @property string|null $birthday_date_plain
  * @property string|null $avatar Название аватарки пользователя
  * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
  * @property string $avatar_url Ссылка на аватар пользователя
@@ -35,6 +37,8 @@ use Storage;
  * @property string $timezone таймзона пользователя
  * @property string $about Информация "О себе" с переводами строки заменёными на <br>
  * @property string $about_plain Информация "О себе" как она есть в бд
+ * @property string $api_token Токен пользователя для api запросов
+ * @property float $rating Средняя оценка книги
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -49,6 +53,7 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereSurname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
  */
 class User extends Authenticatable
 {
@@ -106,6 +111,14 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany('App\Review', 'user_id');
+    }
+
+    /**
+     * Получить все оставленные оценки на рецензии текущим пользователем
+     */
+    public function reviewEstimates()
+    {
+        return $this->hasMany('App\ReviewEstimate', 'user_id');
     }
 
     /**
@@ -296,5 +309,36 @@ class User extends Authenticatable
     public function getAboutPlainAttribute()
     {
         return $this->attributes['about'];
+    }
+
+    /**
+     * Получаем медианный рейтинг пользователя
+     *
+     * @return float
+     */
+    public function getRatingAttribute(): float
+    {
+        return round($this->books->median('rating'), 1);
+    }
+
+    /**
+     * Вывести дату рождения пользователя, если указана
+     *
+     * @param string $value
+     * @return \Carbon\Carbon|null
+     */
+    public function getBirthdayDateAttribute($value)
+    {
+        return is_null($value) ? null : new Carbon($value);
+    }
+
+    /**
+     * Вывести дату рождения пользователя как есть в бд
+     *
+     * @return string|null
+     */
+    public function getBirthdayDatePlainAttribute()
+    {
+        return $this->attributes['birthday_date'];
     }
 }

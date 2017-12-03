@@ -43,14 +43,14 @@
                                 <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">Читать</a>
                             @endif
                             @auth
-                                @if(Auth::user()->id == $book->author->id)
+                                @if(Auth::user()->isAuthor($book))
                                     <a type="button" class="btn btn-default" href="{{ route('book.edit.show', ['id' => $book->id]) }}">Редактировать</a>
                                     <button class="btn btn-default" data-toggle="modal" data-target="#deleteBookModal">Удалить</button>
                                 @else
                                     @if(Auth::user()->hasBookAtLibrary($book))
-                                        <a type="button" class="btn btn-default" href="{{ route('library.delete', ['id' => $book->id]) }}">Удалить из библиотеки</a>
+                                        <button type="button" class="btn btn-default" data-type="delete" data-book-id="{{ $book->id }}" id="libraryButton">Удалить из библиотеки</button>
                                     @else
-                                        <a type="button" class="btn btn-default" href="{{ route('library.add', ['id' => $book->id]) }}">Добавить в библиотеку</a>
+                                        <button type="button" class="btn btn-default" data-type="add" data-book-id="{{ $book->id }}" id="libraryButton">Добавить в библиотеку</button>
                                     @endif
                                 @endif
                             @endauth
@@ -78,7 +78,7 @@
                                     @endif
 
                                     @auth
-                                        @unless($book->hasReview(Auth::user()) || Auth::user()->id == $book->author_id)
+                                        @unless($book->hasReview(Auth::user()) || Auth::user()->isAuthor($book))
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <button class="btn btn-default" type="button" data-toggle="collapse"

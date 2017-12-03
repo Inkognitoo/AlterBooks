@@ -86,12 +86,12 @@
 
                             <div class="col-md-6">
                                 <select id="status" class="form-control" name="status">
-                                    <option value="{{ \App\Book::CLOSE_STATUS }}"
-                                            {{ old('status', $book->status) == \App\Book::CLOSE_STATUS ? 'selected' : '' }} >
+                                    <option value="{{ \App\Book::STATUS_CLOSE }}"
+                                            {{ old('status', $book->status) == \App\Book::STATUS_CLOSE ? 'selected' : '' }} >
                                         Черновик (видите только вы)
                                     </option>
-                                    <option value="{{ \App\Book::OPEN_STATUS }}"
-                                            {{ old('status', $book->status) == \App\Book::OPEN_STATUS ? 'selected' : ''}} >
+                                    <option value="{{ \App\Book::STATUS_OPEN }}"
+                                            {{ old('status', $book->status) == \App\Book::STATUS_OPEN ? 'selected' : ''}} >
                                         Чистовик (видят все)
                                     </option>
                                 </select>
