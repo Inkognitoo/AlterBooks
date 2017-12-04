@@ -266,6 +266,7 @@ class Book extends Model
      * @param int $page_number Номер запрашиваемой страницы
      * @param bool $format Нужно ли форматировать возвращаемый текст в html
      * @return null|string
+     * @throws Exception
      */
     public function getPage(int $page_number, bool $format = true)
     {
@@ -280,6 +281,7 @@ class Book extends Model
      * @param int $page_number Номер редактируемой страницы
      * @param string $text Новый текст страницы
      * @return void
+     * @throws Exception
      */
     public function editPage(int $page_number, string $text)
     {
