@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Middleware\Api\CanUserLibraryBook;
 use App\Http\Middleware\IsBookExist;
 use App\Http\Middleware\IsUserAuth;
 use Auth;
@@ -24,6 +25,8 @@ class LibraryBookController extends Controller
         $this->middleware(IsUserAuth::class);
 
         $this->middleware(IsBookExist::class);
+
+        $this->middleware(CanUserLibraryBook::class);
     }
 
     /**
