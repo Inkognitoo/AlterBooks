@@ -3,6 +3,7 @@
 namespace App;
 
 use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use MongoDB;
@@ -32,6 +33,7 @@ class MongoBook
      *
      * @param UploadedFile $text_file Текст книги
      * @return void
+     * @throws FileNotFoundException
      */
     public function setText(UploadedFile $text_file)
     {

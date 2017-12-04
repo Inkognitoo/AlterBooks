@@ -12,6 +12,7 @@ use App\Http\Requests\PageUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Auth;
+use Exception;
 
 class BookController extends Controller
 {
@@ -47,6 +48,7 @@ class BookController extends Controller
      *
      * @@param BookCreateRequest $request
      * @return Response
+     * @throws Exception
      */
     public function create(BookCreateRequest $request)
     {
@@ -87,6 +89,7 @@ class BookController extends Controller
      * @param BookUpdateRequest $request
      * @param int $id
      * @return Response
+     * @throws Exception
      */
     public function edit(BookUpdateRequest $request, $id)
     {
@@ -113,6 +116,7 @@ class BookController extends Controller
      *
      * @param int $id
      * @return Response
+     * @throws Exception
      */
     public function delete($id)
     {
@@ -140,6 +144,7 @@ class BookController extends Controller
      * @param int $id
      * @param int $page_number
      * @return Response
+     * @throws Exception
      */
     public function readPage(int $id, int $page_number)
     {
@@ -158,6 +163,7 @@ class BookController extends Controller
      * @param int $id
      * @param int $page_number
      * @return Response
+     * @throws Exception
      */
     public function editPageShow(int $id, int $page_number)
     {
@@ -177,6 +183,7 @@ class BookController extends Controller
      * @param int $id
      * @param int $page_number
      * @return Response
+     * @throws Exception
      */
     public function editPage(PageUpdateRequest $request, int $id, int $page_number)
     {

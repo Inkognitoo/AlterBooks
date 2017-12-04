@@ -11,6 +11,7 @@ use App\Scopes\StatusScope;
 use App\User;
 use Illuminate\Http\Response;
 use Auth;
+use Exception;
 
 class UserController extends Controller
 {
@@ -65,6 +66,7 @@ class UserController extends Controller
      *
      * @param UserUpdateRequest $request
      * @return Response
+     * @throws Exception
      */
     public function edit(UserUpdateRequest $request)
     {
