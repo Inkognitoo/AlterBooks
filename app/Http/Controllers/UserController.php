@@ -12,6 +12,10 @@ use App\User;
 use Illuminate\Http\Response;
 use Auth;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
@@ -89,12 +93,42 @@ class UserController extends Controller
     /**
      * Показываем страницу со списком существующих пользователей
      *
+     * @param Request $request
      * @return Response
      */
-    public function showUsers()
+    public function showUsers(Request $request)
     {
-        $users = User::paginate(10);
+        switch ($request->sort) {
+            case 'rating':
+                $users = User::get()->sortByDesc('rating');
+                break;
+            case 'books':
+                $users = User::get()->sortByDesc('books');
+                break;
+            default:
+                $users = User::get()->sortByDesc('rating');
+                break;
+        }
+
+        $users = $this->paginate($users, 10, $request->page);
 
         return view('user.users-list', ['users' => $users]);
+    }
+
+    /**
+     * Кастомная пагинация, работающая с коллекциями
+     *
+     * @param array|Collection $items
+     * @param int   $perPage
+     * @param int  $page
+     * @param array $options
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginate($items, $perPage = 15, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }
