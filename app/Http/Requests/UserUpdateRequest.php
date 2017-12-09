@@ -68,7 +68,7 @@ class UserUpdateRequest extends FormRequest
             'about' => 'nullable|max:5000',
             'timezone' => [
                 'required',
-                Rule::in(config('app.timezones')),
+                Rule::in(config('app.timezones-UTC')),
             ],
         ];
     }
