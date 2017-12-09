@@ -48,6 +48,7 @@ use Exception;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereStatus($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
+ * @method static bool|null forceDelete()
  */
 class Book extends Model
 {
@@ -57,9 +58,9 @@ class Book extends Model
     const COVER_PATH = 'book_covers';
 
     //Возможные статусы книги
-    const OPEN_STATUS = 'open_by_author';
+    const STATUS_OPEN = 'open_by_author';
 
-    const CLOSE_STATUS = 'close_by_author';
+    const STATUS_CLOSE = 'close_by_author';
 
     /**
      * The attributes that are mass assignable.
@@ -211,10 +212,10 @@ class Book extends Model
     public function getStatusCssAttribute(): string
     {
         switch ($this->status) {
-            case $this::OPEN_STATUS:
+            case $this::STATUS_OPEN:
 
                 return '';
-            case $this::CLOSE_STATUS:
+            case $this::STATUS_CLOSE:
 
                 return 'user-block-books__element_status_close';
             default:
@@ -224,13 +225,13 @@ class Book extends Model
     }
 
     /**
-     * Получаем средний рейтинг книги
+     * Получаем медианный рейтинг книги
      *
      * @return float
      */
     public function getRatingAttribute(): float
     {
-        return round($this->reviews->average('rating'), 1);
+        return round($this->reviews->median('rating'), 1);
     }
 
     /**
@@ -265,6 +266,7 @@ class Book extends Model
      * @param int $page_number Номер запрашиваемой страницы
      * @param bool $format Нужно ли форматировать возвращаемый текст в html
      * @return null|string
+     * @throws Exception
      */
     public function getPage(int $page_number, bool $format = true)
     {
@@ -279,6 +281,7 @@ class Book extends Model
      * @param int $page_number Номер редактируемой страницы
      * @param string $text Новый текст страницы
      * @return void
+     * @throws Exception
      */
     public function editPage(int $page_number, string $text)
     {
@@ -308,7 +311,7 @@ class Book extends Model
      */
     public function isClose(): bool
     {
-        return $this->status === self::CLOSE_STATUS;
+        return $this->status === self::STATUS_CLOSE;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserExist;
@@ -12,6 +11,11 @@ use App\Scopes\StatusScope;
 use App\User;
 use Illuminate\Http\Response;
 use Auth;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
@@ -24,7 +28,7 @@ class UserController extends Controller
     {
         $this->middleware(CheckAuth::class)->except(['show', 'showUsers']);
 
-        $this->middleware(CheckUserExist::class)->except(['addBookToLibrary', 'deleteBookToLibrary', 'showUsers']);
+        $this->middleware(CheckUserExist::class)->except(['showUsers']);
 
         $this->middleware(CheckUserGranted::class)->only(['editShow', 'edit']);
 
@@ -54,7 +58,6 @@ class UserController extends Controller
     /**
      * Показываем страницу редактирования профиля пользователя
      *
-     * @param  int  $id
      * @return Response
      */
     public function editShow()
@@ -67,6 +70,7 @@ class UserController extends Controller
      *
      * @param UserUpdateRequest $request
      * @return Response
+     * @throws Exception
      */
     public function edit(UserUpdateRequest $request)
     {
@@ -87,51 +91,44 @@ class UserController extends Controller
     }
 
     /**
-     * Добавить книгу в библиотеку.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function addBookToLibrary($id)
-    {
-        $book = Book::find($id);
-        if (Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get()->count() !== 0) {
-            return redirect(route('book.show', ['id' => $id]));
-        }
-
-        Auth::user()->libraryBooks()->save($book);
-
-        return redirect(route('book.show', ['id' => $id]));
-    }
-
-    /**
-     * Удалить книгу из библиотеки
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function deleteBookFromLibrary($id)
-    {
-        $book = Book::find($id);
-        $library_book = Auth::user()->libraryBooks()->where(['book_id' => $book->id])->get();
-        if ($library_book->count() === 0) {
-            return redirect(route('book.show', ['id' => $id]));
-        }
-
-        $library_book->first()->pivot->delete();
-
-        return redirect(route('book.show', ['id' => $id]));
-    }
-
-    /**
      * Показываем страницу со списком существующих пользователей
      *
+     * @param Request $request
      * @return Response
      */
-    public function showUsers()
+    public function showUsers(Request $request)
     {
-        $users = User::paginate(10);
+        switch ($request->sort) {
+            case 'rating':
+                $users = User::get()->sortByDesc('rating');
+                break;
+            case 'books':
+                $users = User::get()->sortByDesc('books');
+                break;
+            default:
+                $users = User::get()->sortByDesc('rating');
+                break;
+        }
+
+        $users = $this->paginate($users, 10, $request->page);
 
         return view('user.users-list', ['users' => $users]);
+    }
+
+    /**
+     * Кастомная пагинация, работающая с коллекциями
+     *
+     * @param array|Collection $items
+     * @param int   $perPage
+     * @param int  $page
+     * @param array $options
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginate($items, $perPage = 15, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

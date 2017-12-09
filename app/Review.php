@@ -18,7 +18,8 @@ use Carbon\Carbon;
  * @property int $user_id
  * @property int $book_id
  * @property \Carbon\Carbon|null $deleted_at
- * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $created_at Дата создания сущности в соотвествии с часовым поясом пользователя
+ * @property \Carbon\Carbon|null $created_at_plain Дата создания сущности как она есть в бд
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Book $book
  * @property-read \App\User $user
@@ -34,6 +35,8 @@ use Carbon\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Review withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Review withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
+ * @method static bool|null forceDelete()
  */
 class Review extends Model
 {
@@ -72,6 +75,14 @@ class Review extends Model
     }
 
     /**
+     * Получить все оценки текущей рецензии
+     */
+    public function reviewEstimates()
+    {
+        return $this->hasMany('App\ReviewEstimate', 'review_id');
+    }
+
+    /**
      * Сохранить текст рецензии с экранированием опасных символов
      *
      * @param string $value
@@ -90,6 +101,7 @@ class Review extends Model
     {
         $pattern = '/(\r\n)/i';
         $replacement = '<br>';
+
         return preg_replace($pattern, $replacement, $value);
     }
 
@@ -107,12 +119,25 @@ class Review extends Model
      * Вывести дату создания рецензии в соответствии с часовым поясом
      *
      * @param string $value
-     * @return string
+     * @return Carbon
     */
     public function getCreatedAtAttribute($value)
     {
-        $dt = new Carbon($value, 'UTC');
-        $dt->tz = Auth::user()->timezone;
-        return $dt;
+        $date_time = new Carbon($value, config('app.timezone'));
+        if (Auth::check()) {
+            $date_time->timezone = Auth::user()->timezone;
+        }
+
+        return $date_time;
+    }
+
+    /**
+     * Дата создания сущности, как она есть в бд
+     *
+     * @return Carbon
+     */
+    public function getCreatedAtPlainAttribute()
+    {
+        return new Carbon($this->attributes['created_at']);
     }
 }

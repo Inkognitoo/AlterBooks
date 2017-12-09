@@ -147,11 +147,8 @@
                             <label for="birthday_date" class="col-md-4 control-label">Дата рождения</label>
                             <div class="col-md-6">
                                 <input id="birthday_date" type="date" class="form-control" name="birthday_date"
-                                       value="{{ old('birthday_date') ??
-                                        filled(Auth::user()->birthday_date)
-                                            ? date('Y-m-d', strtotime(Auth::user()->birthday_date))
-                                            : '' }}">
-
+                                       value="{{ old('birthday_date',
+                                                 optional(Auth::user()->birthday_date)->format('Y-m-d')) }}">
                                 @if ($errors->has('birthday_date'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('birthday_date') }}</strong>
@@ -182,17 +179,14 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('timezone') ? ' has-error' : '' }}">
                             <label for="timezone" class="col-md-4 control-label">Таймзона</label>
 
                             <div class="col-md-6">
                                 <select class="form-control user-edit-timezone" id="timezone" name="timezone">
                                     @foreach(config('app.timezones') as $timezone)
                                         <option value="{{ $timezone }}"
-                                            @if ($timezone == Auth::user()->timezone))
-                                                selected
-                                            @endif
-                                        >
+                                            {{ ($timezone == Auth::user()->timezone) ? 'selected' : '' }} >
                                             {{ $timezone }}
                                         </option>
                                     @endforeach

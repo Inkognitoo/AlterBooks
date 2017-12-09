@@ -12,6 +12,10 @@ use App\Http\Requests\PageUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Auth;
+use Exception;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class BookController extends Controller
 {
@@ -47,6 +51,7 @@ class BookController extends Controller
      *
      * @@param BookCreateRequest $request
      * @return Response
+     * @throws Exception
      */
     public function create(BookCreateRequest $request)
     {
@@ -87,6 +92,7 @@ class BookController extends Controller
      * @param BookUpdateRequest $request
      * @param int $id
      * @return Response
+     * @throws Exception
      */
     public function edit(BookUpdateRequest $request, $id)
     {
@@ -113,6 +119,7 @@ class BookController extends Controller
      *
      * @param int $id
      * @return Response
+     * @throws Exception
      */
     public function delete($id)
     {
@@ -140,6 +147,7 @@ class BookController extends Controller
      * @param int $id
      * @param int $page_number
      * @return Response
+     * @throws Exception
      */
     public function readPage(int $id, int $page_number)
     {
@@ -158,6 +166,7 @@ class BookController extends Controller
      * @param int $id
      * @param int $page_number
      * @return Response
+     * @throws Exception
      */
     public function editPageShow(int $id, int $page_number)
     {
@@ -177,6 +186,7 @@ class BookController extends Controller
      * @param int $id
      * @param int $page_number
      * @return Response
+     * @throws Exception
      */
     public function editPage(PageUpdateRequest $request, int $id, int $page_number)
     {
@@ -191,12 +201,42 @@ class BookController extends Controller
     /**
      * Показываем страницу со списком существующих книг
      *
+     * @param Request $request
      * @return Response
      */
-    public function showBooks()
+    public function showBooks(Request $request)
     {
-        $books = Book::paginate(10);
+        switch ($request->sort) {
+            case 'rating':
+                $books = Book::get()->sortByDesc('rating');
+                break;
+            case 'date':
+                $books = Book::orderBy('created_at', 'desc')->get();
+                break;
+            default:
+                $books = Book::get()->sortByDesc('rating');
+                break;
+        }
+
+        $books = $this->paginate($books, 10, $request->page);
 
         return view('book.books-list', ['books' => $books]);
+    }
+
+    /**
+     * Кастомная пагинация, работающая с коллекциями
+     *
+     * @param array|Collection $items
+     * @param int   $perPage
+     * @param int  $page
+     * @param array $options
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginate($items, $perPage = 15, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }
