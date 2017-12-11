@@ -4,6 +4,7 @@ php:
   - 7.1
 
 before_script:
+  - pecl -q install mongo && echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - composer self-update
   - composer install
   - psql -c 'create database alterbooks;' -U postgres
