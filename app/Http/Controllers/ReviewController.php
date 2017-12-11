@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Redirect;
 use Auth;
+use Exception;
 
 class ReviewController extends Controller
 {
@@ -60,6 +61,7 @@ class ReviewController extends Controller
      * @param int $book_id
      * @param int $id
      * @return Redirect
+     * @throws Exception
      */
     public function delete($book_id, $id)
     {

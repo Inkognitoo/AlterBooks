@@ -184,10 +184,10 @@
 
                             <div class="col-md-6">
                                 <select class="form-control user-edit-timezone" id="timezone" name="timezone">
-                                    @foreach(config('app.timezones') as $timezone)
-                                        <option value="{{ $timezone }}"
-                                            {{ ($timezone == Auth::user()->timezone) ? 'selected' : '' }} >
-                                            {{ $timezone }}
+                                    @foreach(config('app.timezones') as $key => $value)
+                                        <option value="{{ $key }}"
+                                                {{ ($key == Auth::user()->timezone) ? 'selected' : '' }} >
+                                            {{ $value }}
                                         </option>
                                     @endforeach
                                 </select>

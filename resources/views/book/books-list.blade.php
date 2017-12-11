@@ -11,7 +11,29 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Список книг</div>
+                    <div class="panel-heading text-center books-list-heading">
+                        <div>Список книг</div>
+
+                        <div class="btn-group books-list-sort">
+                            <button type="button" class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @switch(Request::get('sort'))
+                                    @case('rating')
+                                        По рейтингу <span class="caret"></span>
+                                        @break
+                                    @case('date')
+                                        По дате добавления <span class="caret"></span>
+                                        @break
+                                    @default
+                                        По рейтингу <span class="caret"></span>
+                                @endswitch
+                            </button>
+                            <ul class="dropdown-menu books-list-sort__open">
+                                <li><a href="{{ route('book.books-list', ['sort' => 'rating']) }}">По рейтингу</a></li>
+                                <li><a href="{{ route('book.books-list', ['sort' => 'date']) }}">По дате добавления</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="panel-body">
                         <div>
                             @if($books->isEmpty())

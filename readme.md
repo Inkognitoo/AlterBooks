@@ -2,4 +2,5 @@
 
 MVP версия сервиса
 
-[alterbooks.herokuapp.com](https://alterbooks.herokuapp.com/)
+Документация доступна по адресу:  
+[github.com/Inkognitoo/AlterBooks/wiki](https://github.com/Inkognitoo/AlterBooks/wiki)
