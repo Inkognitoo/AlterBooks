@@ -9,6 +9,7 @@ before_script:
   - composer install
   - psql -c 'create database alterbooks;' -U postgres
   - cp .env.travis .env
+  - php artisan key:generate --force
   - php artisan migrate --force
 
 script: phpunit
