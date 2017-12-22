@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - 7.1
+
+before_script:
+  - pecl -q install mongodb && echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - composer self-update
+  - composer install
+  - psql -c 'create database alterbooks;' -U postgres
+  - cp .env.travis .env
+  - php artisan key:generate --force
+  - php artisan migrate --force
+
+script: phpunit
