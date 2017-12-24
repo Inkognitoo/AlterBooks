@@ -18,10 +18,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
-    Route::post('library/book/id{id}', 'LibraryBookController@create')
+    Route::post('/library/book/id{id}', 'LibraryBookController@create')
         ->name('api.library.add')
     ;
-    Route::delete('library/book/id{id}', 'LibraryBookController@destroy')
+    Route::delete('/library/book/id{id}', 'LibraryBookController@destroy')
         ->name('api.library.delete')
+    ;
+
+    Route::post('/book/id{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')
+        ->name('api.review.estimate.plus')
+    ;
+    Route::post('/book/id{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
+        ->name('api.review.estimate.minus')
     ;
 });

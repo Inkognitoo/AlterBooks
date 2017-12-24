@@ -148,6 +148,8 @@ class DeleteBookTest extends TestCase
                 'user_id' => $person->id,
                 'book_id' => $book->id,
             ]);
+
+            usleep(500000);
         }
     }
 
