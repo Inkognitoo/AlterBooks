@@ -37,10 +37,11 @@ class ReviewEstimateController extends Controller
     /**
      * Положительно оценить книгу
      *
+     * @param  int  $book_id
      * @param  int  $id
      * @return JsonResponse
      */
-    public function plus($id)
+    public function plus($book_id, $id)
     {
         $review_estimate = Auth::user()
             ->reviewEstimates()
@@ -76,10 +77,11 @@ class ReviewEstimateController extends Controller
     /**
      * Отрицательно оценить книгу
      *
+     * @param  int  $book_id
      * @param  int  $id
      * @return JsonResponse
      */
-    public function minus($id)
+    public function minus($book_id, $id)
     {
         $review_estimate = Auth::user()
             ->reviewEstimates()

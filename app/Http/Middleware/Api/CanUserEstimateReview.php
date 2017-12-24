@@ -34,18 +34,20 @@ class CanUserEstimateReview
     public function handle($request, Closure $next)
     {
         $book_id = $request->book_id;
-        $review_id = $request->review_id ?? $request->id;
         $book = Book::find($book_id);
+
+        $review_id = $request->review_id ?? $request->id;
         $review = Review::find($review_id);
 
         if (Auth::user()->isAuthor($book)) {
             return response()->json($this->out);
         }
 
-        if ($review->user_id = Auth::user()->id) {
+        if ($review->user_id == Auth::user()->id) {
             $this->out['success'] = false;
             $this->out['code'] = 403;
             $this->out['data']['message'] = 'You cannot estimate your own review';
+            return response()->json($this->out);
         }
 
         return $next($request);
