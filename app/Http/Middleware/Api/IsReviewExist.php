@@ -2,23 +2,23 @@
 
 namespace App\Http\Middleware;
 
+use App\Review;
 use Closure;
-use Auth;
 
 /**
- * Проверяем, авторизован ли пользователь
+ * Проверям, существует ли рецензия к книге
  *
- * Class IsUserAuth
+ * Class IsBookExist
  * @package App\Http\Middleware\Api
  */
-class IsUserAuth
+class IsReviewExist
 {
     /** @var array $out */
     private $out = [
         'success' => false,
-        'code' => 401,
+        'code' => 404,
         'data' => [
-            'message' => 'Unauthorized'
+            'message' => 'review not found'
         ]
     ];
 
@@ -31,7 +31,16 @@ class IsUserAuth
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::check()) {
+        $review_id = $request->review_id ?? $request->id;
+
+        $review = Review::find($review_id);
+
+        if (blank($review)) {
+            return response()->json($this->out);
+        }
+
+        if ($review->book_id != $request->book_id) {
+            $this->out['data']['message'] = 'review for this book not found';
             return response()->json($this->out);
         }
 
