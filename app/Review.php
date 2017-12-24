@@ -23,6 +23,7 @@ use Carbon\Carbon;
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Book $book
  * @property-read \App\User $user
+ * @property-read int $estimate Совокупная оценка рецензии
  * @method static \Illuminate\Database\Query\Builder|\App\Review onlyTrashed()
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereBookId($value)
@@ -139,5 +140,51 @@ class Review extends Model
     public function getCreatedAtPlainAttribute()
     {
         return new Carbon($this->attributes['created_at']);
+    }
+
+    /**
+     * Совокупная оценка рецензии
+     *
+     * @return int
+     */
+    public function getEstimateAttribute()
+    {
+        return $this->reviewEstimates->sum('estimate');
+    }
+
+    /**
+     * Получить оценку рецензии пользователем, если такая имеется
+     *
+     * @param User $user
+     * @return ReviewEstimate | null
+     */
+    public function usersEstimate(User $user)
+    {
+        return $this->reviewEstimates()
+            ->where('user_id', '=', $user->id)
+            ->first()
+        ;
+    }
+
+    /**
+     * Проверить, является ли пользователь автором рецензии
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isAuthor(User $user)
+    {
+        return ($this->user_id === $user->id);
+    }
+
+    /**
+     * Проверить, оставлена ли рецензия к одной из книг пользователя
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isForBookOfUser(User $user)
+    {
+        return ($this->book->author_id === $user->id);
     }
 }

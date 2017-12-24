@@ -23,7 +23,8 @@ class CreateReviewEstimatesTable extends Migration
             $table->foreign('review_id')
                 ->references('id')->on('reviews')
                 ->onDelete('cascade');
-            $table->smallInteger('estimate');
+            $table->smallInteger('estimate')->default(0);
+            $table->unique(['user_id', 'review_id']);
             $table->timestamps();
         });
     }
