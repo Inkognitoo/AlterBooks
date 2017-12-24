@@ -70,6 +70,7 @@ class ReviewEstimateController extends Controller
         $this->out['success'] = true;
         $this->out['code'] = 200;
         $this->out['data']['message'] = 'estimate was successfully added';
+        $this->out['data']['estimate'] = $review_estimate->estimate;
 
         return response()->json($this->out);
     }
@@ -110,6 +111,7 @@ class ReviewEstimateController extends Controller
         $this->out['success'] = true;
         $this->out['code'] = 200;
         $this->out['data']['message'] = 'estimate was successfully added';
+        $this->out['data']['estimate'] = $review_estimate->estimate;
 
         return response()->json($this->out);
     }

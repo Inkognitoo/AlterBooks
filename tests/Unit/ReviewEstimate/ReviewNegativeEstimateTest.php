@@ -41,7 +41,10 @@ class ReviewNegativeEstimateTest extends TestCase
         $response = $this->post(route('api.review.estimate.minus', ['id' => $review->id, 'book_id' => $review->book_id]), [], $headers);
         $response->assertJson([
             'success' => true,
-            'code' => 200
+            'code' => 200,
+            'data' => [
+                'estimate' => -1
+            ]
         ]);
         $this->assertDatabaseHas('review_estimates', [
             'user_id' => $person->id,
@@ -72,7 +75,10 @@ class ReviewNegativeEstimateTest extends TestCase
         $response = $this->post(route('api.review.estimate.minus', ['id' => $review->id, 'book_id' => $review->book_id]), [], $headers);
         $response->assertJson([
             'success' => true,
-            'code' => 200
+            'code' => 200,
+            'data' => [
+                'estimate' => -1
+            ]
         ]);
         $this->assertDatabaseHas('review_estimates', [
             'user_id' => $person->id,
@@ -116,7 +122,10 @@ class ReviewNegativeEstimateTest extends TestCase
             $response = $this->post(route('api.review.estimate.minus', ['id' => $review->id, 'book_id' => $review->book_id]), [], $headers);
             $response->assertJson([
                 'success' => true,
-                'code' => 200
+                'code' => 200,
+                'data' => [
+                    'estimate' => -1
+                ]
             ]);
             $this->assertDatabaseHas('review_estimates', [
                 'user_id' => $person->id,
@@ -249,7 +258,10 @@ class ReviewNegativeEstimateTest extends TestCase
         $response = $this->post(route('api.review.estimate.plus', ['id' => $review->id, 'book_id' => $review->book_id]), [], $headers);
         $response->assertJson([
             'success' => true,
-            'code' => 200
+            'code' => 200,
+            'data' => [
+                'estimate' => 0
+            ]
         ]);
         $this->assertDatabaseHas('review_estimates', [
             'user_id' => $person->id,
@@ -292,12 +304,18 @@ class ReviewNegativeEstimateTest extends TestCase
         $response = $this->post(route('api.review.estimate.minus', ['id' => $review->id, 'book_id' => $review->book_id]), [], $headers);
         $response->assertJson([
             'success' => true,
-            'code' => 200
+            'code' => 200,
+            'data' => [
+                'estimate' => 0
+            ]
         ]);
         $response = $this->post(route('api.review.estimate.minus', ['id' => $review->id, 'book_id' => $review->book_id]), [], $headers);
         $response->assertJson([
             'success' => true,
-            'code' => 200
+            'code' => 200,
+            'data' => [
+                'estimate' => -1
+            ]
         ]);
         $this->assertDatabaseHas('review_estimates', [
             'user_id' => $person->id,
