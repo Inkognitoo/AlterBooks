@@ -10,10 +10,29 @@
             </div>
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-10">
                         <a href="{{ route('user.show', ['id' => $review->user->id]) }}">
                             {{ $review->user->full_name }}
                         </a>
+                    </div>
+                    <div class="col-md-2">
+                        @auth
+                            @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
+                                <span name="estimateButton"
+                                      style="display : {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? 'none' : 'inline' }}"
+                                      data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
+                                      data-type="negative">-</span>
+                            @endunless
+                        @endauth
+                        <span data-review-id="{{ $review->id }}" data-type="counter">{{ $review->estimate }}</span>
+                        @auth
+                            @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
+                                <span name="estimateButton"
+                                      style="display : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? 'none' : 'inline' }}"
+                                      data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
+                                      data-type="positive">+</span>
+                            @endunless
+                        @endauth
                     </div>
                 </div>
                 <div class="row">
