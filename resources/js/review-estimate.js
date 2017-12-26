@@ -136,16 +136,17 @@ function updateEstimateView(estimate, action, review_id) {
  * @param {object} button Объект кнопки оценки рецензии
  */
 function disableEstimateButton(button) {
-    button.style.display = 'none';
+    button.style.opacity = "0.15";
+    button.style.cursor = "auto";
 }
-
 /**
  * Показываем кнопку пользователю
  *
  * @param {object} button Объект кнопки оценки рецензии
  */
 function enableEstimateButton(button) {
-    button.style.display = 'inline';
+    button.style.opacity = "0.4";
+    button.style.cursor = "pointer";
 }
 
 /**
