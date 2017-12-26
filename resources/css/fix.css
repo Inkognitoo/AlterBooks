@@ -119,3 +119,35 @@
 .books-list-sort__open {
     left: calc(100% - 215px);
 }
+
+.rating-icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 90px;
+    margin-left: auto;
+}
+
+.icon {
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    background: 50% 50% no-repeat;
+    background-size: auto 80%;
+    opacity: 0.4;
+}
+
+.icon_down {
+    background-image: url('/img/icon-down.png');
+}
+
+.icon_up {
+    background-image: url('/img/icon-up.png');
+}
+
+.rating {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 30px;
+}

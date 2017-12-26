@@ -15,25 +15,6 @@
                             {{ $review->user->full_name }}
                         </a>
                     </div>
-                    <div class="col-md-2">
-                        @auth
-                            @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
-                                <span name="estimateButton"
-                                      style="display : {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? 'none' : 'inline' }}"
-                                      data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
-                                      data-type="negative">-</span>
-                            @endunless
-                        @endauth
-                        <span data-review-id="{{ $review->id }}" data-type="counter">{{ $review->estimate }}</span>
-                        @auth
-                            @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
-                                <span name="estimateButton"
-                                      style="display : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? 'none' : 'inline' }}"
-                                      data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
-                                      data-type="positive">+</span>
-                            @endunless
-                        @endauth
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -50,6 +31,36 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 text-right rating-icons">
+                        @auth
+                            @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
+                                <span name="estimateButton"
+                                      class="icon icon_down"
+                                      style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? '0.15' : '0.4' }};
+                                             cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? 'auto' : 'pointer' }};"
+                                      data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
+                                      data-type="negative"></span>
+                            @endunless
+                        @endauth
+                        <span class="rating"
+                              data-review-id="{{ $review->id }}"
+                              data-type="counter">
+                            {{ $review->estimate }}
+                        </span>
+                        @auth
+                            @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
+                                <span name="estimateButton"
+                                      class="icon icon_up "
+                                      style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? '0.15' : '0.4' }};
+                                             cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? 'auto' : 'pointer' }};"
+                                      data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
+                                      data-type="positive"></span>
+                            @endunless
+                        @endauth
+                    </div>
+                </div>
+                <br>
                 <div class="row">
                     <div class="col-md-12 text-right">
                         {{ $review->created_at->format('Y-m-d H:i')}}
