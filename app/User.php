@@ -54,6 +54,9 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereApiToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTimezone($value)
  */
 class User extends Authenticatable
 {
@@ -187,15 +190,17 @@ class User extends Authenticatable
 
         switch ($this->gender) {
             case $this::GENDER_MALE:
-                return '/img/avatar_man.png';
+                $avatar_url = '/img/avatar_man.png';
                 break;
             case $this::GENDER_FEMALE:
-                return '/img/avatar_woman.png';
+                $avatar_url = '/img/avatar_woman.png';
                 break;
             default:
-                return '/img/avatar_default.png';
+                $avatar_url = '/img/avatar_default.png';
                 break;
         }
+
+        return $avatar_url;
     }
 
     /**
