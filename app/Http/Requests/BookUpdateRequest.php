@@ -46,6 +46,8 @@ class BookUpdateRequest extends FormRequest
                 'required',
                 Rule::in([Book::STATUS_OPEN, Book::STATUS_CLOSE]),
             ],
+            'genres' => 'nullable|array',
+            'genres.*' => ['exists:genres,slug']
         ];
     }
 }

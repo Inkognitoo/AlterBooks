@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Scopes\StatusScope;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
@@ -49,6 +50,7 @@ use Exception;
  * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
  * @method static bool|null forceDelete()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
  */
 class Book extends Model
 {
@@ -69,6 +71,7 @@ class Book extends Model
      */
     protected $fillable = [
         'title', 'description', 'status',
+        'genres',
     ];
 
     /**
@@ -128,6 +131,16 @@ class Book extends Model
     public function reviews()
     {
         return $this->hasMany('App\Review', 'book_id');
+    }
+
+    /**
+     * Жанры книги
+     */
+    public function genres()
+    {
+        return $this->belongsToMany('App\Genre', 'books_genres')
+            ->withTimestamps()
+            ;
     }
 
     /**
@@ -315,6 +328,20 @@ class Book extends Model
     }
 
     /**
+     * Проверить, есть ли у книги этот жанр
+     *
+     * @param Genre $genre
+     * @return bool
+     */
+    public function hasGenre(Genre $genre): bool
+    {
+        return filled($this->genres()
+            ->where(['genre_id' => $genre->id])
+            ->first()
+        );
+    }
+
+    /**
      * Сохранить описание книги с экранированием опасных символов
      *
      * @param string $value
@@ -345,5 +372,28 @@ class Book extends Model
     public function getDescriptionPlainAttribute()
     {
         return $this->attributes['description'];
+    }
+
+    /**
+     * Сохранить жанры для книги
+     *
+     * @param array $values
+     */
+    public function setGenresAttribute($values)
+    {
+        foreach ($values as $value) {
+            $genre = Genre::where(['slug' => $value])->first();
+            if (!$this->hasGenre($genre)) {
+                $this->genres()->save($genre);
+            }
+        }
+        foreach ($this->genres as $genre) {
+            if (!in_array($genre->slug, $values)) {
+                DB::table('books_genres')->where([
+                    ['book_id', '=', $this->id],
+                    ['genre_id', '=', $genre->id]
+                ])->delete();
+            }
+        }
     }
 }

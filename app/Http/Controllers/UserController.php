@@ -75,14 +75,6 @@ class UserController extends Controller
     public function edit(UserUpdateRequest $request)
     {
         Auth::user()->fill($request->all());
-
-        if (filled($request->password)) {
-            Auth::user()->password = bcrypt($request->password);
-        }
-        if (filled($request->avatar)) {
-            Auth::user()->setAvatar($request->avatar);
-        }
-
         Auth::user()->save();
 
         return view('user.edit', [

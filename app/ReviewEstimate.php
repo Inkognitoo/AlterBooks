@@ -16,6 +16,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Review $review
  * @property-read \App\User $user
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereEstimate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereReviewId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereUserId($value)
  */
 class ReviewEstimate extends Model
 {
