@@ -215,17 +215,20 @@ class Book extends Model
      */
     public function getStatusCssAttribute(): string
     {
+        $status_css = '';
+
         switch ($this->status) {
             case $this::STATUS_OPEN:
-
-                return '';
+                $status_css = '';
+                break;
             case $this::STATUS_CLOSE:
-
-                return 'user-block-books__element_status_close';
+                $status_css = 'user-block-books__element_status_close';
+                break;
             default:
-
-                return 'user-block-books__element_status_close';
+                $status_css = 'user-block-books__element_status_close';
         }
+
+        return $status_css;
     }
 
     /**

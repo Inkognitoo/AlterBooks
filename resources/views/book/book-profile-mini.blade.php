@@ -21,9 +21,18 @@
                     <div class="panel-heading">Описание книги</div>
                     <div class="panel-body text-justify">
                         @if(filled($book->description))
-                            {{ $book->description }}
+                            {!! $book->description !!}
                         @else
                             <span class="no-description">-описание отсутствует-</span>
+                        @endif
+
+                        @if(filled($book->genres))
+                            <hr>
+                            <div class="text-left">
+                                @foreach($book->genres as $genre)
+                                    <span class="label label-default">{{ $genre->name }}</span>
+                                @endforeach
+                            </div>
                         @endif
                     </div>
                 </div>

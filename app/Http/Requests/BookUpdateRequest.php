@@ -17,6 +17,7 @@ use Illuminate\Validation\Rule;
  * @property string|null $description
  * @property UploadedFile|null $text
  * @property string $status
+ * @property null|array $genres
  */
 class BookUpdateRequest extends FormRequest
 {
