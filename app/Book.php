@@ -71,7 +71,7 @@ class Book extends Model
      */
     protected $fillable = [
         'title', 'description', 'status',
-        'genres',
+        'genres', 'cover', 'text',
     ];
 
     /**
