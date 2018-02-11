@@ -76,9 +76,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nickname', 'email', 'surname',
-        'patronymic', 'birthday_date', 'gender',
-        'about', 'timezone',
+        'nickname', 'email', 'name',
+        'surname', 'patronymic', 'birthday_date',
+        'gender', 'about', 'timezone',
+        'password', 'avatar',
     ];
 
     /**
@@ -150,31 +151,22 @@ class User extends Authenticatable
      * Установить аватар для пользователя
      *
      * @param UploadedFile $avatar Аватар пользователя
-     * @param bool $save Сохранять ли состояние модели после записи
      * @return void
      * @throws Exception
      */
-    public function setAvatar(UploadedFile $avatar, bool $save = false)
+    public function setAvatarAttribute(UploadedFile $avatar)
     {
-        if (blank($this->id) && !$save) {
+        if (blank($this->id)) {
             throw new Exception('For setting avatar path, user must be present');
         }
 
-        if ($save) {
-            $this->save();
-        }
-
-        if (Storage::disk('s3')->exists($this->avatar_path)) {
+        if (filled($this->avatar) && Storage::disk('s3')->exists($this->avatar_path)) {
             Storage::disk('s3')->delete($this->avatar_path);
         }
 
         $image_name = $this::AVATAR_PATH . '/' . $this->id;
         $storage_path = Storage::disk('s3')->put($image_name, $avatar);
-        $this->avatar = basename($storage_path);
-
-        if ($save) {
-            $this->save();
-        }
+        $this->attributes['avatar'] = basename($storage_path);
     }
 
     /**
@@ -345,5 +337,15 @@ class User extends Authenticatable
     public function getBirthdayDatePlainAttribute()
     {
         return $this->attributes['birthday_date'];
+    }
+
+    /**
+     * Записать хэш нового пароля пользователя
+     *
+     * @param string $password
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
     }
 }
