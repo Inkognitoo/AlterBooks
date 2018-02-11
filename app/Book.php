@@ -147,18 +147,13 @@ class Book extends Model
      * Установить обложку для книги
      *
      * @param UploadedFile $cover Обложка книги
-     * @param bool $save Сохранять ли состояние модели после записи
      * @return void
      * @throws Exception
      */
-    public function setCover(UploadedFile $cover, bool $save = false)
+    public function setCoverAttribute(UploadedFile $cover)
     {
-        if (blank($this->id) && !$save) {
+        if (blank($this->id)) {
             throw new Exception('For setting cover, book must be present');
-        }
-
-        if ($save) {
-            $this->save();
         }
 
         if (filled($this->cover) && Storage::disk('s3')->exists($this->cover_path)) {
@@ -167,11 +162,7 @@ class Book extends Model
 
         $image_name = $this::COVER_PATH . '/' . $this->id;
         $storage_path = Storage::disk('s3')->put($image_name, $cover);
-        $this->cover = basename($storage_path);
-
-        if ($save) {
-            $this->save();
-        }
+        $this->attributes['cover'] = basename($storage_path);
     }
 
     /**
@@ -251,26 +242,17 @@ class Book extends Model
      * Сохраняем книгу в mongoDB
      *
      * @param UploadedFile $text Текст книги
-     * @param bool $save Сохранять ли состояние модели после записи
      * @return void
      * @throws Exception
      */
-    public function setText(UploadedFile $text, bool $save = false)
+    public function setTextAttribute(UploadedFile $text)
     {
-        if (blank($this->id) && !$save) {
+        if (blank($this->id)) {
             throw new Exception('For setting text, book must be present');
-        }
-
-        if ($save) {
-            $this->save();
         }
 
         $mongodb_book = new MongoBook($this);
         $mongodb_book->setText($text);
-
-        if ($save) {
-            $this->save();
-        }
     }
 
     /**
