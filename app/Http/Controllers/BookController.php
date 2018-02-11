@@ -55,19 +55,10 @@ class BookController extends Controller
      */
     public function create(BookCreateRequest $request)
     {
-        $book = new Book();
-
-        $book->fill($request->all());
-
+        $book = new Book(['title' => $request->title]);
         Auth::user()->books()->save($book);
 
-        if (filled($request->cover)) {
-            $book->setCover($request->cover);
-        }
-        if (filled($request->text)) {
-            $book->setText($request->text);
-        }
-
+        $book->fill($request->all());
         $book->save();
 
         return redirect(route('book.show', ['id' => $book->id]));
@@ -99,13 +90,6 @@ class BookController extends Controller
         $book = Book::findAny($id);
 
         $book->fill($request->all());
-
-        if (filled($request->cover)) {
-            $book->setCover($request->cover);
-        }
-        if (filled($request->text)) {
-            $book->setText($request->text);
-        }
         $book->save();
 
         return view('book.edit', [
