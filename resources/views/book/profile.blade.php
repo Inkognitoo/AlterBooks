@@ -36,6 +36,15 @@
                                     @else
                                         <span class="no-description">-описание отсутствует-</span>
                                     @endif
+
+                                    @if(filled($book->genres))
+                                        <hr>
+                                        <div>
+                                            @foreach($book->genres as $genre)
+                                                <span class="label label-default">{{ $genre->name }}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
