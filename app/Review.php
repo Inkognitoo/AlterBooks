@@ -10,7 +10,6 @@ use Carbon\Carbon;
 /**
  * App\Review
  *
- * @mixin \Eloquent
  * @property int $id
  * @property int $rating
  * @property string $text Текст рецензии с переводами строки заменёными на <br>
@@ -21,11 +20,11 @@ use Carbon\Carbon;
  * @property \Carbon\Carbon|null $created_at Дата создания сущности в соотвествии с часовым поясом пользователя
  * @property \Carbon\Carbon|null $created_at_plain Дата создания сущности как она есть в бд
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
  * @property-read \App\Book $book
  * @property-read \App\User $user
  * @property-read int $estimate Совокупная оценка рецензии
  * @method static \Illuminate\Database\Query\Builder|\App\Review onlyTrashed()
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereBookId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereDeletedAt($value)
@@ -36,8 +35,9 @@ use Carbon\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Review withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Review withoutTrashed()
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
  * @method static bool|null forceDelete()
+ * @method static bool|null restore()
+ * @mixin \Eloquent
  */
 class Review extends Model
 {
@@ -60,7 +60,7 @@ class Review extends Model
     protected $dates = ['deleted_at'];
 
     /**
-     * Получить автора рецензии
+     * Автор рецензии
      */
     public function user()
     {
@@ -68,7 +68,7 @@ class Review extends Model
     }
 
     /**
-     * Получить книгу, к которой оставлена рецензия
+     * Книга, к которой оставлена рецензия
      */
     public function book()
     {
@@ -76,7 +76,7 @@ class Review extends Model
     }
 
     /**
-     * Получить все оценки текущей рецензии
+     * Все оценки текущей рецензии
      */
     public function reviewEstimates()
     {
@@ -84,30 +84,66 @@ class Review extends Model
     }
 
     /**
-     * Сохранить текст рецензии с экранированием опасных символов
+     * Оценка рецензии конкретным пользователем, если таковая имеется
      *
-     * @param string $value
+     * @param User $user
+     * @return ReviewEstimate | null
      */
-    public function setTextAttribute($value)
+    public function usersEstimate(User $user)
     {
-        $this->attributes['text'] = htmlspecialchars($value, ENT_HTML5);
+        return $this->reviewEstimates()
+            ->where('user_id', '=', $user->id)
+            ->first()
+            ;
     }
 
-    /** Вывести текст рецензии, заменяя переводы строки на <br>
+    /**
+     * Проверить, является ли конкретный пользователь автором рецензии
      *
-     * @param string $value
+     * @param User $user
+     * @return boolean
+     */
+    public function isAuthor(User $user)
+    {
+        return ($this->user_id === $user->id);
+    }
+
+    /**
+     * Проверить, оставлена ли рецензия к одной из книг конкретного пользователя
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isForBookOfUser(User $user)
+    {
+        return ($this->book->author_id === $user->id);
+    }
+
+    /** Текст рецензии, с переводами строки заменёнными на <br>
+     *
+     * @param string $text
      * @return string
      */
-    public function getTextAttribute($value)
+    public function getTextAttribute($text)
     {
         $pattern = '/(\r\n)/i';
         $replacement = '<br>';
 
-        return preg_replace($pattern, $replacement, $value);
+        return preg_replace($pattern, $replacement, $text);
     }
 
     /**
-     * Вывести текст рецензии как есть
+     * Сохранить текст рецензии с экранированием опасных символов
+     *
+     * @param string $text
+     */
+    public function setTextAttribute($text)
+    {
+        $this->attributes['text'] = htmlspecialchars($text, ENT_HTML5);
+    }
+
+    /**
+     * Текст рецензии как есть
      *
      * @return string
      */
@@ -117,14 +153,14 @@ class Review extends Model
     }
 
     /**
-     * Вывести дату создания рецензии в соответствии с часовым поясом
+     * Дата создания рецензии в соответствии с часовым поясом
      *
-     * @param string $value
+     * @param string $created_at
      * @return Carbon
     */
-    public function getCreatedAtAttribute($value)
+    public function getCreatedAtAttribute($created_at)
     {
-        $date_time = new Carbon($value, config('app.timezone'));
+        $date_time = new Carbon($created_at, config('app.timezone'));
         if (Auth::check()) {
             $date_time->timezone = Auth::user()->timezone;
         }
@@ -133,7 +169,7 @@ class Review extends Model
     }
 
     /**
-     * Дата создания сущности, как она есть в бд
+     * Дата создания рецензии, как она есть
      *
      * @return Carbon
      */
@@ -152,39 +188,4 @@ class Review extends Model
         return $this->reviewEstimates->sum('estimate');
     }
 
-    /**
-     * Получить оценку рецензии пользователем, если такая имеется
-     *
-     * @param User $user
-     * @return ReviewEstimate | null
-     */
-    public function usersEstimate(User $user)
-    {
-        return $this->reviewEstimates()
-            ->where('user_id', '=', $user->id)
-            ->first()
-        ;
-    }
-
-    /**
-     * Проверить, является ли пользователь автором рецензии
-     *
-     * @param User $user
-     * @return boolean
-     */
-    public function isAuthor(User $user)
-    {
-        return ($this->user_id === $user->id);
-    }
-
-    /**
-     * Проверить, оставлена ли рецензия к одной из книг пользователя
-     *
-     * @param User $user
-     * @return boolean
-     */
-    public function isForBookOfUser(User $user)
-    {
-        return ($this->book->author_id === $user->id);
-    }
 }
