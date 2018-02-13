@@ -13,9 +13,6 @@ use Exception;
 /**
  * App\Book
  *
- * @property-read \App\User $author
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users Коллекция пользователей добавивших к себе книгу
- * @mixin \Eloquent
  * @property int $id
  * @property string|null $title
  * @property string|null $description Описание книги с переводами строки заменёными на <br>
@@ -25,14 +22,19 @@ use Exception;
  * @property int $author_id
  * @property int $mongodb_book_id Идентификатор документа в MongoDB
  * @property int $page_count Количество страниц в книге
+ * @property string $cover_path Путь до обложки книги в рамках Amazon S3
+ * @property string $cover_url Ссылка на обложку книги
+ * @property string $url Ссылка на книгу
+ * @property string $status_css css класс соответствующий текущему статусу книги
+ * @property float $rating Средняя оценка книги
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property \Carbon\Carbon|null $deleted_at
- * @property string $cover_path Путь до обложки книги в рамках Amazon S3
- * @property string $cover_url Ссылка на обложку книги
- * @property string $status_css css класс соответствующий текущему статусу книги
- * @property string $url Ссылка на книгу
- * @property float $rating Средняя оценка книги
+ * @property-read \App\User $author
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users Коллекция пользователей добавивших к себе книгу
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
+ * @property-write mixed $text
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCreatedAt($value)
@@ -40,9 +42,7 @@ use Exception;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  * @method static \Illuminate\Database\Query\Builder|\App\Book onlyTrashed()
- * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereMongodbBookId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book wherePageCount($value)
@@ -50,7 +50,8 @@ use Exception;
  * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
  * @method static bool|null forceDelete()
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
+ * @method static bool|null restore()
+ * @mixin \Eloquent
  */
 class Book extends Model
 {
@@ -94,28 +95,6 @@ class Book extends Model
     }
 
     /**
-     * Находим книгу с любым статусом
-     *
-     * @param $id int
-     * @return Book|null
-     */
-    public static function findAny(int $id)
-    {
-        return self::withoutGlobalScope(StatusScope::class)
-            ->where('id', $id)
-            ->first()
-        ;
-    }
-
-    /**
-     * Получить автора книги
-     */
-    public function author()
-    {
-        return $this->belongsTo('App\User');
-    }
-
-    /**
      * Пользователи, добавившие книгу к себе в библиотеку
      */
     public function users()
@@ -126,7 +105,7 @@ class Book extends Model
     }
 
     /**
-     * Получить все рецензии на текущую книгу
+     * Все рецензии на текущую книгу
      */
     public function reviews()
     {
@@ -134,13 +113,180 @@ class Book extends Model
     }
 
     /**
-     * Жанры книги
+     * Все жанры текущей книги
      */
     public function genres()
     {
         return $this->belongsToMany('App\Genre', 'books_genres')
             ->withTimestamps()
             ;
+    }
+
+    /**
+     * Автор книги
+     */
+    public function author()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Произвести поиск книги по id с любым статусом
+     *
+     * @param $id int
+     * @return Book|null
+     */
+    public static function findAny(int $id)
+    {
+        return self::withoutGlobalScope(StatusScope::class)
+            ->where('id', $id)
+            ->first()
+            ;
+    }
+
+    /**
+     * Проверить, оставлял ли конкретный пользователь рецензию к книге
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function hasReview(User $user): bool
+    {
+        return filled($this->reviews()
+            ->where(['user_id' => $user->id])
+            ->first()
+        );
+    }
+
+    /**
+     * Проверить, есть ли у книги конкретный жанр
+     *
+     * @param Genre $genre
+     * @return bool
+     */
+    public function hasGenre(Genre $genre): bool
+    {
+        return filled($this->genres()
+            ->where(['genre_id' => $genre->id])
+            ->first()
+        );
+    }
+
+    /**
+     * Проверить, закрыт ли доступ к книге
+     *
+     * @return bool
+     */
+    public function isClose(): bool
+    {
+        return $this->status === self::STATUS_CLOSE;
+    }
+
+    /**
+     * Описание книги, с переводами строки заменёнными на <br>
+     *
+     * @param string $description
+     * @return string
+     */
+    public function getDescriptionAttribute($description)
+    {
+        $pattern = '/(\r\n)/i';
+        $replacement = '<br>';
+        return preg_replace($pattern, $replacement, $description);
+    }
+
+    /**
+     * Сохранить описание книги с экранированием опасных символов
+     *
+     * @param string $description
+     */
+    public function setDescriptionAttribute($description)
+    {
+        $this->attributes['description'] = htmlspecialchars($description, ENT_HTML5);
+    }
+
+    /**
+     * Описание книги как есть
+     *
+     * @return string
+     */
+    public function getDescriptionPlainAttribute()
+    {
+        return $this->attributes['description'];
+    }
+
+    /**
+     * Путь до обложки книги на Amazon S3
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function getCoverPathAttribute(): string
+    {
+        if (blank($this->id)) {
+            throw new Exception('For getting cover path, book must be present');
+        }
+
+        if (blank($this->cover)) {
+            throw new Exception('For getting cover path, book\'s cover must be present');
+        }
+
+        return $this::COVER_PATH . '/' . $this->id . '/' . $this->cover;
+    }
+
+    /**
+     * url обложки книги
+     *
+     * @return string
+     */
+    public function getCoverUrlAttribute(): string
+    {
+        if (filled($this->cover)) {
+            return Storage::disk('s3')->url($this->cover_path);
+        }
+
+        return '/img/default_book_cover.png';
+    }
+
+    /**
+     * url книги
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        return route('book.show', ['id' => $this->id]);
+    }
+
+    /**
+     * css класс для текущего статуса книги
+     *
+     * @return string
+     */
+    public function getStatusCssAttribute(): string
+    {
+        switch ($this->status) {
+            case $this::STATUS_OPEN:
+                $status_css = '';
+                break;
+            case $this::STATUS_CLOSE:
+                $status_css = 'user-block-books__element_status_close';
+                break;
+            default:
+                $status_css = 'user-block-books__element_status_close';
+        }
+
+        return $status_css;
+    }
+
+    /**
+     * Медианный рейтинг книги
+     *
+     * @return float
+     */
+    public function getRatingAttribute(): float
+    {
+        return round($this->reviews->median('rating'), 1);
     }
 
     /**
@@ -166,83 +312,7 @@ class Book extends Model
     }
 
     /**
-     * Получить url обложки книги
-     *
-     * @return string
-     */
-    public function getCoverUrlAttribute(): string
-    {
-        if (filled($this->cover)) {
-            return Storage::disk('s3')->url($this->cover_path);
-        }
-
-        return '/img/default_book_cover.png';
-    }
-
-    /**
-     * Получить url книги
-     *
-     * @return string
-     */
-    public function getUrlAttribute(): string
-    {
-        return route('book.show', ['id' => $this->id]);
-    }
-
-    /**
-     * Получаем путь до обложки книги на Amazon S3
-     *
-     * @return string
-     * @throws Exception
-     */
-    public function getCoverPathAttribute(): string
-    {
-        if (blank($this->id)) {
-            throw new Exception('For getting cover path, book must be present');
-        }
-
-        if (blank($this->cover)) {
-            throw new Exception('For getting cover path, book\'s cover must be present');
-        }
-
-        return $this::COVER_PATH . '/' . $this->id . '/' . $this->cover;
-    }
-
-    /**
-     * Получаем css класс для текущего статуса книги
-     *
-     * @return string
-     */
-    public function getStatusCssAttribute(): string
-    {
-        $status_css = '';
-
-        switch ($this->status) {
-            case $this::STATUS_OPEN:
-                $status_css = '';
-                break;
-            case $this::STATUS_CLOSE:
-                $status_css = 'user-block-books__element_status_close';
-                break;
-            default:
-                $status_css = 'user-block-books__element_status_close';
-        }
-
-        return $status_css;
-    }
-
-    /**
-     * Получаем медианный рейтинг книги
-     *
-     * @return float
-     */
-    public function getRatingAttribute(): float
-    {
-        return round($this->reviews->median('rating'), 1);
-    }
-
-    /**
-     * Сохраняем книгу в mongoDB
+     * Сохранить книгу в mongoDB
      *
      * @param UploadedFile $text Текст книги
      * @return void
@@ -259,7 +329,31 @@ class Book extends Model
     }
 
     /**
-     * Получить конкретную страницу книги
+     * Сохранить жанры для книги
+     *
+     * @param array $genres
+     */
+    public function setGenresAttribute($genres)
+    {
+        foreach ($genres as $genre_slug) {
+            $genre = Genre::where(['slug' => $genre_slug])->first();
+            if (!$this->hasGenre($genre)) {
+                $this->genres()->save($genre);
+            }
+        }
+
+        foreach ($this->genres as $genre) {
+            if (!in_array($genre->slug, $genres)) {
+                DB::table('books_genres')->where([
+                    ['book_id', '=', $this->id],
+                    ['genre_id', '=', $genre->id]
+                ])->delete();
+            }
+        }
+    }
+
+    /**
+     * Конкретная страница книги
      *
      * @param int $page_number Номер запрашиваемой страницы
      * @param bool $format Нужно ли форматировать возвращаемый текст в html
@@ -286,99 +380,5 @@ class Book extends Model
         $mongodb_book = new MongoBook($this);
 
         $mongodb_book->editPage($page_number, $text);
-    }
-
-    /**
-     * Проверить, оставлял ли пользователь рецензию к книге
-     *
-     * @param User $user
-     * @return bool
-     */
-    public function hasReview(User $user): bool
-    {
-        return filled($this->reviews()
-            ->where(['user_id' => $user->id])
-            ->first()
-        );
-    }
-
-    /**
-     * Проверить, закрыт ли доступ к книге
-     *
-     * @return bool
-     */
-    public function isClose(): bool
-    {
-        return $this->status === self::STATUS_CLOSE;
-    }
-
-    /**
-     * Проверить, есть ли у книги этот жанр
-     *
-     * @param Genre $genre
-     * @return bool
-     */
-    public function hasGenre(Genre $genre): bool
-    {
-        return filled($this->genres()
-            ->where(['genre_id' => $genre->id])
-            ->first()
-        );
-    }
-
-    /**
-     * Сохранить описание книги с экранированием опасных символов
-     *
-     * @param string $value
-     */
-    public function setDescriptionAttribute($value)
-    {
-        $this->attributes['description'] = htmlspecialchars($value, ENT_HTML5);
-    }
-
-    /**
-     * Вывести описание книги, заменяя переводы строки на <br>
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getDescriptionAttribute($value)
-    {
-        $pattern = '/(\r\n)/i';
-        $replacement = '<br>';
-        return preg_replace($pattern, $replacement, $value);
-    }
-
-    /**
-     * Вывести описание книги как есть
-     *
-     * @return string
-     */
-    public function getDescriptionPlainAttribute()
-    {
-        return $this->attributes['description'];
-    }
-
-    /**
-     * Сохранить жанры для книги
-     *
-     * @param array $values
-     */
-    public function setGenresAttribute($values)
-    {
-        foreach ($values as $value) {
-            $genre = Genre::where(['slug' => $value])->first();
-            if (!$this->hasGenre($genre)) {
-                $this->genres()->save($genre);
-            }
-        }
-        foreach ($this->genres as $genre) {
-            if (!in_array($genre->slug, $values)) {
-                DB::table('books_genres')->where([
-                    ['book_id', '=', $this->id],
-                    ['genre_id', '=', $genre->id]
-                ])->delete();
-            }
-        }
     }
 }

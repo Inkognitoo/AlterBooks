@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $books
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Genre whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Genre whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Genre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Genre whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Genre whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $books
  */
 class Genre extends Model
 {

@@ -26,13 +26,38 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(CheckAuth::class)->except(['show', 'showUsers']);
+        $this->middleware(CheckAuth::class)->except(['show', 'index']);
 
-        $this->middleware(CheckUserExist::class)->except(['showUsers']);
+        $this->middleware(CheckUserExist::class)->except(['index']);
 
         $this->middleware(CheckUserGranted::class)->only(['editShow', 'edit']);
 
         $this->middleware(CheckBookExist::class)->only(['addBookToLibrary', 'deleteBookToLibrary']);
+    }
+
+    /**
+     * Показываем страницу со списком существующих пользователей
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        switch ($request->sort) {
+            case 'rating':
+                $users = User::get()->sortByDesc('rating');
+                break;
+            case 'books':
+                $users = User::get()->sortByDesc('books');
+                break;
+            default:
+                $users = User::get()->sortByDesc('rating');
+                break;
+        }
+
+        $users = $this->paginate($users, 10, $request->page);
+
+        return view('user.users-list', ['users' => $users]);
     }
 
     /**
@@ -80,31 +105,6 @@ class UserController extends Controller
         return view('user.edit', [
             'status' => 'Данные были успешно обновлены'
         ]);
-    }
-
-    /**
-     * Показываем страницу со списком существующих пользователей
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function showUsers(Request $request)
-    {
-        switch ($request->sort) {
-            case 'rating':
-                $users = User::get()->sortByDesc('rating');
-                break;
-            case 'books':
-                $users = User::get()->sortByDesc('books');
-                break;
-            default:
-                $users = User::get()->sortByDesc('rating');
-                break;
-        }
-
-        $users = $this->paginate($users, 10, $request->page);
-
-        return view('user.users-list', ['users' => $users]);
     }
 
     /**
