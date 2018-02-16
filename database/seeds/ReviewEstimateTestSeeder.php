@@ -27,6 +27,13 @@ class ReviewEstimateTestSeeder extends Seeder
                     ]));
                 }
             }
+
+            $review = \App\Review::inRandomOrder()->where('user_id', '!=', $u->id)->first();
+            if (filled($review)) {
+                $review->reviewEstimates()->save(factory(App\ReviewEstimate::class)->make([
+                    'user_id' => $u->id
+                ]));
+            }
         });
     }
 }
