@@ -17,6 +17,15 @@ class ReviewEstimateTestSeeder extends Seeder
                 $u->books()->save(factory(App\Book::class)->make(['status' => \App\Book::STATUS_OPEN]));
             }
 
+            $genres = \App\Genre::all();
+            if (filled($genres)) {
+                $u->books->each(function ($book) use ($genres) {
+                    $book->genres()->attach(
+                        $genres->random(rand(1, $genres->count()))->pluck('id')->toArray()
+                    );
+                });
+            }
+
             $count = rand(1, 5);
             for ($i = 0; $i < $count; $i++) {
                 $book = \App\Book::inRandomOrder()->where('author_id', '!=', $u->id)->first();
@@ -26,6 +35,13 @@ class ReviewEstimateTestSeeder extends Seeder
                         'user_id' => $u->id
                     ]));
                 }
+            }
+
+            $review = \App\Review::inRandomOrder()->where('user_id', '!=', $u->id)->first();
+            if (filled($review)) {
+                $review->reviewEstimates()->save(factory(App\ReviewEstimate::class)->make([
+                    'user_id' => $u->id
+                ]));
             }
         });
     }

@@ -81,6 +81,29 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('genres') ? ' has-error' : '' }}">
+                            <label for="genres" class="col-md-4 control-label">Жанры</label>
+
+                            <div class="col-md-6">
+                                @foreach(\App\Genre::all() as $genre)
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="genres[]"
+                                                   value="{{ $genre->slug }}"
+                                                   {{ $book->hasGenre($genre) ? 'checked' : null }} >
+                                            {{ $genre->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+
+                                @if ($errors->has('genres'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('genres') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                             <label for="status" class="col-md-4 control-label">Статус</label>
 

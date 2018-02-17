@@ -16,11 +16,11 @@
 
                 <div class="user-block-content panel-body">
                     <div class="user-info row">
-                        <div class="user-info-avatar col-md-4">
+                        <div class="user-info-avatar col-md-4 col-sm-4">
                             <img src="{{ $user->avatar_url }}" class="user-info-avatar__image img-rounded"
                                  alt="{{ $user->full_name }}">
                         </div>
-                        <div class="user-info-area col-md-8">
+                        <div class="user-info-area col-md-8 col-sm-8">
                             <div class="user-info-content panel panel-default">
                                 <div class="user-info-content__name-date panel-body">
                                     {{ $user->full_name }}

@@ -15,12 +15,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Review $review
  * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereEstimate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereReviewId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReviewEstimate whereUserId($value)
  * @mixin \Eloquent
  */
 class ReviewEstimate extends Model
 {
     /**
-     * Получить хозяина оценки
+     * Пользователь оставивший оценку
      */
     public function user()
     {
@@ -28,7 +34,7 @@ class ReviewEstimate extends Model
     }
 
     /**
-     * Получить рецензию, К которой оставлена оценка
+     * Рецензия, к которой оставлена оценка
      */
     public function review()
     {
