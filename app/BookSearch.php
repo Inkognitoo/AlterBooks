@@ -60,7 +60,7 @@ class BookSearch
             ->whereNull('reviews.deleted_at')
             ->groupBy('books.id')
             ->orderByDesc(DB::raw('COALESCE(AVG(reviews.rating), 0)'))
-            ->orderByDesc('books.created_at')
+            ->orderBy('books.created_at')
         ;
     }
 
