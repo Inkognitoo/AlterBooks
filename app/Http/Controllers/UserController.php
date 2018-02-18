@@ -9,6 +9,7 @@ use App\Http\Middleware\CheckUserGranted;
 use App\Http\Requests\UserUpdateRequest;
 use App\Scopes\StatusScope;
 use App\User;
+use App\UserSearch;
 use Illuminate\Http\Response;
 use Auth;
 use Exception;
@@ -43,19 +44,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        switch ($request->sort) {
-            case 'rating':
-                $users = User::get()->sortByDesc('rating');
-                break;
-            case 'books':
-                $users = User::get()->sortByDesc('books');
-                break;
-            default:
-                $users = User::get()->sortByDesc('rating');
-                break;
-        }
-
-        $users = $this->paginate($users, 10, $request->page);
+        $users = UserSearch::apply($request)->paginate(10);
 
         return view('user.users-list', ['users' => $users]);
     }

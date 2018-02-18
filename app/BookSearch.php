@@ -57,8 +57,10 @@ class BookSearch
         return $query->from((new Book())->getTable() . ' AS books')
             ->select(['books.*'])
             ->leftJoin((new Review())->getTable() . ' AS reviews', 'reviews.book_id', '=', 'books.id')
+            ->whereNull('reviews.deleted_at')
             ->groupBy('books.id')
             ->orderByDesc(DB::raw('COALESCE(AVG(reviews.rating), 0)'))
+            ->orderByDesc('books.created_at')
         ;
     }
 
