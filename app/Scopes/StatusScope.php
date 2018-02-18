@@ -18,6 +18,15 @@ class StatusScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('status', Book::STATUS_OPEN);
+        $column = 'status';
+
+        // На случай если книгу запросили с алиасом
+        $from = preg_split("/[Aa][sS]/", $builder->getQuery()->from);
+        if (count($from) == 2) {
+            $alias = trim($from[1]);
+            $column = $alias . '.' . $column;
+        }
+
+        $builder->where($column, Book::STATUS_OPEN);
     }
 }

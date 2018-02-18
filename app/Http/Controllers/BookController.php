@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\BookSearch;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserBookGranted;
@@ -40,19 +41,7 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        switch ($request->sort) {
-            case 'rating':
-                $books = Book::get()->sortByDesc('rating');
-                break;
-            case 'date':
-                $books = Book::orderBy('created_at', 'desc')->get();
-                break;
-            default:
-                $books = Book::get()->sortByDesc('rating');
-                break;
-        }
-
-        $books = $this->paginate($books, 10, $request->page);
+        $books = BookSearch::apply($request)->paginate(10);
 
         return view('book.books-list', ['books' => $books]);
     }
@@ -147,22 +136,5 @@ class BookController extends Controller
 
         return redirect(route('user.show', ['id' => Auth::user()->id]))
             ->with(['status' => 'Книга была успешно удалена']);
-    }
-
-    /**
-     * Кастомная пагинация, работающая с коллекциями
-     *
-     * @param array|Collection $items
-     * @param int $perPage
-     * @param int $page
-     * @param array $options
-     *
-     * @return LengthAwarePaginator
-     */
-    public function paginate($items, $perPage = 15, $page = null, $options = [])
-    {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }
