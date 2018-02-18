@@ -18,9 +18,9 @@ class ReaderController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(CheckAuth::class)->except(['readPage']);
+        $this->middleware(CheckAuth::class)->except(['show']);
 
-        $this->middleware(CheckUserBookGranted::class)->except(['readPage']);
+        $this->middleware(CheckUserBookGranted::class)->except(['show']);
     }
 
     /**
