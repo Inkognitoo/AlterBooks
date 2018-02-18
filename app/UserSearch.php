@@ -63,7 +63,7 @@ class UserSearch
             ->where(['books.status' => Book::STATUS_OPEN])
             ->groupBy('users.id')
             ->orderByDesc(DB::raw('COALESCE(MEDIAN(sub_query.rating), 0)'))
-            ->orderByDesc('users.created_at')
+            ->orderBy('users.created_at')
         ;
     }
 
