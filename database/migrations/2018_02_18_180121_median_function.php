@@ -13,7 +13,7 @@ class MedianFunction extends Migration
      */
     public function up()
     {
-        DB::statement("CREATE FUNCTION _final_median(anyarray) RETURNS float8 AS $$ 
+        DB::statement("CREATE OR REPLACE FUNCTION _final_median(anyarray) RETURNS float8 AS $$ 
                                   WITH q AS
                                   (
                                      SELECT val
@@ -36,6 +36,8 @@ class MedianFunction extends Migration
                                  
                                 ");
 
+        DB::statement(" DROP AGGREGATE IF EXISTS median(anyelement)");
+
         DB::statement("CREATE AGGREGATE median(anyelement) (
                                   SFUNC=array_append,
                                   STYPE=anyarray,
@@ -51,7 +53,7 @@ class MedianFunction extends Migration
      */
     public function down()
     {
-        DB::statement(" Drop aggregate median(anyelement)");
+        DB::statement(" DROP AGGREGATE median(anyelement)");
 
         DB::statement("DROP FUNCTION _final_median(anyarray)");
     }
