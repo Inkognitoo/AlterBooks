@@ -1,6 +1,7 @@
 ## AlterBooks
-
 MVP версия сервиса
+
+[![Build Status](https://travis-ci.com/Inkognitoo/AlterBooks.svg?token=V7aGHpzpxaTBxpAyxbAB&branch=master_mvp)](https://travis-ci.com/Inkognitoo/AlterBooks)
 
 Документация доступна по адресу:  
 [github.com/Inkognitoo/AlterBooks/wiki](https://github.com/Inkognitoo/AlterBooks/wiki)
