@@ -13,7 +13,3 @@ before_script:
   - php artisan migrate --force
 
 script: phpunit
-
-branches:
-  only:
-  - master-mvp
