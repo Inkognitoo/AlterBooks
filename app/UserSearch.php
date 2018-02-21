@@ -27,8 +27,8 @@ class UserSearch
             case 'rating':
                 $query = static::orderByRatingDesc($query);
                 break;
-            case 'date':
-                $query->orderByDesc('created_at');
+            case 'books':
+                $query->withCount('books')->orderByDesc('books_count');
                 break;
             default:
                 $query = static::orderByRatingDesc($query);
