@@ -50,20 +50,24 @@ class UserSearch
         $sub_query = (new Book())->newQuery()
             ->from((new Book())->getTable() . ' AS books')
             ->select([DB::raw('books.id AS id'), DB::raw('COALESCE(MEDIAN(reviews.rating), 0) AS rating')])
-            ->leftJoin((new Review())->getTable() . ' AS reviews', 'reviews.book_id', '=', 'books.id')
-            ->whereNull('reviews.deleted_at')
+            ->leftJoin((new Review())->getTable() . ' AS reviews', function ($reviews) {
+                $reviews->on(['reviews.book_id' => 'books.id'])
+                    ->whereNull('reviews.deleted_at');
+            })
             ->groupBy('books.id')
         ;
 
         return $query->from((new User())->getTable() . ' AS users')
             ->select(['users.*'])
-            ->leftJoin((new Book())->getTable() . ' AS books', 'books.author_id', '=', 'users.id')
+            ->leftJoin((new Book())->getTable() . ' AS books', function ($books) {
+                $books->on(['books.author_id' => 'users.id'])
+                    ->whereNull('books.deleted_at')
+                    ->where(['books.status' => Book::STATUS_OPEN]);
+            })
             ->leftJoin(DB::raw('(' . static::getRawSql($sub_query) . ') AS sub_query'), 'sub_query.id', '=', 'books.id')
-            ->whereNull('books.deleted_at')
-            ->where(['books.status' => Book::STATUS_OPEN])
             ->groupBy('users.id')
-            ->orderByDesc(DB::raw('COALESCE(MEDIAN(sub_query.rating), 0)'))
-            ->orderByDesc('users.created_at')
+            ->orderByDesc(DB::raw('MEDIAN(sub_query.rating)'))
+            ->orderBy('users.created_at')
         ;
     }
 
