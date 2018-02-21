@@ -66,7 +66,7 @@ class UserSearch
             })
             ->leftJoin(DB::raw('(' . static::getRawSql($sub_query) . ') AS sub_query'), 'sub_query.id', '=', 'books.id')
             ->groupBy('users.id')
-            ->orderByDesc(DB::raw('MEDIAN(sub_query.rating)'))
+            ->orderByDesc(DB::raw('COALESCE(MEDIAN(sub_query.rating), 0)'))
             ->orderBy('users.created_at')
         ;
     }
