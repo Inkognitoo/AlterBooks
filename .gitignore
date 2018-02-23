@@ -12,3 +12,8 @@ yarn-error.log
 .env
 .env.test
 phpunit
+
+#Hide all public css and js
+/public/css/*
+/public/js/*
+/public/fonts/vendor/*
