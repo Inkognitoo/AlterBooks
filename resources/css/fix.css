@@ -109,15 +109,11 @@
 .books-list-sort {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 
 .books-list-heading {
     font-size: 1.3em;
-}
-
-.books-list-sort__open {
-    left: calc(100% - 215px);
 }
 
 .rating-icons {
@@ -138,11 +134,19 @@
 }
 
 .icon_down {
-    background-image: url('/img/icon-down.png');
+    width: 0;
+    height: 0;
+    border: 10px solid rgba(0, 0, 0, 0);
+    border-bottom: 0 solid rgba(0, 0, 0, 0);
+    border-top: 15px solid rgba(0, 0, 0, 0.4);
 }
 
 .icon_up {
-    background-image: url('/img/icon-up.png');
+    width: 0;
+    height: 0;
+    border: 10px solid rgba(0, 0, 0, 0);
+    border-top: 0 solid rgba(0, 0, 0, 0);
+    border-bottom: 15px solid rgba(0, 0, 0, 0.4);
 }
 
 .rating {
@@ -150,4 +154,52 @@
     justify-content: center;
     align-items: center;
     min-width: 30px;
+}
+
+.sort__title {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    padding-right: 5px;
+    font-size: 0.8em;
+    color: grey;
+}
+
+.genre-content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0 0;
+}
+
+.genre-content__checkbox {
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.genre-content__label {
+    display: flex;
+    flex-direction: row;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.genre-content__checkbox:checked + .genre-content__label {
+    background: #ababab;
+    color: white;
+}
+
+.hr {
+    margin: 10px 0;
 }
