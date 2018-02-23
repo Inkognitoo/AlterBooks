@@ -17,3 +17,4 @@ phpunit
 /public/css/*
 /public/js/*
 /public/fonts/vendor/*
+/public/mix-manifest.json
