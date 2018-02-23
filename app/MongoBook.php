@@ -138,13 +138,16 @@ class MongoBook
      */
     private function toEncoding(string $raw_text): string
     {
-        $encoding = [
+        $encodings = [
             'UTF-8',
             'cp1251',
+            'ASCII',
+            'ISO-8859-1'
         ];
-        mb_detect_order($encoding);
 
-        return htmlspecialchars(mb_convert_encoding($raw_text, 'UTF-8', mb_detect_encoding($raw_text)));
+        $encoding = mb_detect_encoding($raw_text, implode(',', $encodings));
+
+        return htmlspecialchars(mb_convert_encoding($raw_text, 'UTF-8', $encoding));
     }
 
     /**
@@ -155,7 +158,6 @@ class MongoBook
      */
     private function separateIntoPages(string $text): array
     {
-        $full_size = iconv_strlen($text);
         $page_size = 1800; //символы
         $pages = [];
         $start_symbol_number = 0;
@@ -166,11 +168,14 @@ class MongoBook
 
             list($page, $current_page_size) = $this->extractPage($text, $start_symbol_number, $current_page_size);
             $start_symbol_number += $current_page_size;
+            if ($page == '-') {
+                break;
+            }
             $pages[] = [
                 'page' => $i,
                 'text' => $page,
             ];
-        } while ($start_symbol_number < $full_size);
+        } while (true);
 
         $this->book->page_count = $i;
 

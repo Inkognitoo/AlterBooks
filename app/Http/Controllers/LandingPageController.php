@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\User;
-use function Aws\describe_type;
 use Illuminate\Http\Response;
 
 class LandingPageController extends Controller

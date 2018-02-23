@@ -9,8 +9,6 @@ use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserCanReview;
 use App\Http\Middleware\CheckUserReviewGranted;
 use App\Http\Requests\ReviewCreateRequest;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Redirect;
 use Auth;
 use Exception;

@@ -18,6 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
+    /*
+    |--------------------------------------------------------------------------
+    | Book
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся в первую очередь работы с книгами
+    |
+    */
     Route::post('/library/book/id{id}', 'LibraryBookController@create')
         ->name('api.library.add')
     ;
@@ -25,6 +33,14 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
         ->name('api.library.delete')
     ;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Review
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся в первую очередь работы с рецензиями
+    |
+    */
     Route::post('/book/id{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')
         ->name('api.review.estimate.plus')
     ;
