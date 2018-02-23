@@ -121,6 +121,7 @@
 }
 
 .rating-icons {
+    position: relative;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -138,11 +139,19 @@
 }
 
 .icon_down {
-    background-image: url('/img/icon-down.png');
+    width: 0;
+    height: 0;
+    border: 10px solid rgba(0, 0, 0, 0);
+    border-top: 0 solid rgba(0, 0, 0, 0);
+    border-bottom: 15px solid rgba(0, 0, 0, 0.4);
 }
 
 .icon_up {
-    background-image: url('/img/icon-up.png');
+    width: 0;
+    height: 0;
+    border: 10px solid rgba(0, 0, 0, 0);
+    border-bottom: 0 solid rgba(0, 0, 0, 0);
+    border-top: 15px solid rgba(0, 0, 0, 0.4);
 }
 
 .rating {
