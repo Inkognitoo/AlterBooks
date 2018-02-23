@@ -27,8 +27,8 @@ class UserSearch
             case 'rating':
                 $query = static::orderByRatingDesc($query);
                 break;
-            case 'date':
-                $query->orderByDesc('created_at');
+            case 'books':
+                $query->withCount('books')->orderByDesc('books_count');
                 break;
             default:
                 $query = static::orderByRatingDesc($query);
@@ -66,7 +66,7 @@ class UserSearch
             })
             ->leftJoin(DB::raw('(' . static::getRawSql($sub_query) . ') AS sub_query'), 'sub_query.id', '=', 'books.id')
             ->groupBy('users.id')
-            ->orderByDesc(DB::raw('MEDIAN(sub_query.rating)'))
+            ->orderByDesc(DB::raw('COALESCE(MEDIAN(sub_query.rating), 0)'))
             ->orderBy('users.created_at')
         ;
     }

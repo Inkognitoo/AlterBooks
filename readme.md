@@ -1,10 +1,11 @@
 ## AlterBooks
-
 MVP версия сервиса
+
+[![Build Status](https://travis-ci.com/Inkognitoo/AlterBooks.svg?token=V7aGHpzpxaTBxpAyxbAB&branch=master_mvp)](https://travis-ci.com/Inkognitoo/AlterBooks)
 
 Документация доступна по адресу:  
 [github.com/Inkognitoo/AlterBooks/wiki](https://github.com/Inkognitoo/AlterBooks/wiki)
-
+ 
 # Первичные команды
 Необходимо последовательно выполнить:  
 `composer install` (убедитесь что у вас в системе есть composer или скачайте его)   
