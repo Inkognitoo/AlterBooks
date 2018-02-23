@@ -27,7 +27,7 @@
                         @endif
 
                         @if(filled($book->genres))
-                            <hr>
+                            <hr class="hr">
                             <div class="text-left">
                                 @foreach($book->genres as $genre)
                                     <span class="label label-default">{{ $genre->name }}</span>

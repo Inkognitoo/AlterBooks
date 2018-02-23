@@ -46,11 +46,11 @@
     </style>
 
     <!--Icons-->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="/img/icon-16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="/img/icon-32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/img/icon-180.png" sizes="180x180">
-    <link rel="icon" type="image/png" href="/img/icon-192.png" sizes="192x192">
+    <link rel="manifest" href={{url('/manifest.json')}}>
+    <link rel="icon" type="image/png" href={{url('/img/icon-16.png')}} sizes="16x16">
+    <link rel="icon" type="image/png" href={{url('/img/icon-32.png')}} sizes="32x32">
+    <link rel="icon" type="image/png" href={{url('/img/icon-180.png')}} sizes="180x180">
+    <link rel="icon" type="image/png" href={{url('/img/icon-192.png')}} sizes="192x192">
 </head>
 <body>
 <div class="flex-center position-ref full-height">

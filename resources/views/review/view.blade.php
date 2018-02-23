@@ -51,7 +51,7 @@
                         @auth
                             @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
                                 <span name="estimateButton"
-                                      class="icon icon_up"
+                                      class="icon icon_up "
                                       style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? '0.15' : '0.4' }};
                                              cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? 'auto' : 'pointer' }};"
                                       data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
