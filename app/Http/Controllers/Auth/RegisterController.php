@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Rules\CaseInsensitiveUnique;
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Auth;
+use Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -52,8 +53,14 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'nickname' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
+            'nickname' => [
+                'required', 'string', 'max:255',
+                new CaseInsensitiveUnique('users'),
+            ],
+            'email' => [
+                'required', 'string', 'email', 'max:255',
+                new CaseInsensitiveUnique('users'),
+            ],
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -69,7 +76,7 @@ class RegisterController extends Controller
         $user = new User();
         $user->nickname = $data['nickname'];
         $user->email = $data['email'];
-        $user->password = bcrypt($data['password']);
+        $user->password = $data['password'];
         $user->api_token = str_random(60);
         $user->save();
 

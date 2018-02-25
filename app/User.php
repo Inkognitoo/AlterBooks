@@ -342,6 +342,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Записать email для пользователя в нижнем регистре
+     *
+     * @param string $email
+     */
+    public function setEmailAttribute(string $email)
+    {
+        $this->attributes['email'] = mb_strtolower($email);
+    }
+
+    /**
      * Записать хэш нового пароля пользователя
      *
      * @param string $password
@@ -349,5 +359,10 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function getNicknameAttribute()
+    {
+        return mb_strtolower($this->attributes['nickname']);
     }
 }
