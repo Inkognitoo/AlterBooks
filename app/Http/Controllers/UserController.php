@@ -92,7 +92,7 @@ class UserController extends Controller
         Auth::user()->save();
 
         return view('user.edit', [
-            'status' => 'Данные были успешно обновлены'
+            'status' => __('user.success_update')
         ]);
     }
     

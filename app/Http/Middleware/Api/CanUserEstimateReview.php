@@ -20,7 +20,7 @@ class CanUserEstimateReview
         'success' => false,
         'code' => 403,
         'data' => [
-            'message' => 'You cannot estimate reviews for your own book'
+            'message' => '',
         ]
     ];
 
@@ -40,13 +40,12 @@ class CanUserEstimateReview
         $review = Review::find($review_id);
 
         if (Auth::user()->isAuthor($book)) {
+            $this->out['data']['message'] = __('review_estimate.your_own_book_error');
             return response()->json($this->out);
         }
 
         if ($review->user_id == Auth::user()->id) {
-            $this->out['success'] = false;
-            $this->out['code'] = 403;
-            $this->out['data']['message'] = 'You cannot estimate your own review';
+            $this->out['data']['message'] = __('review_estimate.your_own_review_error');
             return response()->json($this->out);
         }
 

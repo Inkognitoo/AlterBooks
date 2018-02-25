@@ -68,6 +68,6 @@ class ReviewController extends Controller
         ;
 
         return redirect(route('book.show', ['id' => $book_id]))
-            ->with(['status' => 'Рецензия была успешно удалена']);
+            ->with(['status' => __('review.success_delete')]);
     }
 }

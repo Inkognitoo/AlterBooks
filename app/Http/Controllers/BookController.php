@@ -120,7 +120,7 @@ class BookController extends Controller
 
         return view('book.edit', [
             'book' => $book,
-            'status' => 'Данные были успешно обновлены'
+            'status' => __('book.success_update')
         ]);
     }
 
@@ -138,6 +138,6 @@ class BookController extends Controller
         $book->delete();
 
         return redirect(route('user.show', ['id' => Auth::user()->id]))
-            ->with(['status' => 'Книга была успешно удалена']);
+            ->with(['status' => __('book.success_delete')]);
     }
 }

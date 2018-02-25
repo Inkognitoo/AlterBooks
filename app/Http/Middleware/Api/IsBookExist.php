@@ -32,6 +32,7 @@ class IsBookExist
      */
     public function handle($request, Closure $next)
     {
+        $this->out['data']['message'] = __('book.not_found');
         $book_id = $request->book_id ?? $request->id;
 
         $book = Book::findAny($book_id);

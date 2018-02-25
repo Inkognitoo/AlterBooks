@@ -18,7 +18,7 @@ class IsUserAuth
         'success' => false,
         'code' => 401,
         'data' => [
-            'message' => 'Unauthorized'
+            'message' => ''
         ]
     ];
 
@@ -32,6 +32,7 @@ class IsUserAuth
     public function handle($request, Closure $next)
     {
         if (!Auth::check()) {
+            $this->out['data']['message'] = __('user.unauthorized');
             return response()->json($this->out);
         }
 
