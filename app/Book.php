@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Storage;
 use Exception;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 /**
  * App\Book
@@ -57,6 +58,8 @@ class Book extends Model
 {
     use SoftDeletes;
 
+    use Sluggable;
+
     //Путь по которому хранятся обложки для книг на Amazon S3
     const COVER_PATH = 'book_covers';
 
@@ -92,6 +95,20 @@ class Book extends Model
         parent::boot();
 
         static::addGlobalScope(new StatusScope);
+    }
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 
     /**
