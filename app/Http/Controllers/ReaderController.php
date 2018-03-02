@@ -77,6 +77,6 @@ class ReaderController extends Controller
         $book->editPage($page_number, $request->text);
 
         return redirect(route('book.page.show', ['id' => $id, 'current_page' => $page_number]))
-            ->with(['status' => 'Данные были успешно обновлены']);
+            ->with(['status' => t('reader.api', 'Данные были успешно обновлены')]);
     }
 }

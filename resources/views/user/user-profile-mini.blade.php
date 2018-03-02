@@ -16,13 +16,11 @@
             <div class="users-list-nickname">
                 @if($user->full_name != $user->nickname)
                     {{ $user->nickname }}
-                @else
-                    &nbsp;
                 @endif
             </div>
             <div class="users-list-button">
                 <a type="button" class="btn btn-default" href="{{ route('user.show', ['id' => $user->id]) }}">
-                    К профилю пользователя
+                    {{ t('user.button', 'К профилю пользователя') }}
                 </a>
             </div>
         </div>

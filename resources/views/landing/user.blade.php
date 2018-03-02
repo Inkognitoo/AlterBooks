@@ -6,7 +6,7 @@
     <div class="landing-user__profile">
         <div class="landing-user__profile landing-form">
             <a type="button" class="landing-button" href="{{ $user->url }}">
-                Профиль
+                {{ t('user.button', 'Профиль') }}
             </a>
         </div>
     </div>

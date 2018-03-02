@@ -11,14 +11,18 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Создание книги</div>
+                <div class="panel-heading">
+                    {{ t('book', 'Создание книги') }}
+                </div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('book.create') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <label for="title" class="col-md-4 control-label">Название</label>
+                            <label for="title" class="col-md-4 control-label">
+                                {{ t('book', 'Название') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="title" type="text" class="form-control" name="title"
@@ -33,7 +37,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('cover') ? ' has-error' : '' }}">
-                            <label for="cover" class="col-md-4 control-label">Обложка</label>
+                            <label for="cover" class="col-md-4 control-label">
+                                {{ t('book', 'Обложка') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="cover" type="file" class="form-control" name="cover">
@@ -47,7 +53,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
-                            <label for="text" class="col-md-4 control-label">Текст книги</label>
+                            <label for="text" class="col-md-4 control-label">
+                                {{ t('book', 'Текст книги') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="text" type="file" class="form-control" name="text">
@@ -61,7 +69,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                            <label for="description" class="col-md-4 control-label">Описание</label>
+                            <label for="description" class="col-md-4 control-label">
+                                {{ t('book', 'Описание') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <textarea id="description" class="form-control" name="description"
@@ -77,17 +87,19 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                            <label for="status" class="col-md-4 control-label">Статус</label>
+                            <label for="status" class="col-md-4 control-label">
+                                {{ t('book', 'Статус') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <select id="status" class="form-control" name="status">
                                     <option value="{{ \App\Book::STATUS_CLOSE }}"
                                             {{ (old('status')) == \App\Book::STATUS_CLOSE ? 'selected' : '' }} >
-                                        Черновик (видите только вы)
+                                        {{ t('book', 'Черновик (видите только вы)') }}
                                     </option>
                                     <option value="{{ \App\Book::STATUS_OPEN }}"
                                             {{ (old('status')) == \App\Book::STATUS_OPEN ? 'selected' : ''}} >
-                                        Чистовик (видят все)
+                                        {{ t('book', 'Чистовик (видят все)') }}
                                     </option>
                                 </select>
 
@@ -102,7 +114,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Создать
+                                    {{ t('book.button', 'Создать') }}
                                 </button>
                             </div>
                         </div>

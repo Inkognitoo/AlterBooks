@@ -34,7 +34,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">
-                                Сохранить
+                                {{ t('reader.button', 'Сохранить') }}
                             </button>
                         </form>
                     </div>
