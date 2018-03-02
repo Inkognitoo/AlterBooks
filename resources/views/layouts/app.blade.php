@@ -31,7 +31,9 @@
                     <!-- Collapsed Hamburger -->
                     <button type="button" class="temp-header-navigation-button navbar-toggle collapsed"
                             data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="temp-header-navigation-button__element-main sr-only">Навигация</span>
+                        <span class="temp-header-navigation-button__element-main sr-only">
+                            {{ t('app', 'Навигация') }}
+                        </span>
                         <span class="temp-header-navigation-button__element icon-bar"></span>
                         <span class="temp-header-navigation-button__element icon-bar"></span>
                         <span class="temp-header-navigation-button__element icon-bar"></span>
@@ -39,7 +41,7 @@
 
                     <!-- Branding Image -->
                     <a class="temp-header-navigation__logo navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        {{ config('app.name', 'AlterBooks') }}
                     </a>
                 </div>
 
@@ -55,12 +57,12 @@
                         @guest
                             <li>
                                 <a class="temp-header-users-menu__element" href="{{ route('login') }}">
-                                Вход
+                                    {{ t('app.button', 'Вход') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="temp-header-users-menu__element" href="{{ route('register') }}">
-                                Регистрация
+                                    {{ t('app.button', 'Регистрация') }}
                                 </a>
                             </li>
                         @else
@@ -75,7 +77,7 @@
                                         <li>
                                             <a class="temp-header-users-menu-content__element"
                                                href="{{ route('user.show', ['id' => Auth::user()->id]) }}">
-                                                Профиль
+                                                {{ t('app.button', 'Профиль') }}
                                             </a>
                                         </li>
                                     @endif
@@ -83,7 +85,7 @@
                                         <a class="temp-header-users-menu-content__element" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Выход
+                                            {{ t('app.button', 'Выход') }}
                                         </a>
 
                                         <form class="temp-header-users-menu-content__logout-form" id="logout-form"

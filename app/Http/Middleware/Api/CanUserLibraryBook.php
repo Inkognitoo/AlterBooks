@@ -19,7 +19,7 @@ class CanUserLibraryBook
         'success' => false,
         'code' => 403,
         'data' => [
-            'message' => 'You cannot manipulate in library your own book'
+            'message' => ''
         ]
     ];
 
@@ -36,6 +36,7 @@ class CanUserLibraryBook
         $book = Book::find($book_id);
 
         if (Auth::user()->isAuthor($book)) {
+            $this->out['data']['message'] = t('library.api', 'вы не можете манипулировать в библиотеке своей собственной книгой');
             return response()->json($this->out);
         }
 

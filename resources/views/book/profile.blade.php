@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Профиль книги</div>
+                <div class="panel-heading">{{ t('book', 'Профиль книги') }}</div>
 
                 <div class="panel-body">
                     <div class="row">
@@ -29,12 +29,12 @@
                                         {{ $book->author->full_name }}
                                     </a>
                                     <br>
-                                    Оценка: {{ $book->rating }}/10
+                                    {{ t('book', 'Оценка: :estimate/10', ['estimate' => $book->rating]) }}
                                     <br><br>
                                     @if(filled($book->description))
                                         {!! $book->description !!}
                                     @else
-                                        <span class="no-description">-описание отсутствует-</span>
+                                        <span class="no-description">{{ t('book', '-описание отсутствует-') }}</span>
                                     @endif
 
                                     @if(filled($book->genres))
@@ -49,18 +49,28 @@
                             </div>
 
                             @if(filled($book->mongodb_book_id))
-                                <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">Читать</a>
+                                <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">
+                                    {{ t('book.button', 'Читать') }}
+                                </a>
                             @endif
                             @auth
                                 @if(Auth::user()->isAuthor($book))
-                                    <a type="button" class="btn btn-default" href="{{ route('book.edit.show', ['id' => $book->id]) }}">Редактировать</a>
-                                    <button class="btn btn-default" data-toggle="modal" data-target="#deleteBookModal">Удалить</button>
+                                    <a type="button" class="btn btn-default" href="{{ route('book.edit.show', ['id' => $book->id]) }}">
+                                        {{ t('book.button', 'Редактировать') }}
+                                    </a>
+                                    <button class="btn btn-default" data-toggle="modal" data-target="#deleteBookModal">
+                                        {{ t('book.button', 'Удалить') }}
+                                    </button>
                                 @else
-                                    @if(Auth::user()->hasBookAtLibrary($book))
-                                        <button type="button" class="btn btn-default" data-type="delete" data-book-id="{{ $book->id }}" id="libraryButton">Удалить из библиотеки</button>
-                                    @else
-                                        <button type="button" class="btn btn-default" data-type="add" data-book-id="{{ $book->id }}" id="libraryButton">Добавить в библиотеку</button>
-                                    @endif
+                                    <button type="button" class="btn btn-default"
+                                            data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
+                                            data-book-id="{{ $book->id }}" id="libraryButton"
+                                            data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
+                                            data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
+                                        {{ Auth::user()->hasBookAtLibrary($book)
+                                            ? t('library.button', 'Удалить из библиотеки')
+                                            : t('library.button', 'Добавить в библиотеку') }}
+                                    </button>
                                 @endif
                             @endauth
 
@@ -70,7 +80,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
-                                <div class="panel-heading">Рецензии</div>
+                                <div class="panel-heading">{{ t('review', 'Рецензии') }}</div>
                                 <div class="panel-body">
                                     @if (session('status'))
                                         <div class="alert alert-success">
@@ -80,7 +90,7 @@
                                     @if(blank($book->reviews))
                                         <div class="row">
                                             <div class="col-md-12">
-                                                Тут пока нет ни одной рецензии. Оставьте отзыв первым!
+                                                {{ t('review', 'Тут пока нет ни одной рецензии. Оставьте отзыв первым!')}}
                                             </div>
                                         </div>
                                         <br>
@@ -92,7 +102,7 @@
                                                 <div class="col-md-12">
                                                     <button class="btn btn-default" type="button" data-toggle="collapse"
                                                             data-target="#collapseReview" aria-expanded="false" aria-controls="collapseReview">
-                                                        Добавить рецензию
+                                                        {{ t('review.button', 'Добавить рецензию') }}
                                                     </button>
                                                     <div class="collapse" id="collapseReview">
                                                         <div class="well">
@@ -127,14 +137,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="deleteBookModalLabel">Подтвердите удаление</h4>
+                <h4 class="modal-title" id="deleteBookModalLabel">
+                    {{ t('book.modal', 'Подтвердите удаление') }}
+                </h4>
             </div>
             <div class="modal-body">
-                <p>Вы уверены, что хотите удалить книгу <strong>{{ $book->title }}</strong>?</p>
+                <p> {!! t('book.modal', 'Вы уверены, что хотите удалить книгу <strong>:book</strong>?', ['book' => $book->title]) !!}</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <a type="button" class="btn btn-danger" href="{{ route('book.delete', ['id' => $book->id]) }}">Удалить</a>
+                <button class="btn btn-default" data-dismiss="modal">
+                    {{ t('book.button', 'Закрыть') }}
+                </button>
+                <a type="button" class="btn btn-danger" href="{{ route('book.delete', ['id' => $book->id]) }}">
+                    {{ t('book.button', 'Удалить') }}
+                </a>
             </div>
         </div>
     </div>

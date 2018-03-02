@@ -18,12 +18,15 @@
                     <img src="{{ $book->cover_url }}" class="books-list-cover__img img-rounded" alt="{{ $book->title }}">
                 </div>
                 <div class="col-md-8 panel panel-default">
-                    <div class="panel-heading">Описание книги</div>
+                    <div class="panel-heading">
+
+                        {{ t('book', 'Описание книги') }}
+                    </div>
                     <div class="panel-body text-justify">
                         @if(filled($book->description))
                             {!! $book->description !!}
                         @else
-                            <span class="no-description">-описание отсутствует-</span>
+                            <span class="no-description">{{ t('book', '-описание отсутствует-') }}</span>
                         @endif
 
                         @if(filled($book->genres))
@@ -40,11 +43,11 @@
             <div class="col-md-12 text-right">
                 @if(filled($book->mongodb_book_id))
                     <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">
-                        Читать
+                        {{ t('book.button', 'Читать') }}
                     </a>
                 @endif
                 <a type="button" class="btn btn-default" href="{{ route('book.show', ['id' => $book->id]) }}">
-                    К профилю книги
+                    {{ t('book.button', 'К профилю книги') }}
                 </a>
             </div>
         </div>

@@ -4,14 +4,16 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        Новая рецензия
+        {{ t('review', 'Новая рецензия') }}
     </div>
     <div class='panel-body'>
         <form class="form-horizontal" method="POST" action="{{ route('review.create', ['id' => $book->id]) }}">
             {{ csrf_field() }}
 
             <div class="form-group{{ $errors->has('rating') ? ' has-error' : '' }}">
-                <label for="rating" class="col-md-4 control-label">Оценка</label>
+                <label for="rating" class="col-md-4 control-label">
+                    {{ t('review', 'Оценка') }}
+                </label>
 
                 <div class="col-md-6">
                     <select id="rating" class="form-control" name="rating">
@@ -66,7 +68,9 @@
             </div>
 
             <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
-                <label for="text" class="col-md-4 control-label">Текст</label>
+                <label for="text" class="col-md-4 control-label">
+                    {{ t('review', 'Текст') }}
+                </label>
 
                 <div class="col-md-6">
                     <textarea id="text" class="form-control review-edit-textarea" name="text" rows="5">{{ old('text') }}
@@ -82,7 +86,7 @@
             <div class="form-group">
                 <div class="col-md-6 col-md-offset-4">
                     <button type="submit" class="btn btn-primary">
-                        Отправить
+                        {{ t('review.button', 'Отправить') }}
                     </button>
                 </div>
             </div>
