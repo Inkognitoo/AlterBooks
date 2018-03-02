@@ -58,10 +58,16 @@
     @if (Route::has('login'))
         <div class="top-right links">
             @auth
-                <a href="{{ route('user.show', ['id' => Auth::user()->id]) }}">Профиль</a>
+                <a href="{{ route('user.show', ['id' => Auth::user()->id]) }}">
+                    {{ t('app.button', 'Профиль') }}
+                </a>
             @else
-                <a href="{{ route('login') }}">Вход</a>
-                <a href="{{ route('register') }}">Регистрация</a>
+                <a href="{{ route('login') }}">
+                    {{ t('app.button', 'Вход') }}
+                </a>
+                <a href="{{ route('register') }}">
+                    {{ t('app.button', 'Регистрация') }}
+                </a>
             @endauth
         </div>
     @endif
@@ -69,7 +75,7 @@
         <div class="landing-content__title title m-b-md">AlterBooks</div>
         <div class="landing-element landing-books">
             <div class="landing-element__title landing-books__title">
-                Новинки
+                {{ t('book', 'Новинки') }}
             </div>
             <div class="landing-element__area landing-books__area">
                 <div class="landing-element__part">
@@ -81,7 +87,7 @@
                     <div class="landing-form landing-more">
                         <a type="button" class="landing-button landing-more__button"
                            href="{{ route('book.books-list') }}">
-                            Больше книг
+                            {{ t('book.button', 'Больше книг') }}
                         </a>
                     </div>
                 </div>
@@ -89,7 +95,7 @@
         </div>
         <div class="landing-element landing-users">
             <div class="landing-element__title landing-users__title">
-                Пользователи
+                {{ t('user', 'Пользователи') }}
             </div>
             <div class="landing-element__area landing-users__area">
                 <div class="landing-element__part">
@@ -101,7 +107,7 @@
                     <div class="landing-form landing-more">
                         <a type="button" class="landing-button landing-more__button"
                            href="{{ route('user.users-list') }}">
-                            Все пользователи
+                            {{ t('user.button', 'Все пользователи') }}
                         </a>
                     </div>
                 </div>

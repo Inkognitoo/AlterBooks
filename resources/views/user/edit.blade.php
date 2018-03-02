@@ -12,7 +12,7 @@
         <div class="user-edit-block__area col-md-8 col-md-offset-2">
             <div class="user-edit-block panel panel-default">
                 <div class="user-edit-block_title panel-heading">
-                    Редактирование профиля
+                    {{ t('book', 'Редактирование профиля') }}
                 </div>
 
                 <div class="user-edit-block-content panel-body">
@@ -28,7 +28,9 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('nickname') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Ник</label>
+                            <label for="nickname" class="col-md-4 control-label">
+                                {{ t('user', 'Ник') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="nickname" type="text" class="form-control" name="nickname"
@@ -43,7 +45,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('avatar') ? ' has-error' : '' }}">
-                            <label for="avatar" class="col-md-4 control-label">Аватар</label>
+                            <label for="avatar" class="col-md-4 control-label">
+                                {{ t('user', 'Аватар') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="avatar" type="file" class="form-control" name="avatar">
@@ -57,10 +61,12 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('surname') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Фамилия</label>
+                            <label for="surname" class="col-md-4 control-label">
+                                {{ t('user', 'Фамилия') }}
+                            </label>
 
                             <div class="col-md-6">
-                                <input id="nickname" type="text" class="form-control" name="surname"
+                                <input id="surname" type="text" class="form-control" name="surname"
                                        value="{{ old('surname', Auth::user()->surname) }}">
 
                                 @if ($errors->has('surname'))
@@ -72,7 +78,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Имя</label>
+                            <label for="name" class="col-md-4 control-label">
+                                {{ t('user', 'Имя') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name"
@@ -87,7 +95,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('patronymic') ? ' has-error' : '' }}">
-                            <label for="patronymic" class="col-md-4 control-label">Отчество</label>
+                            <label for="patronymic" class="col-md-4 control-label">
+                                {{ t('user', 'Отчество') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="patronymic" type="text" class="form-control" name="patronymic"
@@ -102,21 +112,23 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-                            <label for="gender" class="col-md-4 control-label">Пол</label>
+                            <label for="gender" class="col-md-4 control-label">
+                                {{ t('user', 'Пол') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <select id="gender" class="form-control" name="gender">
                                     <option value="{{ \App\User::GENDER_NOT_INDICATED }}"
                                             {{ old('gender', Auth::user()->gender) == \App\User::GENDER_NOT_INDICATED ? 'selected' : ''}} >
-                                        Не указан
+                                        {{ t('user', 'Не указан') }}
                                     </option>
                                     <option value="{{ \App\User::GENDER_MALE }}"
                                             {{ old('gender', Auth::user()->gender) == \App\User::GENDER_MALE ? 'selected' : '' }} >
-                                        Мужской
+                                        {{ t('user', 'Мужской') }}
                                     </option>
                                     <option value="{{ \App\User::GENDER_FEMALE }}"
                                             {{ old('gender', Auth::user()->gender) == \App\User::GENDER_FEMALE ? 'selected' : '' }} >
-                                        Женский
+                                        {{ t('user', 'Женский') }}
                                     </option>
                                 </select>
 
@@ -129,7 +141,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail</label>
+                            <label for="email" class="col-md-4 control-label">
+                                {{ t('user', 'E-Mail') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email"
@@ -144,7 +158,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('birthday_date') ? ' has-error' : '' }}">
-                            <label for="birthday_date" class="col-md-4 control-label">Дата рождения</label>
+                            <label for="birthday_date" class="col-md-4 control-label">
+                                {{ t('user', 'Дата рождения') }}
+                            </label>
                             <div class="col-md-6">
                                 <input id="birthday_date" type="date" class="form-control" name="birthday_date"
                                        value="{{ old('birthday_date',
@@ -158,7 +174,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Новый пароль</label>
+                            <label for="password" class="col-md-4 control-label">
+                                {{ t('user', 'Новый пароль') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password">
@@ -172,7 +190,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Повтор пароля</label>
+                            <label for="password-confirm" class="col-md-4 control-label">
+                                {{ t('book', 'Повтор пароля') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
@@ -180,7 +200,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('timezone') ? ' has-error' : '' }}">
-                            <label for="timezone" class="col-md-4 control-label">Таймзона</label>
+                            <label for="timezone" class="col-md-4 control-label">
+                                {{ t('user', 'Таймзона') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <select class="form-control user-edit-timezone" id="timezone" name="timezone">
@@ -195,7 +217,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
-                            <label for="about" class="col-md-4 control-label">О себе</label>
+                            <label for="about" class="col-md-4 control-label">
+                                {{ t('user', 'О себе') }}
+                            </label>
 
                             <div class="col-md-6">
                                 <textarea id="about" class="form-control user-edit-about" name="about">{{ old('about_plain', Auth::user()->about_plain) }}</textarea>
@@ -211,10 +235,10 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Сохранить
+                                    {{ t('user.button', 'Сохранить') }}
                                 </button>
                                 <a type="button" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" class="btn btn-primary">
-                                    К профилю
+                                    {{ t('user.button', 'К профилю') }}
                                 </a>
                             </div>
                         </div>

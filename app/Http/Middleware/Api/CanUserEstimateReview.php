@@ -40,12 +40,12 @@ class CanUserEstimateReview
         $review = Review::find($review_id);
 
         if (Auth::user()->isAuthor($book)) {
-            $this->out['data']['message'] = __('review_estimate.your_own_book_error');
+            $this->out['data']['message'] = t('review_estimate.api','вы не можете оставить оценку к своей собственной книге');
             return response()->json($this->out);
         }
 
         if ($review->user_id == Auth::user()->id) {
-            $this->out['data']['message'] = __('review_estimate.your_own_review_error');
+            $this->out['data']['message'] = t('review_estimate.api', 'вы не можете оставить оценку к своей собственой рецензии');
             return response()->json($this->out);
         }
 

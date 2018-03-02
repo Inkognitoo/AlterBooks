@@ -32,7 +32,7 @@ class IsUserAuth
     public function handle($request, Closure $next)
     {
         if (!Auth::check()) {
-            $this->out['data']['message'] = __('user.unauthorized');
+            $this->out['data']['message'] = t('user.api', 'Пользователь не авторизован');
             return response()->json($this->out);
         }
 

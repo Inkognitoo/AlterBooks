@@ -36,12 +36,12 @@ class IsReviewExist
         $review = Review::find($review_id);
 
         if (blank($review)) {
-            $this->out['data']['message'] = __('review.not_found');
+            $this->out['data']['message'] = t('review.api', 'Рецензии не существует');
             return response()->json($this->out);
         }
 
         if ($review->book_id != $request->book_id) {
-            $this->out['data']['message'] = __('review.not_found_for_book');
+            $this->out['data']['message'] = t('review.api', 'Рецензии для текущей книги не существует');
             return response()->json($this->out);
         }
 

@@ -6,7 +6,7 @@
     <div class="landing-book__read">
         <div class="landing-book__read landing-form">
             <a type="button" class="landing-button" href="{{ $book->url }}">
-                Профиль
+                {{ t('book.button', 'Профиль') }}
             </a>
         </div>
     </div>

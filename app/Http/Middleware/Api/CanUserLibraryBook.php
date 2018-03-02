@@ -36,7 +36,7 @@ class CanUserLibraryBook
         $book = Book::find($book_id);
 
         if (Auth::user()->isAuthor($book)) {
-            $this->out['data']['message'] = __('library.your_own_book_error');
+            $this->out['data']['message'] = t('library.api', 'вы не можете манипулировать в библиотеке своей собственной книгой');
             return response()->json($this->out);
         }
 
