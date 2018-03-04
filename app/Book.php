@@ -38,6 +38,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users Коллекция пользователей добавивших к себе книгу
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
+ * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
  * @property-write mixed $text
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
@@ -64,7 +65,7 @@ class Book extends Model
 {
     use SoftDeletes, Sluggable, FindByIdOrSlugMethod;
 
-    //Путь по которому хранятся обложки для книг на Amazon S3
+    //Подпапка в которой хранятся обложки для книг
     const COVER_PATH = 'book_covers';
 
     //Возможные статусы книги
@@ -88,6 +89,9 @@ class Book extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    // Закэшированный компонент Storage
+    protected $_storage = null;
 
     /**
      * The "booting" method of the model.
@@ -267,7 +271,7 @@ class Book extends Model
     public function getCoverUrlAttribute(): string
     {
         if (filled($this->cover)) {
-            return Storage::disk('s3')->url($this->cover_path);
+            return $this->storage->url($this->cover_path);
         }
 
         return '/img/default_book_cover.png';
@@ -315,6 +319,20 @@ class Book extends Model
     }
 
     /**
+     * Текущий драйвер файлового хранилища
+     *
+     * @return \Illuminate\Filesystem\FilesystemAdapter|null
+     */
+    public function getStorageAttribute()
+    {
+        if (empty($this->_storage)) {
+            $this->_storage = Storage::disk('s3');
+        }
+
+        return $this->_storage;
+    }
+
+    /**
      * Установить обложку для книги
      *
      * @param UploadedFile $cover Обложка книги
@@ -327,12 +345,12 @@ class Book extends Model
             throw new Exception('For setting cover, book must be present');
         }
 
-        if (filled($this->cover) && Storage::disk('s3')->exists($this->cover_path)) {
-            Storage::disk('s3')->delete($this->cover_path);
+        if (filled($this->cover) && $this->storage->exists($this->cover_path)) {
+            $this->storage->delete($this->cover_path);
         }
 
         $image_name = $this::COVER_PATH . '/' . $this->id;
-        $storage_path = Storage::disk('s3')->put($image_name, $cover);
+        $storage_path = $this->storage->put($image_name, $cover);
         $this->attributes['cover'] = basename($storage_path);
     }
 
