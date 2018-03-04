@@ -11,6 +11,8 @@
 
     <title>@yield('title')</title>
 
+    <link rel="canonical" href="@yield('canonical', url()->current())"/>
+
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <link href="{{ mix('/css/fix.css') }}" rel="stylesheet">

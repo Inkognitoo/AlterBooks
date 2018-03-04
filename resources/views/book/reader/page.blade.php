@@ -6,6 +6,8 @@
 
 @section('title', $book->title)
 
+@section('canonical', $book->canonical_url)
+
 @section('content')
     <div class="book-reader-content container">
         <div class="book-reader-content__area row">

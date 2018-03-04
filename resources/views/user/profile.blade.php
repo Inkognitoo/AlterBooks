@@ -7,6 +7,8 @@
 
 @section('title', $user->full_name)
 
+@section('canonical', $user->canonical_url)
+
 @section('content')
 <div class="user-content container">
     <div class="user-content__area row">

@@ -43,6 +43,7 @@ use Storage;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates Оценки к рецензиями оставленные пользователем
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
+ * @property-read string $canonical_url Каноничный (основной, постоянный) url пользователя
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -352,6 +353,16 @@ class User extends Authenticatable
         }
 
         return $this->_storage;
+    }
+
+    /**
+     * Каноничный (основной, постоянный) url пользователя
+     *
+     * @return string
+     */
+    public function getCanonicalUrlAttribute()
+    {
+        return route('user.show', ['id' => 'id' . $this->id]);
     }
 
     /**

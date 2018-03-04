@@ -39,6 +39,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
  * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
+ * @property-read string $canonical_url Каноничный (основной, постоянный) url книги
  * @property-write mixed $text
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
@@ -330,6 +331,16 @@ class Book extends Model
         }
 
         return $this->_storage;
+    }
+
+    /**
+     * Каноничный (основной, постоянный) url книги
+     *
+     * @return string
+     */
+    public function getCanonicalUrlAttribute()
+    {
+        return route('book.show', ['id' => 'id' . $this->id]);
     }
 
     /**
