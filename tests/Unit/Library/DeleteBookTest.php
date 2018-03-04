@@ -41,7 +41,7 @@ class DeleteBookTest extends TestCase
             'book_id' => $book->id,
         ]);
 
-        $response = $this->delete(route('api.library.delete', ['id' => $book->id]), [], $headers);
+        $response = $this->delete(route('api.library.delete', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => true,
             'code' => 200
@@ -77,7 +77,7 @@ class DeleteBookTest extends TestCase
             'book_id' => $book->id,
         ]);
 
-        $response = $this->delete(route('api.library.delete', ['id' => $book->id]), [], $headers);
+        $response = $this->delete(route('api.library.delete', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => true,
             'code' => 200
@@ -87,7 +87,7 @@ class DeleteBookTest extends TestCase
             'book_id' => $book->id,
         ]);
 
-        $response = $this->delete(route('api.library.delete', ['id' => $book->id]), [], $headers);
+        $response = $this->delete(route('api.library.delete', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => false,
             'code' => 400
@@ -129,7 +129,7 @@ class DeleteBookTest extends TestCase
         }
 
         foreach ($books as $book) {
-            $response = $this->delete(route('api.library.delete', ['id' => $book->id]), [], $headers);
+            $response = $this->delete(route('api.library.delete', ['id' => "id{$book->id}"]), [], $headers);
             $response->assertJson([
                 'success' => true,
                 'code' => 200
@@ -139,7 +139,7 @@ class DeleteBookTest extends TestCase
                 'book_id' => $book->id,
             ]);
 
-            $response = $this->delete(route('api.library.delete', ['id' => $book->id]), [], $headers);
+            $response = $this->delete(route('api.library.delete', ['id' => "id{$book->id}"]), [], $headers);
             $response->assertJson([
                 'success' => false,
                 'code' => 400
@@ -173,7 +173,7 @@ class DeleteBookTest extends TestCase
             'Authorization' => 'Bearer ' . $person->api_token
         ];
 
-        $response = $this->post(route('api.library.delete', ['id' => $book->id]), [], $headers);
+        $response = $this->post(route('api.library.delete', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => false,
             'code' => 403
