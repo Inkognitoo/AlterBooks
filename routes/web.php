@@ -47,7 +47,7 @@ Route::post('user/{id}/edit', 'UserController@edit')
 Route::get('books', 'BookController@index')
     ->name('book.books-list')
 ;
-Route::get('book/id{id}', 'BookController@show')
+Route::get('book/{id}', 'BookController@show')
     ->name('book.show')
 ;
 Route::get('book', 'BookController@createShow')
@@ -56,24 +56,24 @@ Route::get('book', 'BookController@createShow')
 Route::post('book', 'BookController@create')
     ->name('book.create')
 ;
-Route::get('book/id{id}/edit', 'BookController@editShow')
+Route::get('book/{id}/edit', 'BookController@editShow')
     ->name('book.edit.show')
 ;
-Route::post('book/id{id}/edit', 'BookController@edit')
+Route::post('book/{id}/edit', 'BookController@edit')
     ->name('book.edit')
 ;
-Route::get('book/id{id}/delete', 'BookController@delete')
+Route::get('book/{id}/delete', 'BookController@delete')
     ->name('book.delete')
 ;
 
 // Reader
-Route::get('book/id{id}/page/{page_number}', 'ReaderController@show')
+Route::get('book/{id}/page/{page_number}', 'ReaderController@show')
     ->name('book.page.show')
 ;
-Route::get('book/id{id}/page/{page_number}/edit', 'ReaderController@editShow')
+Route::get('book/{id}/page/{page_number}/edit', 'ReaderController@editShow')
     ->name('book.page.edit.show')
 ;
-Route::post('book/id{id}/page/{page_number}/edit', 'ReaderController@edit')
+Route::post('book/{id}/page/{page_number}/edit', 'ReaderController@edit')
     ->name('book.page.edit')
 ;
 
@@ -85,9 +85,9 @@ Route::post('book/id{id}/page/{page_number}/edit', 'ReaderController@edit')
 | Здесь все маршруты касающиеся в первую очередь работы с рецензиями
 |
 */
-Route::post('book/id{id}/review', 'ReviewController@create')
+Route::post('book/{id}/review', 'ReviewController@create')
     ->name('review.create')
 ;
-Route::get('book/id{book_id}/review/id{id}/delete', 'ReviewController@delete')
+Route::get('book/{book_id}/review/id{id}/delete', 'ReviewController@delete')
     ->name('review.delete')
 ;

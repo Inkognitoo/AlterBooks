@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
      */
     protected function redirectTo()
     {
-        return route('user.show', ['id' => Auth::user()->id]);
+        return Auth::user()->url;
     }
 
     /**

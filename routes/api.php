@@ -26,10 +26,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     | Здесь все маршруты касающиеся в первую очередь работы с книгами
     |
     */
-    Route::post('/library/book/id{id}', 'LibraryBookController@create')
+    Route::post('/library/book/{id}', 'LibraryBookController@create')
         ->name('api.library.add')
     ;
-    Route::delete('/library/book/id{id}', 'LibraryBookController@destroy')
+    Route::delete('/library/book/{id}', 'LibraryBookController@destroy')
         ->name('api.library.delete')
     ;
 
@@ -41,10 +41,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     | Здесь все маршруты касающиеся в первую очередь работы с рецензиями
     |
     */
-    Route::post('/book/id{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')
+    Route::post('/book/{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')
         ->name('api.review.estimate.plus')
     ;
-    Route::post('/book/id{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
+    Route::post('/book/{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
         ->name('api.review.estimate.minus')
     ;
 });

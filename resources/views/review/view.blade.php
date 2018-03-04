@@ -99,7 +99,7 @@
                                         {{ t('review.button', 'Закрыть') }}
                                     </button>
                                     <a type="button" class="btn btn-danger"
-                                       href="{{ route('review.delete', ['book_id' => $book->id, 'id' => $review->id]) }}">
+                                       href="{{ route('review.delete', ['book_id' => $book->slug, 'id' => $review->id]) }}">
                                         {{ t('review.button', 'Удалить') }}
                                     </a>
                                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Book;
 use App\Review;
 use Closure;
 
@@ -34,13 +35,14 @@ class IsReviewExist
         $review_id = $request->review_id ?? $request->id;
 
         $review = Review::find($review_id);
+        $book = Book::findAny($request->book_id);
 
         if (blank($review)) {
             $this->out['data']['message'] = t('review.api', 'Рецензии не существует');
             return response()->json($this->out);
         }
 
-        if ($review->book_id != $request->book_id) {
+        if ($review->book_id !== $book->id) {
             $this->out['data']['message'] = t('review.api', 'Рецензии для текущей книги не существует');
             return response()->json($this->out);
         }

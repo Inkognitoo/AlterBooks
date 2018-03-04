@@ -47,15 +47,13 @@ trait FindByIdOrSlugMethod {
         //Проверяем соотвествие на шаблон вида: id[цифра]
         if ((bool) preg_match('/(?<=^id)[\d]+$/', $id, $matches)) {
             list($id) = $matches;
-            $model = $query->find($id);
+            $query->where(['id' => $id]);
         } else {
             $class_name = get_class($query->getModel());
             $slug_name = $slug_name ?? (defined("{$class_name}::SLUG_NAME") ? self::SLUG_NAME : 'slug');
-            $model = $query->where([$slug_name => $id])
-                ->first()
-            ;
+            $query->where([$slug_name => $id]);
         }
 
-        return $model;
+        return $query;
     }
 }

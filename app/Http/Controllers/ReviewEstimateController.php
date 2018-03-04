@@ -35,7 +35,7 @@ class ReviewEstimateController extends Controller
     /**
      * Положительно оценить книгу
      *
-     * @param  int  $book_id
+     * @param  mixed  $book_id
      * @param  int  $id
      * @return JsonResponse
      */
@@ -76,7 +76,7 @@ class ReviewEstimateController extends Controller
     /**
      * Отрицательно оценить книгу
      *
-     * @param  int  $book_id
+     * @param  mixed  $book_id
      * @param  int  $id
      * @return JsonResponse
      */

@@ -34,7 +34,7 @@ class CanUserEstimateReview
     public function handle($request, Closure $next)
     {
         $book_id = $request->book_id;
-        $book = Book::find($book_id);
+        $book = Book::findAny($book_id);
 
         $review_id = $request->review_id ?? $request->id;
         $review = Review::find($review_id);
@@ -44,7 +44,7 @@ class CanUserEstimateReview
             return response()->json($this->out);
         }
 
-        if ($review->user_id == Auth::user()->id) {
+        if (Auth::user()->hasReview($review)) {
             $this->out['data']['message'] = t('review_estimate.api', 'вы не можете оставить оценку к своей собственой рецензии');
             return response()->json($this->out);
         }

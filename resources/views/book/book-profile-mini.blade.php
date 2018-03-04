@@ -42,11 +42,11 @@
             </div>
             <div class="col-md-12 text-right">
                 @if(filled($book->mongodb_book_id))
-                    <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">
+                    <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->slug, 'page_number' => 1]) }}">
                         {{ t('book.button', 'Читать') }}
                     </a>
                 @endif
-                <a type="button" class="btn btn-default" href="{{ route('book.show', ['id' => $book->id]) }}">
+                <a type="button" class="btn btn-default" href="{{ $book->url }}">
                     {{ t('book.button', 'К профилю книги') }}
                 </a>
             </div>

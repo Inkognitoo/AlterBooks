@@ -17,9 +17,9 @@
 
                 <div class="user-edit-block-content panel-body">
 
-                    @if (!empty($status))
+                    @if (session('status'))
                         <div class="alert alert-success">
-                            {{ $status }}
+                            {{ session('status') }}
                         </div>
                     @endif
 

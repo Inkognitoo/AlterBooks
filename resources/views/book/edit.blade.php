@@ -1,6 +1,9 @@
 @php
     /** @var \App\Book $book */
     /** @var \Illuminate\Support\ViewErrorBag $errors */
+    if (session('book_id')) {
+        $book = App\Book::findAny(['id' => session('book_id')]);
+    }
 @endphp
 
 @extends('layouts.app')
@@ -18,13 +21,13 @@
 
                 <div class="panel-body">
 
-                    @if (!empty($status))
+                    @if (session('status'))
                         <div class="alert alert-success">
-                            {{ $status }}
+                            {{ session('status') }}
                         </div>
                     @endif
 
-                    <form class="form-horizontal" method="POST" action="{{ route('book.edit', ['id' => $book->id]) }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="POST" action="{{ route('book.edit', ['id' => $book->slug]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -146,7 +149,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ t('book.button', 'Сохранить') }}
                                 </button>
-                                <a type="button" href="{{ route('book.show', ['id' => $book->id]) }}" class="btn btn-primary">
+                                <a type="button" href="{{ $book->url}}" class="btn btn-primary">
                                     {{ t('book.button', 'К профилю') }}
                                 </a>
                             </div>

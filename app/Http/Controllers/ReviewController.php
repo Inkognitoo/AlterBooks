@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Review;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckReviewExist;
@@ -37,15 +38,15 @@ class ReviewController extends Controller
      * Создать новую рецензию
      *
      * @param ReviewCreateRequest $request
-     * @param integer $book_id
+     * @param mixed $book_id
      * @return Redirect
      */
-    public function create(ReviewCreateRequest $request, int $book_id)
+    public function create(ReviewCreateRequest $request, $book_id)
     {
         $review = new Review();
 
         $review->fill($request->all());
-        $review->book_id = $book_id;
+        $review->book_id = Book::findAny($book_id)->id;
         Auth::user()->reviews()->save($review);
 
         $review->save();
@@ -56,8 +57,8 @@ class ReviewController extends Controller
     /**
      * Удаляем рецензию
      *
-     * @param int $book_id
-     * @param int $id
+     * @param mixed $book_id
+     * @param mixed $id
      * @return Redirect
      * @throws Exception
      */
