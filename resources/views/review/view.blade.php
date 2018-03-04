@@ -11,14 +11,14 @@
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-10">
-                        <a href="{{ route('user.show', ['id' => $review->user->id]) }}">
+                        <a href="{{ $review->user->url }}">
                             {{ $review->user->full_name }}
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        Оценка: {{ $review->rating }}
+                        {{ t('review', 'Оценка: :estimate', ['estimate' => $review->rating]) }}
                     </div>
                 </div>
                 <br>
@@ -70,7 +70,9 @@
                     <div class="col-md-12 text-right">
                         @auth
                             @if(Auth::user()->hasReview($review))
-                                <button class="btn btn-default" data-toggle="modal" data-target="#deleteReviewModal{{ $review->id }}">Удалить</button>
+                                <button class="btn btn-default" data-toggle="modal" data-target="#deleteReviewModal{{ $review->id }}">
+                                    {{ t('review.button', 'Удалить') }}
+                                </button>
                             @endif
                         @endauth
                     </div>
@@ -85,16 +87,20 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="deleteReviewModalLabel">Подтвердите удаление</h4>
+                                    <h4 class="modal-title" id="deleteReviewModalLabel">
+                                        {{ t('review.modal', 'Подтвердите удаление') }}
+                                    </h4>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Вы уверены, что хотите удалить рецензию к книге <strong>{{ $book->title }}</strong>?</p>
+                                    <p> {!! t('review.modal', 'Вы уверены, что хотите удалить рецензию к книге <strong>:book</strong>?', ['book' => $book->title]) !!}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                    <button class="btn btn-default" data-dismiss="modal">
+                                        {{ t('review.button', 'Закрыть') }}
+                                    </button>
                                     <a type="button" class="btn btn-danger"
-                                       href="{{ route('review.delete', ['book_id' => $book->id, 'id' => $review->id]) }}">
-                                        Удалить
+                                       href="{{ route('review.delete', ['book_id' => $book->slug, 'id' => $review->id]) }}">
+                                        {{ t('review.button', 'Удалить') }}
                                     </a>
                                 </div>
                             </div>

@@ -1,5 +1,5 @@
 @php
-    /** @var \App\Book $user */
+    /** @var \App\User $user */
 @endphp
 
 <div class="panel panel-default">
@@ -16,13 +16,11 @@
             <div class="users-list-nickname">
                 @if($user->full_name != $user->nickname)
                     {{ $user->nickname }}
-                @else
-                    &nbsp;
                 @endif
             </div>
             <div class="users-list-button">
-                <a type="button" class="btn btn-default" href="{{ route('user.show', ['id' => $user->id]) }}">
-                    К профилю пользователя
+                <a type="button" class="btn btn-default" href="{{ $user->url }}">
+                    {{ t('user.button', 'К профилю пользователя') }}
                 </a>
             </div>
         </div>

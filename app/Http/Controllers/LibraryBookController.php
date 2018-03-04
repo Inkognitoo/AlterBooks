@@ -37,12 +37,12 @@ class LibraryBookController extends Controller
      */
     public function create($id)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         if (Auth::user()->hasBookAtLibrary($book)) {
             $this->out['success'] = false;
             $this->out['code'] = 400;
-            $this->out['data']['message'] = 'book already exist in the library';
+            $this->out['data']['message'] = t('library.api', 'книга уже существует в библиотеке');
 
             return response()->json($this->out);
         }
@@ -51,7 +51,7 @@ class LibraryBookController extends Controller
 
         $this->out['success'] = true;
         $this->out['code'] = 200;
-        $this->out['data']['message'] = 'book was successfully added';
+        $this->out['data']['message'] = t('library.api', 'книга была успешно добавлена в библиотеку');
 
         return response()->json($this->out);
     }
@@ -64,12 +64,12 @@ class LibraryBookController extends Controller
      */
     public function destroy($id)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         if (!Auth::user()->hasBookAtLibrary($book)) {
             $this->out['success'] = false;
             $this->out['code'] = 400;
-            $this->out['data']['message'] = 'book does not exist in the library';
+            $this->out['data']['message'] = t('library.api', 'книга не существует в библиотеке');
 
             return response()->json($this->out);
         }
@@ -81,7 +81,7 @@ class LibraryBookController extends Controller
 
         $this->out['success'] = true;
         $this->out['code'] = 200;
-        $this->out['data']['message'] = 'book was successfully deleted';
+        $this->out['data']['message'] = t('library.api', 'книга была успешно удалена из библиотеки');
 
         return response()->json($this->out);
     }

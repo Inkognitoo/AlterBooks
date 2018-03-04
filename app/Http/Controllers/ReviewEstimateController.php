@@ -35,7 +35,7 @@ class ReviewEstimateController extends Controller
     /**
      * Положительно оценить книгу
      *
-     * @param  int  $book_id
+     * @param  mixed  $book_id
      * @param  int  $id
      * @return JsonResponse
      */
@@ -57,7 +57,7 @@ class ReviewEstimateController extends Controller
         if ($review_estimate->estimate > 0) {
             $this->out['success'] = false;
             $this->out['code'] = 400;
-            $this->out['data']['message'] = 'positive estimate already exist';
+            $this->out['data']['message'] = t('review_estimate.api', 'положительная оценка к рецензии уже существует');
 
             return response()->json($this->out);
         }
@@ -67,7 +67,7 @@ class ReviewEstimateController extends Controller
 
         $this->out['success'] = true;
         $this->out['code'] = 200;
-        $this->out['data']['message'] = 'estimate was successfully added';
+        $this->out['data']['message'] = t('review_estimate.api', 'оценка к рецензии была успешно добавлена');
         $this->out['data']['estimate'] = $review_estimate->estimate;
 
         return response()->json($this->out);
@@ -76,7 +76,7 @@ class ReviewEstimateController extends Controller
     /**
      * Отрицательно оценить книгу
      *
-     * @param  int  $book_id
+     * @param  mixed  $book_id
      * @param  int  $id
      * @return JsonResponse
      */
@@ -98,7 +98,7 @@ class ReviewEstimateController extends Controller
         if ($review_estimate->estimate < 0) {
             $this->out['success'] = false;
             $this->out['code'] = 400;
-            $this->out['data']['message'] = 'negative estimate already exist';
+            $this->out['data']['message'] = t('review_estimate.api', 'негативная оценка к рецензии уже существует');
 
             return response()->json($this->out);
         }
@@ -108,7 +108,7 @@ class ReviewEstimateController extends Controller
 
         $this->out['success'] = true;
         $this->out['code'] = 200;
-        $this->out['data']['message'] = 'estimate was successfully added';
+        $this->out['data']['message'] = t('review_estimate.api', 'оценка к рецензии была успешно добавлена');
         $this->out['data']['estimate'] = $review_estimate->estimate;
 
         return response()->json($this->out);

@@ -12,14 +12,14 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center books-list-heading">
-                        <div>Список книг</div>
+                        <div> {{ t('book', 'Список книг') }}</div>
                         <hr class="hr">
 
                         <form class="form-inline">
                             <div class="row">
                                 <div class="col-md-12 genre">
                                     <div class="sort__title">
-                                        Выберите жанры
+                                        {{ t('book', 'Выберите жанры') }}
                                     </div>
                                     <div class="genre-content">
                                         @php
@@ -27,7 +27,6 @@
                                         @endphp
 
                                         @foreach($genres as $genre)
-                                            {{--<label class="checkbox-inline pull-left">--}}
                                             <input type="checkbox"
                                                    id="{{ $genre->id }}"
                                                    value="{{ $genre->slug }}"
@@ -47,7 +46,7 @@
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="sort__title col-md-2">
-                                            Сортировать
+                                            {{ t('book', 'Сортировать') }}
                                         </div>
                                         <div class="col-md-8">
                                             <input id="sort" name="sort" type="hidden" value="{{Request::get('sort')}}">
@@ -57,22 +56,24 @@
                                                         id="sort-placeholder">
                                                     @switch(Request::get('sort'))
                                                         @case('rating')
-                                                        по рейтингу <span class="caret"></span>
+                                                            {{ t('book', 'по рейтингу') }} <span class="caret"></span>
                                                         @break
                                                         @case('date')
-                                                        по дате добавления <span class="caret"></span>
+                                                            {{ t('book', 'по дате добавления') }}<span class="caret"></span>
                                                         @break
                                                         @default
-                                                        по рейтингу <span class="caret"></span>
+                                                            {{ t('book', 'по рейтингу') }} <span class="caret"></span>
                                                     @endswitch
                                                 </button>
                                                 <ul class="dropdown-menu books-list-sort__open">
                                                     <li onclick="document.getElementById('sort').value='rating';
-                                                             document.getElementById('sort-placeholder').innerHTML='По рейтингу <span class=\'caret\'></span>'">
-                                                        <a href="#">По рейтингу</a></li>
+                                                             document.getElementById('sort-placeholder').innerHTML='{{ t('book', 'по рейтингу') }} <span class=\'caret\'></span>'">
+                                                        <a href="#">{{ t('book', 'по рейтингу') }}</a>
+                                                    </li>
                                                     <li onclick="document.getElementById('sort').value='date';
-                                                             document.getElementById('sort-placeholder').innerHTML='По дате добавления <span class=\'caret\'></span>'">
-                                                        <a href="#">По дате добавления</a></li>
+                                                             document.getElementById('sort-placeholder').innerHTML='{{ t('book', 'по дате добавления') }} <span class=\'caret\'></span>'">
+                                                        <a href="#">{{ t('book', 'по дате добавления') }}</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -80,7 +81,9 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <button class="btn btn-default pull-right" type="submit">Найти</button>
+                                    <button class="btn btn-default pull-right" type="submit">
+                                        {{ t('book.button', 'Найти') }}
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -90,7 +93,7 @@
                         <div>
                             @if($books->isEmpty())
                                 <div class="text-center">
-                                    Нет ни одной книги, доступной для чтения
+                                    {{ t('book', 'Нет ни одной книги, доступной для чтения') }}
                                 </div>
                             @endif
 

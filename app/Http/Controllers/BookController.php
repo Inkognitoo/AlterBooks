@@ -9,6 +9,7 @@ use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserBookGranted;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Requests\BookUpdateRequest;
+use App\Scopes\StatusScope;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Auth;
@@ -87,7 +88,7 @@ class BookController extends Controller
         $book->fill($request->all());
         $book->save();
 
-        return redirect(route('book.show', ['id' => $book->id]));
+        return redirect($book->url);
     }
 
     /**
@@ -118,10 +119,10 @@ class BookController extends Controller
         $book->fill($request->all());
         $book->save();
 
-        return view('book.edit', [
-            'book' => $book,
-            'status' => 'Данные были успешно обновлены'
-        ]);
+        return redirect(route('book.edit', ['id' => $book->slug]))
+            ->with('book_id', $book->id)
+            ->with('status', t('book.api', 'Данные были успешно обновлены'))
+        ;
     }
 
     /**
@@ -137,7 +138,7 @@ class BookController extends Controller
 
         $book->delete();
 
-        return redirect(route('user.show', ['id' => Auth::user()->id]))
-            ->with(['status' => 'Книга была успешно удалена']);
+        return redirect(Auth::user()->url)
+            ->with(['status' => t('book.api', 'Книга была успешно удалена')]);
     }
 }

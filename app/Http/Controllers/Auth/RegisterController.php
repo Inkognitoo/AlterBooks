@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Rules\CaseInsensitiveUnique;
+use App\Rules\Nickname;
 use App\User;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -31,7 +32,7 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-        return route('user.show', ['id' => Auth::user()->id]);
+        return Auth::user()->url;
     }
 
     /**
@@ -56,6 +57,7 @@ class RegisterController extends Controller
             'nickname' => [
                 'required', 'string', 'max:255',
                 new CaseInsensitiveUnique('users'),
+                new Nickname(),
             ],
             'email' => [
                 'required', 'string', 'email', 'max:255',

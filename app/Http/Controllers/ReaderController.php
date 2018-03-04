@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserBookGranted;
 use App\Http\Requests\PageUpdateRequest;
 use Exception;
@@ -20,18 +21,20 @@ class ReaderController extends Controller
     {
         $this->middleware(CheckAuth::class)->except(['show']);
 
+        $this->middleware(CheckBookExist::class);
+
         $this->middleware(CheckUserBookGranted::class)->except(['show']);
     }
 
     /**
      * Возвращаем конкретную страницу книги
      *
-     * @param int $id
+     * @param mixed $id
      * @param int $page_number
      * @return Response
      * @throws Exception
      */
-    public function show(int $id, int $page_number)
+    public function show($id, int $page_number)
     {
         $book = Book::findAny($id);
 
@@ -45,12 +48,12 @@ class ReaderController extends Controller
     /**
      * Показываем страницу редактирования конкретной страницы книги
      *
-     * @param int $id
+     * @param mixed $id
      * @param int $page_number
      * @return Response
      * @throws Exception
      */
-    public function editShow(int $id, int $page_number)
+    public function editShow($id, int $page_number)
     {
         $book = Book::findAny($id);
 
@@ -65,18 +68,18 @@ class ReaderController extends Controller
      * Редактируем конкретную страницу книги
      *
      * @param PageUpdateRequest $request
-     * @param int $id
+     * @param mixed $id
      * @param int $page_number
      * @return Response
      * @throws Exception
      */
-    public function edit(PageUpdateRequest $request, int $id, int $page_number)
+    public function edit(PageUpdateRequest $request, $id, int $page_number)
     {
         $book = Book::findAny($id);
 
         $book->editPage($page_number, $request->text);
 
         return redirect(route('book.page.show', ['id' => $id, 'current_page' => $page_number]))
-            ->with(['status' => 'Данные были успешно обновлены']);
+            ->with(['status' => t('reader.api', 'Данные были успешно обновлены')]);
     }
 }

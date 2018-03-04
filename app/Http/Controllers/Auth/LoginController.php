@@ -31,7 +31,7 @@ class LoginController extends Controller
         Auth::user()->api_token = str_random(60);
         Auth::user()->save();
 
-        return route('user.show', ['id' => Auth::user()->id]);
+        return Auth::user()->url;
     }
 
     /**
