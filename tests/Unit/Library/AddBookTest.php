@@ -35,7 +35,7 @@ class AddBookTest extends TestCase
             'Authorization' => 'Bearer ' . $person->api_token
         ];
 
-        $response = $this->post(route('api.library.add', ['id' => $book->id]), [], $headers);
+        $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => true,
             'code' => 200
@@ -65,7 +65,7 @@ class AddBookTest extends TestCase
             'Authorization' => 'Bearer ' . $person->api_token
         ];
 
-        $response = $this->post(route('api.library.add', ['id' => $book->id]), [], $headers);
+        $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => true,
             'code' => 200
@@ -75,7 +75,7 @@ class AddBookTest extends TestCase
             'book_id' => $book->id,
         ]);
 
-        $response = $this->post(route('api.library.add', ['id' => $book->id]), [], $headers);
+        $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => false,
             'code' => 400
@@ -107,7 +107,7 @@ class AddBookTest extends TestCase
         ];
 
         foreach ($books as $book) {
-            $response = $this->post(route('api.library.add', ['id' => $book->id]), [], $headers);
+            $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
             $response->assertJson([
                 'success' => true,
                 'code' => 200
@@ -117,7 +117,7 @@ class AddBookTest extends TestCase
                 'book_id' => $book->id,
             ]);
 
-            $response = $this->post(route('api.library.add', ['id' => $book->id]), [], $headers);
+            $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
             $response->assertJson([
                 'success' => false,
                 'code' => 400
@@ -151,7 +151,7 @@ class AddBookTest extends TestCase
             'Authorization' => 'Bearer ' . $person->api_token
         ];
 
-        $response = $this->post(route('api.library.add', ['id' => $book->id]), [], $headers);
+        $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
 
         $response->assertJson([
             'success' => false,
