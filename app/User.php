@@ -59,6 +59,7 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereApiToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTimezone($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User findByIdOrSlug($id, $slug_name = null)
  */
 class User extends Authenticatable
 {
@@ -97,8 +98,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    private $slug_name = 'avatar';
 
     /**
      * Send the password reset notification.

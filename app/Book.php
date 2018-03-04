@@ -56,6 +56,9 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
  * @mixin Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findByIdOrSlug($id, $slug_name = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereSlug($value)
  */
 class Book extends Model
 {
