@@ -11,7 +11,7 @@
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-10">
-                        <a href="{{ route('user.show', ['id' => $review->user->id]) }}">
+                        <a href="{{ $review->user->url }}">
                             {{ $review->user->full_name }}
                         </a>
                     </div>

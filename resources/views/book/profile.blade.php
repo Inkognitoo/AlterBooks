@@ -25,7 +25,7 @@
                                     {{ $book->title }}
                                 </div>
                                 <div class="panel-body">
-                                    <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
+                                    <a href="{{ $book->author->url }}">
                                         {{ $book->author->full_name }}
                                     </a>
                                     <br>

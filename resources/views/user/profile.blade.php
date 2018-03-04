@@ -50,7 +50,7 @@
                             @auth
                                 @if(Auth::user()->id == $user->id)
                                     <a type="button" class="user-info-edit__button btn btn-default"
-                                       href="{{ route('user.edit.show', ['id' => $user->id]) }}">
+                                       href="{{ route('user.edit.show', ['id' => $user->nickname]) }}">
                                         {{ t('user.button', 'Редактировать') }}
                                     </a>
                                 @endif

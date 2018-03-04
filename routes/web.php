@@ -26,13 +26,13 @@ Auth::routes();
 Route::get('users', 'UserController@index')
     ->name('user.users-list')
 ;
-Route::get('user/id{id}', 'UserController@show')
+Route::get('user/{id}', 'UserController@show')
     ->name('user.show')
 ;
-Route::get('user/id{id}/edit', 'UserController@editShow')
+Route::get('user/{id}/edit', 'UserController@editShow')
     ->name('user.edit.show')
 ;
-Route::post('user/id{id}/edit', 'UserController@edit')
+Route::post('user/{id}/edit', 'UserController@edit')
     ->name('user.edit')
 ;
 

@@ -76,7 +76,7 @@
                                     @if (!Request::route()->named('user.show') || (Request::route()->named('user.show') && Auth::user()->id !== $user->id))
                                         <li>
                                             <a class="temp-header-users-menu-content__element"
-                                               href="{{ route('user.show', ['id' => Auth::user()->id]) }}">
+                                               href="{{ Auth::user()->url }}">
                                                 {{ t('app.button', 'Профиль') }}
                                             </a>
                                         </li>

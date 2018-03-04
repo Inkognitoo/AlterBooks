@@ -6,7 +6,7 @@
     <div class="panel-heading">
         {{ $book->title }}
         [
-        <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
+        <a href="{{ $book->author->url }}">
             {{ $book->author->full_name }}
         </a>
         ]

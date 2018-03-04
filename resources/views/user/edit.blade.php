@@ -24,7 +24,7 @@
                     @endif
 
                     <form class="user-edit-block__form form-horizontal" method="POST"
-                          action="{{ route('user.edit', ['id' => Auth::user()->id]) }}" enctype="multipart/form-data">
+                          action="{{ route('user.edit', ['id' => Auth::user()->nickname]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('nickname') ? ' has-error' : '' }}">
@@ -237,7 +237,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ t('user.button', 'Сохранить') }}
                                 </button>
-                                <a type="button" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" class="btn btn-primary">
+                                <a type="button" href="{{ Auth::user()->url }}" class="btn btn-primary">
                                     {{ t('user.button', 'К профилю') }}
                                 </a>
                             </div>

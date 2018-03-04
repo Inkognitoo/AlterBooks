@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Notifications\ResetPasswordNotification;
+use App\Traits\FindByIdOrSlugMethod;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
@@ -61,7 +62,7 @@ use Storage;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, FindByIdOrSlugMethod;
 
     //Возможные гендеры пользователя
     const GENDER_MALE = 'm';
@@ -72,6 +73,9 @@ class User extends Authenticatable
 
     //Путь по которому хранятся аватары для пользователей на Amazon S3
     const AVATAR_PATH = 'avatars';
+
+    //Поле для поиска по slug через трейт FindByIdOrSlugMethod
+    const SLUG_NAME = 'nickname';
 
     /**
      * The attributes that are mass assignable.
@@ -93,6 +97,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    private $slug_name = 'avatar';
 
     /**
      * Send the password reset notification.
@@ -284,7 +290,7 @@ class User extends Authenticatable
      */
     public function getUrlAttribute(): string
     {
-        return route('user.show', ['id' => $this->id]);
+        return route('user.show', ['id' => $this->nickname]);
     }
 
     /**

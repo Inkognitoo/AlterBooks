@@ -57,9 +57,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findByIdOrSlug($id);
 
-        $books = optional(Auth::user())->id == $id
+        $books = optional(Auth::user())->id === $user->id
             ? $user->books()->withoutGlobalScope(StatusScope::class)->get()
             : $user->books;
 
@@ -91,9 +91,9 @@ class UserController extends Controller
         Auth::user()->fill($request->all());
         Auth::user()->save();
 
-        return view('user.edit', [
-            'status' => t('user.api', 'Данные были успешно обновлены')
-        ]);
+        return redirect(route('user.edit', ['id' => Auth::user()->nickname]))
+            ->with('status', t('user.api', 'Данные были успешно обновлены'))
+        ;
     }
     
 }

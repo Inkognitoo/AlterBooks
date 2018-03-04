@@ -1,5 +1,5 @@
 @php
-    /** @var \App\Book $user */
+    /** @var \App\User $user */
 @endphp
 
 <div class="panel panel-default">
@@ -19,7 +19,7 @@
                 @endif
             </div>
             <div class="users-list-button">
-                <a type="button" class="btn btn-default" href="{{ route('user.show', ['id' => $user->id]) }}">
+                <a type="button" class="btn btn-default" href="{{ $user->url }}">
                     {{ t('user.button', 'К профилю пользователя') }}
                 </a>
             </div>
