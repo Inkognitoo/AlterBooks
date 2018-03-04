@@ -19,7 +19,8 @@ class Nickname implements Rule
     {
         $this->attribute = $attribute;
 
-        return (bool) preg_match_all('/^[A-z\d-_]+$/', $value);
+        return (bool) preg_match_all('/^[A-z\d-_]+$/', $value)
+            && !(bool) preg_match_all('/^id[\d]+$/i', $value);
     }
 
     /**
