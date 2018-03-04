@@ -37,7 +37,7 @@ class LibraryBookController extends Controller
      */
     public function create($id)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         if (Auth::user()->hasBookAtLibrary($book)) {
             $this->out['success'] = false;
@@ -64,7 +64,7 @@ class LibraryBookController extends Controller
      */
     public function destroy($id)
     {
-        $book = Book::find($id);
+        $book = Book::findAny($id);
 
         if (!Auth::user()->hasBookAtLibrary($book)) {
             $this->out['success'] = false;

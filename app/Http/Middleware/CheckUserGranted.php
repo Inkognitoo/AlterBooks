@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,7 @@ class CheckUserGranted
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->id != $request->id) {
+        if (Auth::user()->id !== User::findByIdOrSlug($request->id)->id) {
             return response(view('errors.403'), 403);
         }
 

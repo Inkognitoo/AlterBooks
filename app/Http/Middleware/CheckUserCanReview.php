@@ -24,8 +24,10 @@ class CheckUserCanReview
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        $book = Book::findAny($request->id);
-        if ($user->id == $book->author_id) {
+        $book_id = $request->book_id ?? $request->id;
+        $book = Book::findAny($book_id);
+
+        if ($user->isAuthor($book)) {
             return response(view('errors.405'), 405);
         }
 

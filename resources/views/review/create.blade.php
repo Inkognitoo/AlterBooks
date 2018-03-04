@@ -7,7 +7,7 @@
         {{ t('review', 'Новая рецензия') }}
     </div>
     <div class='panel-body'>
-        <form class="form-horizontal" method="POST" action="{{ route('review.create', ['id' => $book->id]) }}">
+        <form class="form-horizontal" method="POST" action="{{ route('review.create', ['id' => $book->slug]) }}">
             {{ csrf_field() }}
 
             <div class="form-group{{ $errors->has('rating') ? ' has-error' : '' }}">

@@ -22,7 +22,7 @@ class CheckUserExist
      */
     public function handle($request, Closure $next)
     {
-        if (blank(User::find($request->id))) {
+        if (blank(User::findByIdOrSlug($request->id))) {
             return response(view('errors.404'), 404);
         }
 

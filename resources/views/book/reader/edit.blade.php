@@ -13,14 +13,14 @@
             <div class="book-reader-block__area col-md-8 col-md-offset-2">
                 <div class="book-reader-block book-reader-block panel panel-default">
                     <div class="book-reader-block__title panel-heading">
-                        <a href="{{ route('book.show', ['id' => $book->id]) }}">
+                        <a href="{{ $book->url }}">
                             {{ $book->title }}
                         </a> |
                         {{ $current_page }}
                     </div>
 
                     <div class="book-reader-block-content panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('book.page.edit', ['id' => $book->id, 'current_page' => $current_page]) }}">
+                        <form class="form-horizontal" method="POST" action="{{ route('book.page.edit', ['id' => $book->slug, 'current_page' => $current_page]) }}">
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <div class="col-md-12">

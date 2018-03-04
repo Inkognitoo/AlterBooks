@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\Api;
 
 use App\Book;
+use App\Scopes\StatusScope;
 use Auth;
 use Closure;
 
@@ -33,7 +34,7 @@ class CanUserLibraryBook
     public function handle($request, Closure $next)
     {
         $book_id = $request->book_id ?? $request->id;
-        $book = Book::find($book_id);
+        $book = Book::findAny($book_id);
 
         if (Auth::user()->isAuthor($book)) {
             $this->out['data']['message'] = t('library.api', 'вы не можете манипулировать в библиотеке своей собственной книгой');

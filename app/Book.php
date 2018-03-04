@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Scopes\StatusScope;
+use App\Traits\FindByIdOrSlugMethod;
 use DB;
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
@@ -28,6 +30,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property string $url Ссылка на книгу
  * @property string $status_css css класс соответствующий текущему статусу книги
  * @property float $rating Средняя оценка книги
+ * @property string $slug Имя книги для формирования url
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property \Carbon\Carbon|null $deleted_at
@@ -52,13 +55,11 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Book extends Model
 {
-    use SoftDeletes;
-
-    use Sluggable;
+    use SoftDeletes, Sluggable, FindByIdOrSlugMethod;
 
     //Путь по которому хранятся обложки для книг на Amazon S3
     const COVER_PATH = 'book_covers';
@@ -148,17 +149,21 @@ class Book extends Model
     }
 
     /**
-     * Произвести поиск книги по id с любым статусом
+     * Произвести поиск книги с любым статусом по id[number] или slug, либо по условию: ['column', 'condition', 'value']
      *
-     * @param $id int
+     * @param $id mixed
      * @return Book|null
      */
-    public static function findAny(int $id)
+    public static function findAny($id)
     {
-        return self::withoutGlobalScope(StatusScope::class)
-            ->where('id', $id)
-            ->first()
-            ;
+        $query = self::withoutGlobalScope(StatusScope::class);
+        if (is_array($id)) {
+            $query->where($id);
+        } else {
+            $query->findByIdOrSlug($id);
+        }
+
+        return $query->first();
     }
 
     /**
@@ -272,7 +277,7 @@ class Book extends Model
      */
     public function getUrlAttribute(): string
     {
-        return route('book.show', ['id' => $this->id]);
+        return route('book.show', ['id' => $this->slug]);
     }
 
     /**

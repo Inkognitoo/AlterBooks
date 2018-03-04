@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Book;
+use App\Scopes\StatusScope;
 use Auth;
 use Closure;
 
@@ -34,14 +35,13 @@ class IsBookExist
     {
         $this->out['data']['message'] = t('book.api', 'Книги не существует');
         $book_id = $request->book_id ?? $request->id;
-
         $book = Book::findAny($book_id);
 
         if (blank($book)) {
             return response()->json($this->out);
         }
 
-        if ($book->isClose() && !(bool)optional(Auth::user())->isAuthor($book)) {
+        if ($book->isClose() && !(bool) optional(Auth::user())->isAuthor($book)) {
             return response()->json($this->out);
         }
 

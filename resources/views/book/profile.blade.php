@@ -25,7 +25,7 @@
                                     {{ $book->title }}
                                 </div>
                                 <div class="panel-body">
-                                    <a href="{{ route('user.show', ['id' => $book->author->id]) }}">
+                                    <a href="{{ $book->author->url }}">
                                         {{ $book->author->full_name }}
                                     </a>
                                     <br>
@@ -49,13 +49,13 @@
                             </div>
 
                             @if(filled($book->mongodb_book_id))
-                                <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->id, 'page_number' => 1]) }}">
+                                <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->slug, 'page_number' => 1]) }}">
                                     {{ t('book.button', 'Читать') }}
                                 </a>
                             @endif
                             @auth
                                 @if(Auth::user()->isAuthor($book))
-                                    <a type="button" class="btn btn-default" href="{{ route('book.edit.show', ['id' => $book->id]) }}">
+                                    <a type="button" class="btn btn-default" href="{{ route('book.edit.show', ['id' => $book->slug]) }}">
                                         {{ t('book.button', 'Редактировать') }}
                                     </a>
                                     <button class="btn btn-default" data-toggle="modal" data-target="#deleteBookModal">
@@ -148,7 +148,7 @@
                 <button class="btn btn-default" data-dismiss="modal">
                     {{ t('book.button', 'Закрыть') }}
                 </button>
-                <a type="button" class="btn btn-danger" href="{{ route('book.delete', ['id' => $book->id]) }}">
+                <a type="button" class="btn btn-danger" href="{{ route('book.delete', ['id' => $book->slug]) }}">
                     {{ t('book.button', 'Удалить') }}
                 </a>
             </div>
