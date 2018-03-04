@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Traits;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Трейт для добавления метода поиска модели по id вида id[цифра], либо по slug
@@ -26,6 +27,31 @@ trait FindByIdOrSlugMethod {
         } else {
             $slug_name = $slug_name ?? (defined('self::SLUG_NAME') ? self::SLUG_NAME : 'slug');
             $model = self::where([$slug_name => $id])
+                ->first()
+            ;
+        }
+
+        return $model;
+    }
+
+    /**
+     * Вернуть модель по id вида id[цифра], либо по slug
+     *
+     * @param Builder $query
+     * @param string $id Строка вида id[цифра] либо просто строка
+     * @param string $slug_name Столбец для поиска по slug. По умолчанию значение константы SLUG_NAME либо "slug"
+     * @return mixed
+     */
+    public function scopeFindByIdOrSlug($query, $id, $slug_name = null)
+    {
+        //Проверяем соотвествие на шаблон вида: id[цифра]
+        if ((bool) preg_match('/(?<=^id)[\d]+$/', $id, $matches)) {
+            list($id) = $matches;
+            $model = $query->find($id);
+        } else {
+            $class_name = get_class($query->getModel());
+            $slug_name = $slug_name ?? (defined("{$class_name}::SLUG_NAME") ? self::SLUG_NAME : 'slug');
+            $model = $query->where([$slug_name => $id])
                 ->first()
             ;
         }
