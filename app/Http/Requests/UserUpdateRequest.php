@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\CaseInsensitiveUnique;
+use App\Rules\Nickname;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
@@ -48,7 +49,8 @@ class UserUpdateRequest extends FormRequest
             'nickname' => [
                 'required',
                 'max:255',
-                (new CaseInsensitiveUnique('users'))->ignore(Auth::user()->id)
+                (new CaseInsensitiveUnique('users'))->ignore(Auth::user()->id),
+                new Nickname(),
             ],
             'avatar' => 'image|max:5120',
             'name' => 'nullable|max:255',
