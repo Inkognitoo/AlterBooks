@@ -372,9 +372,4 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($password);
     }
-
-    public function getNicknameAttribute()
-    {
-        return mb_strtolower($this->attributes['nickname']);
-    }
 }
