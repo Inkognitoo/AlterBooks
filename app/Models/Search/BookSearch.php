@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models\Search;
 
+use App\Book;
+use App\Review;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;

@@ -3,20 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\BookSearch;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserBookGranted;
 use App\Http\Requests\BookCreateRequest;
 use App\Http\Requests\BookUpdateRequest;
-use App\Scopes\StatusScope;
+use App\Models\Search\BookSearch;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Auth;
 use Exception;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 
 class BookController extends Controller
 {

@@ -120,7 +120,7 @@ class User extends Authenticatable
      */
     public function books()
     {
-        return $this->hasMany('App\Book', 'author_id');
+        return $this->hasMany(Book::class, 'author_id');
     }
 
     /**
@@ -128,7 +128,7 @@ class User extends Authenticatable
      */
     public function libraryBooks()
     {
-        return $this->belongsToMany('App\Book', 'users_library')
+        return $this->belongsToMany(Book::class, 'users_library')
             ->withTimestamps()
         ;
     }
@@ -138,7 +138,7 @@ class User extends Authenticatable
      */
     public function reviews()
     {
-        return $this->hasMany('App\Review', 'user_id');
+        return $this->hasMany(Review::class, 'user_id');
     }
 
     /**
@@ -146,7 +146,7 @@ class User extends Authenticatable
      */
     public function reviewEstimates()
     {
-        return $this->hasMany('App\ReviewEstimate', 'user_id');
+        return $this->hasMany(ReviewEstimate::class, 'user_id');
     }
 
     /**

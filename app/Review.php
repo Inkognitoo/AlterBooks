@@ -64,7 +64,7 @@ class Review extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -72,7 +72,7 @@ class Review extends Model
      */
     public function book()
     {
-        return $this->belongsTo('App\Book');
+        return $this->belongsTo(Book::class);
     }
 
     /**
@@ -80,7 +80,7 @@ class Review extends Model
      */
     public function reviewEstimates()
     {
-        return $this->hasMany('App\ReviewEstimate', 'review_id');
+        return $this->hasMany(ReviewEstimate::class, 'review_id');
     }
 
     /**

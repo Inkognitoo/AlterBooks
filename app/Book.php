@@ -125,7 +125,7 @@ class Book extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User', 'users_library')
+        return $this->belongsToMany(User::class, 'users_library')
             ->withTimestamps()
         ;
     }
@@ -135,7 +135,7 @@ class Book extends Model
      */
     public function reviews()
     {
-        return $this->hasMany('App\Review', 'book_id');
+        return $this->hasMany(Review::class, 'book_id');
     }
 
     /**
@@ -143,7 +143,7 @@ class Book extends Model
      */
     public function genres()
     {
-        return $this->belongsToMany('App\Genre', 'books_genres')
+        return $this->belongsToMany(Genre::class, 'books_genres')
             ->withTimestamps()
             ;
     }
@@ -153,7 +153,7 @@ class Book extends Model
      */
     public function author()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -389,21 +389,8 @@ class Book extends Model
      */
     public function setGenresAttribute($genres)
     {
-        foreach ($genres as $genre_slug) {
-            $genre = Genre::where(['slug' => $genre_slug])->first();
-            if (!$this->hasGenre($genre)) {
-                $this->genres()->save($genre);
-            }
-        }
-
-        foreach ($this->genres as $genre) {
-            if (!in_array($genre->slug, $genres)) {
-                DB::table('books_genres')->where([
-                    ['book_id', '=', $this->id],
-                    ['genre_id', '=', $genre->id]
-                ])->delete();
-            }
-        }
+        $genres = Genre::whereIn('slug', $genres)->get();
+        $this->genres()->sync($genres);
     }
 
     /**

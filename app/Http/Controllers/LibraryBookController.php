@@ -47,7 +47,7 @@ class LibraryBookController extends Controller
             return response()->json($this->out);
         }
 
-        Auth::user()->libraryBooks()->save($book);
+        Auth::user()->libraryBooks()->attach($book);
 
         $this->out['success'] = true;
         $this->out['code'] = 200;
@@ -74,10 +74,7 @@ class LibraryBookController extends Controller
             return response()->json($this->out);
         }
 
-        Auth::user()->getLibraryBook($book)
-            ->pivot
-            ->delete()
-        ;
+        Auth::user()->libraryBooks()->detach($book);
 
         $this->out['success'] = true;
         $this->out['code'] = 200;
