@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\ApiException;
 use Closure;
 use Auth;
+use Illuminate\Http\Response;
 
 /**
  * Проверяем, авторизован ли пользователь
@@ -13,27 +15,18 @@ use Auth;
  */
 class IsUserAuth
 {
-    /** @var array $out */
-    private $out = [
-        'success' => false,
-        'code' => 401,
-        'data' => [
-            'message' => ''
-        ]
-    ];
-
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
+     * @throws ApiException
      */
     public function handle($request, Closure $next)
     {
         if (!Auth::check()) {
-            $this->out['data']['message'] = t('user.api', 'Пользователь не авторизован');
-            return response()->json($this->out);
+            throw new ApiException(t('user.api', 'Пользователь не авторизован'), Response::HTTP_UNAUTHORIZED);
         }
 
         return $next($request);

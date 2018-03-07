@@ -3,8 +3,10 @@
 namespace App\Http\Middleware;
 
 use App\Book;
+use App\Exceptions\ApiException;
 use App\Review;
 use Closure;
+use Illuminate\Http\Response;
 
 /**
  * Проверям, существует ли рецензия к книге
@@ -14,21 +16,13 @@ use Closure;
  */
 class IsReviewExist
 {
-    /** @var array $out */
-    private $out = [
-        'success' => false,
-        'code' => 404,
-        'data' => [
-            'message' => ''
-        ]
-    ];
-
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
+     * @throws ApiException
      */
     public function handle($request, Closure $next)
     {
@@ -38,13 +32,11 @@ class IsReviewExist
         $book = Book::findAny($request->book_id);
 
         if (blank($review)) {
-            $this->out['data']['message'] = t('review.api', 'Рецензии не существует');
-            return response()->json($this->out);
+            throw new ApiException(t('review.api', 'Рецензии не существует'), Response::HTTP_NOT_FOUND);
         }
 
         if ($review->book_id !== $book->id) {
-            $this->out['data']['message'] = t('review.api', 'Рецензии для текущей книги не существует');
-            return response()->json($this->out);
+            throw new ApiException(t('review.api', 'Рецензии для текущей книги не существует'), Response::HTTP_NOT_FOUND);
         }
 
         return $next($request);
