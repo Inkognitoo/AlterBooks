@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Notifications\GreetingNewUser;
 use App\Rules\CaseInsensitiveUnique;
 use App\Rules\Nickname;
 use App\User;
@@ -81,6 +82,8 @@ class RegisterController extends Controller
         $user->password = $data['password'];
         $user->api_token = str_random(60);
         $user->save();
+
+        $user->notify(new GreetingNewUser());
 
         return $user;
     }
