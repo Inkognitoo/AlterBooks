@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Event\Error;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -13,7 +14,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        ApiException::class,
     ];
 
     /**
@@ -37,9 +38,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (!($exception instanceof ApiException)) {
-            parent::report($exception);
-        }
+        event(new Error($exception));
+
+        parent::report($exception);
     }
 
     /**
