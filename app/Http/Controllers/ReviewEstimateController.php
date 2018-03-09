@@ -2,24 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApiException;
+use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\CanUserEstimateReview;
 use App\Http\Middleware\IsBookExist;
 use App\Http\Middleware\IsReviewExist;
 use App\Http\Middleware\IsUserAuth;
 use App\ReviewEstimate;
 use Auth;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class ReviewEstimateController extends Controller
 {
-    /** @var array $out */
-    private $out = [
-        'success' => true,
-        'code' => 200,
-        'data' => [
-            'message' => ''
-        ]
-    ];
 
     public function __construct()
     {
@@ -30,14 +24,17 @@ class ReviewEstimateController extends Controller
         $this->middleware(IsReviewExist::class);
 
         $this->middleware(CanUserEstimateReview::class);
+
+        $this->middleware(ApiWrapper::class);
     }
 
     /**
      * Положительно оценить книгу
      *
-     * @param  mixed  $book_id
-     * @param  int  $id
-     * @return JsonResponse
+     * @param  mixed $book_id
+     * @param  int $id
+     * @return array
+     * @throws ApiException
      */
     public function plus($book_id, $id)
     {
@@ -55,30 +52,27 @@ class ReviewEstimateController extends Controller
         }
 
         if ($review_estimate->estimate > 0) {
-            $this->out['success'] = false;
-            $this->out['code'] = 400;
-            $this->out['data']['message'] = t('review_estimate.api', 'положительная оценка к рецензии уже существует');
-
-            return response()->json($this->out);
+            throw new ApiException(t('review_estimate.api', 'положительная оценка к рецензии уже существует'), Response::HTTP_BAD_REQUEST);
         }
 
         $review_estimate->estimate += 1;
         $review_estimate->save();
 
-        $this->out['success'] = true;
-        $this->out['code'] = 200;
-        $this->out['data']['message'] = t('review_estimate.api', 'оценка к рецензии была успешно добавлена');
-        $this->out['data']['estimate'] = $review_estimate->estimate;
+        $response = [
+            'message' =>  t('review_estimate.api', 'оценка к рецензии была успешно добавлена'),
+            'estimate' => $review_estimate->estimate
+        ];
 
-        return response()->json($this->out);
+        return $response;
     }
 
     /**
      * Отрицательно оценить книгу
      *
-     * @param  mixed  $book_id
-     * @param  int  $id
-     * @return JsonResponse
+     * @param  mixed $book_id
+     * @param  int $id
+     * @return array
+     * @throws ApiException
      */
     public function minus($book_id, $id)
     {
@@ -96,21 +90,17 @@ class ReviewEstimateController extends Controller
         }
 
         if ($review_estimate->estimate < 0) {
-            $this->out['success'] = false;
-            $this->out['code'] = 400;
-            $this->out['data']['message'] = t('review_estimate.api', 'негативная оценка к рецензии уже существует');
-
-            return response()->json($this->out);
+            throw new ApiException(t('review_estimate.api', 'негативная оценка к рецензии уже существует'), Response::HTTP_BAD_REQUEST);
         }
 
         $review_estimate->estimate -= 1;
         $review_estimate->save();
 
-        $this->out['success'] = true;
-        $this->out['code'] = 200;
-        $this->out['data']['message'] = t('review_estimate.api', 'оценка к рецензии была успешно добавлена');
-        $this->out['data']['estimate'] = $review_estimate->estimate;
+        $response = [
+            'message' =>  t('review_estimate.api', 'оценка к рецензии была успешно добавлена'),
+            'estimate' => $review_estimate->estimate
+        ];
 
-        return response()->json($this->out);
+        return $response;
     }
 }

@@ -42,6 +42,8 @@ use Storage;
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates Оценки к рецензиями оставленные пользователем
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
+ * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
+ * @property-read string $canonical_url Каноничный (основной, постоянный) url пользователя
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
@@ -59,6 +61,7 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereApiToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTimezone($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User findByIdOrSlug($id, $slug_name = null)
  */
 class User extends Authenticatable
 {
@@ -71,7 +74,7 @@ class User extends Authenticatable
 
     const GENDER_NOT_INDICATED = 'n';
 
-    //Путь по которому хранятся аватары для пользователей на Amazon S3
+    //Подпапка в которой хранятся аватары пользователей
     const AVATAR_PATH = 'avatars';
 
     //Поле для поиска по slug через трейт FindByIdOrSlugMethod
@@ -98,7 +101,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    private $slug_name = 'avatar';
+    // Закэшированный компонент Storage
+    protected $_storage = null;
 
     /**
      * Send the password reset notification.
@@ -116,7 +120,7 @@ class User extends Authenticatable
      */
     public function books()
     {
-        return $this->hasMany('App\Book', 'author_id');
+        return $this->hasMany(Book::class, 'author_id');
     }
 
     /**
@@ -124,7 +128,7 @@ class User extends Authenticatable
      */
     public function libraryBooks()
     {
-        return $this->belongsToMany('App\Book', 'users_library')
+        return $this->belongsToMany(Book::class, 'users_library')
             ->withTimestamps()
         ;
     }
@@ -134,7 +138,7 @@ class User extends Authenticatable
      */
     public function reviews()
     {
-        return $this->hasMany('App\Review', 'user_id');
+        return $this->hasMany(Review::class, 'user_id');
     }
 
     /**
@@ -142,7 +146,7 @@ class User extends Authenticatable
      */
     public function reviewEstimates()
     {
-        return $this->hasMany('App\ReviewEstimate', 'user_id');
+        return $this->hasMany(ReviewEstimate::class, 'user_id');
     }
 
     /**
@@ -239,7 +243,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Путь до аватары пользователя на Amazon S3
+     * Путь до аватары пользователя в файловом хранилище
      *
      * @return string
      * @throws Exception
@@ -265,7 +269,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): string
     {
         if (filled($this->avatar)) {
-            return Storage::disk('s3')->url($this->avatar_path);
+            return $this->storage->url($this->avatar_path);
         }
 
         switch ($this->gender) {
@@ -338,6 +342,30 @@ class User extends Authenticatable
     }
 
     /**
+     * Текущий драйвер файлового хранилища
+     *
+     * @return \Illuminate\Filesystem\FilesystemAdapter|null
+     */
+    public function getStorageAttribute()
+    {
+        if (empty($this->_storage)) {
+            $this->_storage = Storage::disk('s3');
+        }
+
+        return $this->_storage;
+    }
+
+    /**
+     * Каноничный (основной, постоянный) url пользователя
+     *
+     * @return string
+     */
+    public function getCanonicalUrlAttribute()
+    {
+        return route('user.show', ['id' => 'id' . $this->id]);
+    }
+
+    /**
      * Установить аватар для пользователя
      *
      * @param UploadedFile $avatar Аватар пользователя
@@ -350,12 +378,12 @@ class User extends Authenticatable
             throw new Exception('For setting avatar path, user must be present');
         }
 
-        if (filled($this->avatar) && Storage::disk('s3')->exists($this->avatar_path)) {
-            Storage::disk('s3')->delete($this->avatar_path);
+        if (filled($this->avatar) && $this->storage->exists($this->avatar_path)) {
+            $this->storage->delete($this->avatar_path);
         }
 
         $image_name = $this::AVATAR_PATH . '/' . $this->id;
-        $storage_path = Storage::disk('s3')->put($image_name, $avatar);
+        $storage_path = $this->storage->put($image_name, $avatar);
         $this->attributes['avatar'] = basename($storage_path);
     }
 

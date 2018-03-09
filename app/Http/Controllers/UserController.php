@@ -7,16 +7,13 @@ use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserExist;
 use App\Http\Middleware\CheckUserGranted;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Search\UserSearch;
 use App\Scopes\StatusScope;
 use App\User;
-use App\UserSearch;
 use Illuminate\Http\Response;
 use Auth;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {

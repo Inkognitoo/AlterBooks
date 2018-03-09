@@ -30,7 +30,7 @@ class ReviewEstimate extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -38,6 +38,6 @@ class ReviewEstimate extends Model
      */
     public function review()
     {
-        return $this->belongsTo('App\Review');
+        return $this->belongsTo(Review::class);
     }
 }

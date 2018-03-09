@@ -6,6 +6,8 @@
 
 @section('title', $book->title)
 
+@section('canonical', $book->canonical_url)
+
 @section('content')
 <div class="container">
     <div class="row">

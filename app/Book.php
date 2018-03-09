@@ -38,6 +38,8 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users Коллекция пользователей добавивших к себе книгу
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
+ * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
+ * @property-read string $canonical_url Каноничный (основной, постоянный) url книги
  * @property-write mixed $text
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
@@ -56,12 +58,15 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
  * @mixin Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findByIdOrSlug($id, $slug_name = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereSlug($value)
  */
 class Book extends Model
 {
     use SoftDeletes, Sluggable, FindByIdOrSlugMethod;
 
-    //Путь по которому хранятся обложки для книг на Amazon S3
+    //Подпапка в которой хранятся обложки для книг
     const COVER_PATH = 'book_covers';
 
     //Возможные статусы книги
@@ -85,6 +90,9 @@ class Book extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    // Закэшированный компонент Storage
+    protected $_storage = null;
 
     /**
      * The "booting" method of the model.
@@ -117,7 +125,7 @@ class Book extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User', 'users_library')
+        return $this->belongsToMany(User::class, 'users_library')
             ->withTimestamps()
         ;
     }
@@ -127,7 +135,7 @@ class Book extends Model
      */
     public function reviews()
     {
-        return $this->hasMany('App\Review', 'book_id');
+        return $this->hasMany(Review::class, 'book_id');
     }
 
     /**
@@ -135,7 +143,7 @@ class Book extends Model
      */
     public function genres()
     {
-        return $this->belongsToMany('App\Genre', 'books_genres')
+        return $this->belongsToMany(Genre::class, 'books_genres')
             ->withTimestamps()
             ;
     }
@@ -145,7 +153,7 @@ class Book extends Model
      */
     public function author()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -264,7 +272,7 @@ class Book extends Model
     public function getCoverUrlAttribute(): string
     {
         if (filled($this->cover)) {
-            return Storage::disk('s3')->url($this->cover_path);
+            return $this->storage->url($this->cover_path);
         }
 
         return '/img/default_book_cover.png';
@@ -312,6 +320,30 @@ class Book extends Model
     }
 
     /**
+     * Текущий драйвер файлового хранилища
+     *
+     * @return \Illuminate\Filesystem\FilesystemAdapter|null
+     */
+    public function getStorageAttribute()
+    {
+        if (empty($this->_storage)) {
+            $this->_storage = Storage::disk('s3');
+        }
+
+        return $this->_storage;
+    }
+
+    /**
+     * Каноничный (основной, постоянный) url книги
+     *
+     * @return string
+     */
+    public function getCanonicalUrlAttribute()
+    {
+        return route('book.show', ['id' => 'id' . $this->id]);
+    }
+
+    /**
      * Установить обложку для книги
      *
      * @param UploadedFile $cover Обложка книги
@@ -324,12 +356,12 @@ class Book extends Model
             throw new Exception('For setting cover, book must be present');
         }
 
-        if (filled($this->cover) && Storage::disk('s3')->exists($this->cover_path)) {
-            Storage::disk('s3')->delete($this->cover_path);
+        if (filled($this->cover) && $this->storage->exists($this->cover_path)) {
+            $this->storage->delete($this->cover_path);
         }
 
         $image_name = $this::COVER_PATH . '/' . $this->id;
-        $storage_path = Storage::disk('s3')->put($image_name, $cover);
+        $storage_path = $this->storage->put($image_name, $cover);
         $this->attributes['cover'] = basename($storage_path);
     }
 
@@ -357,21 +389,8 @@ class Book extends Model
      */
     public function setGenresAttribute($genres)
     {
-        foreach ($genres as $genre_slug) {
-            $genre = Genre::where(['slug' => $genre_slug])->first();
-            if (!$this->hasGenre($genre)) {
-                $this->genres()->save($genre);
-            }
-        }
-
-        foreach ($this->genres as $genre) {
-            if (!in_array($genre->slug, $genres)) {
-                DB::table('books_genres')->where([
-                    ['book_id', '=', $this->id],
-                    ['genre_id', '=', $genre->id]
-                ])->delete();
-            }
-        }
+        $genres = Genre::whereIn('slug', $genres)->get();
+        $this->genres()->sync($genres);
     }
 
     /**

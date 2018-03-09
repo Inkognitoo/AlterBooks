@@ -38,7 +38,6 @@ class AddBookTest extends TestCase
         $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => true,
-            'code' => 200
         ]);
         $this->assertDatabaseHas('users_library', [
             'user_id' => $person->id,
@@ -68,7 +67,6 @@ class AddBookTest extends TestCase
         $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => true,
-            'code' => 200
         ]);
         $this->assertDatabaseHas('users_library', [
             'user_id' => $person->id,
@@ -78,7 +76,6 @@ class AddBookTest extends TestCase
         $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
         $response->assertJson([
             'success' => false,
-            'code' => 400
         ]);
         $this->assertDatabaseHas('users_library', [
             'user_id' => $person->id,
@@ -110,7 +107,6 @@ class AddBookTest extends TestCase
             $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
             $response->assertJson([
                 'success' => true,
-                'code' => 200
             ]);
             $this->assertDatabaseHas('users_library', [
                 'user_id' => $person->id,
@@ -120,7 +116,6 @@ class AddBookTest extends TestCase
             $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
             $response->assertJson([
                 'success' => false,
-                'code' => 400
             ]);
             $this->assertDatabaseHas('users_library', [
                 'user_id' => $person->id,
@@ -155,7 +150,6 @@ class AddBookTest extends TestCase
 
         $response->assertJson([
             'success' => false,
-            'code' => 403
         ]);
 
         $this->assertDatabaseMissing('users_library', [

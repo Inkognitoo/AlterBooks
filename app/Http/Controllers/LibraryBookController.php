@@ -3,23 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Exceptions\ApiException;
+use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\CanUserLibraryBook;
 use App\Http\Middleware\IsBookExist;
 use App\Http\Middleware\IsUserAuth;
 use Auth;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class LibraryBookController extends Controller
 {
-    /** @var array $out */
-    private $out = [
-        'success' => true,
-        'code' => 200,
-        'data' => [
-            'message' => ''
-        ]
-    ];
-
     public function __construct()
     {
         $this->middleware(IsUserAuth::class);
@@ -27,62 +20,47 @@ class LibraryBookController extends Controller
         $this->middleware(IsBookExist::class);
 
         $this->middleware(CanUserLibraryBook::class);
+
+        $this->middleware(ApiWrapper::class);
     }
 
     /**
      * Добавить книгу в библиотеку.
      *
-     * @param  int  $id
-     * @return JsonResponse
+     * @param  int $id
+     * @return array
+     * @throws ApiException
      */
     public function create($id)
     {
         $book = Book::findAny($id);
 
         if (Auth::user()->hasBookAtLibrary($book)) {
-            $this->out['success'] = false;
-            $this->out['code'] = 400;
-            $this->out['data']['message'] = t('library.api', 'книга уже существует в библиотеке');
-
-            return response()->json($this->out);
+            throw new ApiException(t('library.api', 'книга уже существует в библиотеке'), Response::HTTP_BAD_REQUEST);
         }
 
-        Auth::user()->libraryBooks()->save($book);
+        Auth::user()->libraryBooks()->attach($book);
 
-        $this->out['success'] = true;
-        $this->out['code'] = 200;
-        $this->out['data']['message'] = t('library.api', 'книга была успешно добавлена в библиотеку');
-
-        return response()->json($this->out);
+        return ['message' => t('library.api', 'книга была успешно добавлена в библиотеку')];
     }
 
     /**
      * Удалить книгу из библиотеки
      *
-     * @param  int  $id
-     * @return JsonResponse
+     * @param  int $id
+     * @return array
+     * @throws ApiException
      */
     public function destroy($id)
     {
         $book = Book::findAny($id);
 
         if (!Auth::user()->hasBookAtLibrary($book)) {
-            $this->out['success'] = false;
-            $this->out['code'] = 400;
-            $this->out['data']['message'] = t('library.api', 'книга не существует в библиотеке');
-
-            return response()->json($this->out);
+            throw new ApiException(t('library.api', 'книга не существует в библиотеке'), Response::HTTP_BAD_REQUEST);
         }
 
-        Auth::user()->getLibraryBook($book)
-            ->pivot
-            ->delete()
-        ;
+        Auth::user()->libraryBooks()->detach($book);
 
-        $this->out['success'] = true;
-        $this->out['code'] = 200;
-        $this->out['data']['message'] = t('library.api', 'книга была успешно удалена из библиотеки');
-
-        return response()->json($this->out);
+        return ['message' => t('library.api', 'книга была успешно удалена из библиотеки')];
     }
 }
