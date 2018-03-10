@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Horizon::auth(function ($request) {
-           return optional(Auth::user())->nickname === 'Inkognitoo';
+           return (bool) optional(Auth::user())->is_admin;
         });
     }
 
