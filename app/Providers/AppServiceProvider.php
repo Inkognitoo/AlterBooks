@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Auth;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Horizon\Horizon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Horizon::auth(function ($request) {
+           return optional(Auth::user())->nickname === 'Inkognitoo';
+        });
     }
 
     /**
