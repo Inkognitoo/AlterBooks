@@ -13,16 +13,28 @@ class Error extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $exception;
+    public $message;
+
+    public $file;
+
+    public $line;
+
+    public $trace;
 
     /**
      * Create a new message instance.
      *
-     * @param Exception $exception
+     * @param $message
+     * @param $file
+     * @param $line
+     * @param $trace
      */
-    public function __construct(Exception $exception)
+    public function __construct($message, $file, $line, $trace)
     {
-        $this->exception = $exception;
+        $this->message = $message;
+        $this->file = $file;
+        $this->line = $line;
+        $this->trace = $trace;
     }
 
     /**
@@ -32,13 +44,9 @@ class Error extends Mailable
      */
     public function build()
     {
-        $trace = print_r(collect($this->exception->getTrace())->map(function ($trace) {
-            return Arr::except($trace, ['args']);
-        })->all(), true);
-
         return $this->markdown('email.error')
             ->to(config('mail.error.addresses'))
-            ->attachData($trace, 'trace_error.txt', [
+            ->attachData($this->trace, 'trace_error.txt', [
                 'mime' => 'text/plain',
             ]);
     }

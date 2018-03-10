@@ -1,7 +1,7 @@
 @component('mail::message')
 
-{{ $exception->getMessage() }}
+{{ $message }}
 
-{{ $exception->getFile() . ':' . $exception->getLine() }}
+{{ $file . ':' . $line }}
 
 @endcomponent

@@ -5,8 +5,7 @@ namespace App\Listeners;
 use App;
 use App\Event\Error;
 use App\Mail\Error as ErrorMail;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
 use Mail;
 
 class ErrorListener
@@ -30,7 +29,15 @@ class ErrorListener
     public function handle(Error $event)
     {
         if (App::environment('production')) {
-            Mail::send(new ErrorMail($event->exception));
+            // Очередь не может сериализовать Closure из класса exception. По этому получаем все данные заранее
+            $message = $event->exception->getMessage();
+            $file = $event->exception->getFile();
+            $line = $event->exception->getLine();
+            $trace = print_r(collect($event->exception->getTrace())->map(function ($trace) {
+                return Arr::except($trace, ['args']);
+            })->all(), true);
+
+            Mail::queue(new ErrorMail($message, $file, $line, $trace));
         }
     }
 }
