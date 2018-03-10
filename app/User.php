@@ -62,6 +62,8 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTimezone($value)
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User findByIdOrSlug($id, $slug_name = null)
+ * @property bool $is_admin
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereIsAdmin($value)
  */
 class User extends Authenticatable
 {
