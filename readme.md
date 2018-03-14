@@ -8,8 +8,9 @@ MVP версия сервиса
  
 # Первичные команды
 Необходимо последовательно выполнить:  
-`composer install` (убедитесь что у вас в системе есть composer или скачайте его)   
-`npm i` (убедитесь что у вас установлена nodejs выше 6.0 версии)   
+`pip install -r python/requirements.txt --upgrade` (убедитесь, что в системе установлен pip)  
+`composer install` (убедитесь, что у вас в системе есть composer или скачайте его)   
+`npm i` (убедитесь, что у вас установлена nodejs выше 6.0 версии)   
 Затем следующие команды:  
 `php artisan migrate`  
 `php artisan db:seed`  

@@ -97,6 +97,8 @@ class MongoBook
         foreach ($document->pages as $page) {
             return $format ? $this->format($page->text) : $page->text;
         }
+
+        return '';
     }
 
     /**
@@ -138,16 +140,30 @@ class MongoBook
      */
     private function toEncoding(string $raw_text): string
     {
-        $encodings = [
-            'UTF-8',
-            'cp1251',
-            'ASCII',
-            'ISO-8859-1'
-        ];
-
-        $encoding = mb_detect_encoding($raw_text, implode(',', $encodings));
+        $encoding = $this->detectEncoding($raw_text);
 
         return htmlspecialchars(mb_convert_encoding($raw_text, 'UTF-8', $encoding));
+    }
+
+    /**
+     * Узнаём кодировку текущего текста
+     *
+     * @param string $text
+     * @return string
+     */
+    private function detectEncoding(string $text): string
+    {
+        $temp = tmpfile();
+        fwrite($temp, $text);
+        $path = stream_get_meta_data($temp)['uri'];
+
+        //Для максимально точного определения кодировки испльзуем python скрипт
+        $command = escapeshellcmd(base_path('python/encoding.py') . ' ' . $path);
+        $encoding = trim(shell_exec($command));
+
+        fclose($temp);
+
+        return $encoding;
     }
 
     /**

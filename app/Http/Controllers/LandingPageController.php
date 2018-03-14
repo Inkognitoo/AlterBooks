@@ -13,7 +13,8 @@ class LandingPageController extends Controller
      *
      * @return Response
     */
-    public function index() {
+    public function index()
+    {
         $users = User::orderBy('created_at', 'desc')->limit('6')->get();
         $books = Book::orderBy('created_at','desc')->limit('6')->get();
         return view('welcome', ['books' => $books, 'users' => $users]);
