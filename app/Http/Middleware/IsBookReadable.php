@@ -2,17 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Book;
-use Auth;
 use Closure;
+use App\Book;
 
-/**
- * Проверям, существует ли книга
- *
- * Class CheckBookExist
- * @package App\Http\Middleware
- */
-class CheckBookExist
+class IsBookReadable
 {
     /**
      * Handle an incoming request.
@@ -29,8 +22,7 @@ class CheckBookExist
         if (blank($book)) {
             return response(view('errors.404'), 404);
         }
-
-        if ($book->isClose() && optional(Auth::user())->id !== $book->author_id) {
+        if (!$book->isReadable()) {
             return response(view('errors.404'), 404);
         }
 

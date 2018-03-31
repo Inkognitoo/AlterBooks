@@ -2,15 +2,14 @@
 
 namespace App\Scopes;
 
-use App\Book;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class StatusScope extends BaseScope implements Scope
+class ProcessingScope extends BaseScope implements Scope
 {
     /**
-     * Apply the scope to a given Eloquent query builder.
+     * Добавить обязательное условие по обработке (только обработанные книги)
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  \Illuminate\Database\Eloquent\Model  $model
@@ -18,13 +17,13 @@ class StatusScope extends BaseScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $column = 'status';
+        $column = 'is_processing';
 
         $alias = $this->getAlias($builder);
         if (!empty($alias)) {
             $column = $alias . '.' . $column;
         }
 
-        $builder->where($column, Book::STATUS_OPEN);
+        $builder->where($column, false);
     }
 }

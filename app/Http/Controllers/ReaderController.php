@@ -6,6 +6,7 @@ use App\Book;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserBookGranted;
+use App\Http\Middleware\IsBookReadable;
 use App\Http\Requests\PageUpdateRequest;
 use Exception;
 use Illuminate\Http\Response;
@@ -22,6 +23,8 @@ class ReaderController extends Controller
         $this->middleware(CheckAuth::class)->except(['show']);
 
         $this->middleware(CheckBookExist::class);
+
+        $this->middleware(IsBookReadable::class);
 
         $this->middleware(CheckUserBookGranted::class)->except(['show']);
     }

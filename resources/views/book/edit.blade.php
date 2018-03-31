@@ -69,7 +69,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                <input id="text" type="file" class="form-control" name="text">
+                                <input id="text" type="file" class="form-control" name="text" {{ $book->is_processing ? 'disabled' : null }}>
 
                                 @if ($errors->has('text'))
                                     <span class="help-block">

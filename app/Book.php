@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\Jobs\ProcessBook;
+use App\Models\Book\Txt;
+use App\Scopes\ProcessingScope;
 use App\Scopes\StatusScope;
 use App\Traits\FindByIdOrSlugMethod;
-use DB;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Storage;
 use Exception;
 use Cviebrock\EloquentSluggable\Sluggable;
+use File;
 
 /**
  * App\Book
@@ -61,6 +64,8 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findByIdOrSlug($id, $slug_name = null)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findSimilarSlugs($attribute, $config, $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereSlug($value)
+ * @property bool $is_processing
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereIsProcessing($value)
  */
 class Book extends Model
 {
@@ -104,6 +109,7 @@ class Book extends Model
         parent::boot();
 
         static::addGlobalScope(new StatusScope);
+        static::addGlobalScope(new ProcessingScope);
     }
 
     /**
@@ -164,7 +170,7 @@ class Book extends Model
      */
     public static function findAny($id)
     {
-        $query = self::withoutGlobalScope(StatusScope::class);
+        $query = self::withoutGlobalScopes([StatusScope::class, ProcessingScope::class]);
         if (is_array($id)) {
             $query->where($id);
         } else {
@@ -210,6 +216,16 @@ class Book extends Model
     public function isClose(): bool
     {
         return $this->status === self::STATUS_CLOSE;
+    }
+
+    /**
+     * Проверить, можно ли читать книгу
+     *
+     * @return bool
+     */
+    public function isReadable(): bool
+    {
+        return $this->is_processing === false && !empty($this->mongodb_book_id);
     }
 
     /**
@@ -378,8 +394,18 @@ class Book extends Model
             throw new Exception('For setting text, book must be present');
         }
 
-        $mongodb_book = new MongoBook($this);
-        $mongodb_book->setText($text);
+        switch (File::mimeType($text->path())) {
+            case 'text/plain':
+                $path = $text->store($text->path());
+                $converter = new Txt($this, storage_path('app/' . $path));
+                break;
+            default:
+                throw new Exception('Book\'s format is not allow');
+
+        }
+
+        $this->is_processing = true;
+        ProcessBook::dispatch($converter);
     }
 
     /**
