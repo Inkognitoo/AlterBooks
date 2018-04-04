@@ -2,6 +2,8 @@
 
 namespace App\Models\Book;
 
+use App\Book;
+
 interface BookFormat
 {
     /**
@@ -10,4 +12,11 @@ interface BookFormat
      * @return mixed
      */
     public function convert();
+
+    /**
+     * Вернуть экземпляр книги относящийся к текущему книжному формату
+     *
+     * @return Book
+     */
+    public function getBook();
 }

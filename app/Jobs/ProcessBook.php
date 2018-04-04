@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\BookProcessed;
 use App\Models\Book\BookFormat;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -33,5 +34,7 @@ class ProcessBook implements ShouldQueue
     public function handle()
     {
         $this->book_format->convert();
+
+        event(new BookProcessed($this->book_format->getBook()));
     }
 }

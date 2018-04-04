@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Event;
+namespace App\Events;
 
 use Exception;
 use Illuminate\Queue\SerializesModels;

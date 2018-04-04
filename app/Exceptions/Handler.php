@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Event\Error;
+use App\Events\Error;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 

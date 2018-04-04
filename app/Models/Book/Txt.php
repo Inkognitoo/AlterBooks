@@ -40,6 +40,16 @@ class Txt implements BookFormat
     }
 
     /**
+     * Вернуть экземпляр книги относящийся к текущему книжному формату
+     *
+     * @return Book
+     */
+    public function getBook()
+    {
+        return $this->book;
+    }
+
+    /**
      * Конвертация текста книги в формат AlterBooks-а
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */

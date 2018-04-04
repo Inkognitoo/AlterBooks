@@ -21,8 +21,13 @@
 
                 <div class="panel-body">
 
+                    <div id="notify-place"></div>
+
                     @if (session('status'))
                         <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
                             {{ session('status') }}
                         </div>
                     @endif
@@ -161,3 +166,24 @@
     </div>
 </div>
 @endsection
+
+<script>
+    const book_id = "{{ $book->id }}";
+
+    window.onload = function() {
+        window.Echo.private(`App.Book.${book_id}`)
+            .listen('BookProcessed', (e) => {
+                const notify = `
+                    <div class="alert alert-info alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                        {{ t('book', 'Книга была успешно загружена!') }}
+                    </div>`;
+
+                document.getElementById('notify-place').innerHTML = notify;
+                document.getElementById('text').disabled = false;
+
+                console.log(e);
+            });
+    }
+</script>

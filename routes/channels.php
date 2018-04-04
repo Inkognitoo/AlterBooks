@@ -14,3 +14,14 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+
+Broadcast::channel('App.Book.{book_id}', function ($user, $book_id) {
+    /** @var App\User $user */
+    $book = App\Book::findAny(['id' => $book_id]);
+    if (blank($book)) {
+        return false;
+    }
+
+    return $user->isAuthor($book);
+});
