@@ -17,11 +17,8 @@ class IsBookReadable
     public function handle($request, Closure $next)
     {
         $book_id = $request->book_id ?? $request->id;
-        $book = Book::findAny($book_id);
+        $book = Book::findByIdOrSlug($book_id);
 
-        if (blank($book)) {
-            return response(view('errors.404'), 404);
-        }
         if (!$book->isReadable()) {
             return response(view('errors.404'), 404);
         }

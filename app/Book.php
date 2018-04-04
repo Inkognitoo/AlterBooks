@@ -109,7 +109,6 @@ class Book extends Model
         parent::boot();
 
         static::addGlobalScope(new StatusScope);
-        static::addGlobalScope(new ProcessingScope);
     }
 
     /**
@@ -170,7 +169,7 @@ class Book extends Model
      */
     public static function findAny($id)
     {
-        $query = self::withoutGlobalScopes([StatusScope::class, ProcessingScope::class]);
+        $query = self::withoutGlobalScopes([StatusScope::class]);
         if (is_array($id)) {
             $query->where($id);
         } else {
