@@ -43,6 +43,13 @@ class Review extends Model
 {
     use SoftDeletes;
 
+    //Возможный тон рецензии
+    const TONE_NEUTRAL = 0;
+
+    const TONE_POSITIVE = 1;
+
+    const TONE_NEGATIVE = 2;
+
     /**
      * The attributes that are mass assignable.
      *
