@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
+use App\Models\Book;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserBookGranted;

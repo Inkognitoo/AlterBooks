@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Book;
+use App\Models\Book;
 use Auth;
 use Closure;
 

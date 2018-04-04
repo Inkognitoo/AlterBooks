@@ -1,8 +1,8 @@
 @php
-    /** @var \App\Book $book */
+    /** @var \App\Models\Book $book */
     /** @var \Illuminate\Support\ViewErrorBag $errors */
     if (session('book_id')) {
-        $book = App\Book::findAny(['id' => session('book_id')]);
+        $book = App\Models\Book::findAny(['id' => session('book_id')]);
     }
 @endphp
 
@@ -105,7 +105,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                @foreach(\App\Genre::all() as $genre)
+                                @foreach(\App\Models\Genre::all() as $genre)
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" name="genres[]"
@@ -131,12 +131,12 @@
 
                             <div class="col-md-6">
                                 <select id="status" class="form-control" name="status">
-                                    <option value="{{ \App\Book::STATUS_CLOSE }}"
-                                            {{ old('status', $book->status) == \App\Book::STATUS_CLOSE ? 'selected' : '' }} >
+                                    <option value="{{ \App\Models\Book::STATUS_CLOSE }}"
+                                            {{ old('status', $book->status) == \App\Models\Book::STATUS_CLOSE ? 'selected' : '' }} >
                                         {{ t('book', 'Черновик (видите только вы)') }}
                                     </option>
-                                    <option value="{{ \App\Book::STATUS_OPEN }}"
-                                            {{ old('status', $book->status) == \App\Book::STATUS_OPEN ? 'selected' : ''}} >
+                                    <option value="{{ \App\Models\Book::STATUS_OPEN }}"
+                                            {{ old('status', $book->status) == \App\Models\Book::STATUS_OPEN ? 'selected' : ''}} >
                                         {{ t('book', 'Чистовик (видят все)') }}
                                     </option>
                                 </select>

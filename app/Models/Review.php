@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 /**
- * App\Review
+ * App\Models\Review
  *
  * @property int $id
  * @property int $rating
@@ -20,21 +20,21 @@ use Carbon\Carbon;
  * @property \Carbon\Carbon|null $created_at Дата создания сущности в соотвествии с часовым поясом пользователя
  * @property \Carbon\Carbon|null $created_at_plain Дата создания сущности как она есть в бд
  * @property \Carbon\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates
- * @property-read \App\Book $book
- * @property-read \App\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReviewEstimate[] $reviewEstimates
+ * @property-read \App\Models\Book $book
+ * @property-read \App\Models\User $user
  * @property-read int $estimate Совокупная оценка рецензии
- * @method static \Illuminate\Database\Query\Builder|\App\Review onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereBookId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Review whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Review withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Review withoutTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Review onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Review withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Review withoutTrashed()
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
  * @mixin \Eloquent

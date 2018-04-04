@@ -17,8 +17,8 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 
 
 Broadcast::channel('App.Book.{book_id}', function ($user, $book_id) {
-    /** @var App\User $user */
-    $book = App\Book::findAny(['id' => $book_id]);
+    /** @var App\Models\User $user */
+    $book = App\Models\Book::findAny(['id' => $book_id]);
     if (blank($book)) {
         return false;
     }

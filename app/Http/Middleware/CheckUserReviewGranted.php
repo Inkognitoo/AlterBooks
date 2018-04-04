@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Review;
+use App\Models\Review;
 use Closure;
 use Auth;
 

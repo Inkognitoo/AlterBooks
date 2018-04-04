@@ -9,7 +9,7 @@ use App\Http\Middleware\CheckUserGranted;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Search\UserSearch;
 use App\Scopes\StatusScope;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Response;
 use Auth;
 use Exception;

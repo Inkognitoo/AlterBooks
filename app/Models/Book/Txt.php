@@ -2,7 +2,7 @@
 
 namespace App\Models\Book;
 
-use App\Book;
+use App\Models\Book;
 use MongoDB;
 use MongoDB\BSON\ObjectID;
 use File;

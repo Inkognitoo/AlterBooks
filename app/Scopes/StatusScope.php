@@ -2,7 +2,7 @@
 
 namespace App\Scopes;
 
-use App\Book;
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

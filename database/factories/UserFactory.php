@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Models\User::class, function (Faker $faker) {
     static $password;
 
     return [
@@ -23,7 +23,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'patronymic' => $faker->lastName,
         'birthday_date' => $faker->date(),
         'gender' => function() {
-            $genders = [\App\User::GENDER_MALE, \App\User::GENDER_FEMALE, \App\User::GENDER_NOT_INDICATED];
+            $genders = [\App\Models\User::GENDER_MALE, \App\Models\User::GENDER_FEMALE, \App\Models\User::GENDER_NOT_INDICATED];
 
             return $genders[rand(0, 2)];
         },

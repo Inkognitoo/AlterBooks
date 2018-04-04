@@ -1,5 +1,5 @@
 @php
-    /** @var \App\Book $book */
+    /** @var \App\Models\Book $book */
 @endphp
 
 @extends('layouts.app')

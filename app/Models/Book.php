@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Jobs\ProcessBook;
 use App\Models\Book\Txt;
-use App\Scopes\ProcessingScope;
 use App\Scopes\StatusScope;
 use App\Traits\FindByIdOrSlugMethod;
 use Eloquent;
@@ -17,7 +16,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use File;
 
 /**
- * App\Book
+ * App\Models\Book
  *
  * @property int $id
  * @property string|null $title
@@ -37,35 +36,35 @@ use File;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property \Carbon\Carbon|null $deleted_at
- * @property-read \App\User $author
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users Коллекция пользователей добавивших к себе книгу
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
+ * @property-read \App\Models\User $author
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users Коллекция пользователей добавивших к себе книгу
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
  * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
  * @property-read string $canonical_url Каноничный (основной, постоянный) url книги
  * @property-write mixed $text
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Book onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereMongodbBookId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book wherePageCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereStatus($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCover($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereMongodbBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book wherePageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withoutTrashed()
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
  * @mixin Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findByIdOrSlug($id, $slug_name = null)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findByIdOrSlug($id, $slug_name = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereSlug($value)
  * @property bool $is_processing
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereIsProcessing($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereIsProcessing($value)
  */
 class Book extends Model
 {

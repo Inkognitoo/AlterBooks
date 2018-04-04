@@ -118,16 +118,16 @@
 
                             <div class="col-md-6">
                                 <select id="gender" class="form-control" name="gender">
-                                    <option value="{{ \App\User::GENDER_NOT_INDICATED }}"
-                                            {{ old('gender', Auth::user()->gender) == \App\User::GENDER_NOT_INDICATED ? 'selected' : ''}} >
+                                    <option value="{{ \App\Models\User::GENDER_NOT_INDICATED }}"
+                                            {{ old('gender', Auth::user()->gender) == \App\Models\User::GENDER_NOT_INDICATED ? 'selected' : ''}} >
                                         {{ t('user', 'Не указан') }}
                                     </option>
-                                    <option value="{{ \App\User::GENDER_MALE }}"
-                                            {{ old('gender', Auth::user()->gender) == \App\User::GENDER_MALE ? 'selected' : '' }} >
+                                    <option value="{{ \App\Models\User::GENDER_MALE }}"
+                                            {{ old('gender', Auth::user()->gender) == \App\Models\User::GENDER_MALE ? 'selected' : '' }} >
                                         {{ t('user', 'Мужской') }}
                                     </option>
-                                    <option value="{{ \App\User::GENDER_FEMALE }}"
-                                            {{ old('gender', Auth::user()->gender) == \App\User::GENDER_FEMALE ? 'selected' : '' }} >
+                                    <option value="{{ \App\Models\User::GENDER_FEMALE }}"
+                                            {{ old('gender', Auth::user()->gender) == \App\Models\User::GENDER_FEMALE ? 'selected' : '' }} >
                                         {{ t('user', 'Женский') }}
                                     </option>
                                 </select>

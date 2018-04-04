@@ -1,5 +1,5 @@
 @php
-    /** @var Illuminate\Database\Eloquent\Collection|\App\User[] $users */
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users */
 @endphp
 
 @extends('layouts.app')

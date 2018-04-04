@@ -1,11 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Exception;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
 use MongoDB;
 use MongoDB\BSON\ObjectID;
 

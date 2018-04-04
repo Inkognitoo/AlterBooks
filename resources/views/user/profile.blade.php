@@ -1,6 +1,6 @@
 @php
-    /** @var \App\User $user */
-    /** @var Illuminate\Database\Eloquent\Collection|\App\Book[] $books */
+    /** @var \App\Models\User $user */
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books */
 @endphp
 
 @extends('layouts.app')

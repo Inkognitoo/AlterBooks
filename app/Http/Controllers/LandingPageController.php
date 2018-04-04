@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
-use App\User;
+use App\Models\Book;
+use App\Models\User;
 use Illuminate\Http\Response;
 
 class LandingPageController extends Controller

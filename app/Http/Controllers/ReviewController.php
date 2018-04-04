@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
-use App\Review;
+use App\Models\Book;
+use App\Models\Review;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckReviewExist;
 use App\Http\Middleware\CheckBookExist;

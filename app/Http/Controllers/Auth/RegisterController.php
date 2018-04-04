@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Notifications\GreetingNewUser;
 use App\Rules\CaseInsensitiveUnique;
 use App\Rules\Nickname;
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Auth;
 use Validator;
@@ -72,7 +72,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
