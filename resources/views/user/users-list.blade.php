@@ -55,7 +55,7 @@
                             @endforeach
                         </div>
                         <div class="col-md-12 text-center">
-                            {{ $users->links() }}
+                            {{ $users->appends(Request::only(['sort']))->links() }}
                         </div>
                     </div>
                 </div>

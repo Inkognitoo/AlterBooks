@@ -102,7 +102,7 @@
                             @endforeach
                         </div>
                         <div class="col-md-12 text-center">
-                            {{ $books->links() }}
+                            {{ $books->appends(Request::only(['genres', 'sort']))->links() }}
                         </div>
                     </div>
                 </div>
