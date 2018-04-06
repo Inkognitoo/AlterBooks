@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Scopes;
+namespace App\Scopes\Book;
 
 use App\Models\Book;
+use App\Scopes\BaseScope;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

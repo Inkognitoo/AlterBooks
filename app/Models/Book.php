@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Jobs\ProcessBook;
 use App\Models\Book\Txt;
-use App\Scopes\StatusScope;
+use App\Scopes\Book\StatusScope;
 use App\Traits\FindByIdOrSlugMethod;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;

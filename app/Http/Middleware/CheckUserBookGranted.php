@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Models\Book;
-use App\Scopes\StatusScope;
 use Closure;
 use Auth;
 
