@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 $factory->define(App\Models\Review::class, function (Faker $faker) {
     return [
         'rating' => rand(1, 10),
-        'text' => $faker->text(),
+        'text' => $faker->realText(rand(100, 500)),
     ];
 });

@@ -42,7 +42,6 @@ use Storage;
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReviewEstimate[] $reviewEstimates Оценки к рецензиями оставленные пользователем
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
- * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
  * @property-read string $canonical_url Каноничный (основной, постоянный) url пользователя
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirthdayDate($value)
@@ -102,9 +101,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    // Закэшированный компонент Storage
-    protected $_storage = null;
 
     /**
      * Send the password reset notification.
@@ -271,7 +267,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): string
     {
         if (filled($this->avatar)) {
-            return $this->storage->url($this->avatar_path);
+            return Storage::url($this->avatar_path);
         }
 
         switch ($this->gender) {
@@ -344,20 +340,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Текущий драйвер файлового хранилища
-     *
-     * @return \Illuminate\Filesystem\FilesystemAdapter|null
-     */
-    public function getStorageAttribute()
-    {
-        if (empty($this->_storage)) {
-            $this->_storage = Storage::disk('s3');
-        }
-
-        return $this->_storage;
-    }
-
-    /**
      * Каноничный (основной, постоянный) url пользователя
      *
      * @return string
@@ -380,12 +362,12 @@ class User extends Authenticatable
             throw new Exception('For setting avatar path, user must be present');
         }
 
-        if (filled($this->avatar) && $this->storage->exists($this->avatar_path)) {
-            $this->storage->delete($this->avatar_path);
+        if (filled($this->avatar) && Storage::exists($this->avatar_path)) {
+            Storage::delete($this->avatar_path);
         }
 
         $image_name = $this::AVATAR_PATH . '/' . $this->id;
-        $storage_path = $this->storage->put($image_name, $avatar);
+        $storage_path = Storage::put($image_name, $avatar);
         $this->attributes['avatar'] = basename($storage_path);
     }
 

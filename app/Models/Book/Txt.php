@@ -6,6 +6,7 @@ use App\Models\Book;
 use MongoDB;
 use MongoDB\BSON\ObjectID;
 use File;
+use Storage;
 
 /**
  * Class Txt
@@ -60,6 +61,7 @@ class Txt implements BookFormat
 
         $text = $this->toEncoding(File::get($this->text_path));
         $pages = $this->separateIntoPages($text);
+        $this->deleteTmpFile();
 
         $collection = MongoDB::get()->alterbooks->books;
 
@@ -165,5 +167,13 @@ class Txt implements BookFormat
 
         $page = mb_substr($text, $start_symbol_number, $page_size - $attempt_count);
         return [($page . '-'), $page_size - $attempt_count];
+    }
+
+    /**
+     * Удалить временный файл с текстом
+     */
+    private function deleteTmpFile()
+    {
+        File::delete($this->text_path);
     }
 }

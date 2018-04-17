@@ -40,7 +40,6 @@ use File;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users Коллекция пользователей добавивших к себе книгу
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
- * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
  * @property-read string $canonical_url Каноничный (основной, постоянный) url книги
  * @property-write mixed $text
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereAuthorId($value)
@@ -94,9 +93,6 @@ class Book extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
-
-    // Закэшированный компонент Storage
-    protected $_storage = null;
 
     /**
      * The "booting" method of the model.
@@ -286,7 +282,7 @@ class Book extends Model
     public function getCoverUrlAttribute(): string
     {
         if (filled($this->cover)) {
-            return $this->storage->url($this->cover_path);
+            return Storage::url($this->cover_path);
         }
 
         return '/img/default_book_cover.png';
@@ -334,20 +330,6 @@ class Book extends Model
     }
 
     /**
-     * Текущий драйвер файлового хранилища
-     *
-     * @return \Illuminate\Filesystem\FilesystemAdapter|null
-     */
-    public function getStorageAttribute()
-    {
-        if (empty($this->_storage)) {
-            $this->_storage = Storage::disk('s3');
-        }
-
-        return $this->_storage;
-    }
-
-    /**
      * Каноничный (основной, постоянный) url книги
      *
      * @return string
@@ -370,12 +352,12 @@ class Book extends Model
             throw new Exception('For setting cover, book must be present');
         }
 
-        if (filled($this->cover) && $this->storage->exists($this->cover_path)) {
-            $this->storage->delete($this->cover_path);
+        if (filled($this->cover) && Storage::exists($this->cover_path)) {
+            Storage::delete($this->cover_path);
         }
 
         $image_name = $this::COVER_PATH . '/' . $this->id;
-        $storage_path = $this->storage->put($image_name, $cover);
+        $storage_path = Storage::put($image_name, $cover);
         $this->attributes['cover'] = basename($storage_path);
     }
 
@@ -394,7 +376,7 @@ class Book extends Model
 
         switch (File::mimeType($text->path())) {
             case 'text/plain':
-                $path = $text->store($text->path());
+                $path = $text->store('tmp', ['disk' => 'local']);
                 $converter = new Txt($this, storage_path('app/' . $path));
                 break;
             default:
