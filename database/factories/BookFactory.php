@@ -11,7 +11,7 @@ $factory->define(App\Models\Book::class, function (Faker $faker) {
     } while (blank($title));
 
     return [
-        'title' => $title,
-        'description' => $faker->realText(rand(100, 200)),
+        'title' => mb_convert_encoding($title, 'UTF-8'),
+        'description' => mb_convert_encoding($faker->realText(rand(100, 200)), 'UTF-8'),
     ];
 });

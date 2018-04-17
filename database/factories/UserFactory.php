@@ -34,12 +34,12 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
 
     return [
         'nickname' => $faker->uuid,
-        'name' => $name,
-        'surname' => $surname,
-        'patronymic' => $patronymic,
+        'name' => mb_convert_encoding($name, 'UTF-8'),
+        'surname' => mb_convert_encoding($surname, 'UTF-8'),
+        'patronymic' => mb_convert_encoding($patronymic, 'UTF-8'),
         'birthday_date' => $faker->date(),
         'gender' => $gender,
-        'about' => $faker->realText(rand(100, 300)),
+        'about' => mb_convert_encoding($faker->realText(rand(100, 300)), 'UTF-8'),
         'email' => $faker->unique()->safeEmail,
         'password' => 'secret',
         'remember_token' => str_random(10),
