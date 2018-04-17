@@ -30,7 +30,6 @@ class FixtureSeeder extends Seeder
     {
         $files = File::allFiles(storage_path('seed/books/'));
         $count = 10;
-        $count = 1;
         factory(App\Models\User::class, $count)->create()->each(function ($user) use ($files) {
             /** @var \App\Models\User $user*/
             $faker = Faker::create();
@@ -43,7 +42,6 @@ class FixtureSeeder extends Seeder
             }
 
             $count = rand(1, 5);
-            $count = 1;
             for ($i = 0; $i < $count; $i++) {
                 /** @var \App\Models\Book $book */
                 $book = factory(App\Models\Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]);
