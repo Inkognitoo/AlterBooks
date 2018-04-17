@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Library;
 
-use App\Book;
-use App\Review;
-use App\ReviewEstimate;
-use App\User;
+use App\Models\Book;
+use App\Models\Review;
+use App\Models\ReviewEstimate;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use ReviewEstimateTestSeeder;

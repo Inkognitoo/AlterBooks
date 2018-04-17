@@ -2,8 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Book;
-use App\Scopes\StatusScope;
+use App\Models\Book;
 use Closure;
 use Auth;
 

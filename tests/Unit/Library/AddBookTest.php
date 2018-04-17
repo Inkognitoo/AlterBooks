@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Library;
 
-use App\Book;
-use App\User;
+use App\Models\Book;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LibraryTestSeeder;

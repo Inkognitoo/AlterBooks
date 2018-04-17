@@ -1,5 +1,5 @@
 @php
-    /** @var \App\Review $review */
+    /** @var \App\Models\Review $review */
 @endphp
 
 <div class="panel panel-default">

@@ -1,5 +1,5 @@
 @php
-    /** @var \App\Book $book */
+    /** @var \App\Models\Book $book */
 @endphp
 
 @extends('layouts.app')
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
 
-                            @if(filled($book->mongodb_book_id))
+                            @if($book->isReadable())
                                 <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->slug, 'page_number' => 1]) }}">
                                     {{ t('book.button', 'Читать') }}
                                 </a>

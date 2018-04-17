@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Notifications\ResetPasswordNotification;
 use App\Traits\FindByIdOrSlugMethod;
@@ -12,7 +12,7 @@ use Exception;
 use Storage;
 
 /**
- * App\User
+ * App\Models\User
  *
  * @property int $id
  * @property string|null $name
@@ -37,31 +37,32 @@ use Storage;
  * @property float $rating Средняя оценка книги
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $books Список книг созданных пользователем
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Book[] $libraryBooks Список книг добавленных пользователем в свою библиотеку
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books Список книг созданных пользователем
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $libraryBooks Список книг добавленных пользователем в свою библиотеку
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ReviewEstimate[] $reviewEstimates Оценки к рецензиями оставленные пользователем
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
- * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReviewEstimate[] $reviewEstimates Оценки к рецензиями оставленные пользователем
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
  * @property-read string $canonical_url Каноничный (основной, постоянный) url пользователя
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthdayDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNickname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePatronymic($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereSurname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAbout($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereApiToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTimezone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirthdayDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNickname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePatronymic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSurname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereApiToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereTimezone($value)
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User findByIdOrSlug($id, $slug_name = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User findByIdOrSlug($id, $slug_name = null)
+ * @property bool $is_admin
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIsAdmin($value)
  */
 class User extends Authenticatable
 {
@@ -100,9 +101,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    // Закэшированный компонент Storage
-    protected $_storage = null;
 
     /**
      * Send the password reset notification.
@@ -269,7 +267,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): string
     {
         if (filled($this->avatar)) {
-            return $this->storage->url($this->avatar_path);
+            return Storage::url($this->avatar_path);
         }
 
         switch ($this->gender) {
@@ -342,20 +340,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Текущий драйвер файлового хранилища
-     *
-     * @return \Illuminate\Filesystem\FilesystemAdapter|null
-     */
-    public function getStorageAttribute()
-    {
-        if (empty($this->_storage)) {
-            $this->_storage = Storage::disk('s3');
-        }
-
-        return $this->_storage;
-    }
-
-    /**
      * Каноничный (основной, постоянный) url пользователя
      *
      * @return string
@@ -378,12 +362,12 @@ class User extends Authenticatable
             throw new Exception('For setting avatar path, user must be present');
         }
 
-        if (filled($this->avatar) && $this->storage->exists($this->avatar_path)) {
-            $this->storage->delete($this->avatar_path);
+        if (filled($this->avatar) && Storage::exists($this->avatar_path)) {
+            Storage::delete($this->avatar_path);
         }
 
         $image_name = $this::AVATAR_PATH . '/' . $this->id;
-        $storage_path = $this->storage->put($image_name, $avatar);
+        $storage_path = Storage::put($image_name, $avatar);
         $this->attributes['avatar'] = basename($storage_path);
     }
 

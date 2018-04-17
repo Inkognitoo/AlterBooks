@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Book;
+use App\Models\Book;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;

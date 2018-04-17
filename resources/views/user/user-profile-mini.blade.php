@@ -1,5 +1,5 @@
 @php
-    /** @var \App\User $user */
+    /** @var \App\Models\User $user */
 @endphp
 
 <div class="panel panel-default">

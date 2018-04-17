@@ -93,12 +93,12 @@
 
                             <div class="col-md-6">
                                 <select id="status" class="form-control" name="status">
-                                    <option value="{{ \App\Book::STATUS_CLOSE }}"
-                                            {{ (old('status')) == \App\Book::STATUS_CLOSE ? 'selected' : '' }} >
+                                    <option value="{{ \App\Models\Book::STATUS_CLOSE }}"
+                                            {{ (old('status')) == \App\Models\Book::STATUS_CLOSE ? 'selected' : '' }} >
                                         {{ t('book', 'Черновик (видите только вы)') }}
                                     </option>
-                                    <option value="{{ \App\Book::STATUS_OPEN }}"
-                                            {{ (old('status')) == \App\Book::STATUS_OPEN ? 'selected' : ''}} >
+                                    <option value="{{ \App\Models\Book::STATUS_OPEN }}"
+                                            {{ (old('status')) == \App\Models\Book::STATUS_OPEN ? 'selected' : ''}} >
                                         {{ t('book', 'Чистовик (видят все)') }}
                                     </option>
                                 </select>

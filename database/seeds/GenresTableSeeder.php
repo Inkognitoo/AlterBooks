@@ -43,7 +43,7 @@ class GenresTableSeeder extends Seeder
         ];
 
         foreach ($genres as $genre) {
-            $new_genre = \App\Genre::firstOrCreate(['name' => $genre['name'], 'slug' => $genre['slug']]);
+            $new_genre = \App\Models\Genre::firstOrCreate(['name' => $genre['name'], 'slug' => $genre['slug']]);
             $new_genre->save();
         }
 

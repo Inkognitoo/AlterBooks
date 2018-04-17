@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Scopes\StatusScope;
+use App\Jobs\ProcessBook;
+use App\Models\Book\Txt;
+use App\Scopes\Book\StatusScope;
 use App\Traits\FindByIdOrSlugMethod;
-use DB;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,9 +13,10 @@ use Illuminate\Http\UploadedFile;
 use Storage;
 use Exception;
 use Cviebrock\EloquentSluggable\Sluggable;
+use File;
 
 /**
- * App\Book
+ * App\Models\Book
  *
  * @property int $id
  * @property string|null $title
@@ -34,33 +36,34 @@ use Cviebrock\EloquentSluggable\Sluggable;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property \Carbon\Carbon|null $deleted_at
- * @property-read \App\User $author
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users Коллекция пользователей добавивших к себе книгу
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Review[] $reviews
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Genre[] $genres
- * @property-read \Illuminate\Filesystem\FilesystemAdapter $storage
+ * @property-read \App\Models\User $author
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users Коллекция пользователей добавивших к себе книгу
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
  * @property-read string $canonical_url Каноничный (основной, постоянный) url книги
  * @property-write mixed $text
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCover($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Book onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereMongodbBookId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book wherePageCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereStatus($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Book withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Book withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCover($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereMongodbBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book wherePageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withoutTrashed()
  * @method static bool|null forceDelete()
  * @method static bool|null restore()
  * @mixin Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findByIdOrSlug($id, $slug_name = null)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Book whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findByIdOrSlug($id, $slug_name = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereSlug($value)
+ * @property bool $is_processing
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereIsProcessing($value)
  */
 class Book extends Model
 {
@@ -90,9 +93,6 @@ class Book extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
-
-    // Закэшированный компонент Storage
-    protected $_storage = null;
 
     /**
      * The "booting" method of the model.
@@ -164,7 +164,7 @@ class Book extends Model
      */
     public static function findAny($id)
     {
-        $query = self::withoutGlobalScope(StatusScope::class);
+        $query = self::withoutGlobalScopes([StatusScope::class]);
         if (is_array($id)) {
             $query->where($id);
         } else {
@@ -210,6 +210,16 @@ class Book extends Model
     public function isClose(): bool
     {
         return $this->status === self::STATUS_CLOSE;
+    }
+
+    /**
+     * Проверить, можно ли читать книгу
+     *
+     * @return bool
+     */
+    public function isReadable(): bool
+    {
+        return $this->is_processing === false && !empty($this->mongodb_book_id);
     }
 
     /**
@@ -272,7 +282,7 @@ class Book extends Model
     public function getCoverUrlAttribute(): string
     {
         if (filled($this->cover)) {
-            return $this->storage->url($this->cover_path);
+            return Storage::url($this->cover_path);
         }
 
         return '/img/default_book_cover.png';
@@ -320,20 +330,6 @@ class Book extends Model
     }
 
     /**
-     * Текущий драйвер файлового хранилища
-     *
-     * @return \Illuminate\Filesystem\FilesystemAdapter|null
-     */
-    public function getStorageAttribute()
-    {
-        if (empty($this->_storage)) {
-            $this->_storage = Storage::disk('s3');
-        }
-
-        return $this->_storage;
-    }
-
-    /**
      * Каноничный (основной, постоянный) url книги
      *
      * @return string
@@ -356,12 +352,12 @@ class Book extends Model
             throw new Exception('For setting cover, book must be present');
         }
 
-        if (filled($this->cover) && $this->storage->exists($this->cover_path)) {
-            $this->storage->delete($this->cover_path);
+        if (filled($this->cover) && Storage::exists($this->cover_path)) {
+            Storage::delete($this->cover_path);
         }
 
         $image_name = $this::COVER_PATH . '/' . $this->id;
-        $storage_path = $this->storage->put($image_name, $cover);
+        $storage_path = Storage::put($image_name, $cover);
         $this->attributes['cover'] = basename($storage_path);
     }
 
@@ -378,8 +374,18 @@ class Book extends Model
             throw new Exception('For setting text, book must be present');
         }
 
-        $mongodb_book = new MongoBook($this);
-        $mongodb_book->setText($text);
+        switch (File::mimeType($text->path())) {
+            case 'text/plain':
+                $path = $text->store('tmp', ['disk' => 'local']);
+                $converter = new Txt($this, storage_path('app/' . $path));
+                break;
+            default:
+                throw new Exception('Book\'s format is not allow');
+
+        }
+
+        $this->is_processing = true;
+        ProcessBook::dispatch($converter);
     }
 
     /**

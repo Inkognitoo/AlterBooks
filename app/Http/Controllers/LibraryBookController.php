@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
+use App\Models\Book;
 use App\Exceptions\ApiException;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\CanUserLibraryBook;

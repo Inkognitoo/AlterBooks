@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Scopes;
+namespace App\Scopes\Book;
 
-use App\Book;
+use App\Models\Book;
+use App\Scopes\BaseScope;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class StatusScope implements Scope
+class StatusScope extends BaseScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -20,10 +21,8 @@ class StatusScope implements Scope
     {
         $column = 'status';
 
-        // На случай если книгу запросили с алиасом
-        $from = preg_split("/[Aa][sS]/", $builder->getQuery()->from);
-        if (count($from) == 2) {
-            $alias = trim($from[1]);
+        $alias = $this->getAlias($builder);
+        if (!empty($alias)) {
             $column = $alias . '.' . $column;
         }
 

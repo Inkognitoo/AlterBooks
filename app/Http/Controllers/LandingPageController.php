@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
-use App\User;
+use App\Models\Book;
+use App\Models\User;
 use Illuminate\Http\Response;
 
 class LandingPageController extends Controller
@@ -13,7 +13,8 @@ class LandingPageController extends Controller
      *
      * @return Response
     */
-    public function index() {
+    public function index()
+    {
         $users = User::orderBy('created_at', 'desc')->limit('6')->get();
         $books = Book::orderBy('created_at','desc')->limit('6')->get();
         return view('welcome', ['books' => $books, 'users' => $users]);

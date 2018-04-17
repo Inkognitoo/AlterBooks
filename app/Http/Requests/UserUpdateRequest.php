@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\CaseInsensitiveUnique;
 use App\Rules\Nickname;
-use App\User;
+use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;

@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware\Api;
 
-use App\Book;
+use App\Models\Book;
 use App\Exceptions\ApiException;
-use App\Review;
+use App\Models\Review;
 use Auth;
 use Closure;
 use Illuminate\Http\Response;

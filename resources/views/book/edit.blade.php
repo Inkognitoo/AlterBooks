@@ -1,8 +1,8 @@
 @php
-    /** @var \App\Book $book */
+    /** @var \App\Models\Book $book */
     /** @var \Illuminate\Support\ViewErrorBag $errors */
     if (session('book_id')) {
-        $book = App\Book::findAny(['id' => session('book_id')]);
+        $book = App\Models\Book::findAny(['id' => session('book_id')]);
     }
 @endphp
 
@@ -21,8 +21,13 @@
 
                 <div class="panel-body">
 
+                    <div id="notify-place"></div>
+
                     @if (session('status'))
                         <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
                             {{ session('status') }}
                         </div>
                     @endif
@@ -69,7 +74,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                <input id="text" type="file" class="form-control" name="text">
+                                <input id="text" type="file" class="form-control" name="text" {{ $book->is_processing ? 'disabled' : null }}>
 
                                 @if ($errors->has('text'))
                                     <span class="help-block">
@@ -100,7 +105,7 @@
                             </label>
 
                             <div class="col-md-6">
-                                @foreach(\App\Genre::all() as $genre)
+                                @foreach(\App\Models\Genre::all() as $genre)
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" name="genres[]"
@@ -126,12 +131,12 @@
 
                             <div class="col-md-6">
                                 <select id="status" class="form-control" name="status">
-                                    <option value="{{ \App\Book::STATUS_CLOSE }}"
-                                            {{ old('status', $book->status) == \App\Book::STATUS_CLOSE ? 'selected' : '' }} >
+                                    <option value="{{ \App\Models\Book::STATUS_CLOSE }}"
+                                            {{ old('status', $book->status) == \App\Models\Book::STATUS_CLOSE ? 'selected' : '' }} >
                                         {{ t('book', 'Черновик (видите только вы)') }}
                                     </option>
-                                    <option value="{{ \App\Book::STATUS_OPEN }}"
-                                            {{ old('status', $book->status) == \App\Book::STATUS_OPEN ? 'selected' : ''}} >
+                                    <option value="{{ \App\Models\Book::STATUS_OPEN }}"
+                                            {{ old('status', $book->status) == \App\Models\Book::STATUS_OPEN ? 'selected' : ''}} >
                                         {{ t('book', 'Чистовик (видят все)') }}
                                     </option>
                                 </select>
@@ -161,3 +166,24 @@
     </div>
 </div>
 @endsection
+
+<script>
+    const book_id = "{{ $book->id }}";
+
+    window.onload = function() {
+        window.Echo.private(`App.Book.${book_id}`)
+            .listen('BookProcessed', (e) => {
+                const notify = `
+                    <div class="alert alert-info alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                        {{ t('book', 'Книга была успешно загружена!') }}
+                    </div>`;
+
+                document.getElementById('notify-place').innerHTML = notify;
+                document.getElementById('text').disabled = false;
+
+                console.log(e);
+            });
+    }
+</script>

@@ -11,10 +11,10 @@ class LibraryTestSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 10)->create()->each(function ($u) {
+        factory(App\Models\User::class, 10)->create()->each(function ($u) {
             $count = rand(1, 5);
             for ($i = 0; $i < $count; $i++) {
-                $u->books()->save(factory(App\Book::class)->make(['status' => \App\Book::STATUS_OPEN]));
+                $u->books()->save(factory(App\Models\Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]));
             }
         });
     }

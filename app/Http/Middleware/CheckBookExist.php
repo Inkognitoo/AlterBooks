@@ -2,8 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Book;
-use App\Scopes\StatusScope;
+use App\Models\Book;
 use Auth;
 use Closure;
 
@@ -31,7 +30,7 @@ class CheckBookExist
             return response(view('errors.404'), 404);
         }
 
-        if ($book->status === Book::STATUS_CLOSE && optional(Auth::user())->id !== $book->author_id) {
+        if ($book->isClose() && optional(Auth::user())->id !== $book->author_id) {
             return response(view('errors.404'), 404);
         }
 

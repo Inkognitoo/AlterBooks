@@ -13,21 +13,33 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
-    static $password;
+$factory->define(App\Models\User::class, function (Faker $faker) {
+    $genders = [\App\Models\User::GENDER_MALE, \App\Models\User::GENDER_FEMALE, \App\Models\User::GENDER_NOT_INDICATED];
+    $gender = $genders[rand(0, count($genders) - 1)];
+
+    switch ($gender) {
+        case \App\Models\User::GENDER_FEMALE:
+            $gender_name = 'female';
+            break;
+        case \App\Models\User::GENDER_MALE:
+            $gender_name = 'male';
+            break;
+        default:
+            $gender_name = $faker->randomElement(['female', 'male']);
+    }
+
+    $full_name = $faker->name($gender_name);
+
+    list($surname, $name, $patronymic) = explode(' ', $full_name);
 
     return [
         'nickname' => $faker->uuid,
-        'name' => $faker->firstName,
-        'surname' => $faker->lastName,
-        'patronymic' => $faker->lastName,
+        'name' => mb_convert_encoding($name, 'UTF-8'),
+        'surname' => mb_convert_encoding($surname, 'UTF-8'),
+        'patronymic' => mb_convert_encoding($patronymic, 'UTF-8'),
         'birthday_date' => $faker->date(),
-        'gender' => function() {
-            $genders = [\App\User::GENDER_MALE, \App\User::GENDER_FEMALE, \App\User::GENDER_NOT_INDICATED];
-
-            return $genders[rand(0, 2)];
-        },
-        'about' => $faker->text,
+        'gender' => $gender,
+        'about' => mb_convert_encoding($faker->realText(rand(100, 300)), 'UTF-8'),
         'email' => $faker->unique()->safeEmail,
         'password' => 'secret',
         'remember_token' => str_random(10),

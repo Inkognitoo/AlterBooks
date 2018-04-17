@@ -1,5 +1,5 @@
 @php
-    /** @var Illuminate\Database\Eloquent\Collection|\App\User[] $users */
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users */
 @endphp
 
 @extends('layouts.app')
@@ -55,7 +55,7 @@
                             @endforeach
                         </div>
                         <div class="col-md-12 text-center">
-                            {{ $users->links() }}
+                            {{ $users->appends(Request::only(['sort']))->links() }}
                         </div>
                     </div>
                 </div>

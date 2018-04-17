@@ -8,7 +8,7 @@ use App\Http\Middleware\Api\CanUserEstimateReview;
 use App\Http\Middleware\IsBookExist;
 use App\Http\Middleware\IsReviewExist;
 use App\Http\Middleware\IsUserAuth;
-use App\ReviewEstimate;
+use App\Models\ReviewEstimate;
 use Auth;
 use Illuminate\Http\Response;
 

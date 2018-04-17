@@ -2,8 +2,8 @@
 
 namespace App\Models\Search;
 
-use App\Book;
-use App\Review;
+use App\Models\Book;
+use App\Models\Review;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;

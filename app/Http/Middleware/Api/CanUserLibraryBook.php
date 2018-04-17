@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware\Api;
 
-use App\Book;
+use App\Models\Book;
 use App\Exceptions\ApiException;
 use Auth;
 use Closure;

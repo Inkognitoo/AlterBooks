@@ -1,5 +1,5 @@
 @php
-    /** @var Illuminate\Database\Eloquent\Collection|\App\Book[] $books */
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books */
 @endphp
 
 @extends('layouts.app')
@@ -23,7 +23,7 @@
                                     </div>
                                     <div class="genre-content">
                                         @php
-                                            $genres = \App\Genre::all();
+                                            $genres = \App\Models\Genre::all();
                                         @endphp
 
                                         @foreach($genres as $genre)
@@ -102,7 +102,7 @@
                             @endforeach
                         </div>
                         <div class="col-md-12 text-center">
-                            {{ $books->links() }}
+                            {{ $books->appends(Request::only(['genres', 'sort']))->links() }}
                         </div>
                     </div>
                 </div>
