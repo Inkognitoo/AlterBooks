@@ -25,6 +25,7 @@ use Storage;
  * @property string $nickname
  * @property Carbon|null $birthday_date
  * @property string|null $birthday_date_plain
+ * @property Carbon|null $last_activity_at Время последнего действия пользователя
  * @property string|null $avatar Название аватарки пользователя
  * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
  * @property string $avatar_url Ссылка на аватар пользователя
@@ -90,7 +91,7 @@ class User extends Authenticatable
         'nickname', 'email', 'name',
         'surname', 'patronymic', 'birthday_date',
         'gender', 'about', 'timezone',
-        'password', 'avatar',
+        'password', 'avatar', 'last_activity_at',
     ];
 
     /**
