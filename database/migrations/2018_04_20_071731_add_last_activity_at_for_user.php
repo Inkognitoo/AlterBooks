@@ -27,7 +27,7 @@ class AddLastActivityAtForUser extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('last_activity_at ');
+            $table->dropColumn('last_activity_at');
         });
     }
 }
