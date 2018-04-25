@@ -22,16 +22,41 @@ class UserSearch
      * @param Request $filters
      * @return Builder
      */
-    public static function apply(Request $filters)
+    public static function apply(Request $filters): Builder
     {
         $query = (new User())->newQuery();
+        $query = static::applyFilters($query, $filters);
 
+        return static::applySort($query, $filters);
+    }
+
+    /**
+     * Применить имеющиеся фильтры
+     *
+     * @param Builder $query
+     * @param Request $filters
+     * @return Builder
+     */
+    public static function applyFilters(Builder $query, Request $filters): Builder
+    {
+        return $query;
+    }
+
+    /**
+     * Применить указанную стортировку
+     *
+     * @param Builder $query
+     * @param Request $filters
+     * @return Builder
+     */
+    protected static function applySort(Builder $query, Request $filters): Builder
+    {
         switch ($filters->sort) {
             case 'rating':
                 $query = static::orderByRatingDesc($query);
                 break;
             case 'books':
-                $query->withCount('books')->orderByDesc('books_count');
+                $query = static::orderByBooksDesc($query);
                 break;
             default:
                 $query = static::orderByRatingDesc($query);
@@ -48,7 +73,7 @@ class UserSearch
      * @param Builder $query
      * @return Builder
      */
-    protected static function orderByRatingDesc(Builder $query)
+    protected static function orderByRatingDesc(Builder $query): Builder
     {
         $sub_query = (new Book())->newQuery()
             ->from((new Book())->getTable() . ' AS books')
@@ -71,23 +96,37 @@ class UserSearch
             ->groupBy('users.id')
             ->orderByDesc(DB::raw('COALESCE(MEDIAN(sub_query.rating), 0)'))
             ->orderBy('users.created_at')
+            ->orderBy('users.id')
         ;
     }
 
     /**
-     * Получить sql запрос вместе с заполнеными значениями - "?"
+     * Сортировать пользователь по количеству опубликованных книг. От большего к меньшему
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    protected static function orderByBooksDesc(Builder $query): Builder
+    {
+        return $query->withCount('books')
+            ->orderByDesc('books_count')
+            ->orderBy('users.id')
+        ;
+    }
+
+    /**
+     * Получить sql запрос вместе с заполнеными значениями - "?" (подставляемых параметров)
      *
      * @param Builder $query
      * @return null|string
      */
-    protected static function getRawSql(Builder $query)
+    protected static function getRawSql(Builder $query): ?string
     {
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        foreach($bindings as $binding)
-        {
-            $value = is_numeric($binding) ? $binding : "'".$binding."'";
+        foreach($bindings as $binding) {
+            $value = is_numeric($binding) ? $binding : "'" . $binding . "'";
             $sql = preg_replace('/\?/', $value, $sql, 1);
         }
 
