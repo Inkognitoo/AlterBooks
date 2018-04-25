@@ -17,7 +17,7 @@ class LastAction
      */
     public function handle($request, Closure $next)
     {
-        if (filled(Auth::user())) {
+        if (Auth::check()) {
             Auth::user()->last_activity_at = Carbon::now();
             Auth::user()->save();
         }
