@@ -82,6 +82,9 @@ class User extends Authenticatable
     //Поле для поиска по slug через трейт FindByIdOrSlugMethod
     const SLUG_NAME = 'nickname';
 
+    //Количество минут бездействия пользователя, поддерживающее его статус Online
+    const ONLINE_ENDED = 12;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -206,6 +209,16 @@ class User extends Authenticatable
     public function isAuthor(Book $book): bool
     {
         return $this->id === $book->author_id;
+    }
+
+    /**
+     * Проверить, является ли текущий пользователь online
+     *
+     * @return bool
+     */
+    public function isOnline(): bool
+    {
+        return Carbon::parse($this->last_activity_at)->addMinutes(self::ONLINE_ENDED) > Carbon::now();
     }
 
     /**
