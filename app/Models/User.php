@@ -91,7 +91,7 @@ class User extends Authenticatable
         'nickname', 'email', 'name',
         'surname', 'patronymic', 'birthday_date',
         'gender', 'about', 'timezone',
-        'password', 'avatar', 'last_activity_at',
+        'password', 'avatar',
     ];
 
     /**

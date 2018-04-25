@@ -15,7 +15,7 @@ class AddLastActivityAtForUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->datetime('last_activity_at')->nullable()->default(Carbon::now());
+            $table->datetime('last_activity_at')->default(Carbon::now());
         });
     }
 
