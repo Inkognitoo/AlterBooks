@@ -3,6 +3,7 @@
 namespace Tests\Unit\OnlineStatus;
 
 use App\Models\User;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -59,8 +60,13 @@ class CheckOnlineStatusTest extends TestCase
      *
      * @return void
      */
-    /*public function testLastActivityAtChangeWhenVisitingPages()
+    public function testLastActivityAtChangeWhenVisitingPages()
     {
-
-    }*/
+        $person = factory(User::class)->create();
+        Auth::attempt(['email' => $person->email, 'password' => 'secret']);
+        $person = Auth::user();
+        $startPersonLastActivity = $person->last_activity_at;
+        $this->call('GET', '/');
+        $this->assertTrue($startPersonLastActivity < $person->last_activity_at);
+    }
 }
