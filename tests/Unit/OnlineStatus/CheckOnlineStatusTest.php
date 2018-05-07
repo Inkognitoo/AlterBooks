@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\OnlineStatus;
 
-use App\Models\User;
-use Auth;
-use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use LibraryTestSeeder;
+use App\Models\Book;
+use App\Models\User;
 use Tests\TestCase;
+use Carbon\Carbon;
+use Auth;
 
 class CheckOnlineStatusTest extends TestCase
 {
@@ -64,9 +64,38 @@ class CheckOnlineStatusTest extends TestCase
     {
         $person = factory(User::class)->create();
         Auth::attempt(['email' => $person->email, 'password' => 'secret']);
-        $person = Auth::user();
-        $startPersonLastActivity = $person->last_activity_at;
+        $startPersonLastActivity = Auth::user()->last_activity_at;
+        sleep(2);
         $this->call('GET', '/');
-        $this->assertTrue($startPersonLastActivity < $person->last_activity_at);
+        $this->assertTrue($startPersonLastActivity < Auth::user()->last_activity_at);
+    }
+
+    /**
+     * Проверка изменения last_activity_at в большую сторону при обращении к API
+     *
+     * @return void
+     */
+    public function testLastActivityAtChangeWhenAccessingTheAPI()
+    {
+        $this->seed(LibraryTestSeeder::class);
+
+        /** @var User $person */
+        $person = factory(User::class)->create();
+        Auth::attempt(['email' => $person->email, 'password' => 'secret']);
+        $startPersonLastActivity = Auth::user()->last_activity_at;
+
+        $book = Book::inRandomOrder()
+            ->first()
+        ;
+
+        $headers = [
+            'Authorization' => 'Bearer ' . Auth::user()->api_token
+        ];
+
+        sleep(2);
+
+        $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
+
+        $this->assertTrue($startPersonLastActivity < Auth::user()->last_activity_at);
     }
 }
