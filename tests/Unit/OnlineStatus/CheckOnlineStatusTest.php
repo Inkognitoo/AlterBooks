@@ -82,6 +82,7 @@ class CheckOnlineStatusTest extends TestCase
         /** @var User $person */
         $person = factory(User::class)->create();
         Auth::attempt(['email' => $person->email, 'password' => 'secret']);
+
         $startPersonLastActivity = Auth::user()->last_activity_at;
 
         $book = Book::inRandomOrder()
@@ -91,6 +92,8 @@ class CheckOnlineStatusTest extends TestCase
         $headers = [
             'Authorization' => 'Bearer ' . Auth::user()->api_token
         ];
+
+        Auth::setDefaultDriver('api');
 
         sleep(2);
 
