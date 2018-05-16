@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Exception;
+use Image;
 use Storage;
 
 /**
@@ -389,5 +390,18 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function avatar($height = null, $width = null) {
+        $fit_avatar_path = 'thumbs/' . $height . 'x' . $width . '/' . $this->avatar_path;
+        if (Storage::exists($fit_avatar_path)) {
+            return Storage::url($fit_avatar_path);
+        }
+        $avatar = Image::make(Storage::url($this->avatar_path))
+            ->fit($height, $width, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        Storage::put($fit_avatar_path, (string) $avatar->encode());
+        return Storage::url($fit_avatar_path);
     }
 }
