@@ -430,6 +430,13 @@ class Book extends Model
         $mongodb_book->editPage($page_number, $text);
     }
 
+    /**
+     * Ресайз обложки книги
+     *
+     * @param null $height
+     * @param null $width
+     * @return string
+     */
     public function cover($height = null, $width = null) {
         if ($height == null || $width == null) {
             return Storage::url($this->cover_path);

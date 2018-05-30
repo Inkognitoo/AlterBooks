@@ -392,6 +392,13 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($password);
     }
 
+    /**
+     * Ресайз аватара пользователя
+     *
+     * @param null $height
+     * @param null $width
+     * @return string
+     */
     public function avatar($height = null, $width = null) {
         if ($height == null || $width == null) {
             return Storage::url($this->avatar_path);
