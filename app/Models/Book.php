@@ -14,6 +14,7 @@ use Storage;
 use Exception;
 use Cviebrock\EloquentSluggable\Sluggable;
 use File;
+use Image;
 
 /**
  * App\Models\Book
@@ -427,5 +428,21 @@ class Book extends Model
         $mongodb_book = new MongoBook($this);
 
         $mongodb_book->editPage($page_number, $text);
+    }
+
+    public function cover($height = null, $width = null) {
+        if ($height == null || $width == null) {
+            return Storage::url($this->cover_path);
+        }
+        $fit_cover_path = 'thumbs/' . $height . 'x' . $width . '/' . $this->cover_path;
+        if (Storage::exists($fit_cover_path)) {
+            return Storage::url($fit_cover_path);
+        }
+        $cover = Image::make(Storage::url($this->cover_path))
+            ->fit($height, $width, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        Storage::put($fit_cover_path, (string) $cover->encode());
+        return Storage::url($fit_cover_path);
     }
 }

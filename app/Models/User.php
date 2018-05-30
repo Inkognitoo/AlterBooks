@@ -393,6 +393,9 @@ class User extends Authenticatable
     }
 
     public function avatar($height = null, $width = null) {
+        if ($height == null || $width == null) {
+            return Storage::url($this->avatar_path);
+        }
         $fit_avatar_path = 'thumbs/' . $height . 'x' . $width . '/' . $this->avatar_path;
         if (Storage::exists($fit_avatar_path)) {
             return Storage::url($fit_avatar_path);
