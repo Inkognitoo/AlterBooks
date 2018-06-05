@@ -14,3 +14,7 @@
 Route::get('/admin', function (){
     return 'it\'s admin!';
 });
+
+Route::get('/', function (){
+    return view('admin.auth.login');
+});
