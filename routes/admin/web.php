@@ -11,10 +11,12 @@
 |
 */
 
-Route::get('/admin', function (){
-    return 'it\'s admin!';
-});
+Route::get('/dashboard', function (){
+    return auth()->user();
+})->name('dashboard');
 
-Route::get('/', function (){
-    return view('admin.auth.login');
-});
+Route::get('/', 'LoginController@showLoginForm')->name('login.form');
+
+Route::post('/login', 'LoginController@login')->name('login');
+
+Route::get('/logout', 'LoginController@logout')->name('logout');
