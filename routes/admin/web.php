@@ -11,12 +11,10 @@
 |
 */
 
-Route::get('/dashboard', function (){
-    return auth()->user();
-})->name('dashboard');
-
 Route::get('/', 'LoginController@showLoginForm')->name('login.form');
 
 Route::post('/login', 'LoginController@login')->name('login');
 
 Route::get('/logout', 'LoginController@logout')->name('logout');
+
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');

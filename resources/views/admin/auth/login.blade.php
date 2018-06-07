@@ -24,16 +24,16 @@
     </script>
     <!--end::Web font -->
     <!--begin::Base Styles -->
-    <link href={{ url('/metronic/css/vendors.bundle.css') }} rel="stylesheet" type="text/css" />
-    <link href={{ url('/metronic/css/style.bundle.css') }} rel="stylesheet" type="text/css" />
+    <link href="{{ url('/metronic/css/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('/metronic/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Base Styles -->
 
     <!--Icons-->
-    <link rel="manifest" href={{ url('/manifest.json') }}>
-    <link rel="icon" type="image/png" href={{ url('/img/icon-16.png') }} sizes="16x16">
-    <link rel="icon" type="image/png" href={{ url('/img/icon-32.png') }} sizes="32x32">
-    <link rel="icon" type="image/png" href={{ url('/img/icon-180.png') }} sizes="180x180">
-    <link rel="icon" type="image/png" href={{ url('/img/icon-192.png') }} sizes="192x192">
+    <link rel="manifest" href="{{ url('/manifest.json') }}">
+    <link rel="icon" type="image/png" href="{{ url('/img/icon-16.png') }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ url('/img/icon-32.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ url('/img/icon-180.png') }}" sizes="180x180">
+    <link rel="icon" type="image/png" href="{{ url('/img/icon-192.png') }}" sizes="192x192">
 </head>
 <!-- end::Head -->
 <!-- end::Body -->
@@ -96,8 +96,8 @@
 </div>
 <!-- end:: Page -->
 <!--begin::Base Scripts -->
-<script src="/metronic/js/vendors.bundle.js" type="text/javascript"></script>
-<script src="/metronic/js/scripts.bundle.js" type="text/javascript"></script>
+<script src="{{ url('/metronic/js/vendors.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ url('/metronic/js/scripts.bundle.js') }}" type="text/javascript"></script>
 <!--end::Base Scripts -->
 <!--begin::Page Snippets -->
 {{--<script src="/metronic/js/login.js" type="text/javascript"></script>--}}
