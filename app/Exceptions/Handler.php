@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Events\Error;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -82,5 +83,25 @@ class Handler extends ExceptionHandler
         $errors = $this->getError($exception->getPrevious());
         $errors[] = $error;
         return $errors;
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $exception->getMessage()], 401);
+        }
+
+        if (IS_ADMIN_ENVIRONMENT) {
+            return redirect()->guest(route('login.show'));
+        }
+
+        return redirect()->guest(route('login'));
     }
 }

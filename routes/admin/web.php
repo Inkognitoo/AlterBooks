@@ -11,10 +11,15 @@
 |
 */
 
-Route::get('/', 'LoginController@showLoginForm')->name('login.form');
+Route::get('/', 'LoginController@showLoginForm')->name('login.show');
 
 Route::post('/login', 'LoginController@login')->name('login');
 
-Route::get('/logout', 'LoginController@logout')->name('logout');
-
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/logout', 'LoginController@logout')
+        ->name('logout')
+    ;
+    Route::get('/dashboard', 'DashboardController@index')
+        ->name('dashboard')
+    ;
+});
