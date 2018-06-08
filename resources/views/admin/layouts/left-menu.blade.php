@@ -20,7 +20,7 @@
             <i class="m-menu__section-icon flaticon-more-v3"></i>
         </li>
         <li class="m-menu__item " aria-haspopup="true" >
-            <a href="{{ route('dashboard') }}" class="m-menu__link ">
+            <a href="{{ route('logs') }}" class="m-menu__link" target="_blank">
                 <i class="m-menu__link-icon flaticon-file-1"></i>
                 <span class="m-menu__link-title">
                     <span class="m-menu__link-wrap">

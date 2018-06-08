@@ -91,16 +91,3 @@ Route::post('book/{id}/review', 'ReviewController@create')
 Route::get('book/{book_id}/review/id{id}/delete', 'ReviewController@delete')
     ->name('review.delete')
 ;
-
-/*
-|--------------------------------------------------------------------------
-| Additional
-|--------------------------------------------------------------------------
-|
-| Здесь различные, дополнительные маршрруты
-|
-*/
-
-//маршрут для просмтра логов
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
-    ->middleware([\App\Http\Middleware\CheckAdmin::class]);

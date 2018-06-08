@@ -22,4 +22,18 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/dashboard', 'DashboardController@index')
         ->name('dashboard')
     ;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Additional
+    |--------------------------------------------------------------------------
+    |
+    | Здесь различные, дополнительные маршруты
+    |
+    */
+
+    //маршрут для просмотра логов
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
+        ->name('logs')
+    ;
 });
