@@ -32,7 +32,7 @@
             </a>
         </li>
         <li class="m-menu__item " aria-haspopup="true" >
-            <a href="{{ route('dashboard') }}" class="m-menu__link ">
+            <a href="{{ url('horizon') }}" class="m-menu__link" target="_blank">
                 <i class="m-menu__link-icon flaticon-tabs"></i>
                 <span class="m-menu__link-title">
                     <span class="m-menu__link-wrap">
