@@ -6,6 +6,7 @@ use App\Events\Error;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -55,6 +56,13 @@ class Handler extends ExceptionHandler
     {
 
         if (!($exception instanceof ApiException)) {
+            if ($exception instanceof NotFoundHttpException) {
+                return IS_ADMIN_ENVIRONMENT ?
+                    response()->view('admin.errors.404') :
+                    response()->view('errors.404')
+                ;
+            }
+
             return parent::render($request, $exception);
         }
 
