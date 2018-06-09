@@ -54,18 +54,54 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-
-        if (!($exception instanceof ApiException)) {
-            if ($exception instanceof NotFoundHttpException) {
-                return IS_ADMIN_ENVIRONMENT ?
-                    response()->view('admin.errors.404') :
-                    response()->view('errors.404')
-                ;
-            }
-
-            return parent::render($request, $exception);
+        if ($exception instanceof ApiException) {
+            return $this->apiRender($request, $exception);
         }
 
+        return $this->classicRender($request, $exception);
+    }
+
+    /**
+     * Классическая обработка ошибок в приложении
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function classicRender($request, Exception $exception)
+    {
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->notFoundHandler($request, $exception);
+        }
+
+        return parent::render($request, $exception);
+    }
+
+    /**
+     * Обработка 404-ой ошибки
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function notFoundHandler($request, Exception $exception)
+    {
+        if (IS_ADMIN_ENVIRONMENT) {
+            return response()->view('admin.errors.404');
+        }
+
+        return response()->view('errors.404');
+    }
+
+    /**
+     * Обработка ошибок при запросе через API
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function apiRender($request, Exception $exception)
+    {
         $response = [
             'success' => false,
             'data' => null,
@@ -76,20 +112,26 @@ class Handler extends ExceptionHandler
     }
 
 
+    /**
+     * Рекурсивная запись ошибок в массив
+     *
+     * @param Exception $exception
+     * @return array
+     */
     protected function getError(Exception $exception)
     {
-
         $error = [
             'code' => $exception->getCode(),
             'message' => $exception->getMessage(),
         ];
 
-        if (empty($exception->getPrevious())) {
+        if (blank($exception->getPrevious())) {
             return [$error];
         }
 
         $errors = $this->getError($exception->getPrevious());
         $errors[] = $error;
+
         return $errors;
     }
 
