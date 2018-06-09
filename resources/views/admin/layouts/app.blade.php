@@ -20,7 +20,8 @@
           });
 		</script>
 		<!--end::Web font -->
-        <!--begin::Base Styles -->  
+        <!--begin::Base Styles -->
+		@yield('css-vendor')
         <!--begin::Page Vendors -->
 
 		<!--end::Page Vendors -->
@@ -149,7 +150,7 @@
         <script src="{{ url('/metronic/js/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--end::Base Scripts -->   
         <!--begin::Page Vendors -->
-
+		@yield('js-vendor')
 		<!--end::Page Vendors -->  
         <!--begin::Page Snippets -->
 		{{--<script src="assets/app/js/dashboard.js" type="text/javascript"></script>--}}
