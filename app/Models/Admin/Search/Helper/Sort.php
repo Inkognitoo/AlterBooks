@@ -54,7 +54,7 @@ class Sort extends Model
     {
         $column_index = $request['order'][0]['column'] ?? 0;
         $direction = $request['order'][0]['dir'] ?? $this->direction;
-        $column = $request['columns'][$column_index]['name'] ?? $this->column;
+        $column = $request['columns'][$column_index]['data'] ?? $this->column;
 
         parent::__construct(['column' => $column, 'direction' => $direction]);
     }
