@@ -50,7 +50,7 @@
 							<div class="m-stack m-stack--ver m-stack--general">
 								<div class="m-stack__item m-stack__item--middle m-brand__logo">
 									<a href="{{ route('dashboard') }}" class="m-brand__logo-wrapper">
-										<img alt="" src="{{ url('/metronic/img/logo_default_dark.png') }}"/>
+										<img alt="" src="{{ url('/metronic/img/logo.png') }}"/>
 									</a>
 								</div>
 								<div class="m-stack__item m-stack__item--middle m-brand__tools">
@@ -81,7 +81,7 @@
 										<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" m-dropdown-toggle="click">
 											@include('admin.admin.profile-snippet', ['user' => Auth::user()])
 										</li>
-                                        
+
 									</ul>
 								</div>
 							</div>
