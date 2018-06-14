@@ -36,6 +36,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         if (IS_ADMIN_ENVIRONMENT) {
+            $this->mapAdminApiRoutes();
             $this->mapAdminWebRoutes();
         } else {
             $this->mapApiRoutes();
@@ -84,5 +85,20 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->namespace('App\Http\Controllers\Admin')
             ->group(base_path('routes/admin/web.php'));
+    }
+
+    /**
+     * Define the "api" routes for the admin application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapAdminApiRoutes()
+    {
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace('App\Http\Controllers\Admin\API')
+            ->group(base_path('routes/admin/api.php'));
     }
 }
