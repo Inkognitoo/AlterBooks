@@ -36,4 +36,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
         ->name('logs')
     ;
+
+    Route::get('users', 'UserController@index')
+        ->name('users')
+    ;
 });
