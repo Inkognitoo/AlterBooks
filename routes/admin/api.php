@@ -32,4 +32,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         ->name('api.books')
     ;
 
+    Route::post('/reviews', 'ReviewController@index')
+        ->name('api.reviews')
+    ;
+
 });
