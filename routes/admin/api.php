@@ -36,4 +36,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         ->name('api.reviews')
     ;
 
+    Route::post('/genres', 'GenreController@index')
+        ->name('api.genres')
+    ;
+
 });

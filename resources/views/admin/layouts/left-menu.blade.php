@@ -79,5 +79,17 @@
                 </span>
             </a>
         </li>
+        <li class="m-menu__item {{ Request::is('genres') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
+            <a href="{{ route('genres') }}" class="m-menu__link">
+                <i class="m-menu__link-icon flaticon-list-3"></i>
+                <span class="m-menu__link-title">
+                    <span class="m-menu__link-wrap">
+                        <span class="m-menu__link-text">
+                            Жанры
+                        </span>
+                    </span>
+                </span>
+            </a>
+        </li>
     </ul>
 </div>

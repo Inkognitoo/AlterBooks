@@ -48,4 +48,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('reviews', 'ReviewController@index')
         ->name('reviews')
     ;
+
+    Route::get('genres', 'GenreController@index')
+        ->name('genres')
+    ;
 });
