@@ -7,7 +7,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
     let initTable1 = function() {
 
         // begin first table
-        let table = $('#review_table').DataTable({
+        let table = $('#reviews_table').DataTable({
             responsive: true,
 
             //== Pagination settings
@@ -150,6 +150,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     targets: -1,
                     title: 'Действия',
                     orderable: false,
+                    width: '120px',
                     render: function(data, type, full, meta) {
                         return `
                             <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="View">

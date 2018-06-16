@@ -26,7 +26,7 @@
     </div>
     <div class="m-portlet__body">
         <!--begin: Datatable -->
-        <table class="table table-striped- table-bordered table-hover table-checkable" id="review_table">
+        <table class="table table-striped- table-bordered table-hover table-checkable" id="reviews_table">
             <thead>
             <tr>
                 <th>

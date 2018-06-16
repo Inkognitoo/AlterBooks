@@ -7,7 +7,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
     let initTable1 = function() {
 
         // begin first table
-        let table = $('#book_table').DataTable({
+        let table = $('#books_table').DataTable({
             responsive: true,
 
             //== Pagination settings
@@ -136,6 +136,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                 {
                     targets: -1,
                     title: 'Действия',
+                    width: '120px',
                     orderable: false,
                     render: function(data, type, full, meta) {
                         return `
