@@ -67,5 +67,17 @@
                 </span>
             </a>
         </li>
+        <li class="m-menu__item {{ Request::is('reviews') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
+            <a href="{{ route('reviews') }}" class="m-menu__link">
+                <i class="m-menu__link-icon flaticon-file"></i>
+                <span class="m-menu__link-title">
+                    <span class="m-menu__link-wrap">
+                        <span class="m-menu__link-text">
+                            Рецензии
+                        </span>
+                    </span>
+                </span>
+            </a>
+        </li>
     </ul>
 </div>

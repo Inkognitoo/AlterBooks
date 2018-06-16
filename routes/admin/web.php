@@ -44,4 +44,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('books', 'BookController@index')
         ->name('books')
     ;
+
+    Route::get('reviews', 'ReviewController@index')
+        ->name('reviews')
+    ;
 });
