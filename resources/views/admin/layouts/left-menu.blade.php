@@ -21,7 +21,7 @@
         </li>
         <li class="m-menu__item " aria-haspopup="true" >
             <a href="{{ route('logs') }}" class="m-menu__link" target="_blank">
-                <i class="m-menu__link-icon flaticon-file-1"></i>
+                <i class="m-menu__link-icon flaticon-statistics"></i>
                 <span class="m-menu__link-title">
                     <span class="m-menu__link-wrap">
                         <span class="m-menu__link-text">
