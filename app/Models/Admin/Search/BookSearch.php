@@ -39,7 +39,7 @@ class BookSearch extends Search
         $author = mb_strtolower($author);
 
         return $query->whereHas('author', function($user) use($author) {
-            $user->where(new Expression('LOWER(CONCAT(name, surname, patronymic))'), 'like', "%{$author}%");
+            $user->where(new Expression('LOWER(CONCAT(surname, name, patronymic))'), 'like', "%{$author}%");
         });
     }
 
@@ -52,8 +52,8 @@ class BookSearch extends Search
      */
     public function orderByAuthor(Builder $query, $direction): Builder
     {
-        return $query->leftJoin('users AS users', 'users.id', '=', 'main_model.author_id')
-            ->orderBy(new Expression('CONCAT(name, surname, patronymic)'), $direction)
+        return $query->leftJoin('users AS users', 'users.id', '=', 'books.author_id')
+            ->orderBy(new Expression('CONCAT(users.surname, users.name, users.patronymic)'), $direction)
         ;
     }
 }

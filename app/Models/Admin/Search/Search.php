@@ -83,7 +83,6 @@ abstract class Search
         /** @var Builder $query */
         $query = (new $this->search_class)
             ->newQueryWithoutScopes()
-            ->from((new $this->search_class())->getTable() . ' AS main_model')
         ;
 
         $filters = new Filter($request);
