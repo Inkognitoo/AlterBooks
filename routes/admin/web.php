@@ -40,4 +40,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('users', 'UserController@index')
         ->name('users')
     ;
+
+    Route::get('books', 'BookController@index')
+        ->name('books')
+    ;
 });
