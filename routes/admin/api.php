@@ -28,4 +28,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
         ->name('api.users')
     ;
 
+    Route::post('/books', 'BookController@index')
+        ->name('api.books')
+    ;
+
 });
