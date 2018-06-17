@@ -112,9 +112,10 @@
 					<div class="m-subheader ">
 						<div class="d-flex align-items-center">
 							<div class="mr-auto">
-								<h3 class="m-subheader__title ">
+								<h3 class="m-subheader__title @yield('breadcrumbs-separator')">
 									@yield('section-name')
 								</h3>
+                                @yield('breadcrumbs')
 							</div>
 						</div>
 					</div>
