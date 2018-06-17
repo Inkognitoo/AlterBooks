@@ -1,4 +1,6 @@
 @php
+use \App\Models\Admin\Helper\BreadCrumbs;
+
 /** @var \App\Models\Admin\User $user */
 
 $attributes = [
@@ -13,6 +15,13 @@ $attributes = [
 @section('title', 'AlterBooks | ' . $user->full_name)
 
 @section('section-name', $user->full_name)
+@section('breadcrumbs-separator', 'm-subheader__title--separator')
+@section('breadcrumbs')
+    {!! BreadCrumbs::create([
+            ['Пользователи', route('users')],
+            [$user->full_name]
+    ])  !!}
+@endsection
 
 @section('content')
     <div class="m-portlet">
