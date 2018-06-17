@@ -140,7 +140,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     orderable: false,
                     render: function(data, type, full, meta) {
                         return `
-                            <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="View">
+                            <a href="${full.show_url}" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="View">
                               <i class="la la-eye"></i>
                             </a>
                             <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">
