@@ -61,4 +61,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('genres', 'GenreController@index')
         ->name('genres')
     ;
+    Route::get('genre/{id}', 'GenreController@show')
+        ->name('genre.show')
+    ;
 });

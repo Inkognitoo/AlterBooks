@@ -2,7 +2,7 @@
 
 namespace App\Models\Admin;
 
-use App\Models\Review as ReviewBook;
+use App\Models\Review as BaseReview;
 use App\Traits\Admin\Attributes;
 
 /**
@@ -10,7 +10,7 @@ use App\Traits\Admin\Attributes;
  *
  * @package App\Models\Admin
  */
-class Review extends ReviewBook
+class Review extends BaseReview
 {
     use Attributes;
 

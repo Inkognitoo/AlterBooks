@@ -14,6 +14,13 @@ class GenreResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'created_at' => $this->created_at,
+            'show_url' => route('genre.show', ['id' => $this->id]),
+            'edit_url' => '',
+        ];
     }
 }
