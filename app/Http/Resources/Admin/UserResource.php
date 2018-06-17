@@ -24,6 +24,8 @@ class UserResource extends Resource
             'gender' => $this->gender,
             'is_admin' => $this->is_admin,
             'created_at' => $this->created_at,
+            'show_url' => route('user.show', ['id' => $this->id]),
+            'edit_url' => '',
         ];
     }
 }
