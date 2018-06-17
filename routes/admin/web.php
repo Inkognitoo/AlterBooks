@@ -54,6 +54,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('reviews', 'ReviewController@index')
         ->name('reviews')
     ;
+    Route::get('review/{id}', 'ReviewController@show')
+        ->name('review.show')
+    ;
 
     Route::get('genres', 'GenreController@index')
         ->name('genres')

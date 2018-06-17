@@ -19,7 +19,9 @@ class ReviewResource extends Resource
             'rating' => $this->rating,
             'author' => $this->user->full_name,
             'book' => $this->book->title,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'show_url' => route('review.show', ['id' => $this->id]),
+            'edit_url' => '',
         ];
     }
 }
