@@ -13,36 +13,6 @@
                 </span>
             </a>
         </li>
-        <li class="m-menu__section">
-            <h4 class="m-menu__section-text">
-                Инструменты
-            </h4>
-            <i class="m-menu__section-icon flaticon-more-v3"></i>
-        </li>
-        <li class="m-menu__item " aria-haspopup="true" >
-            <a href="{{ route('logs') }}" class="m-menu__link" target="_blank">
-                <i class="m-menu__link-icon flaticon-statistics"></i>
-                <span class="m-menu__link-title">
-                    <span class="m-menu__link-wrap">
-                        <span class="m-menu__link-text">
-                            Просмотр логов
-                        </span>
-                    </span>
-                </span>
-            </a>
-        </li>
-        <li class="m-menu__item " aria-haspopup="true" >
-            <a href="{{ url('horizon') }}" class="m-menu__link" target="_blank">
-                <i class="m-menu__link-icon flaticon-tabs"></i>
-                <span class="m-menu__link-title">
-                    <span class="m-menu__link-wrap">
-                        <span class="m-menu__link-text">
-                            Менеджер очередей
-                        </span>
-                    </span>
-                </span>
-            </a>
-        </li>
         <li class="m-menu__item {{ Request::is('user*') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
             <a href="{{ route('users') }}" class="m-menu__link">
                 <i class="m-menu__link-icon flaticon-users"></i>
@@ -86,6 +56,36 @@
                     <span class="m-menu__link-wrap">
                         <span class="m-menu__link-text">
                             Жанры
+                        </span>
+                    </span>
+                </span>
+            </a>
+        </li>
+        <li class="m-menu__section">
+            <h4 class="m-menu__section-text">
+                Инструменты
+            </h4>
+            <i class="m-menu__section-icon flaticon-more-v3"></i>
+        </li>
+        <li class="m-menu__item " aria-haspopup="true" >
+            <a href="{{ route('logs') }}" class="m-menu__link" target="_blank">
+                <i class="m-menu__link-icon flaticon-statistics"></i>
+                <span class="m-menu__link-title">
+                    <span class="m-menu__link-wrap">
+                        <span class="m-menu__link-text">
+                            Просмотр логов
+                        </span>
+                    </span>
+                </span>
+            </a>
+        </li>
+        <li class="m-menu__item " aria-haspopup="true" >
+            <a href="{{ url('horizon') }}" class="m-menu__link" target="_blank">
+                <i class="m-menu__link-icon flaticon-tabs"></i>
+                <span class="m-menu__link-title">
+                    <span class="m-menu__link-wrap">
+                        <span class="m-menu__link-text">
+                            Менеджер очередей
                         </span>
                     </span>
                 </span>
