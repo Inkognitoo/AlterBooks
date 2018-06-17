@@ -21,10 +21,9 @@ class User extends BaseUser
      */
     protected function getHtmlViewForGender(): string
     {
-        $gender = $this->getAttribute('gender');
         $gender_string = '';
 
-        switch ($gender) {
+        switch ($this->gender) {
             case self::GENDER_MALE:
                 $gender_string = 'Мужской';
                 break;
@@ -36,8 +35,7 @@ class User extends BaseUser
                 break;
         }
 
-        return sprintf('<p>%s (%s)</p>', $gender, $gender_string);
-
+        return sprintf('<p>%s (%s)</p>', $this->gender, $gender_string);
     }
 
     /**
@@ -47,7 +45,7 @@ class User extends BaseUser
      */
     protected function getHtmlViewForAvatar(): string
     {
-        return sprintf('<p>%s</p><img src="%s">', $this->getAttribute('avatar'), $this->avatar_url);
+        return sprintf('<p>%s</p><img src="%s">', $this->avatar, $this->avatar_url);
     }
 
     /**
