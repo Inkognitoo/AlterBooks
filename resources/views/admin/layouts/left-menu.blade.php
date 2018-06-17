@@ -43,7 +43,7 @@
                 </span>
             </a>
         </li>
-        <li class="m-menu__item {{ Request::is('users') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
+        <li class="m-menu__item {{ Request::is('user*') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
             <a href="{{ route('users') }}" class="m-menu__link">
                 <i class="m-menu__link-icon flaticon-users"></i>
                 <span class="m-menu__link-title">
@@ -55,7 +55,7 @@
                 </span>
             </a>
         </li>
-        <li class="m-menu__item {{ Request::is('books') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
+        <li class="m-menu__item {{ Request::is('book*') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
             <a href="{{ route('books') }}" class="m-menu__link">
                 <i class="m-menu__link-icon flaticon-book"></i>
                 <span class="m-menu__link-title">
@@ -67,7 +67,7 @@
                 </span>
             </a>
         </li>
-        <li class="m-menu__item {{ Request::is('reviews') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
+        <li class="m-menu__item {{ Request::is('review*') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
             <a href="{{ route('reviews') }}" class="m-menu__link">
                 <i class="m-menu__link-icon flaticon-file"></i>
                 <span class="m-menu__link-title">
@@ -79,7 +79,7 @@
                 </span>
             </a>
         </li>
-        <li class="m-menu__item {{ Request::is('genres') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
+        <li class="m-menu__item {{ Request::is('genre*') ? 'm-menu__item--active' : '' }}" aria-haspopup="true" >
             <a href="{{ route('genres') }}" class="m-menu__link">
                 <i class="m-menu__link-icon flaticon-list-3"></i>
                 <span class="m-menu__link-title">
