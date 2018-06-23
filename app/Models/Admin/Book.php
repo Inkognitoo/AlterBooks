@@ -15,6 +15,14 @@ class Book extends BaseBook
     use Attributes;
 
     /**
+     * @var array $safe_attributes Список атрибутов для отображения
+     */
+    protected $safe_attributes = [
+        'id', 'title', 'slug', 'description', 'cover', 'author_id', 'page_count', 'mongodb_book_id',
+        'status', 'is_processing', 'deleted_at', 'created_at', 'updated_at'
+    ];
+
+    /**
      * Вернуть html для отображения автора
      *
      * @return string

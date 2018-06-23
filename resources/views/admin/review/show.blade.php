@@ -2,10 +2,6 @@
 use \App\Models\Admin\Helper\BreadCrumbs;
 
 /** @var \App\Models\Admin\Review $review */
-
-$attributes = [
-    'id', 'rating', 'text', 'user_id', 'book_id', 'deleted_at', 'created_at', 'updated_at',
-];
 @endphp
 
 @extends('admin.layouts.app')
@@ -53,7 +49,7 @@ $attributes = [
                     <table class="table table-striped m-table">
                         <thead>
                         <tbody>
-                        @foreach($review->getAttributesList($attributes) as $attribute => $value)
+                        @foreach($review->getAttributesList() as $attribute => $value)
                             <tr>
                                 <td>
                                     {{ $attribute }}

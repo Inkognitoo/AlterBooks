@@ -2,11 +2,6 @@
 use \App\Models\Admin\Helper\BreadCrumbs;
 
 /** @var \App\Models\Admin\Book $book */
-
-$attributes = [
-    'id', 'title', 'slug', 'description', 'cover', 'author_id', 'page_count', 'mongodb_book_id',
-    'status', 'is_processing', 'deleted_at', 'created_at', 'updated_at'
-];
 @endphp
 
 @extends('admin.layouts.app')
@@ -54,7 +49,7 @@ $attributes = [
                     <table class="table table-striped m-table">
                         <thead>
                         <tbody>
-                        @foreach($book->getAttributesList($attributes) as $attribute => $value)
+                        @foreach($book->getAttributesList() as $attribute => $value)
                             <tr>
                                 <td>
                                     {{ $attribute }}

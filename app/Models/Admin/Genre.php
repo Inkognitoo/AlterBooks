@@ -13,4 +13,11 @@ use App\Traits\Admin\Attributes;
 class Genre extends BaseGenre
 {
     use Attributes;
+
+    /**
+     * @var array $safe_attributes Список атрибутов для отображения
+     */
+    protected $safe_attributes = [
+        'id', 'name', 'slug', 'created_at', 'updated_at',
+    ];
 }

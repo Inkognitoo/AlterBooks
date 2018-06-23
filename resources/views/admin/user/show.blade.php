@@ -2,12 +2,6 @@
 use \App\Models\Admin\Helper\BreadCrumbs;
 
 /** @var \App\Models\Admin\User $user */
-
-$attributes = [
-    'id', 'nickname', 'email', 'password', 'remember_token', 'api_token', 'avatar',
-    'name', 'surname', 'patronymic', 'gender', 'birthday_date', 'about', 'timezone',
-    'is_admin', 'created_at', 'updated_at',
-];
 @endphp
 
 @extends('admin.layouts.app')
@@ -36,7 +30,7 @@ $attributes = [
             <div class="m-portlet__head-tools">
                 <ul class="m-portlet__nav">
                     <li class="m-portlet__nav-item">
-                        <a href="#" class="btn btn-primary m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
+                        <a href="{{ route('user.edit.show', ['id' => $user->id]) }}" class="btn btn-primary m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
                             <span>
                                 <i class="la la-edit"></i>
                                 <span>
@@ -55,7 +49,7 @@ $attributes = [
                     <table class="table table-striped m-table">
                         <thead>
                         <tbody>
-                        @foreach($user->getAttributesList($attributes) as $attribute => $value)
+                        @foreach($user->getAttributesList() as $attribute => $value)
                             <tr>
                                 <td>
                                     {{ $attribute }}

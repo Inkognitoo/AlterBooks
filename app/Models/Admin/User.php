@@ -15,6 +15,15 @@ class User extends BaseUser
     use Attributes;
 
     /**
+     * @var array $safe_attributes Список атрибутов для отображения
+     */
+    protected $safe_attributes = [
+        'id', 'nickname', 'email', 'password', 'remember_token', 'api_token', 'avatar',
+        'name', 'surname', 'patronymic', 'gender', 'birthday_date', 'about', 'timezone',
+        'is_admin', 'created_at', 'updated_at',
+    ];
+
+    /**
      * @var array $datetime_edit_fields Список атрибутов, которым нужно отображать поля для редактирования даты
      */
     protected $datetime_edit_fields = ['updated_at', 'created_at', 'birthday_date'];

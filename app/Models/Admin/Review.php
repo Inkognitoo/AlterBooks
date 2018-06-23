@@ -15,6 +15,13 @@ class Review extends BaseReview
     use Attributes;
 
     /**
+     * @var array $safe_attributes Список атрибутов для отображения
+     */
+    protected $safe_attributes = [
+        'id', 'rating', 'text', 'user_id', 'book_id', 'deleted_at', 'created_at', 'updated_at',
+    ];
+
+    /**
      * Вернуть html для отображения автора
      *
      * @return string
