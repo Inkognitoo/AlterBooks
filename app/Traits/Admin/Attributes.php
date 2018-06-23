@@ -79,6 +79,14 @@ trait Attributes {
             $response = $this->getDefaultHtmlEditForCheckboxAttribute($attribute);
         }
 
+        if (\in_array($attribute, $this->file_edit_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlEditForFileAttribute($attribute);
+        }
+
+        if (array_key_exists($attribute, $this->list_edit_fields ?? [])) {
+            $response = $this->getDefaultHtmlEditForListAttribute($attribute);
+        }
+
         if (blank($response)) {
             $response = $this->getDefaultHtmlEditForAttribute($attribute);
         }
@@ -195,5 +203,43 @@ trait Attributes {
                     <input type="checkbox" id="%s" name="%s" %s>
                     <span></span>
                 </label>', $attribute, $attribute, $checked);
+    }
+
+    /**
+     * Вернуть дефолтный html для отображения поля загрузки файла
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlEditForFileAttribute($attribute): string
+    {
+        return sprintf('
+                <input type="file"
+                    class="form-control m-input" 
+                    id="%s"
+                    name="%s">', $attribute, $attribute);
+    }
+
+    /**
+     * Вернуть дефолтный html для отображения выпадающего списка
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlEditForListAttribute($attribute): string
+    {
+        $options = [];
+
+        foreach ((array)$this->list_edit_fields[$attribute] as $key => $value) {
+            $selected = $this->getAttribute($attribute) === $value ? 'selected' : '';
+
+            $options[] = sprintf('<option %s value="%s">%s</option>', $selected, $value, $key);
+        }
+
+        return sprintf('
+                <select
+                    class="form-control m-input" 
+                    id="%s"
+                    name="%s">%s</select>', $attribute, $attribute, implode(PHP_EOL, $options));
     }
 }
