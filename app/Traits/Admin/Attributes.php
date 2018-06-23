@@ -16,8 +16,9 @@ trait Attributes {
      * @param array $attributes
      * @return array
      */
-    public function getAttributesList(array $attributes): array
+    public function getAttributesList(array $attributes = null): array
     {
+        $attributes = $attributes ?? $this->safe_attributes ?? $this->getAttributes();
         $response = [];
 
         foreach ($attributes as $attribute) {
