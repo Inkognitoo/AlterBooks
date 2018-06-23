@@ -78,7 +78,7 @@ abstract class Search
      * @param Request $request
      * @return ResourceCollection
      */
-    public function apply(Request $request): ResourceCollection
+    final public function apply(Request $request): ResourceCollection
     {
         /** @var Builder $query */
         $query = (new $this->search_class)
