@@ -395,23 +395,40 @@ class User extends Authenticatable
     /**
      * Ресайз аватара пользователя
      *
-     * @param null $height
-     * @param null $width
+     * @param int $height
+     * @param int $width
      * @return string
      */
-    public function avatar($height = null, $width = null) {
-        if ($height == null || $width == null) {
-            return Storage::url($this->avatar_path);
-        }
-        $fit_avatar_path = 'thumbs/' . $height . 'x' . $width . '/' . $this->avatar_path;
-        if (Storage::exists($fit_avatar_path)) {
+    public function avatar($width = null, $height = null)
+    {
+        if (filled($this->avatar)) {
+            if (is_null($width) && is_null($height)) {
+                return $this->getAvatarUrlAttribute();
+            }
+            $fit_avatar_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->avatar_path;
+            if (Storage::exists($fit_avatar_path)) {
+                return Storage::url($fit_avatar_path);
+            }
+            $avatar = Image::make(Storage::url($this->avatar_path))
+                ->fit($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            Storage::put($fit_avatar_path, (string) $avatar->encode());
             return Storage::url($fit_avatar_path);
         }
-        $avatar = Image::make(Storage::url($this->avatar_path))
-            ->fit($height, $width, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-        Storage::put($fit_avatar_path, (string) $avatar->encode());
-        return Storage::url($fit_avatar_path);
+
+        switch ($this->gender) {
+            case $this::GENDER_MALE:
+                $avatar_url = '/img/avatar_man.png';
+                break;
+            case $this::GENDER_FEMALE:
+                $avatar_url = '/img/avatar_woman.png';
+                break;
+            default:
+                $avatar_url = '/img/avatar_default.png';
+                break;
+        }
+
+        return $avatar_url;
     }
 }

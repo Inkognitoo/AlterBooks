@@ -433,23 +433,29 @@ class Book extends Model
     /**
      * Ресайз обложки книги
      *
-     * @param null $height
-     * @param null $width
+     * @param int $height
+     * @param int $width
      * @return string
      */
-    public function cover($height = null, $width = null) {
-        if ($height == null || $width == null) {
-            return Storage::url($this->cover_path);
-        }
-        $fit_cover_path = 'thumbs/' . $height . 'x' . $width . '/' . $this->cover_path;
-        if (Storage::exists($fit_cover_path)) {
+    public function cover($width = null, $height = null)
+    {
+        if (filled($this->cover)) {
+            if (is_null($width) && is_null($height)) {
+                return $this->getCoverUrlAttribute();
+            }
+
+            $fit_cover_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->cover_path;
+            if (Storage::exists($fit_cover_path)) {
+                return Storage::url($fit_cover_path);
+            }
+            $cover = Image::make(Storage::url($this->cover_path))
+                ->fit($width, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            Storage::put($fit_cover_path, (string)$cover->encode());
             return Storage::url($fit_cover_path);
         }
-        $cover = Image::make(Storage::url($this->cover_path))
-            ->fit($height, $width, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-        Storage::put($fit_cover_path, (string) $cover->encode());
-        return Storage::url($fit_cover_path);
+
+        return '/img/default_book_cover.png';
     }
 }
