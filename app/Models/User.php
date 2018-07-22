@@ -9,7 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Exception;
-use Image;
+use Intervention\Image\Facades\Image;
 use Storage;
 
 /**
@@ -393,42 +393,28 @@ class User extends Authenticatable
     }
 
     /**
-     * Ресайз аватара пользователя
+     * Аватар пользователя произвольного размера
      *
      * @param int $height
      * @param int $width
      * @return string
      */
-    public function avatar($width = null, $height = null)
+    public function avatar(int $width = null, int $height = null): string
     {
-        if (filled($this->avatar)) {
-            if (is_null($width) && is_null($height)) {
-                return $this->getAvatarUrlAttribute();
-            }
-            $fit_avatar_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->avatar_path;
-            if (Storage::exists($fit_avatar_path)) {
-                return Storage::url($fit_avatar_path);
-            }
-            $avatar = Image::make(Storage::url($this->avatar_path))
-                ->fit($width, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            Storage::put($fit_avatar_path, (string) $avatar->encode());
+        if ((is_null($width) && is_null($height)) || blank($this->avatar)) {
+            return $this->avatar_url;
+        }
+
+        $fit_avatar_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->avatar_path;
+        if (Storage::exists($fit_avatar_path)) {
             return Storage::url($fit_avatar_path);
         }
 
-        switch ($this->gender) {
-            case $this::GENDER_MALE:
-                $avatar_url = '/img/avatar_man.png';
-                break;
-            case $this::GENDER_FEMALE:
-                $avatar_url = '/img/avatar_woman.png';
-                break;
-            default:
-                $avatar_url = '/img/avatar_default.png';
-                break;
-        }
-
-        return $avatar_url;
+        $avatar = Image::make(Storage::url($this->avatar_path))
+            ->fit($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        Storage::put($fit_avatar_path, (string)$avatar->encode());
+        return Storage::url($fit_avatar_path);
     }
 }

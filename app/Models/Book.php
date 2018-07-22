@@ -10,11 +10,11 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\Facades\Image;
 use Storage;
 use Exception;
 use Cviebrock\EloquentSluggable\Sluggable;
 use File;
-use Image;
 
 /**
  * App\Models\Book
@@ -431,31 +431,28 @@ class Book extends Model
     }
 
     /**
-     * Ресайз обложки книги
+     * Обложка книги произвольного размера
      *
      * @param int $height
      * @param int $width
      * @return string
      */
-    public function cover($width = null, $height = null)
+    public function cover(int $width = null, int $height = null): string
     {
-        if (filled($this->cover)) {
-            if (is_null($width) && is_null($height)) {
-                return $this->getCoverUrlAttribute();
-            }
+        if ((is_null($width) && is_null($height)) || blank($this->cover)) {
+            return $this->cover_url;
+        }
 
-            $fit_cover_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->cover_path;
-            if (Storage::exists($fit_cover_path)) {
-                return Storage::url($fit_cover_path);
-            }
-            $cover = Image::make(Storage::url($this->cover_path))
-                ->fit($width, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            Storage::put($fit_cover_path, (string)$cover->encode());
+        $fit_cover_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->cover_path;
+        if (Storage::exists($fit_cover_path)) {
             return Storage::url($fit_cover_path);
         }
 
-        return '/img/default_book_cover.png';
+        $cover = Image::make(Storage::url($this->cover_path))
+            ->fit($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        Storage::put($fit_cover_path, (string)$cover->encode());
+        return Storage::url($fit_cover_path);
     }
 }
