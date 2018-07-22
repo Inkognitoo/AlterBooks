@@ -43,6 +43,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('user/{id}', 'UserController@show')
         ->name('user.show')
     ;
+    Route::get('user/{id}/edit', 'UserController@edit')
+        ->name('user.edit.show')
+    ;
+    Route::post('user/{id}/update', 'UserController@update')
+        ->name('user.update')
+    ;
 
     Route::get('books', 'BookController@index')
         ->name('books')

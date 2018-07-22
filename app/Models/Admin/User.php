@@ -15,6 +15,27 @@ class User extends BaseUser
     use Attributes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'nickname', 'email', 'name',
+        'surname', 'patronymic', 'birthday_date',
+        'gender', 'about', 'timezone',
+        'avatar', 'is_admin'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_admin' => 'boolean',
+    ];
+
+    /**
      * @var array $safe_attributes Список атрибутов для отображения
      */
     protected $safe_attributes = [
@@ -26,17 +47,17 @@ class User extends BaseUser
     /**
      * @var array $datetime_edit_fields Список атрибутов, которым нужно отображать поля для редактирования даты
      */
-    protected $datetime_edit_fields = ['updated_at', 'created_at', 'birthday_date'];
+    protected $datetime_edit_fields = ['birthday_date'];
 
     /**
      * @var array $number_edit_fields Список атрибутов, которым нужно отображать поля редактирования целочисленных данных
      */
-    protected $number_edit_fields = ['id'];
+    protected $number_edit_fields = [];
 
     /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
      */
-    protected $disabled_edit_fields = ['password', 'remember_token', 'api_token'];
+    protected $disabled_edit_fields = ['id', 'password', 'remember_token', 'api_token', 'updated_at', 'created_at'];
 
     /**
      * @var array $area_edit_fields Список атрибутов, которым нужно отображать широкие поля редактирования
