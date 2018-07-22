@@ -22,7 +22,7 @@ class Review extends BaseReview
     ];
 
     /**
-     * Вернуть html для отображения автора
+     * html для отображения автора
      *
      * @return string
      */
@@ -36,7 +36,7 @@ class Review extends BaseReview
     }
 
     /**
-     * Вернуть html для отображения книги
+     * html для отображения книги
      *
      * @return string
      */

@@ -23,7 +23,12 @@ class Book extends BaseBook
     ];
 
     /**
-     * Вернуть html для отображения автора
+     * @var array $boolean_fields Список атрибутов, которым нужно отображать булево поле
+     */
+    protected $boolean_fields = ['is_processing'];
+
+    /**
+     * html для отображения автора
      *
      * @return string
      */
@@ -37,7 +42,7 @@ class Book extends BaseBook
     }
 
     /**
-     * Вернуть html для отображения обложки
+     * html для отображения обложки
      *
      * @return string
      */
@@ -47,7 +52,7 @@ class Book extends BaseBook
     }
 
     /**
-     * Вернуть html для отображения статуса
+     * html для отображения статуса
      *
      * @return string
      */
@@ -65,15 +70,5 @@ class Book extends BaseBook
         }
 
         return sprintf('<p>%s (%s)</p>', $this->status, $status_string);
-    }
-
-    /**
-     * Вернуть html для отображения атрибута is_processing
-     *
-     * @return string
-     */
-    protected function getHtmlViewForIsProcessing(): string
-    {
-        return '<p>' . ($this->is_processing ? 'true' : 'false') . '</p>';
     }
 }

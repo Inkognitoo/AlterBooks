@@ -45,6 +45,11 @@ class User extends BaseUser
     ];
 
     /**
+     * @var array $boolean_fields Список атрибутов, которым нужно отображать булево поле
+     */
+    protected $boolean_fields = ['is_admin'];
+
+    /**
      * @var array $datetime_edit_fields Список атрибутов, которым нужно отображать поля для редактирования даты
      */
     protected $datetime_edit_fields = ['birthday_date'];
@@ -52,7 +57,7 @@ class User extends BaseUser
     /**
      * @var array $number_edit_fields Список атрибутов, которым нужно отображать поля редактирования целочисленных данных
      */
-    protected $number_edit_fields = [];
+    protected $number_edit_fields = []; // Заполняется в конструкторе
 
     /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
@@ -94,7 +99,7 @@ class User extends BaseUser
     }
 
     /**
-     * Вернуть html для отображения гендера
+     * html для отображения гендера
      *
      * @return string
      */
@@ -118,7 +123,7 @@ class User extends BaseUser
     }
 
     /**
-     * Вернуть html для отображения аватары
+     * html для отображения аватары
      *
      * @return string
      */
@@ -128,17 +133,7 @@ class User extends BaseUser
     }
 
     /**
-     * Вернуть html для отображения атрибута is_admin
-     *
-     * @return string
-     */
-    protected function getHtmlViewForIsAdmin(): string
-    {
-        return '<p>' . ($this->is_admin ? 'true' : 'false') . '</p>';
-    }
-
-    /**
-     * Вернуть html для отображения поля редактирования email
+     * html для отображения поля редактирования email
      *
      * @return string
      */

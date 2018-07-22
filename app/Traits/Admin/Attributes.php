@@ -11,7 +11,7 @@ namespace App\Traits\Admin;
 trait Attributes {
 
     /**
-     * Вернуть список атрибутов (ключ/значение) в переданном порядке
+     * Список атрибутов (ключ/значение) в переданном порядке
      *
      * @param array $attributes
      * @return array
@@ -29,7 +29,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть html для отображения текущего атрибута
+     * html для отображения текущего атрибута
      *
      * @param $attribute
      * @return string
@@ -43,11 +43,15 @@ trait Attributes {
             $response = $this->getDefaultHtmlViewForAttribute($attribute);
         }
 
+        if (\in_array($attribute, $this->boolean_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlViewForBooleanAttribute($attribute);
+        }
+
         return $response;
     }
 
     /**
-     * Вернуть html для отображения поля редактирования текущего атрибута
+     * html для отображения поля редактирования текущего атрибута
      *
      * @param $attribute
      * @return string
@@ -96,7 +100,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения текущего атрибута
+     * Дефолтный html для отображения текущего атрибута
      *
      * @param $attribute
      * @return string
@@ -107,7 +111,18 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения поля редактирования текущего атрибута
+     * Дефолтный html для отображения булева поля
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlViewForBooleanAttribute($attribute): string
+    {
+        return '<p>' . ($this->getAttribute($attribute) ? 'true' : 'false') . '</p>';
+    }
+
+    /**
+     * Дефолтный html для отображения поля редактирования текущего атрибута
      *
      * @param $attribute
      * @return string
@@ -124,7 +139,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения поля редактирования datetime атрибута
+     * Дефолтный html для отображения поля редактирования datetime атрибута
      *
      * @param $attribute
      * @return string
@@ -140,7 +155,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения поля редактирования целочисленного атрибута
+     * Дефолтный html для отображения поля редактирования целочисленного атрибута
      *
      * @param $attribute
      * @return string
@@ -157,7 +172,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения поля неактивных атрибутов
+     * Дефолтный html для отображения поля неактивных атрибутов
      *
      * @param $attribute
      * @return string
@@ -175,7 +190,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения поля редактирования многострочных данных
+     * Дефолтный html для отображения поля редактирования многострочных данных
      *
      * @param $attribute
      * @return string
@@ -190,7 +205,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения поля редактирования true/false данных
+     * Дефолтный html для отображения поля редактирования true/false данных
      *
      * @param $attribute
      * @return string
@@ -207,7 +222,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения поля загрузки файла
+     * Дефолтный html для отображения поля загрузки файла
      *
      * @param $attribute
      * @return string
@@ -222,7 +237,7 @@ trait Attributes {
     }
 
     /**
-     * Вернуть дефолтный html для отображения выпадающего списка
+     * Дефолтный html для отображения выпадающего списка
      *
      * @param $attribute
      * @return string
