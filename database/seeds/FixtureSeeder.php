@@ -30,33 +30,45 @@ class FixtureSeeder extends Seeder
     {
         $files = File::allFiles(storage_path('seed/books/'));
         $count = 10;
-        $count = 1;
         factory(App\Models\User::class, $count)->create()->each(function ($user) use ($files) {
+            $this->command->info('Перехожу к созданию фейкового пользователя');
+
             /** @var \App\Models\User $user*/
             $faker = Faker::create();
 
             if (self::WITH_IMAGES) {
+                $this->command->info('Создаю аватару для фейкового пользователя');
+
                 $avatar_path = $faker->image('/tmp', rand(200, 600), rand(200, 600), 'cats');
                 $avatar = new UploadedFile($avatar_path, 'cat');
                 $user->avatar = $avatar;
                 $user->save();
+
+                $this->command->info('Аватара создана');
             }
 
             $count = rand(1, 5);
-            $count = 1;
             for ($i = 0; $i < $count; $i++) {
+                $this->command->info('Создаю книгу #' . ($i + 1) . ' для фейкового пользователя');
+
                 /** @var \App\Models\Book $book */
                 $book = factory(App\Models\Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]);
                 $user->books()->save($book);
 
                 if (self::WITH_IMAGES) {
+                    $this->command->info('Создаю обложку для книги');
+
                     $cover_path = $faker->image('/tmp', rand(200, 600), rand(200, 600));
                     $cover = new UploadedFile($cover_path, 'cover');
                     $book->cover = $cover;
                     $book->save();
+
+                    $this->command->info('Обложка создана');
                 }
 
                 if (self::WITH_BOOKS) {
+                    $this->command->info('Загружаю текст книги');
+
                     /** @var SplFileInfo $file_info */
                     $file_info = $faker->randomElement($files);
                     $file = new UploadedFile($file_info->getPathname(), $file_info->getFilename());
@@ -64,8 +76,14 @@ class FixtureSeeder extends Seeder
                     $book->save();
                     $book->is_processing = false;
                     $book->save();
+
+                    $this->command->info('Текст загружен');
                 }
+
+                $this->command->info('Книга создана');
             }
+
+            $this->command->info('Заполняю жанры для книг');
 
             $genres = \App\Models\Genre::all();
             if (filled($genres)) {
@@ -75,6 +93,8 @@ class FixtureSeeder extends Seeder
                     );
                 });
             }
+
+            $this->command->info('Создаю рецензии');
 
             $count = rand(1, 5);
             for ($i = 0; $i < $count; $i++) {
@@ -87,12 +107,17 @@ class FixtureSeeder extends Seeder
                 }
             }
 
+            $this->command->info('Создаю оценки к чужим книгам от текущего пользователя');
+
             $review = \App\Models\Review::inRandomOrder()->where('user_id', '!=', $user->id)->first();
             if (filled($review)) {
                 $review->reviewEstimates()->save(factory(App\Models\ReviewEstimate::class)->make([
                     'user_id' => $user->id
                 ]));
             }
+
+            $this->command->info('Фейковый пользователь создан');
+            $this->command->line('');
         });
     }
 
@@ -108,6 +133,8 @@ class FixtureSeeder extends Seeder
         if (filled(User::where(['email' => env('SEEDER_USER_EMAIL')])->first())) {
             return;
         }
+
+        $this->command->info('Перехожу к созданию дефолтного пользователя');
 
         $params = [
             'email' => env('SEEDER_USER_EMAIL'),
@@ -143,5 +170,6 @@ class FixtureSeeder extends Seeder
             $user->save();
         }
 
+        $this->command->info('Создание дефолтного пользователя завершено');
     }
 }
