@@ -50,6 +50,11 @@ class User extends BaseUser
     protected $boolean_fields = ['is_admin'];
 
     /**
+     * @var array $image_fields Список атрибутов, которым нужно отображать img поле
+     */
+    protected $image_fields = ['avatar'];
+
+    /**
      * @var array $datetime_edit_fields Список атрибутов, которым нужно отображать поля для редактирования даты
      */
     protected $datetime_edit_fields = ['birthday_date'];
@@ -120,16 +125,6 @@ class User extends BaseUser
         }
 
         return sprintf('<p>%s (%s)</p>', $this->gender, $gender_string);
-    }
-
-    /**
-     * html для отображения аватары
-     *
-     * @return string
-     */
-    protected function getHtmlViewForAvatar(): string
-    {
-        return sprintf('<p>%s</p><img src="%s">', $this->avatar, $this->avatar_url);
     }
 
     /**

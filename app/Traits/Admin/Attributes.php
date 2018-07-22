@@ -47,6 +47,10 @@ trait Attributes {
             $response = $this->getDefaultHtmlViewForBooleanAttribute($attribute);
         }
 
+        if (\in_array($attribute, $this->image_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlViewForImageAttribute($attribute);
+        }
+
         return $response;
     }
 
@@ -119,6 +123,17 @@ trait Attributes {
     protected function getDefaultHtmlViewForBooleanAttribute($attribute): string
     {
         return '<p>' . ($this->getAttribute($attribute) ? 'true' : 'false') . '</p>';
+    }
+
+    /**
+     * Дефолтный html для отображения img поля
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlViewForImageAttribute($attribute): string
+    {
+        return sprintf('<p>%s</p><img src="%s">', $this->$attribute, $this->$attribute());
     }
 
     /**

@@ -28,6 +28,11 @@ class Book extends BaseBook
     protected $boolean_fields = ['is_processing'];
 
     /**
+     * @var array $image_fields Список атрибутов, которым нужно отображать img поле
+     */
+    protected $image_fields = ['cover'];
+
+    /**
      * html для отображения автора
      *
      * @return string
@@ -39,16 +44,6 @@ class Book extends BaseBook
             route('user.show', ['id' => $this->author_id]),
             $this->author->full_name
         );
-    }
-
-    /**
-     * html для отображения обложки
-     *
-     * @return string
-     */
-    protected function getHtmlViewForCover(): string
-    {
-        return sprintf('<p>%s</p><img src="%s">', $this->cover, $this->cover_url);
     }
 
     /**
