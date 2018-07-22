@@ -4,7 +4,7 @@
 
 <a href="#" class="m-nav__link m-dropdown__toggle">
     <span class="m-topbar__userpic">
-        <img src="{{ $user->avatar_url }}"
+        <img src="{{ $user->avatar(300, 300) }}"
              class="m--img-rounded m--marginless m--img-centered" alt="{{ $user->full_name }}"/>
     </span>
     <span class="m-topbar__username m--hide">
@@ -18,7 +18,7 @@
              style="background: url({{ url('/metronic/img/profile-background.jpg') }}); background-size: cover;">
             <div class="m-card-user m-card-user--skin-dark">
                 <div class="m-card-user__pic">
-                    <img src="{{ $user->avatar_url }}" class="m--img-rounded m--marginless" alt="{{ $user->full_name }}"/>
+                    <img src="{{ $user->avatar(300, 300) }}" class="m--img-rounded m--marginless" alt="{{ $user->full_name }}"/>
                 </div>
                 <div class="m-card-user__details">
                     <span class="m-card-user__name m--font-weight-500">
