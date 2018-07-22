@@ -22,6 +22,16 @@ class Review extends BaseReview
     ];
 
     /**
+     * Книга, к которой оставлена рецензия
+     */
+    public function book()
+    {
+        return $this->belongsTo(Book::class)
+            ->withoutGlobalScopes()
+        ;
+    }
+
+    /**
      * html для отображения автора
      *
      * @return string

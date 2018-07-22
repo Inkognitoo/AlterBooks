@@ -4,7 +4,7 @@ namespace App\Models\Admin\Search;
 
 use App\Http\Resources\Admin\ReviewCollection;
 use App\Http\Resources\Admin\ReviewResource;
-use App\Models\Review;
+use App\Models\Admin\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 
