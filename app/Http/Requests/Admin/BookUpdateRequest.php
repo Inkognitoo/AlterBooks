@@ -12,14 +12,15 @@ use Illuminate\Validation\Rule;
  *
  * App\Http\Requests\BookUpdateRequest
  *
- * @property string title
- * @property string slug
+ * @property string $title
+ * @property string $slug
  * @property UploadedFile|null $cover
- * @property string|null description
+ * @property string|null $description
+ * @property integer $author_id
  * @property string $status
  * @property array $genres
- * @property integer page_count
- * @property boolean is_processing
+ * @property integer $page_count
+ * @property boolean $is_processing
  */
 class BookUpdateRequest extends FormRequest
 {
@@ -51,6 +52,7 @@ class BookUpdateRequest extends FormRequest
             'slug' => 'required|max:255',
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
+            'author_id' => 'exists:users,id',
             //'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
             'status' => [
                 'required',
