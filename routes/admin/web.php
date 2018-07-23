@@ -56,6 +56,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('book/{id}', 'BookController@show')
         ->name('book.show')
     ;
+    Route::get('book/{id}/edit', 'BookController@edit')
+        ->name('book.edit.show')
+    ;
+    Route::post('book/{id}/update', 'BookController@update')
+        ->name('book.update')
+    ;
 
     Route::get('reviews', 'ReviewController@index')
         ->name('reviews')

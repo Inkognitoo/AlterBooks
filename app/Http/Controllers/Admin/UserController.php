@@ -59,6 +59,7 @@ class UserController extends Controller
      * @param UserUpdateRequest $request
      * @param $id
      * @return Response
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function update(UserUpdateRequest $request, $id)
     {
@@ -67,8 +68,6 @@ class UserController extends Controller
         ;
 
         $user->fill($request->all());
-
-      //  dd($user);
         $user->save();
 
         return redirect(route('user.edit.show', ['id' => $user->id]))

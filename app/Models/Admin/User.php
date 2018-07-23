@@ -62,7 +62,7 @@ class User extends BaseUser
     /**
      * @var array $number_edit_fields Список атрибутов, которым нужно отображать поля редактирования целочисленных данных
      */
-    protected $number_edit_fields = []; // Заполняется в конструкторе
+    protected $number_edit_fields = [];
 
     /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
@@ -87,7 +87,7 @@ class User extends BaseUser
     /**
      * @var array $list_edit_fields Список атрибутов, которым нужно отображать выпадающий список
      */
-    protected $list_edit_fields = [];
+    protected $list_edit_fields = []; // Заполняется в конструкторе
 
     public function __construct(array $attributes = [])
     {
