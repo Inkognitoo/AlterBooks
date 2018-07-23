@@ -17,6 +17,7 @@ use Illuminate\Validation\Rule;
  * @property UploadedFile|null $cover
  * @property string|null $description
  * @property integer $author_id
+ * @property UploadedFile|null $text
  * @property string $status
  * @property array $genres
  * @property integer $page_count
@@ -53,7 +54,7 @@ class BookUpdateRequest extends FormRequest
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
             'author_id' => 'exists:users,id',
-            //'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
+            'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
             'status' => [
                 'required',
                 Rule::in([Book::STATUS_OPEN, Book::STATUS_CLOSE]),

@@ -21,14 +21,14 @@ class Book extends BaseBook
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'description', 'cover', 'author_id', 'page_count', 'genres', 'status', 'is_processing',
+        'title', 'slug', 'description', 'cover', 'text', 'author_id', 'page_count', 'genres', 'status', 'is_processing',
     ];
 
     /**
      * @var array $safe_attributes Список атрибутов для отображения
      */
     protected $safe_attributes = [
-        'id', 'title', 'slug', 'description', 'cover', 'author_id', 'genres', 'page_count', 'mongodb_book_id',
+        'id', 'title', 'slug', 'description', 'cover', 'author_id', 'text', 'genres', 'page_count', 'mongodb_book_id',
         'status', 'is_processing', 'created_at', 'updated_at'
     ];
 
@@ -65,7 +65,7 @@ class Book extends BaseBook
     /**
      * @var array $file_edit_fields Список атрибутов, которым нужно отображать поля для ввода файлов
      */
-    protected $file_edit_fields = ['cover'];
+    protected $file_edit_fields = ['cover', 'text'];
 
     /**
      * @var array $list_edit_fields Список атрибутов, которым нужно отображать выпадающий список
@@ -96,6 +96,16 @@ class Book extends BaseBook
             route('user.show', ['id' => $this->author_id]),
             $this->author->full_name
         );
+    }
+
+    /**
+     * html для отображения текста книги
+     *
+     * @return string
+     */
+    protected function getHtmlViewForText(): string
+    {
+        return sprintf('<p>%s</p>', filled($this->mongodb_book_id) ? 'загружен' : 'не загружен');
     }
 
     /**
