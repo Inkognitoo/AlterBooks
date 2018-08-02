@@ -1,0 +1,68 @@
+.review {
+    max-width: 900px;
+    margin-top: 80px;
+
+    &__header {
+        font-size: 18px;
+    }
+
+    &-element {
+        width: 100%;
+        box-sizing: border-box;
+
+        margin-bottom: 40px;
+
+        &__body {
+            padding: 10px 10px 20px;
+            border: 1px solid #eeeeee;
+            border-top: none;
+            background: white;
+            box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        &__hr {
+            width: 100%;
+            margin: 30px 0 10px;
+            border: none;
+            border-top: 2px dashed @grey;
+        }
+
+        &[data-status="close"] {
+            display: none;
+        }
+
+        &[data-auth="true"] {
+            margin-bottom: 20px;
+        }
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        font-size: 17px;
+
+        @media screen and (max-width: @lg) {
+            padding-left: 10px;
+            padding-right: 20px;
+        }
+    }
+
+    &-element[data-auth="true"] &__main {
+        padding-left: 10px;
+        padding-right: 20px;
+    }
+
+
+    &__button {
+        display: none;
+        width: 150px;
+        min-height: 35px;
+        margin-left: auto;
+        text-transform: none;
+
+        .review-element[data-auth="true"][data-status="delete"] & {
+            display: block;
+        }
+    }
+}

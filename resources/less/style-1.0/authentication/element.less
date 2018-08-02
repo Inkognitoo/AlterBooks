@@ -1,0 +1,20 @@
+.authentication-element {
+    position: relative;
+    margin-bottom: 25px;
+
+    &:first-child {
+        margin-top: 55px;
+    }
+
+
+    &[data-status="error"] .registration-element__field {
+        border-color: red;
+        color: red;
+    }
+    &[data-status="error"] .registration-element__error {
+        display: block;
+    }
+    .authentication-re-password[data-status="correct"] & {
+        display: none;
+    }
+}

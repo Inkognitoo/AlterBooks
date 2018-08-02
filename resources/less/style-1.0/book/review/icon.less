@@ -1,0 +1,33 @@
+.review__icon {
+    width: 25px;
+    height: 25px;
+
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    cursor: pointer;
+
+    .review-element[data-auth="true"][data-status="delete"] & {
+        display: none;
+    }
+
+    &:hover {
+        background-color: #f9f9f9;
+    }
+
+    &_edit {
+        margin-left: auto;
+        margin-right: 10px;
+        background-image: url(/css/img/icons/edit-pencil_grey.svg);
+        background-size: 75% 75%;
+    }
+
+    &_delete {
+        background-image: url(/css/img/icons/close_grey.svg);
+        background-size: 85% 85%;
+    }
+
+    .review-element[data-auth="false"] & {
+        display: none;
+    }
+}

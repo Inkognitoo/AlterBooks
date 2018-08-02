@@ -1,0 +1,106 @@
+.review-new-stars {
+    display: flex;
+    flex-direction: row-reverse;
+
+    &__element {
+        display: none;
+    }
+
+    &__star:hover {
+        cursor: pointer;
+    }
+
+    &__star .review-rating__star {
+        margin-right: 2px;
+        fill: #e2e2e2;
+        transition: 0.2s fill;
+    }
+
+
+    // поведение здведочек "перед" нажатой
+
+    &__element[value="10"]:checked ~ &__star .review-rating__star,
+    &__element[value="9"]:checked ~ &__star .review-rating__star,
+    &__element[value="8"]:checked ~ &__star .review-rating__star,
+    &__element[value="7"]:checked ~ &__star .review-rating__star {
+        fill: #a0c88f;
+    }
+
+    &__element[value="6"]:checked ~ &__star .review-rating__star,
+    &__element[value="5"]:checked ~ &__star .review-rating__star,
+    &__element[value="4"]:checked ~ &__star .review-rating__star {
+        fill: #f3d8ab;
+    }
+
+    &__element[value="3"]:checked ~ &__star .review-rating__star,
+    &__element[value="2"]:checked ~ &__star .review-rating__star,
+    &__element[value="1"]:checked ~ &__star .review-rating__star {
+        fill: #eb9e8d;
+    }
+
+
+    // поведение конкретной звездочки при нажатии
+
+    &__element[value="10"]:checked .review-rating__star,
+    &__element[value="9"]:checked .review-rating__star,
+    &__element[value="8"]:checked .review-rating__star,
+    &__element[value="7"]:checked .review-rating__star {
+        fill: #a0c88f;
+    }
+
+    &__element[value="6"]:checked .review-rating__star,
+    &__element[value="5"]:checked .review-rating__star,
+    &__element[value="7"]:checked .review-rating__star {
+        fill: #f3d8ab;
+    }
+
+    &__element[value="3"]:checked .review-rating__star,
+    &__element[value="2"]:checked .review-rating__star,
+    &__element[value="4"]:checked .review-rating__star {
+        fill: #eb9e8d;
+    }
+
+
+    // поведение зведочек "перед" наведенной
+
+    &__element[value="10"] + &__star:hover ~ &__star .review-rating__star,
+    &__element[value="9"] + &__star:hover ~ &__star .review-rating__star,
+    &__element[value="8"] + &__star:hover ~ &__star .review-rating__star,
+    &__element[value="7"] + &__star:hover ~ &__star .review-rating__star {
+        fill: #1cba00;
+    }
+
+    &__element[value="6"] + &__star:hover ~ &__star .review-rating__star,
+    &__element[value="5"] + &__star:hover ~ &__star .review-rating__star,
+    &__element[value="4"] + &__star:hover ~ &__star .review-rating__star {
+        fill: #f3b134;
+    }
+
+    &__element[value="3"] + &__star:hover ~ &__star .review-rating__star,
+    &__element[value="2"] + &__star:hover ~ &__star .review-rating__star,
+    &__element[value="1"] + &__star:hover ~ &__star .review-rating__star {
+        fill: #eb502a;
+    }
+
+
+    // поведение конкретной звездочки при наведении
+
+    &__element[value="10"] + &__star:hover .review-rating__star,
+    &__element[value="9"] + &__star:hover .review-rating__star,
+    &__element[value="8"] + &__star:hover .review-rating__star,
+    &__element[value="7"] + &__star:hover .review-rating__star {
+        fill: #1cba00;
+    }
+
+    &__element[value="6"] + &__star:hover .review-rating__star,
+    &__element[value="5"] + &__star:hover .review-rating__star,
+    &__element[value="4"] + &__star:hover .review-rating__star {
+        fill: #f3b134;
+    }
+
+    &__element[value="3"] + &__star:hover .review-rating__star,
+    &__element[value="2"] + &__star:hover .review-rating__star,
+    &__element[value="1"] + &__star:hover .review-rating__star {
+        fill: #eb502a;
+    }
+}

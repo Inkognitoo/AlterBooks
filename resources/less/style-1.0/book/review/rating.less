@@ -1,0 +1,114 @@
+.review-rating {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    flex-basis: 100%;
+    max-width: 100%;
+
+    margin-bottom: 10px;
+
+    &:after {
+        content: "";
+
+        position: absolute;
+        bottom: -2px;
+
+        width: 100%;
+        height: 2px;
+
+        background: @grey;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 85px;
+        height: 35px;
+
+        margin-left: 15px;
+
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        background: @grey;
+
+        color: white;
+
+        @media screen and (max-width: @sm) {
+            width: 70px;
+            margin-left: 0;
+            font-size: 16px;
+        }
+    }
+
+    &-stars{
+        display: flex;
+        margin-left: 15px;
+
+        @media screen and (max-width: @sm) {
+            display: none;
+        }
+    }
+
+    &__star {
+        width: 20px;
+        height: 20px;
+        fill: @grey;
+    }
+
+
+    &[data-rating="10"],
+    &[data-rating="9"],
+    &[data-rating="8"],
+    &[data-rating="7"] {
+        @color: #1cba00;
+        &:after {
+            background: @color;
+        }
+        & .review-rating__header {
+            background: @color;
+        }
+        & .review-rating__star {
+            &_active {
+                fill: @color;
+            }
+        }
+    }
+    &[data-rating="6"],
+    &[data-rating="5"],
+    &[data-rating="4"] {
+        @color: #f3b134;
+        &:after {
+            background: @color;
+        }
+        & .review-rating__header {
+            background: @color;
+        }
+        & .review-rating__star {
+            &_active {
+                fill: @color;
+            }
+        }
+    }
+    &[data-rating="3"] ,
+    &[data-rating="2"],
+    &[data-rating="1"] {
+        @color: #eb502a;
+        &:after {
+            background: @color;
+        }
+        & .review-rating__header {
+            background: @color;
+        }
+        & .review-rating__star {
+            &_active {
+                fill: @color;
+            }
+        }
+    }
+}

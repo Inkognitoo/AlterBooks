@@ -1,76 +1,13 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@php
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users */
+    /** @var Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books */
+@endphp
 
-    <title>AlterBooks</title>
+@extends('layouts.app')
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+@section('title', 'AlterBooks')
 
-    <!-- Styles -->
-    <style>
-        html, body {
-            color: #636b6f;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            height: 100vh;
-            margin: 0;
-            background-color: #f5f8fa;
-        }
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
-        .title {
-            font-size: 84px;
-        }
-        .links > a {
-            color: #636b6f;
-            padding: 0 25px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-        .m-b-md {
-            margin-bottom: 30px;
-        }
-        .img-cover {
-            width: 100px;
-        }
-    </style>
-    <link rel="stylesheet" href=" {{ mix('/css/style.css') }}">
-
-    <!--Icons-->
-    <link rel="manifest" href={{url('/manifest.json')}}>
-    <link rel="icon" type="image/png" href={{url('/img/icon-16.png')}} sizes="16x16">
-    <link rel="icon" type="image/png" href={{url('/img/icon-32.png')}} sizes="32x32">
-    <link rel="icon" type="image/png" href={{url('/img/icon-180.png')}} sizes="180x180">
-    <link rel="icon" type="image/png" href={{url('/img/icon-192.png')}} sizes="192x192">
-</head>
-<body>
-<div class="landing">
-    @if (Route::has('login'))
-        <div class="top-right links">
-            @auth
-                <a href="{{ Auth::user()->url }}">
-                    {{ t('app.button', 'Профиль') }}
-                </a>
-            @else
-                <a href="{{ route('login') }}">
-                    {{ t('app.button', 'Вход') }}
-                </a>
-                <a href="{{ route('register') }}">
-                    {{ t('app.button', 'Регистрация') }}
-                </a>
-            @endauth
-        </div>
-    @endif
+@section('content')
     <main class="landing-content">
         <div class="landing-content__title title m-b-md">AlterBooks</div>
         <div class="landing-element landing-books">
@@ -114,6 +51,4 @@
             </div>
         </div>
     </main>
-</div>
-</body>
-</html>
+@endsection

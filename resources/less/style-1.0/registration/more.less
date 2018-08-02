@@ -1,0 +1,40 @@
+.registration-more {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 35px;
+
+    &__element {
+        width: 45px;
+        height: 45px;
+
+        margin-right: 20px;
+
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+
+        cursor: pointer;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        @media screen and (max-width: @sm) {
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__button {
+        margin-bottom: 0;
+    }
+}

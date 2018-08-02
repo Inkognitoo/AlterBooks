@@ -1,0 +1,16 @@
+.review__date {
+    margin-left: 10px;
+    margin-bottom: 20px;
+
+    font-size: 14px;
+    color: @darkergrey;
+
+    @media screen and (max-width: @md) {
+        margin-left: 0;
+    }
+
+    .review-element[data-auth="true"] & {
+        margin: 0;
+        margin-right: 15px;
+    }
+}

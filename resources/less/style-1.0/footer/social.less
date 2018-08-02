@@ -1,0 +1,54 @@
+.footer-social {
+    &__area {
+        display: flex;
+        margin-top: 10px;
+    }
+
+    &__element {
+        width: 35px;
+        height: 35px;
+        margin-right: 10px;
+
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: center center;
+
+        &:first-child {
+            margin-left: 5px;
+        }
+
+        &:hover {
+            cursor: pointer;
+            transition-duration: 0.15s;
+        }
+
+        &_vk {
+            background-image: url("/css/img/social/vk__grey.svg");
+
+            &:hover {
+                background-image: url("/css/img/social/vk.svg");
+            }
+        }
+
+        &_facebook {
+            background-image: url("/css/img/social/facebook__grey.svg");
+
+            &:hover {
+                background-image: url("/css/img/social/facebook.svg");
+            }
+        }
+
+        &_twitter {
+            background-image: url("/css/img/social/twitter__grey.svg");
+
+            &:hover {
+                background-image: url("/css/img/social/twitter.svg");
+            }
+        }
+
+        @media screen and (max-width: @sm) {
+            width: 30px;
+            height: 30px;
+        }
+    }
+}

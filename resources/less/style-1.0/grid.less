@@ -1,0 +1,200 @@
+@column-name: col;
+@name: {};
+@count: 12;
+
+@lg: 1023px;
+@md: 767px;
+@sm: 479px;
+
+.hidden(@i, @name: @name) when (@i = 0) {
+    .@{column-name}@{name}-@{i} {
+        display: none;
+    }
+}
+.not-hidden(@i, @name: @name) when not(@i = 0) {
+    .@{column-name}@{name}-@{i} {
+        display: flex;
+        flex-basis: round(@i * (100% / @count), 3);
+        max-width: round(@i * (100% / @count), 3);
+    }
+    .offset@{name}-@{i} {
+        margin-left: round(@i * (100% / @count), 3);
+    }
+}
+
+.generate-column(@i: 0, @name: @name) when (@i =< @count) {
+    .hidden(@i, @name);
+    .not-hidden(@i, @name);
+    .generate-column(@i + 1, @name);
+}
+
+.generate-common(@name: @name) {
+    .col@{name}-clear {
+        padding: 0;
+    }
+    .col@{name}-start {
+        justify-content: flex-start;
+    }
+    .col@{name}-center {
+        justify-content: center;
+    }
+    .col@{name}-end {
+        justify-content: flex-end;
+    }
+    .col@{name}-top {
+        align-items: flex-start;
+    }
+    .col@{name}-middle {
+        align-items: center;
+    }
+    .col@{name}-bottom {
+        align-items: flex-end;
+    }
+    .col@{name}-around {
+        justify-content: space-around;
+    }
+    .col@{name}-between {
+        justify-content: space-between;
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------------
+//    Генерация селекторов
+//------------------------------------------------------------------------------------------------------------------
+
+.container {
+    display: flex;
+    flex-direction: column;
+
+    flex-basis: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    padding: 20px 0;
+}
+
+.row,
+.row-reverse {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 auto;
+
+    flex-basis: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    margin: 0;
+}
+.row {
+    flex-direction: row;
+}
+.row-reverse {
+    flex-direction: row-reverse;
+}
+.row-start {
+    justify-content: flex-start;
+}
+.row-center {
+    justify-content: center;
+}
+.row-between {
+    justify-content: space-between;
+}
+.row-around {
+    justify-content: space-around;
+}
+.row-end {
+    justify-content: flex-end;
+}
+.row-top {
+    align-items: flex-start;
+}
+.row-middle {
+    align-items: center;
+}
+.row-bottom {
+    align-items: flex-end;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+// Экраны от 1024px
+
+.col,
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+.col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: flex-start;
+    min-height: 1px;
+    box-sizing: border-box;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.col {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+}
+.generate-column();
+.generate-common();
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// Экраны 786-1023px
+
+@media screen and (max-width: 1023px) {
+    .col-lg,
+    .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
+    .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: flex-start;
+        min-height: 1px;
+        box-sizing: border-box;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .generate-column(@name: -lg);
+    .generate-common(@name: -lg);
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// Экраны 480-767px
+
+@media screen and (max-width: 767px) {
+    .col-md,
+    .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6,
+    .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: flex-start;
+        min-height: 1px;
+        box-sizing: border-box;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .generate-column(@name: -md);
+    .generate-common(@name: -md);
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// Экраны 480-767px
+
+@media screen and (max-width: 479px) {
+    .col-sm,
+    .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6,
+    .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: flex-start;
+        min-height: 1px;
+        box-sizing: border-box;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .generate-column(@name: -sm);
+    .generate-common(@name: -sm);
+}
+

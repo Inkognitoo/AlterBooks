@@ -1,0 +1,79 @@
+.review-new-form {
+    &[data-status="close"] {
+        display: none;
+    }
+
+    &__field {
+        position: relative;
+        font-size: 16px;
+
+        & * {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        & input[type="text"],
+        & textarea {
+            margin-bottom: 5px;
+            padding: 10px;
+            border: 2px solid #efefef;
+            background: #efefef;
+        }
+
+        & textarea {
+            min-height: 10em;
+            resize: vertical;
+        }
+
+        & input[type="text"]:focus,
+        & textarea:focus {
+            outline: none;
+            border-color: @lightgrey;
+        }
+    }
+
+    &__message,
+    &__error {
+        margin-left: 10px;
+        font-size: 14px;
+    }
+
+    &__message {
+        color: @darkergrey;
+        margin-bottom: 15px;
+    }
+
+    &__error {
+        position: absolute;
+        left: 0;
+        bottom: -15px;
+        color: red;
+    }
+
+    &__message + &__error {
+        bottom: 0;
+    }
+
+    & *[data-has-error="false"] ~ &__error {
+        display: none;
+    }
+
+    & *[data-has-error="true"] ~ &__message {
+        visibility: hidden;
+    }
+
+    &__button {
+        max-width: 260px;
+        min-height: 40px;
+        margin: 30px auto 0;
+        font-size: 16px;
+
+        @media screen and (max-width: 400px) {
+            min-height: 35px;
+            font-size: 14px;
+        }
+    }
+}

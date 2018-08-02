@@ -1,0 +1,60 @@
+.edit-block-element__flag {
+    position: absolute;
+    bottom: 24px;
+    right: 10px;
+
+    width: 28px;
+    height: 10px;
+
+    background: #c8c8c8;
+
+    transition-duration: 0.2s;
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+
+        width: 14px;
+        height: 10px;
+        box-sizing: border-box;
+
+        border: 7px solid @grey;
+        border-top-width: 5px;
+        border-bottom-width: 5px;
+        border-bottom-color: transparent;
+    }
+    &:before {
+        left: 0;
+        border-right-color: transparent;
+    }
+    &:after {
+        right: 0;
+        border-left-color: transparent;
+    }
+
+    @media screen and (max-width: @sm) {
+        right: 5px;
+    }
+
+    *[data-status="correct"] ~ & {
+        bottom: 8px;
+        height: 26px;
+        background: @darkergreen url("/css/img/icons/checkmark_white.svg") no-repeat 50% 60%;
+        background-size: 65% auto;
+
+        &:before,
+        &:after {
+            border-color: @darkergreen;
+            border-bottom-color: transparent;
+        }
+        &:before {
+            border-right-color: transparent;
+        }
+        &:after {
+            border-left-color: transparent;
+        }
+    }
+}
+

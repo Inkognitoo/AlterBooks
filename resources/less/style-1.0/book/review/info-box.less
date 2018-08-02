@@ -1,0 +1,16 @@
+.review__info-box {
+    flex-basis: ~"calc(100% - 125px)";
+
+    @media screen and (max-width: @sm) {
+        flex-basis: 100%;
+    }
+
+    .review-element[data-auth="true"] & {
+        display: flex;
+        align-items: center;
+        flex-basis: 100%;
+
+        margin: 10px 0 15px;
+        padding-left: 0;
+    }
+}

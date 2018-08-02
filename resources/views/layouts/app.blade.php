@@ -14,8 +14,8 @@
     <link rel="canonical" href="@yield('canonical', url()->current())"/>
 
     <!-- Styles -->
-    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('/css/fix.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/normalize.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/style-1.0.css') }}" rel="stylesheet">
 
     <!--Icons-->
     <link rel="manifest" href={{url('/manifest.json')}}>
@@ -24,89 +24,107 @@
     <link rel="icon" type="image/png" href={{url('/img/icon-180.png')}} sizes="180x180">
     <link rel="icon" type="image/png" href={{url('/img/icon-192.png')}} sizes="192x192">
 </head>
-<body class="temp-body">
-    <div class="temp-content" id="app">
-        <nav class="temp-header navbar navbar-default navbar-static-top">
-            <div class="temp-header__container container">
-                <div class="temp-header-navigation navbar-header">
+<body class="body" data-status="modal-close">
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="temp-header-navigation-button navbar-toggle collapsed"
-                            data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="temp-header-navigation-button__element-main sr-only">
-                            {{ t('app', 'Навигация') }}
-                        </span>
-                        <span class="temp-header-navigation-button__element icon-bar"></span>
-                        <span class="temp-header-navigation-button__element icon-bar"></span>
-                        <span class="temp-header-navigation-button__element icon-bar"></span>
-                    </button>
+<!-- HEADER -->
+<header class="header">
+    <div class="header-main">
+        <div class="header-main__area">
+            <a class="header-project-name"
+               href="{{ url('/') }}"></a>
+            <div class="header-main-buttons" data-auth="{{ Auth::check() ? 'true' : 'false' }}">
 
-                    <!-- Branding Image -->
-                    <a class="temp-header-navigation__logo navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'AlterBooks') }}
+                <!-- Authentication Links -->
+                @guest
+                    <a class="header-main-buttons__element button-registration"
+                       href="{{ route('register') }}">
+                        {{ t('app.button', 'Регистрация') }}
                     </a>
-                </div>
 
-                <div class="temp-header-users collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="temp-header-users-element nav navbar-nav">
-                        &nbsp;
-                    </ul>
+                    <div class="header-main-buttons__element button-authentication modal-button"
+                         id="button-authentication"
+                         data-modal-number="0">
+                        {{ t('app.button', 'Вход') }}
+                    </div>
+                @else
+                    <input class="header-main-buttons__element_user-active" type="checkbox" id="user">
+                    <label class="header-main-buttons__element header-main-buttons__element_user button-user"
+                           for="user"
+                           title="{{ Auth::user()->nickname }}">
+                        {{ Auth::user()->email }}
+                    </label>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="temp-header-users-element temp-header-users-element_right nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li>
-                                <a class="temp-header-users-menu__element" href="{{ route('login') }}">
-                                    {{ t('app.button', 'Вход') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="temp-header-users-menu__element" href="{{ route('register') }}">
-                                    {{ t('app.button', 'Регистрация') }}
-                                </a>
-                            </li>
-                        @else
-                            <li class="temp-header-users-menu dropdown">
-                                <a href="#" class="temp-header-users-menu__name-placeholder dropdown-toggle"
-                                   data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->nickname }} <span class="caret"></span>
-                                </a>
+                    <div class="header-user"
+                         data-status="modal-close">
+                        <div class="header-user__title">
+                            <div class="header-user__avatar"
+                                 style="background-image: url('{{ Auth::user()->avatar_url }}')"></div>
+                            <div class="header-user-namespace">
+                                <div class="header-user-namespace__name">
+                                    {{ Auth::user()->surname }} {{ Auth::user()->name }}
+                                </div>
+                                <div class="header-user-namespace__nickname">
+                                    {{ Auth::user()->nickname }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header-user-main">
+                            <a class="header-user-main-element"
+                               href="{{ Auth::user()->url }}">
+                                <div class="header-user-main-element__logo header-user-main-element__logo_home"></div>
+                                <div class="header-user-main-element__text">
+                                    {{ t('app.button', 'мой профиль') }}
+                                </div>
+                            </a>
+                            <hr class="header-user-main__hr">
+                            <a class="header-user-main-element header-user-main-element_disabled"
+                               title="находится в разработке">
+                                <div class="header-user-main-element__logo header-user-main-element__logo_library"></div>
+                                <div class="header-user-main-element__text header-user-main-element__text">
+                                    {{ t('app.button', 'моя библиотека') }}
+                                </div>
+                            </a>
+                            <a class="header-user-main__button button"
+                               href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ t('app.button', 'выход') }}
+                            </a>
 
-                                <ul class="temp-header-users-menu-content dropdown-menu" role="menu">
-                                    @if (!Request::route()->named('user.show') || (Request::route()->named('user.show') && Auth::user()->id !== $user->id))
-                                        <li>
-                                            <a class="temp-header-users-menu-content__element"
-                                               href="{{ Auth::user()->url }}">
-                                                {{ t('app.button', 'Профиль') }}
-                                            </a>
-                                        </li>
-                                    @endif
-                                    <li>
-                                        <a class="temp-header-users-menu-content__element" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            {{ t('app.button', 'Выход') }}
-                                        </a>
+                            <form class="temp-header-users-menu-content__logout-form" id="logout-form"
+                                  action="{{ route('logout') }}" method="POST">
+                                {{ csrf_field() }}
+                            </form>
+                        </div>
+                    </div>
+                @endguest
 
-                                        <form class="temp-header-users-menu-content__logout-form" id="logout-form"
-                                              action="{{ route('logout') }}" method="POST">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
             </div>
-        </nav>
+        </div>
+    </div>
+    <nav class="header-navigation">
+        <a class="header-navigation__element header-navigation__element_disabled">
+            {{ t('app.button', 'ТОПы') }}
+        </a>
+        <div class="header-navigation__hr"></div>
+        <a class="header-navigation__element"
+           href="{{ route('book.books-list') }}">
+            {{ t('app.button', 'Список&nbsp;книг') }}
+        </a>
+        <div class="header-navigation__hr"></div>
+        <a class="header-navigation__element header-navigation__element_disabled">
+            {{ t('app.button', 'Блог') }}
+        </a>
+    </nav>
+</header>
 
+<main class="container body__main">
+    <div class="row row-center">
         @yield('content')
     </div>
+</main>
 
-    <!-- Scripts -->
-    <script src="{{ mix('/js/app.js') }}"></script>
+@include("auth.login")
+
+<script src="{{ mix('/js/app.js') }}"></script>
 </body>
 </html>

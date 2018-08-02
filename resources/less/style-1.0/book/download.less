@@ -1,0 +1,60 @@
+.book-download {
+    &__title {
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+
+    &__format {
+        flex-basis: 200px;
+        max-width: 200px;
+        min-height: 40px;
+
+        margin-left: ~"calc((100% - 200px) / 2)";
+        margin-bottom: 5px;
+
+        border-radius: 5px;
+    }
+
+    &__size {
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: @darkgrey;
+    }
+
+
+    @media screen and (max-width: @md) {
+        margin-left: 40px;
+
+        &__format {
+            display: flex;
+            flex-basis: 20%;
+            max-width: 100%;
+
+            margin-right: 10px;
+            margin-bottom: 10px;
+            margin-left: 0;
+            padding: 8px 10px;
+
+            border: 2px solid @grey;
+            border-radius: 3px;
+            background: transparent;
+            box-shadow: none;
+
+            color: @darkgrey;
+            text-decoration: none;
+
+            transition-property: border-color, color;
+            transition-duration: 0.3s, 0.3s;
+
+            &:hover {
+                border-color: @green;
+                color: black;
+                cursor: pointer;
+            }
+        }
+    }
+
+    @media screen and (max-width: @sm) {
+        margin-left: 0;
+    }
+}

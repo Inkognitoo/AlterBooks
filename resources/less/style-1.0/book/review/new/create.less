@@ -1,0 +1,31 @@
+.review-new-create {
+    &__text {
+        width: 100%;
+        margin-bottom: 20px;
+
+        font-size: 16px;
+        color: @darkergrey;
+        text-align: center;
+        line-height: 1.5em;
+    }
+
+    &__button {
+        max-width: 260px;
+        min-height: 40px;
+        margin: 0 auto;
+        font-size: 16px;
+
+        @media screen and (max-width: 400px) {
+            min-height: 35px;
+            font-size: 14px;
+        }
+    }
+
+    &[data-status="open"]{
+        display: block;
+    }
+
+    &[data-status="close"]{
+        display: none;
+    }
+}

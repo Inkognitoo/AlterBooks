@@ -1,0 +1,158 @@
+.book-list-genres {
+    position: relative;
+
+    width: 100%;
+    max-height: 625px;
+    overflow: hidden;
+
+    margin-right: 20px;
+    margin-top: 61px;
+
+    &__title {
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    &__hr {
+        display: none;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        & input[type="checkbox"] {
+            display: none;
+        }
+    }
+
+    &__element {
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+
+        margin-bottom: 5px;
+        padding: 5px 30px 5px 10px;
+
+        border: 2px solid @lightgrey;
+        border-radius: 5px;
+        background: white;
+
+        font-size: 16px;
+
+        user-select: none;
+        transition-duration: 0.2s;
+
+        &:hover {
+            border-color: @grey;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+    }
+
+    & input[type="checkbox"]:checked + &__element {
+        order: -1;
+        border-color: @green;
+        background: @transparent;
+        color: @darkgreen;
+
+        &:hover {
+            border-color: @green;
+            color: @darkgreen;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 5px;
+            
+            width: 29px;
+            height: 29px;
+            
+            border-radius: 5px;
+            background: url("/css/img/icons/checkmark.svg") 50% 50% no-repeat;
+            background-size: 60% 60%;
+        }
+    }
+
+    &__stripe {
+        position: absolute;
+        top: 590px;
+        left: 0;
+
+        width: 100%;
+        height: 40px;
+        background: @transparent;
+    }
+
+    &__more {
+        position: absolute;
+        top: 590px;
+        left: 0;
+
+        width: 100%;
+
+        margin-top: 15px;
+
+        font-size: 16px;
+
+        text-align: center;
+        text-decoration: underline;
+
+        cursor: pointer;
+    }
+
+
+    @media screen and (max-width: @lg) {
+        & {
+            max-height: 150px;
+            margin: 0 0 20px 0;
+        }
+
+        & &__title {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        & &__hr {
+            display: block;
+            margin-left: 20px;
+            width: ~"calc(100% - 190px)";
+        }
+
+        & &__content {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        & &__element {
+            flex-grow: 1;
+            text-align: center;
+
+            width: auto;
+
+            margin-right: 10px;
+            margin-bottom: 10px;
+            padding-right: 10px;
+
+            font-size: 14px;
+
+            &:after {
+                display: none;
+            }
+        }
+
+        & &__stripe {
+            top: 110px;
+            left: 0;
+        }
+
+        & &__more {
+            top: 110px;
+            left: 0;
+            text-align: right;
+        }
+    }
+}
