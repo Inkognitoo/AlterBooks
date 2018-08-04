@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -21,7 +22,9 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->only('login');
+
+        $this->middleware('auth:api')->only('index');
     }
 
 
@@ -61,6 +64,13 @@ class UserController extends Controller
         ];
 
         return response()->json($response, 200);
+    }
+
+    public function index()
+    {
+        return (new UserResource(Auth::user()))
+            ->additional(['success' => true, 'errors' => []])
+        ;
     }
 
 }
