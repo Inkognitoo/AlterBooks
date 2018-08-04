@@ -8,19 +8,37 @@ import axios from 'axios';
     let url = '/api/v1/login';
 
     auth_button.onclick = function authUser() {
-        let email = document.getElementById('email').value;
-        let password = document.getElementById('password').value;
-        console.log(email, password);
+        let email = document.getElementById('email');
+        let password = document.getElementById('password');
         return new Promise(function (resolve, reject) {
             axios.post(url, {
-                email: email,
-                password: password
+                email: email.value,
+                password: password.value
             })
                 .then(function (response) {
-                    console.log(response);
+                    email.parentNode.setAttribute('data-status', '');
+                    password.parentNode.setAttribute('data-status', '');
+
+                    let page_body = document.body;
+                    let modal_close_button = document.getElementsByClassName('authentication__close');
+                    Array.prototype.forEach.call(modal_close_button, function(button){
+                        let modal_number = button.getAttribute('data-modal-number');
+                        let modal = document.getElementById('modal-' + modal_number);
+                        page_body.setAttribute('data-status', 'modal-close');
+                        modal.setAttribute('data-status', 'modal-close');
+                    });
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    switch (error.response.data.data) {
+                        case 'email':
+                            email.parentNode.setAttribute('data-status', 'error');
+                            password.parentNode.setAttribute('data-status', '');
+                            break;
+                        case 'password':
+                            password.parentNode.setAttribute('data-status', 'error');
+                            email.parentNode.setAttribute('data-status', '');
+                            break;
+                    }
                 });
         });
     }
