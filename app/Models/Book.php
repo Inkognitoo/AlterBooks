@@ -10,6 +10,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\Facades\Image;
 use Storage;
 use Exception;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -427,5 +428,31 @@ class Book extends Model
         $mongodb_book = new MongoBook($this);
 
         $mongodb_book->editPage($page_number, $text);
+    }
+
+    /**
+     * Обложка книги произвольного размера
+     *
+     * @param int $height
+     * @param int $width
+     * @return string
+     */
+    public function cover(int $width = null, int $height = null): string
+    {
+        if ((is_null($width) && is_null($height)) || blank($this->cover)) {
+            return $this->cover_url;
+        }
+
+        $fit_cover_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->cover_path;
+        if (Storage::exists($fit_cover_path)) {
+            return Storage::url($fit_cover_path);
+        }
+
+        $cover = Image::make(Storage::url($this->cover_path))
+            ->fit($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        Storage::put($fit_cover_path, (string)$cover->encode());
+        return Storage::url($fit_cover_path);
     }
 }
