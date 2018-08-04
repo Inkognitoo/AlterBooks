@@ -1,5 +1,32 @@
 "use strict";
 
+import axios from 'axios';
+
+// Api
+(function () {
+    let auth_button = document.getElementById('auth-button');
+    let url = '/api/v1/login';
+
+    auth_button.onclick = function authUser() {
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        console.log(email, password);
+        return new Promise(function (resolve, reject) {
+            axios.post(url, {
+                email: email,
+                password: password
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    }
+})();
+
+// Modal auth
 (function () {
 
     let page_body = document.body;
@@ -68,34 +95,4 @@
             }, 5000);
         });
     });
-})();
-
-
-(function registration() {
-    let checkbox = document.getElementById('checkbox-1');
-    let button = document.getElementById('registration-button');
-
-    checkbox.addEventListener('click', function (c) {
-        if (checkbox.checked) {
-            button.disabled = false;
-        } else {
-            button.disabled = true;
-        }
-    });
-})();
-
-(function () {
-    let password = document.getElementById('password');
-    let password_confirmation = document.getElementById('password_confirmation');
-
-    password_confirmation.oninput = function () {
-        password_confirmation.parentNode.setAttribute('data-status', '');
-        if (password_confirmation.value !== '') {
-            if (password_confirmation.value !== password.value) {
-                password_confirmation.parentNode.setAttribute('data-status', 'error');
-            } else {
-                password_confirmation.parentNode.setAttribute('data-status', 'correct');
-            }
-        }
-    }
 })();

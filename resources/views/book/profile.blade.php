@@ -65,8 +65,9 @@
                                     </button>
                                 @else
                                     <button type="button" class="btn btn-default"
+                                            id="libraryButton"
                                             data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
-                                            data-book-id="{{ $book->id }}" id="libraryButton"
+                                            data-book-id="{{ $book->id }}"
                                             data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
                                             data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
                                         {{ Auth::user()->hasBookAtLibrary($book)

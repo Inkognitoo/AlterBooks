@@ -2,7 +2,7 @@
     <div class="authentication__window">
         <form class="authentication-enter"
               method="POST"
-              action="{{ route('login') }}"
+              onsubmit="return false"
               data-status="open">
             {{ csrf_field() }}
 
@@ -12,7 +12,7 @@
 
             <div class="row row-center">
                 <div class="authentication-element col-12 col-clear"
-                     data-status="{{ $errors->has('email') ? 'error' : 'correct' }}">
+                     data-status="">
                     <div class="registration-element__logo"
                          style="background-image: url('/img/icons/user_grey.svg')"></div>
                     <input class="registration-element__field"
@@ -20,7 +20,7 @@
                            id="email"
                            name="email"
                            placeholder="email"
-                           value="{{ old('email') }}"
+                           value=""
                            required autofocus>
                     <div class="registration-element__error">
                         {{ t('app', 'такого логина не существует') }}
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="authentication-element col-12 col-clear"
-                     data-status="{{ $errors->has('password') ? 'error' : 'correct' }}">
+                     data-status="">
                     <div class="registration-element__logo"
                          style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
                     <input class="registration-element__field registration-element__field_logo"
@@ -64,9 +64,11 @@
                 </div>
 
                 <div class="col-12 col-clear col-center">
-                    <input class="authentication__button authentication__button_small button button_green"
+                    <button class="authentication__button authentication__button_small button button_green"
                            type="submit"
-                           value="войти">
+                           id="auth-button">
+                        войти
+                    </button>
                 </div>
 
                 <div class="block-content col-12 col-clear">
