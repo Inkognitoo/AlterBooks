@@ -40,16 +40,6 @@
                                             : t('library.button', 'Добавить в библиотеку') }}
                                     </button>
                                 @endif
-                            @else
-                                <button class="book-buttons__element button book-buttons__element_small col-12"
-                                        data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
-                                        data-book-id="{{ $book->id }}" id="libraryButton"
-                                        data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
-                                        data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
-                                    {{ Auth::user()->hasBookAtLibrary($book)
-                                        ? t('library.button', 'Удалить из библиотеки')
-                                        : t('library.button', 'Добавить в библиотеку') }}
-                                </button>
                             @endif
                         </div>
                     </div>
@@ -141,16 +131,6 @@
                                         : t('library.button', 'Добавить в библиотеку') }}
                                 </button>
                             @endif
-                        @else
-                            <button class="book-buttons__element book-buttons__element_small button"
-                                    data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
-                                    data-book-id="{{ $book->id }}" id="libraryButton"
-                                    data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
-                                    data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
-                                {{ Auth::user()->hasBookAtLibrary($book)
-                                    ? t('library.button', 'Удалить из библиотеки')
-                                    : t('library.button', 'Добавить в библиотеку') }}
-                            </button>
                         @endif
                     </div>
 
@@ -237,8 +217,20 @@
                     <hr class="block-content-header__hr">
                 </div>
                 <div class="block-content-main">
+                    @auth
+                        @if(Auth::user()->hasBookReview($book))
+                            @include('review.view-self', ['review' => Auth::user()->getBookReview($book)])
+                        @endif
+                    @endauth
+
                     @foreach($book->reviews as $review)
-                       @include('review.view', compact($review))
+                        @if(Auth::user())
+                            @if(Auth::user()->id !== $review->user->id)
+                                @include('review.view', compact($review))
+                            @endif
+                        @else
+                                @include('review.view', compact($review))
+                        @endif
                     @endforeach
                 </div>
             </div>

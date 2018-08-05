@@ -33,7 +33,7 @@
                          style="background-image: url('{{ $review->user->avatar_url }}')"></div>
                 </div>
                 <div class="review__info-box col-12 col-clear col-lg-10 col-sm-12 col-sm-clear">
-                    <div class="{{ Auth::user() ? 'review__info-box' : 'row' }}">
+                    <div class="row">
                         <a class="review__user-name col-12 col-clear"
                            href="{{ $review->user->url }}">
                             {{ $review->user->fullname }}
@@ -71,21 +71,25 @@
                             </button>
                         @endunless
                     @endauth
-                    <div class="review-grade__value"
+
+                    <div class="review-grade__value @guest review-grade__value_guest @endguest"
                          data-review-id="{{ $review->id }}"
                          data-type="counter">
+                        @guest
+                            Оценка:
+                        @endguest
                         {{ $review->rating }}
                     </div>
                     @auth
                         @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
-                                <button class="review-grade__button"
-                                        style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? '0.5' : '1' }};
-                                               cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? 'auto' : 'pointer' }};"
-                                        name="estimateButton"
-                                        data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
-                                        data-type="positive">
-                                    &plus;
-                                </button>
+                            <button class="review-grade__button"
+                                    style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? '0.5' : '1' }};
+                                           cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? 'auto' : 'pointer' }};"
+                                    name="estimateButton"
+                                    data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
+                                    data-type="positive">
+                                &plus;
+                            </button>
                         @endunless
                     @endauth
                 </div>

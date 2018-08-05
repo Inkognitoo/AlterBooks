@@ -189,6 +189,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Вернуть рецензию пользователя на конкретную книгу
+     *
+     * @param Book $book
+     * @return Review $review
+     */
+    public function getBookReview(Book $book): Review
+    {
+        return $this->reviews()
+            ->where(['book_id' => $book->id])
+            ->first()
+        ;
+    }
+
+    /**
      * Проверить, оставлял ли пользователь конкретную рецензию
      *
      * @param Review $review
