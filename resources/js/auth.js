@@ -27,6 +27,8 @@ import axios from 'axios';
                         page_body.setAttribute('data-status', 'modal-close');
                         modal.setAttribute('data-status', 'modal-close');
                     });
+
+
                 })
                 .catch(function (error) {
                     switch (error.response.data.data) {

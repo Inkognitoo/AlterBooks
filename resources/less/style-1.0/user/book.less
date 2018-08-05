@@ -51,6 +51,7 @@
     &__info {
         display: flex;
         flex-direction: column;
+
         @media screen and (max-width: 385px) {
             width: 100%;
         }
@@ -59,6 +60,7 @@
     &__title {
         margin: 5px 0 15px;
         font-size: 16px;
+        color: black;
 
         @media screen and (max-width: 385px) {
             margin: 10px auto 15px;
@@ -126,5 +128,11 @@
         & > .user-books__button_close {
             display: flex;
         }
+    }
+
+    &__no-books {
+        margin: 5px auto;
+        font-size: 16px;
+        color: @darkergrey;
     }
 }
