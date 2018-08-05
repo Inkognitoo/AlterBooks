@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="review-title col-12 col-clear">
-                    -заголовок-
+                    {{ $review->header }}
                 </div>
                 <div class="review-text col-12 col-clear"
                      data-status="close">

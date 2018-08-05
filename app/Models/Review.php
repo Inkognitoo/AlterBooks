@@ -16,6 +16,7 @@ use Carbon\Carbon;
  * @property string $text_plain Текст рецензии как он есть в бд
  * @property int $user_id
  * @property int $book_id
+ * @property string $header Заголовок рецензии
  * @property \Carbon\Carbon|null $deleted_at
  * @property \Carbon\Carbon|null $created_at Дата создания сущности в соотвествии с часовым поясом пользователя
  * @property \Carbon\Carbon|null $created_at_plain Дата создания сущности как она есть в бд
@@ -56,7 +57,7 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'rating', 'text'
+        'rating', 'text', 'header'
     ];
 
     /**

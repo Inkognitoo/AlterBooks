@@ -11,6 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *
  * @property int $rating
  * @property string $text
+ * @property string $header
  */
 class ReviewCreateRequest extends FormRequest
 {
@@ -34,6 +35,7 @@ class ReviewCreateRequest extends FormRequest
         return [
             'rating' => 'required|integer|between:1,10',
             'text' => 'required|max:2000',
+            'header' => 'required|max:67',
         ];
     }
 }
