@@ -9,65 +9,30 @@
 @section('canonical', $book->canonical_url)
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ t('book', 'Профиль книги') }}</div>
+    <div class="book col-12">
+        <div class="row">
+            <div class="book__aside col-4 col-md-0">
+                <div class="row row-center">
+                    <div class="book__cover col-12"
+                         style="background-image: url('{{ $book->cover_url }}')"></div>
+                    <div class="book-buttons col-12">
+                        <div class="book-buttons__tab book-buttons__tab_3"></div>
+                        <div class="row">
+                            <a class="book-buttons__element button button_green col-12"
+                               href="{{ route('book.page.show', ['id' => $book->slug, 'page_number' => 1]) }}">
+                                читать
+                            </a>
 
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="book-cover col-md-4 col-sm-4">
-                            <img src="{{ $book->cover_url }}" alt="{{ $book->title }}"
-                                 class="book-cover__image img-rounded">
-                        </div>
-                        <div class="col-md-8 col-sm-8">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    {{ $book->title }}
-                                </div>
-                                <div class="panel-body">
-                                    <a href="{{ $book->author->url }}">
-                                        {{ $book->author->full_name }}
-                                    </a>
-                                    <br>
-                                    {{ t('book', 'Оценка: :estimate/10', ['estimate' => $book->rating]) }}
-                                    <br><br>
-                                    @if(filled($book->description))
-                                        {!! $book->description !!}
-                                    @else
-                                        <span class="no-description">{{ t('book', '-описание отсутствует-') }}</span>
-                                    @endif
-
-                                    @if(filled($book->genres))
-                                        <hr>
-                                        <div>
-                                            @foreach($book->genres as $genre)
-                                                <span class="label label-default">{{ $genre->name }}</span>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-
-                            @if($book->isReadable())
-                                <a type="button" class="btn btn-default" href="{{ route('book.page.show', ['id' => $book->slug, 'page_number' => 1]) }}">
-                                    {{ t('book.button', 'Читать') }}
-                                </a>
-                            @endif
-                            @auth
+                            @if(Auth::user())
                                 @if(Auth::user()->isAuthor($book))
-                                    <a type="button" class="btn btn-default" href="{{ route('book.edit.show', ['id' => $book->slug]) }}">
-                                        {{ t('book.button', 'Редактировать') }}
+                                    <a class="book-buttons__element button col-12"
+                                       href="{{ route('book.edit.show', ['id' => $book->slug]) }}">
+                                        редактировать
                                     </a>
-                                    <button class="btn btn-default" data-toggle="modal" data-target="#deleteBookModal">
-                                        {{ t('book.button', 'Удалить') }}
-                                    </button>
                                 @else
-                                    <button type="button" class="btn btn-default"
-                                            id="libraryButton"
+                                    <button class="book-buttons__element book-buttons__element_small button col-12"
                                             data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
-                                            data-book-id="{{ $book->id }}"
+                                            data-book-id="{{ $book->id }}" id="libraryButton"
                                             data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
                                             data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
                                         {{ Auth::user()->hasBookAtLibrary($book)
@@ -75,87 +40,206 @@
                                             : t('library.button', 'Добавить в библиотеку') }}
                                     </button>
                                 @endif
-                            @endauth
-
+                            @else
+                                <button class="book-buttons__element button book-buttons__element_small col-12"
+                                        data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
+                                        data-book-id="{{ $book->id }}" id="libraryButton"
+                                        data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
+                                        data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
+                                    {{ Auth::user()->hasBookAtLibrary($book)
+                                        ? t('library.button', 'Удалить из библиотеки')
+                                        : t('library.button', 'Добавить в библиотеку') }}
+                                </button>
+                            @endif
                         </div>
                     </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">{{ t('review', 'Рецензии') }}</div>
-                                <div class="panel-body">
-                                    @if (session('status'))
-                                        <div class="alert alert-success">
-                                            {{ session('status') }}
-                                        </div>
-                                    @endif
-                                    @if(blank($book->reviews))
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                {{ t('review', 'Тут пока нет ни одной рецензии. Оставьте отзыв первым!')}}
-                                            </div>
-                                        </div>
-                                        <br>
-                                    @endif
-
-                                    @auth
-                                        @unless($book->hasReview(Auth::user()) || Auth::user()->isAuthor($book))
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <button class="btn btn-default" type="button" data-toggle="collapse"
-                                                            data-target="#collapseReview" aria-expanded="false" aria-controls="collapseReview">
-                                                        {{ t('review.button', 'Добавить рецензию') }}
-                                                    </button>
-                                                    <div class="collapse" id="collapseReview">
-                                                        <div class="well">
-                                                            @include('review.create')
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br>
-                                        @endunless
-                                    @endauth
-
-                                    <div class="row">
-                                        @foreach($book->reviews as $review)
-                                            <div class="col-md-12">
-                                                @include('review.view', compact($review))
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
+                    <div class="book-download col-8 col-center">
+                        <div class="row">
+                            <div class="book-download__title col-12 col-clear col-center">
+                                Скачать
                             </div>
+
+                            <button class="book-download__format button col-12 col-clear col-center"
+                                    disabled>
+                                <span>txt</span>
+                            </button>
+                            <div class="book-download__size col-12 col-clear col-center"></div>
+
+                            <button class="book-download__format button col-12 col-clear col-center"
+                                    disabled>
+                                <span>epub</span>
+                            </button>
+                            <div class="book-download__size col-12 col-clear col-center"></div>
+
+                            <button class="book-download__format button col-12 col-clear col-center"
+                                    disabled>
+                                <span>fb2</span>
+                            </button>
+                            <div class="book-download__size col-12 col-clear col-center"></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <div class="book__main col-8 col-md-12">
+                <div class="row row-center">
+                    <div class="book__title col-12 col-clear col-md-center">
+                        {{ $book->title }}
+                    </div>
+                    <a class="book__author col-12 col-clear col-md-center"
+                       href="{{ $book->author->url }}">
+                        {{ $book->author->name }} {{ $book->author->surname }}
+                    </a>
+                    <div class="book__cover col-0 col-clear col-md-12"
+                         style="background-image: url('{{ $book->cover_url }}')"></div>
+                    <div class="block-info col-12 col-clear col-md-11 col-md-center col-sm-12">
+                        <div class="block-info-element">
+                            <div class="block-info-element__main block-info-element__main_small">
+                                {{ $book->created_at->format('d.m.Y') }}
+                            </div>
+                            <div class="block-info-element__comment">
+                                дата публикации
+                            </div>
+                        </div>
+                        <div class="block-info-element">
+                            <div class="block-info-element__main">
+                                {{ $book->rating == 0 ? 0 : number_format($book->rating, 1) }}
+                            </div>
+                            <div class="block-info-element__comment">
+                                рейтинг
+                            </div>
+                        </div>
+                        <div class="block-info-element">
+                            <div class="block-info-element__main">
+                                {{ $book->users->count() }}
+                            </div>
+                            <div class="block-info-element__comment">
+                                добавили в библиотеку
+                            </div>
+                        </div>
+                    </div>
 
-<div class="modal fade" id="deleteBookModal" tabindex="-1" role="dialog" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="deleteBookModalLabel">
-                    {{ t('book.modal', 'Подтвердите удаление') }}
-                </h4>
+                    <div class="book-buttons col-0 col-clear col-md-12 col-md-11 col-sm-12">
+                        <a class="book-buttons__element button button_green"
+                           href="{{ route('book.page.show', ['id' => $book->slug, 'page_number' => 1]) }}">
+                            читать
+                        </a>
+
+                        @if(Auth::user())
+                            @if(Auth::user()->isAuthor($book))
+                                <a class="book-buttons__element button"
+                                   href="{{ route('book.edit.show', ['id' => $book->slug]) }}">
+                                    редактировать
+                                </a>
+                            @else
+                                <button class="book-buttons__element book-buttons__element_small button"
+                                        data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
+                                        data-book-id="{{ $book->id }}" id="libraryButton"
+                                        data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
+                                        data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
+                                    {{ Auth::user()->hasBookAtLibrary($book)
+                                        ? t('library.button', 'Удалить из библиотеки')
+                                        : t('library.button', 'Добавить в библиотеку') }}
+                                </button>
+                            @endif
+                        @else
+                            <button class="book-buttons__element book-buttons__element_small button"
+                                    data-type="{{ Auth::user()->hasBookAtLibrary($book) ? 'delete' : 'add' }}"
+                                    data-book-id="{{ $book->id }}" id="libraryButton"
+                                    data-delete-text="{{ t('library.button', 'Удалить из библиотеки') }}"
+                                    data-add-text="{{ t('library.button', 'Добавить в библиотеку') }}" >
+                                {{ Auth::user()->hasBookAtLibrary($book)
+                                    ? t('library.button', 'Удалить из библиотеки')
+                                    : t('library.button', 'Добавить в библиотеку') }}
+                            </button>
+                        @endif
+                    </div>
+
+                    <div class="book__description col-12 col-clear col-md-11 col-sm-12">
+                        @if(filled($book->description))
+                            {!! $book->description !!}
+                        @else
+                            <span class="no-description">
+                                @if(Auth::user())
+                                    @if(Auth::user()->isAuthor($book))
+                                        добавьте описание произведению
+                                    @else
+                                        -описание отсутствует-
+                                    @endif
+                                @else
+                                    -описание отсутствует-
+                                @endif
+                            </span>
+                        @endif
+                    </div>
+
+                    <hr class="hr col-md-11 col-sm-12">
+                    <div class="book-genres col-12 col-clear col-md-11 col-sm-12">
+                        <div class="row">
+                            <div class="book-genres__title col-12 col-clear">
+                                жанры
+                            </div>
+                            <div class="book-genres-content col-12 col-clear">
+                                @if(filled($book->genres))
+                                    @foreach($book->genres as $genre)
+                                        <a class="book-genres-content__element">{{ $genre->name }}</a>
+                                    @endforeach
+                                @else
+                                    @if(Auth::user())
+                                        @if(Auth::user()->isAuthor($book))
+                                            <div class="book-genres__no-genres">
+                                                добавьте жанры, чтобы ваше произведение легче было найти
+                                            </div>
+                                        @else
+                                            <div class="book-genres__no-genres">
+                                                -здесь пока нет жанров-
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="book-genres__no-genres">
+                                            -здесь пока нет жанров-
+                                        </div>
+                                    @endif
+                                @endif
+                        </div>
+                        </div>
+                    </div>
+
+
+                    <hr class="hr col-0 col-md-11 col-sm-12">
+                    <div class="book-download col-0 col-clear col-md-12 col-md-11 col-sm-12">
+                        <div class="row">
+                            <div class="book-download__title col-12 col-clear">
+                                Скачать
+                            </div>
+                            <button class="book-download__format button"
+                                    disabled>
+                                <span>txt</span>
+                            </button>
+
+                            <button class="book-download__format button"
+                                    disabled>
+                                <span>epub</span>
+                            </button>
+
+                            <button class="book-download__format button"
+                                    disabled>
+                                <span>fb2</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <p> {!! t('book.modal', 'Вы уверены, что хотите удалить книгу <strong>:book</strong>?', ['book' => $book->title]) !!}</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">
-                    {{ t('book.button', 'Закрыть') }}
-                </button>
-                <a type="button" class="btn btn-danger" href="{{ route('book.delete', ['id' => $book->slug]) }}">
-                    {{ t('book.button', 'Удалить') }}
-                </a>
+            <div class="review block-content col-12">
+                <div class="block-content-header" id="review">
+                    <div class="review__header block-content-header__title block-content-header__title_center">
+                        Рецензии
+                    </div>
+                    <hr class="block-content-header__hr">
+                </div>
+                <div class="block-content-main">
+                    здесь пока нет ни одной рецензии
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

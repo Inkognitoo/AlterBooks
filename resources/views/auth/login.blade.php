@@ -2,7 +2,7 @@
     <div class="authentication__window">
         <form class="authentication-enter"
               method="POST"
-              onsubmit="return false"
+              action="{{ route('login') }}"
               data-status="open">
             {{ csrf_field() }}
 
