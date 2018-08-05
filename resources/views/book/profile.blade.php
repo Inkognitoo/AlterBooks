@@ -237,7 +237,9 @@
                     <hr class="block-content-header__hr">
                 </div>
                 <div class="block-content-main">
-                    здесь пока нет ни одной рецензии
+                    @foreach($book->reviews as $review)
+                       @include('review.view', compact($review))
+                    @endforeach
                 </div>
             </div>
         </div>
