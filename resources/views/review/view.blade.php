@@ -50,7 +50,7 @@
                 </div>
                 <div class="review-text col-12 col-clear"
                      data-status="close">
-                    {{ $review->text }}
+                    {!! $review->text !!}
                     <div class="review-text__block"></div>
                     <button class="review-text__more">
                         читать далее
@@ -62,7 +62,7 @@
                     @auth
                         @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
                             <button class="review-grade__button"
-                                    style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? '0.15' : '0.4' }};
+                                    style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? '0.3' : '1' }};
                                             cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? 'auto' : 'pointer' }};"
                                     name="estimateButton"
                                     data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
@@ -78,12 +78,12 @@
                         @guest
                             Оценка:
                         @endguest
-                        {{ $review->rating }}
+                        {{ $review->estimate }}
                     </div>
                     @auth
                         @unless($review->isAuthor(Auth::user()) || $review->isForBookOfUser(Auth::user()))
                             <button class="review-grade__button"
-                                    style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? '0.5' : '1' }};
+                                    style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? '0.3' : '1' }};
                                            cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == 1 ? 'auto' : 'pointer' }};"
                                     name="estimateButton"
                                     data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"

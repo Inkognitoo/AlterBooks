@@ -220,6 +220,8 @@
                     @auth
                         @if(Auth::user()->hasBookReview($book))
                             @include('review.view-self', ['review' => Auth::user()->getBookReview($book)])
+                        @else
+                            @include('review.create')
                         @endif
                     @endauth
 

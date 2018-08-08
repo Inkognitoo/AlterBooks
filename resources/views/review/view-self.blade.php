@@ -29,9 +29,16 @@
                     <div class="review__date">
                         {{ $review->created_at->format('d.m.Y') }}
                     </div>
-                    <div class="review__icon review__icon_edit"></div>
-                    <div class="review__icon review__icon_delete"></div>
-                    <button class="review__button button" id="review-reestablish">
+                    <div class="review__icon review__icon_edit"
+                         style="opacity: 0.3"></div>
+
+                    <a class="review__icon review__icon_delete"
+                       id="review-delete"
+                       href="{{ route('review.delete', ['book_id' => $book->slug, 'id' => $review->id]) }}"
+                    ></a>
+
+                    <button class="review__button button"
+                            id="review-reestablish">
                         восстановить
                     </button>
                 </div>
@@ -39,8 +46,10 @@
                     {{ $review->header }}
                     <div class="review-title__shield"></div>
                 </div>
-                <div class="review-text col-12 col-clear" data-status="close" id="review-text">
-                    {{ $review->text }}
+                <div class="review-text col-12 col-clear"
+                     data-status="close"
+                     id="review-text">
+                    {!! $review->text !!}
                     <div class="review-text__block" id="review-text-block"></div>
                     <button class="review-text__more" id="review-text-more">
                         читать далее
@@ -51,7 +60,7 @@
                         &minus;
                     </button>
                     <div class="review-grade__value">
-                        {{ $review->rating }}
+                        {{ $review->estimate }}
                     </div>
                     <button class="review-grade__button" disabled>
                         &plus;

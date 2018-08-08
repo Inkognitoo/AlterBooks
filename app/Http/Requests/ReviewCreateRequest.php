@@ -34,8 +34,8 @@ class ReviewCreateRequest extends FormRequest
     {
         return [
             'rating' => 'required|integer|between:1,10',
-            'text' => 'required|max:2000',
             'header' => 'required|max:67',
+            'text' => 'required|max:2000',
         ];
     }
 }
