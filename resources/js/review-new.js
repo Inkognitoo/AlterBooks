@@ -84,11 +84,5 @@
     });
 
 
-    // Удаление рецензии
-    let deleteButton = document.getElementById('review-delete');
-    deleteButton.addEventListener('click', function (b) {
-        console.log(review_text.offsetHeight);
-        document.getElementsByClassName('review-title__shield')[0].style.height = (review_text.offsetHeight + 25.5) + 'px';
-    })
 })();
 

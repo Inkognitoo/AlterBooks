@@ -34,8 +34,9 @@
 
                     <a class="review__icon review__icon_delete"
                        id="review-delete"
-                       href="{{ route('review.delete', ['book_id' => $book->slug, 'id' => $review->id]) }}"
-                    ></a>
+                       data-book-id="{{ $review->book_id }}"
+                       data-review-id="{{ $review->id }}"
+                       href="{{ route('api.review.delete', ['book_id' => $book->slug, 'id' => $review->id]) }}"></a>
 
                     <button class="review__button button"
                             id="review-reestablish">

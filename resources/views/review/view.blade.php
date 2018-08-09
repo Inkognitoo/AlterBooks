@@ -32,6 +32,7 @@
                     <div class="review__avatar"
                          style="background-image: url('{{ $review->user->avatar_url }}')"></div>
                 </div>
+
                 <div class="review__info-box col-12 col-clear col-lg-10 col-sm-12 col-sm-clear">
                     <div class="row">
                         <a class="review__user-name col-12 col-clear"
@@ -41,13 +42,13 @@
                         <div class="review__date col-12 col-clear">
                             {{ $review->created_at->format('d.m.Y') }}
                         </div>
-                        <div class="review__icon review__icon_edit"></div>
-                        <div class="review__icon review__icon_delete"></div>
                     </div>
                 </div>
+
                 <div class="review-title col-12 col-clear">
                     {{ $review->header }}
                 </div>
+
                 <div class="review-text col-12 col-clear"
                      data-status="close">
                     {!! $review->text !!}
@@ -65,7 +66,8 @@
                                     style="opacity : {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? '0.3' : '1' }};
                                             cursor: {{ optional($review->usersEstimate(Auth::user()))->estimate == -1 ? 'auto' : 'pointer' }};"
                                     name="estimateButton"
-                                    data-book-id="{{ $review->book_id }}" data-review-id="{{ $review->id }}"
+                                    data-book-id="{{ $review->book_id }}"
+                                    data-review-id="{{ $review->id }}"
                                     data-type="negative">
                                 &minus;
                             </button>

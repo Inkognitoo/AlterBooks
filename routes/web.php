@@ -88,9 +88,6 @@ Route::post('book/{id}/page/{page_number}/edit', 'ReaderController@edit')
 Route::post('book/{id}/review', 'ReviewController@create')
     ->name('review.create')
 ;
-Route::get('book/{book_id}/review/id{id}/delete', 'ReviewController@delete')
-    ->name('review.delete')
-;
 
 /*
 |--------------------------------------------------------------------------

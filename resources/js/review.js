@@ -36,7 +36,6 @@
         })
     });
 
-
     let downloadTab = document.getElementById('book-buttons-tab');
     let bookButtons = downloadTab.parentNode;
     let dowloadButtons = document.getElementById('download-buttons');
