@@ -16,7 +16,8 @@
                     <div class="book__cover col-12"
                          style="background-image: url('{{ $book->cover_url }}')"></div>
                     <div class="book-buttons col-12">
-                        <div class="book-buttons__tab book-buttons__tab_3"></div>
+                        <div class="book-buttons__tab"
+                             id="book-buttons-tab"></div>
                         <div class="row">
                             <a class="book-buttons__element button button_green col-12"
                                href="{{ route('book.page.show', ['id' => $book->slug, 'page_number' => 1]) }}">
@@ -44,7 +45,8 @@
                         </div>
                     </div>
                     <div class="book-download col-8 col-center">
-                        <div class="row">
+                        <div class="row"
+                             id="download-buttons">
                             <div class="book-download__title col-12 col-clear col-center">
                                 Скачать
                             </div>
@@ -221,19 +223,27 @@
                         @if(Auth::user()->hasBookReview($book))
                             @include('review.view-self', ['review' => Auth::user()->getBookReview($book)])
                         @else
-                            @include('review.create')
+                            @if(Auth::user()->id !== $book->author_id)
+                                @include('review.create')
+                            @endif
                         @endif
                     @endauth
 
-                    @foreach($book->reviews as $review)
-                        @if(Auth::user())
-                            @if(Auth::user()->id !== $review->user->id)
-                                @include('review.view', compact($review))
-                            @endif
-                        @else
-                                @include('review.view', compact($review))
-                        @endif
-                    @endforeach
+                    @if(filled($book->reviews))
+                            @foreach($book->reviews as $review)
+                                @if(Auth::user())
+                                    @if(Auth::user()->id !== $review->user->id)
+                                        @include('review.view', compact($review))
+                                    @endif
+                                @else
+                                    @include('review.view', compact($review))
+                                @endif
+                            @endforeach
+                    @else
+                            <div class="review__no-reviews">
+                                -к этой книге пока нет рецензий-
+                            </div>
+                    @endif
                 </div>
             </div>
         </div>

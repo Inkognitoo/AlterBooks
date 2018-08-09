@@ -35,4 +35,13 @@
             }
         })
     });
+
+
+    let downloadTab = document.getElementById('book-buttons-tab');
+    let bookButtons = downloadTab.parentNode;
+    let dowloadButtons = document.getElementById('download-buttons');
+    console.log(downloadTab, bookButtons);
+    if((bookButtons !== null) && (dowloadButtons !== null)) {
+        downloadTab.style.height = (bookButtons.offsetHeight + dowloadButtons.offsetHeight + 20) + 'px';
+    }
 })();
