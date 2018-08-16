@@ -38,6 +38,7 @@
                         <a class="review__user-name col-12 col-clear"
                            href="{{ $review->user->url }}">
                             {{ $review->user->fullname }}
+                            {{ $review->id }}
                         </a>
                         <div class="review__date col-12 col-clear">
                             {{ $review->created_at->format('d.m.Y') }}

@@ -53,7 +53,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::post('/book/{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
         ->name('api.review.estimate.minus')
     ;
-    Route::delete('/book/{book_id}/review/id{id}/delete', 'Api/ReviewController@delete')
+    Route::delete('/review/id{id}/delete', 'Api\ReviewController@delete')
         ->name('api.review.delete')
     ;
 });

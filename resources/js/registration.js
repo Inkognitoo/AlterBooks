@@ -1,7 +1,7 @@
 "use strict";
 
 (function registration() {
-    let checkbox = document.getElementById('checkbox-1');
+    let checkbox = document.getElementById('checkbox-register');
     let button = document.getElementById('registration-button');
 
     if (checkbox !== null) {

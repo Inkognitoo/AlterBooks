@@ -50,7 +50,7 @@
                 <div class="review-text col-12 col-clear"
                      data-status="close"
                      id="review-text">
-                    {!! $review->text !!}
+                    {!! $review->text !!} ({{ $review->id }})
                     <div class="review-text__block" id="review-text-block"></div>
                     <button class="review-text__more" id="review-text-more">
                         читать далее

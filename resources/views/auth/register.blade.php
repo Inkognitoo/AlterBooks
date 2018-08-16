@@ -95,8 +95,8 @@
                            class="col-xs-12 checkbox">
                         <input type="checkbox"
                                class="checkbox__field"
-                               id="checkbox-1"
-                               name="checkbox-1"
+                               id="checkbox-register"
+                               name="checkbox-register"
                                onchange="registration()">
                         <span class="checkbox-animation">
                                     <span class="checkbox-animation__button"></span>

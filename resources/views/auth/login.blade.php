@@ -46,7 +46,7 @@
                     <div class="row row-between">
                         <div class="authentication__checkbox">
                             <label for="checkbox-1" class="col-xs-12 checkbox">
-                                <input type="checkbox" class="checkbox__field" id="checkbox-1" name="checkbox-1">
+                                <input type="checkbox" class="checkbox__field" id="checkbox-auth" name="checkbox-auth">
                                 <span class="checkbox-animation">
                                     <span class="checkbox-animation__button"></span>
                                     <span class="checkbox-animation__icon"></span>

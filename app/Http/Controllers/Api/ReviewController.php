@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Http\Middleware\CheckUserReviewGranted;
-use Redirect;
-use Exception;
-use App\Http\Middleware\IsBookExist;
+use App\Exceptions\ApiException;
 use App\Http\Middleware\IsReviewExist;
-use App\Http\Middleware\IsUserAuth;
 use App\Http\Middleware\Api\ApiWrapper;
 
 class ReviewController extends Controller
@@ -21,23 +18,19 @@ class ReviewController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware(IsUserAuth::class);
-//
-//        $this->middleware(IsBookExist::class);
-//
-//        $this->middleware(IsReviewExist::class)->only(['delete']);
-//
+        $this->middleware(IsReviewExist::class)->only(['delete']);
+
 //        $this->middleware(CheckUserReviewGranted::class)->only(['delete']);
-//
-//        $this->middleware(ApiWrapper::class);
+
+        $this->middleware(ApiWrapper::class);
     }
 
     /**
      * Удаляем рецензию
      *
      * @param mixed $id
-     * @return Redirect
-     * @throws Exception
+     * @return array
+     * @throws ApiException
      */
     public function delete($id)
     {
@@ -45,12 +38,14 @@ class ReviewController extends Controller
             ->delete()
         ;
 
+        dd($id);
+
         $response = [
             'success' => true,
             'data' => null,
             'errors' => [],
         ];
 
-        return response()->json($response, 200);
+        return $response;
     }
 }

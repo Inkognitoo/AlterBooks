@@ -93,7 +93,7 @@
                                     Псевдоним
                                 </div>
                                 <div class="block-content-main__info">
-                                    Family@Cross
+                                    {{ $user->nickname }}
                                 </div>
                             </div>
 
