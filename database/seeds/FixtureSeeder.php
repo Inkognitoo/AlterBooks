@@ -8,9 +8,9 @@ use Illuminate\Queue\QueueManager;
 
 class FixtureSeeder extends Seeder
 {
-    const WITH_IMAGES = true;
+    const WITH_IMAGES = false;
 
-    const WITH_BOOKS = true;
+    const WITH_BOOKS = false;
 
     /**
      * Run the database seeds.
@@ -39,8 +39,9 @@ class FixtureSeeder extends Seeder
             if (self::WITH_IMAGES) {
                 $this->command->info('Создаю аватару для фейкового пользователя');
 
-                $avatar_path = $faker->image('/tmp', rand(200, 600), rand(200, 600), 'cats');
+                $avatar_path = $faker->image('/tmp', rand(200, 600), rand(200, 600));
                 $avatar = new UploadedFile($avatar_path, 'cat');
+
                 $user->avatar = $avatar;
                 $user->save();
 
