@@ -35,8 +35,7 @@
                     <a class="review__icon review__icon_delete"
                        id="review-delete"
                        data-book-id="{{ $review->book_id }}"
-                       data-review-id="{{ $review->id }}"
-                       href="{{ route('api.review.delete', ['book_id' => $book->slug, 'id' => $review->id]) }}"></a>
+                       data-review-id="{{ $review->id }}"></a>
 
                     <button class="review__button button"
                             id="review-reestablish">
@@ -45,7 +44,8 @@
                 </div>
                 <div class="review-title col-12 col-clear">
                     {{ $review->header }}
-                    <div class="review-title__shield"></div>
+                    <div class="review-title__shield"
+                         id="review-shield"></div>
                 </div>
                 <div class="review-text col-12 col-clear"
                      data-status="close"

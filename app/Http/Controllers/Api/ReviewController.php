@@ -20,7 +20,7 @@ class ReviewController extends Controller
     {
         $this->middleware(IsReviewExist::class)->only(['delete']);
 
-//        $this->middleware(CheckUserReviewGranted::class)->only(['delete']);
+        $this->middleware(CheckUserReviewGranted::class)->only(['delete']);
 
         $this->middleware(ApiWrapper::class);
     }
@@ -37,8 +37,6 @@ class ReviewController extends Controller
         Review::find($id)
             ->delete()
         ;
-
-        dd($id);
 
         $response = [
             'success' => true,

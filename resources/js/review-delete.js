@@ -58,12 +58,8 @@ import axios from 'axios';
      * Показываем меню для восстановления рецензии
      */
     function addRestoring() {
-        let deleteButton = document.getElementById('review-delete');
         let review_text = document.getElementById('review-text');
-        console.log(review_text);
-        deleteButton.addEventListener('click', function (b) {
-            console.log(review_text.offsetHeight);
-            document.getElementsByClassName('review-title__shield')[0].style.height = (review_text.offsetHeight + 25.5) + 'px';
-        });
+        let review_shield = document.getElementById('review-shield');
+        review_shield.style.height = (review_text.offsetHeight + 25.5) + 'px';
     }
 })();
