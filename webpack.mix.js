@@ -19,7 +19,8 @@ mix.js(['resources/assets/js/app.js',
         'resources/js/user.js',
         'resources/js/review.js',
         'resources/js/review-new.js',
-        'resources/js/review-delete.js'], 'public/js/app.js')
+        'resources/js/review-delete.js',
+        'resources/js/review-restoring.js'], 'public/js/app.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .less('resources/less/style.less', 'public/css')
     .less('resources/less/style-1.0/style.less', 'public/css/style-1.0.css')

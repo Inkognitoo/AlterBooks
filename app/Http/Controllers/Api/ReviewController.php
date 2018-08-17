@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Http\Middleware\CheckUserReviewGranted;
 use App\Exceptions\ApiException;
 use App\Http\Middleware\IsReviewExist;
 use App\Http\Middleware\Api\ApiWrapper;
+use App\Http\Middleware\Api\HasNotUserReviewToBook;
+use App\Http\Middleware\Api\HasUserDeletedReviewToBook;
 
 class ReviewController extends Controller
 {
@@ -21,6 +24,10 @@ class ReviewController extends Controller
         $this->middleware(IsReviewExist::class)->only(['delete']);
 
         $this->middleware(CheckUserReviewGranted::class)->only(['delete']);
+
+        $this->middleware(HasNotUserReviewToBook::class)->only(['restore']);
+
+        $this->middleware(HasUserDeletedReviewToBook::class)->only(['restore']);
 
         $this->middleware(ApiWrapper::class);
     }
@@ -36,6 +43,32 @@ class ReviewController extends Controller
     {
         Review::find($id)
             ->delete()
+        ;
+
+        $response = [
+            'success' => true,
+            'data' => null,
+            'errors' => [],
+        ];
+
+        return $response;
+    }
+
+    /**
+     * Восстанавливаем рецензию
+     *
+     * @param mixed $book_id
+     * @return array
+     * @throws ApiException
+     */
+    public function restore($book_id)
+    {
+        Review::withTrashed()
+            -> where('user_id', Auth::user())
+            -> where('book_id', $book_id)
+            -> orderBy('deleted_at')
+            -> latest()
+            ->restore()
         ;
 
         $response = [

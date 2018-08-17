@@ -56,4 +56,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::delete('/review/id{id}/delete', 'Api\ReviewController@delete')
         ->name('api.review.delete')
     ;
+    Route::put('/review/{book_id}/restore', 'Api\ReviewController@restore')
+        ->name('api.review.restore')
+    ;
 });
