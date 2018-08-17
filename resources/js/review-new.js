@@ -49,25 +49,6 @@
         review_self.setAttribute('data-status', 'open');
     }
 
-    let close_rs_button = document.getElementsByClassName('review__icon_delete');
-    Array.prototype.forEach.call(close_rs_button, function(button){
-        button.addEventListener('click', function (b) {
-            review_self.setAttribute('data-status', 'delete');
-            review_text.setAttribute('data-status', 'close');
-            review_text.style.maxHeight = '6em';
-            review_text.style.marginBottom = '20px';
-            review_text.style.overflow = 'hidden';
-
-            let review_text_more = document.getElementById('review-text-more');
-            review_text_more.style.top = 'calc(15em - 2px)';
-            review_text_more.style.bottom = 'auto';
-            review_text_more.innerHTML = 'читать далее';
-
-            let review_text_block = document.getElementById('review-text-block');
-            review_text_block.style.display = 'block';
-        })
-    });
-
     let edit_rs_button = document.getElementsByClassName('review__icon_edit');
     Array.prototype.forEach.call(edit_rs_button, function(button){
         button.addEventListener('click', function (b) {
@@ -75,14 +56,5 @@
             review_self.setAttribute('data-status', 'close');
         })
     });
-
-    let reestablish_rs_button = document.getElementById('review-reestablish');
-
-    reestablish_rs_button.addEventListener('click', function (b) {
-        review_self.setAttribute('data-status', 'open');
-        review_text.style.maxHeight = '16.5em';
-    });
-
-
 })();
 

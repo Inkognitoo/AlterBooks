@@ -1,65 +1,67 @@
-// "use strict";
-//
-// import axios from 'axios';
-//
-// (function () {
-//
-//     let request = axios.create({
-//         headers: {'Authorization': 'Bearer ' + document.getElementsByName('api_token')[0].content}
-//     });
-//
-//     let deleteButton = document.getElementById('review-delete');
-//
-//     if (deleteButton !== null) {
-//         deleteButton.onclick = deleteReview;
-//     }
-//
-//     /**
-//      * Обрабатываем нажатие на кнопку восстановления
-//      *
-//      */
-//     function deleteReview() {
-//         let review_id = parseInt(this.dataset.reviewId);
-//
-//         deleteApiReview(review_id)
-//             .then(function (response) {
-//                 addRestoring();
-//             })
-//             .catch(function (error) {
-//                 console.log(error);
-//             });
-//     }
-//
-//     /**
-//      * Api запрос для восстановления рецензии
-//      *
-//      * @param {int} review_id идентификатор рецензии
-//      * @returns {Promise<any>}
-//      */
-//     function deleteApiReview(review_id) {
-//         let url = `/api/v1/review/id${review_id}/delete`;
-//
-//         return new Promise(function (resolve, reject) {
-//             request.delete(url)
-//                 .then(function (response) {
-//                     if (response.data.success) {
-//                         resolve(response.data);
-//                     } else {
-//                         reject(response.data)
-//                     }
-//                 })
-//                 .catch(function (error) {
-//                     reject(error);
-//                 });
-//         });
-//     }
-//
-//     /**
-//      * Показываем восстановленную рецензию
-//      */
-//     function addRestoring() {
-//         let review_text = document.getElementById('review-text');
-//         let review_shield = document.getElementById('review-shield');
-//         review_shield.style.height = (review_text.offsetHeight + 25.5) + 'px';
-//     }
-// })();
+"use strict";
+
+import axios from 'axios';
+
+(function () {
+
+    let request = axios.create({
+        headers: {'Authorization': 'Bearer ' + document.getElementsByName('api_token')[0].content}
+    });
+
+    let restoreButton = document.getElementById('review-restore');
+
+    if (restoreButton !== null) {
+        restoreButton.onclick = restoreReview;
+    }
+
+    /**
+     * Обрабатываем нажатие на кнопку восстановления
+     *
+     */
+    function restoreReview() {
+        let book_id = parseInt(this.dataset.bookId);
+
+        restoreApiReview(book_id)
+            .then(function (response) {
+                showReview();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    /**
+     * Api запрос для восстановления рецензии
+     *
+     * @param {int} book_id идентификатор рецензии
+     * @returns {Promise<any>}
+     */
+    function restoreApiReview(book_id) {
+        let url = `/api/v1/review/${book_id}/restore`;
+
+        return new Promise(function (resolve, reject) {
+            request.put(url)
+                .then(function (response) {
+                    if (response.data.success) {
+                        resolve(response.data);
+                    } else {
+                        reject(response.data)
+                    }
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+        });
+    }
+
+    /**
+     * Показываем восстановленную рецензию
+     */
+    function showReview() {
+        let review_self = document.getElementById('review-self');
+        let review_text = document.getElementById('review-text');
+
+        review_self.setAttribute('data-status', 'open');
+        review_text.style.maxHeight = '16.5em';
+    }
+})();

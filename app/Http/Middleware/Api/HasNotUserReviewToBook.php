@@ -6,7 +6,6 @@ use App\Exceptions\ApiException;
 use Auth;
 use Closure;
 use Illuminate\Http\Response;
-use App\Models\Review;
 
 /**
  * Проверям, отсутствуют ли у пользователя активные рецензии
@@ -28,7 +27,7 @@ class HasNotUserReviewToBook
     {
         $book_id = $request->book_id ?? $request->id;
 
-        $review_active = Review::withTrashed() -> where('user_id', Auth::user())->where('book_id', $book_id)->exists();
+        $review_active = Auth::user()->reviews()->where('book_id', $book_id)->exists();
         if ($review_active) {
             throw new ApiException('Существуют активные рецензии к книге', Response::HTTP_NOT_FOUND);
         }

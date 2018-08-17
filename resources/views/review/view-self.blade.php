@@ -3,7 +3,10 @@
 @endphp
 
 
-<div class="review-element" data-status="open" data-auth="true" id="review-self">
+<div class="review-element"
+     data-status="open"
+     data-auth="true"
+     id="review-self">
     <div class="review-rating" data-rating ="{{ $review->rating }}">
         <div class="review-rating__header">
             {{ number_format($review->rating, 1) }}
@@ -34,11 +37,12 @@
 
                     <a class="review__icon review__icon_delete"
                        id="review-delete"
-                       data-book-id="{{ $review->book_id }}"
-                       data-review-id="{{ $review->id }}"></a>
+                       data-review-id="{{ $review->id }}"
+                       data-book-id="{{ $review->book_id }}"></a>
 
                     <button class="review__button button"
-                            id="review-reestablish">
+                            id="review-restore"
+                            data-book-id="">
                         восстановить
                     </button>
                 </div>

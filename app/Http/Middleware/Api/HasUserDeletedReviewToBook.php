@@ -6,6 +6,7 @@ use App\Exceptions\ApiException;
 use Auth;
 use Closure;
 use Illuminate\Http\Response;
+use App\Models\Review;
 
 /**
  * Проверям, отсутствуют ли у пользователя активные рецензии
@@ -27,7 +28,7 @@ class HasUserDeletedReviewToBook
     {
         $book_id = $request->book_id ?? $request->id;
 
-        $review_deleted = Auth::user()->reviews()->withTrashed()->where('book_id', $book_id)->exists();
+        $review_deleted = Review::withTrashed() -> where('user_id', Auth::user()->id)->where('book_id', $book_id)->exists();
         if (!$review_deleted) {
             throw new ApiException('Удаленных рецензий к книге не существует', Response::HTTP_NOT_FOUND);
         }
