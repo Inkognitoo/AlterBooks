@@ -28,7 +28,12 @@ class HasUserDeletedReviewToBook
     {
         $book_id = $request->book_id ?? $request->id;
 
-        $review_deleted = Review::withTrashed() -> where('user_id', Auth::user()->id)->where('book_id', $book_id)->exists();
+
+        //TODO: исправить на получение через данные пользователя
+//        $review_deleted = Auth::user()->reviews()->history()->onlyTrashed()->where('book_id', $book_id)->exists();
+
+        $review_deleted = Review::onlyTrashed()->where('user_id', Auth::user()->id)->where('book_id', $book_id)->exists();
+
         if (!$review_deleted) {
             throw new ApiException('Удаленных рецензий к книге не существует', Response::HTTP_NOT_FOUND);
         }

@@ -63,11 +63,11 @@ class ReviewController extends Controller
      */
     public function restore($book_id)
     {
-        Review::withTrashed()
-            -> where('user_id', Auth::user()->id)
-            -> where('book_id', $book_id)
-            -> orderBy('deleted_at', 'desc')
-            -> first()
+        Review::onlyTrashed()
+            ->where('user_id', Auth::user()->id)
+            ->where('book_id', $book_id)
+            ->orderBy('deleted_at', 'desc')
+            ->first()
             ->restore()
         ;
 
