@@ -2,8 +2,14 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Models\Admin\Book;
 use Illuminate\Http\Resources\Json\Resource;
 
+/**
+ * Class BookResource
+ * @package App\Http\Resources\Admin
+ * @mixin Book
+ */
 class BookResource extends Resource
 {
     /**

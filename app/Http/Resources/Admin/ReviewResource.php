@@ -2,8 +2,14 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Models\Admin\Review;
 use Illuminate\Http\Resources\Json\Resource;
 
+/**
+ * Class ReviewResource
+ * @package App\Http\Resources\Admin
+ * @mixin Review
+ */
 class ReviewResource extends Resource
 {
     /**
@@ -21,7 +27,7 @@ class ReviewResource extends Resource
             'book' => $this->book->title,
             'created_at' => $this->created_at,
             'show_url' => route('review.show', ['id' => $this->id]),
-            'edit_url' => '',
+            'edit_url' => route('review.edit.show', ['id' => $this->id]),
         ];
     }
 }

@@ -23,20 +23,6 @@ Route::group(['middleware' => 'auth'], function() {
         ->name('dashboard')
     ;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Additional
-    |--------------------------------------------------------------------------
-    |
-    | Здесь различные, дополнительные маршруты
-    |
-    */
-
-    //маршрут для просмотра логов
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
-        ->name('logs')
-    ;
-
     Route::get('users', 'UserController@index')
         ->name('users')
     ;
@@ -69,6 +55,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('review/{id}', 'ReviewController@show')
         ->name('review.show')
     ;
+    Route::get('review/{id}/edit', 'ReviewController@edit')
+        ->name('review.edit.show')
+    ;
+    Route::post('review/{id}/update', 'ReviewController@update')
+        ->name('review.update')
+    ;
 
     Route::get('genres', 'GenreController@index')
         ->name('genres')
@@ -76,4 +68,19 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('genre/{id}', 'GenreController@show')
         ->name('genre.show')
     ;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Additional
+    |--------------------------------------------------------------------------
+    |
+    | Здесь различные, дополнительные маршруты
+    |
+    */
+
+    //маршрут для просмотра логов
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
+        ->name('logs')
+    ;
+
 });

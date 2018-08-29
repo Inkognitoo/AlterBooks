@@ -15,11 +15,30 @@ class Review extends BaseReview
     use Attributes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'rating', 'text', 'user_id', 'book_id'
+    ];
+
+    /**
      * @var array $safe_attributes Список атрибутов для отображения
      */
     protected $safe_attributes = [
-        'id', 'rating', 'text', 'user_id', 'book_id', 'deleted_at', 'created_at', 'updated_at',
+        'id', 'rating', 'text', 'user_id', 'book_id', 'created_at', 'updated_at',
     ];
+
+    /**
+     * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
+     */
+    protected $disabled_edit_fields = ['id', 'updated_at', 'created_at'];
+
+    /**
+     * @var array $area_edit_fields Список атрибутов, которым нужно отображать широкие поля редактирования
+     */
+    protected $area_edit_fields = ['text'];
 
     /**
      * Книга, к которой оставлена рецензия

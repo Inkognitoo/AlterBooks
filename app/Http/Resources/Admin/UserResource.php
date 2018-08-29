@@ -2,8 +2,14 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Models\Admin\User;
 use Illuminate\Http\Resources\Json\Resource;
 
+/**
+ * Class UserResource
+ * @package App\Http\Resources\Admin
+ * @mixin User
+ */
 class UserResource extends Resource
 {
     /**
