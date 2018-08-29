@@ -197,7 +197,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                             <a href="${full.show_url}" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="View">
                               <i class="la la-eye"></i>
                             </a>
-                            <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">
+                            <a href="${full.edit_url}" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">
                               <i class="la la-edit"></i>
                             </a>`;
                     },

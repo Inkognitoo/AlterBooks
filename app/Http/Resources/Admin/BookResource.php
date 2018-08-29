@@ -20,7 +20,7 @@ class BookResource extends Resource
             'author' => $this->author->full_name,
             'status' => $this->status,
             'show_url' => route('book.show', ['id' => $this->id]),
-            'edit_url' => '',
+            'edit_url' => route('book.edit.show', ['id' => $this->id]),
         ];
     }
 }
