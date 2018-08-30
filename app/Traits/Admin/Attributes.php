@@ -144,13 +144,15 @@ trait Attributes {
      */
     protected function getDefaultHtmlEditForAttribute($attribute): string
     {
+        $value = old($attribute) ?? $this->getAttribute($attribute);
+
         return sprintf('
                 <input type="text" 
                     class="form-control m-input" 
                     placeholder="Введите данные..."
                     id="%s"
                     name="%s"
-                    value="%s">', $attribute, $attribute, $this->getAttribute($attribute));
+                    value="%s">', $attribute, $attribute, $value);
     }
 
     /**
@@ -161,12 +163,21 @@ trait Attributes {
      */
     protected function getDefaultHtmlEditForDatetimeAttribute($attribute): string
     {
+        $value = null;
+        if (filled(old($attribute))) {
+            $value = old($attribute);
+        }
+
+        if (filled($this->getAttribute($attribute))) {
+            $value = $this->getAttribute($attribute)->format('Y-m-d\TH:i:s');
+        }
+
         return sprintf('
                 <input type="datetime-local"
                     class="form-control m-input"
                     id="%s"
                     name="%s"
-                    value="%s">', $attribute, $attribute, $this->getAttribute($attribute)->format('Y-m-d\TH:i:s'));
+                    value="%s">', $attribute, $attribute, $value);
     }
 
     /**
@@ -177,13 +188,15 @@ trait Attributes {
      */
     protected function getDefaultHtmlEditForNumberAttribute($attribute): string
     {
+        $value = old($attribute) ?? $this->getAttribute($attribute);
+
         return sprintf('
                 <input type="number" 
                     class="form-control m-input" 
                     placeholder="Введите данные..."
                     id="%s"
                     name="%s"
-                    value="%s">', $attribute, $attribute, $this->getAttribute($attribute));
+                    value="%s">', $attribute, $attribute, $value);
     }
 
     /**
@@ -194,6 +207,8 @@ trait Attributes {
      */
     protected function getDefaultHtmlEditForDisabledAttribute($attribute): string
     {
+        $value = old($attribute) ?? $this->getAttribute($attribute);
+
         return sprintf('
                 <input type="text"
                     disabled 
@@ -201,7 +216,7 @@ trait Attributes {
                     placeholder="Введите данные..."
                     id="%s"
                     name="%s"
-                    value="%s">', $attribute, $attribute, $this->getAttribute($attribute));
+                    value="%s">', $attribute, $attribute, $value);
     }
 
     /**
@@ -212,11 +227,13 @@ trait Attributes {
      */
     protected function getDefaultHtmlEditForAreaAttribute($attribute): string
     {
+        $value = old($attribute) ?? $this->getAttribute($attribute);
+
         return sprintf('
                 <textarea class="form-control m-input" 
                     id="%s"
                     name="%s" 
-                    rows="8">%s</textarea>', $attribute, $attribute, $this->getAttribute($attribute));
+                    rows="8">%s</textarea>', $attribute, $attribute, $value);
     }
 
     /**
@@ -227,7 +244,11 @@ trait Attributes {
      */
     protected function getDefaultHtmlEditForCheckboxAttribute($attribute): string
     {
-        $checked = $this->getAttribute($attribute) ? 'checked' : '';
+        if (filled(old($attribute))) {
+            $checked = old($attribute);
+        } else {
+            $checked = $this->getAttribute($attribute) ? 'checked' : '';
+        }
 
         return sprintf('
                 <label class="m-checkbox">
@@ -262,7 +283,7 @@ trait Attributes {
         $options = [];
 
         foreach ((array)$this->list_edit_fields[$attribute] as $key => $value) {
-            $selected = $this->getAttribute($attribute) === $value ? 'selected' : '';
+            $selected = (old($attribute) ?? $this->getAttribute($attribute)) === $value ? 'selected' : '';
 
             $options[] = sprintf('<option %s value="%s">%s</option>', $selected, $value, $key);
         }
