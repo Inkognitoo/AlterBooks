@@ -20,4 +20,9 @@ class Genre extends BaseGenre
     protected $safe_attributes = [
         'id', 'name', 'slug', 'created_at', 'updated_at',
     ];
+
+    /**
+     * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
+     */
+    protected $disabled_edit_fields = ['id', 'updated_at', 'created_at'];
 }

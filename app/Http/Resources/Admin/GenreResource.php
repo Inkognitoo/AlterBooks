@@ -2,8 +2,14 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Models\Admin\Genre;
 use Illuminate\Http\Resources\Json\Resource;
 
+/**
+ * Class GenreResource
+ * @package App\Http\Resources\Admin
+ * @mixin Genre
+ */
 class GenreResource extends Resource
 {
     /**
@@ -20,7 +26,7 @@ class GenreResource extends Resource
             'slug' => $this->slug,
             'created_at' => $this->created_at,
             'show_url' => route('genre.show', ['id' => $this->id]),
-            'edit_url' => '',
+            'edit_url' => route('genre.edit.show', ['id' => $this->id]),
         ];
     }
 }

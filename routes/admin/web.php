@@ -68,6 +68,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('genre/{id}', 'GenreController@show')
         ->name('genre.show')
     ;
+    Route::get('genre/{id}/edit', 'GenreController@edit')
+        ->name('genre.edit.show')
+    ;
+    Route::post('genre/{id}/update', 'GenreController@update')
+        ->name('genre.update')
+    ;
 
     /*
     |--------------------------------------------------------------------------
