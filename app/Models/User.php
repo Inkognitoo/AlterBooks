@@ -345,9 +345,23 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getCanonicalUrlAttribute()
+    public function getCanonicalUrlAttribute(): string
     {
         return route('user.show', ['id' => 'id' . $this->id]);
+    }
+
+    /**
+     * Аватара пользователя (как есть в бд)
+     *
+     * Эти костыли нужны из-за магии laravel, не позволяющей спокойно юзать
+     * свойство avatar при наличии одноимённой функции в свежесозданном
+     * экземпляре класса
+     *
+     * @return string
+     */
+    public function getAvatarAttribute(): string
+    {
+        return array_key_exists('avatar', $this->attributes) ? (string)$this->attributes['avatar'] : '';
     }
 
     /**

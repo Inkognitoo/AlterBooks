@@ -23,8 +23,22 @@ Route::group(['middleware' => 'auth'], function() {
         ->name('dashboard')
     ;
 
+    /*
+    |--------------------------------------------------------------------------
+    | User
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся в первую очередь работы с пользователем
+    |
+    */
     Route::get('users', 'UserController@index')
         ->name('users')
+    ;
+    Route::get('user', 'UserController@createShow')
+        ->name('user.create.show')
+    ;
+    Route::post('user', 'UserController@create')
+        ->name('user.create')
     ;
     Route::get('user/{id}', 'UserController@show')
         ->name('user.show')

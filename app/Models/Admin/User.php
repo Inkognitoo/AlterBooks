@@ -23,7 +23,7 @@ class User extends BaseUser
         'nickname', 'email', 'name',
         'surname', 'patronymic', 'birthday_date',
         'gender', 'about', 'timezone',
-        'avatar', 'is_admin'
+        'avatar', 'is_admin', 'password'
     ];
 
     /**
@@ -89,6 +89,31 @@ class User extends BaseUser
      */
     protected $list_edit_fields = []; // Заполняется в конструкторе
 
+    /**
+     * @var array $datetime_create_fields Список атрибутов, которым нужно отображать поля для создания даты
+     */
+    protected $datetime_create_fields = ['birthday_date'];
+
+    /**
+     * @var array $area_create_fields Список атрибутов, которым нужно отображать широкие поля создания
+     */
+    protected $area_create_fields = ['about'];
+
+    /**
+     * @var array $checkbox_create_fields Список атрибутов, которым нужно отображать checkbox-ы
+     */
+    protected $checkbox_create_fields = ['is_admin'];
+
+    /**
+     * @var array $file_edit_fields Список атрибутов, которым нужно отображать поля для ввода файлов
+     */
+    protected $file_create_fields = ['avatar'];
+
+    /**
+     * @var array $list_create_fields Список атрибутов, которым нужно отображать выпадающий список
+     */
+    protected $list_create_fields = []; // Заполняется в конструкторе
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -101,6 +126,7 @@ class User extends BaseUser
             ],
             'timezone' => array_flip(config('app.timezones'))
         ];
+        $this->list_create_fields = $this->list_edit_fields;
     }
 
     /**
