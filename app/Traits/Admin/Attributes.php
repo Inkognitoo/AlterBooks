@@ -104,6 +104,51 @@ trait Attributes {
     }
 
     /**
+     * html для отображения поля создания текущего атрибута
+     *
+     * @param $attribute
+     * @return string
+     */
+    public function getHtmlCreateForAttribute($attribute): string
+    {
+        $response = '';
+        $method_name = 'getHtmlCreateFor' . ucfirst(camel_case($attribute));
+        if (method_exists($this, $method_name)) {
+            $response = $this->$method_name();
+        }
+
+        if (\in_array($attribute, $this->datetime_create_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlCreateForDatetimeAttribute($attribute);
+        }
+
+        if (\in_array($attribute, $this->number_create_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlCreateForNumberAttribute($attribute);
+        }
+
+        if (\in_array($attribute, $this->area_create_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlCreateForAreaAttribute($attribute);
+        }
+
+        if (\in_array($attribute, $this->checkbox_create_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlCreateForCheckboxAttribute($attribute);
+        }
+
+        if (\in_array($attribute, $this->file_create_fields ?? [], true)) {
+            $response = $this->getDefaultHtmlCreateForFileAttribute($attribute);
+        }
+
+        if (array_key_exists($attribute, $this->list_create_fields ?? [])) {
+            $response = $this->getDefaultHtmlCreateForListAttribute($attribute);
+        }
+
+        if (blank($response)) {
+            $response = $this->getDefaultHtmlCreateForAttribute($attribute);
+        }
+
+        return $response;
+    }
+
+    /**
      * Дефолтный html для отображения текущего атрибута
      *
      * @param $attribute
@@ -284,6 +329,134 @@ trait Attributes {
 
         foreach ((array)$this->list_edit_fields[$attribute] as $key => $value) {
             $selected = (old($attribute) ?? $this->getAttribute($attribute)) === $value ? 'selected' : '';
+
+            $options[] = sprintf('<option %s value="%s">%s</option>', $selected, $value, $key);
+        }
+
+        return sprintf('
+                <select
+                    class="form-control m-input" 
+                    id="%s"
+                    name="%s">%s</select>', $attribute, $attribute, implode(PHP_EOL, $options));
+    }
+
+    /**
+     * Дефолтный html для отображения поля создания текущего атрибута
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlCreateForAttribute($attribute): string
+    {
+        $value = old($attribute);
+
+        return sprintf('
+                <input type="text" 
+                    class="form-control m-input" 
+                    placeholder="Введите данные..."
+                    id="%s"
+                    name="%s"
+                    value="%s">', $attribute, $attribute, $value);
+    }
+
+    /**
+     * Дефолтный html для отображения поля редактирования datetime атрибута
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlCreateForDatetimeAttribute($attribute): string
+    {
+        $value = old($attribute);
+
+        return sprintf('
+                <input type="datetime-local"
+                    class="form-control m-input"
+                    id="%s"
+                    name="%s"
+                    value="%s">', $attribute, $attribute, $value);
+    }
+
+    /**
+     * Дефолтный html для отображения поля создания целочисленного атрибута
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlCreateForNumberAttribute($attribute): string
+    {
+        $value = old($attribute);
+
+        return sprintf('
+                <input type="number" 
+                    class="form-control m-input" 
+                    placeholder="Введите данные..."
+                    id="%s"
+                    name="%s"
+                    value="%s">', $attribute, $attribute, $value);
+    }
+
+    /**
+     * Дефолтный html для отображения поля создания многострочных данных
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlCreateForAreaAttribute($attribute): string
+    {
+        $value = old($attribute);
+
+        return sprintf('
+                <textarea class="form-control m-input" 
+                    id="%s"
+                    name="%s" 
+                    rows="8">%s</textarea>', $attribute, $attribute, $value);
+    }
+
+    /**
+     * Дефолтный html для отображения поля создания true/false данных
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlCreateForCheckboxAttribute($attribute): string
+    {
+        $checked = old($attribute) ? 'checked' : '';
+
+        return sprintf('
+                <label class="m-checkbox">
+                    <input type="checkbox" id="%s" name="%s" %s>
+                    <span></span>
+                </label>', $attribute, $attribute, $checked);
+    }
+
+    /**
+     * Дефолтный html для отображения поля загрузки файла
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlCreateForFileAttribute($attribute): string
+    {
+        return sprintf('
+                <input type="file"
+                    class="form-control m-input" 
+                    id="%s"
+                    name="%s">', $attribute, $attribute);
+    }
+
+    /**
+     * Дефолтный html для отображения выпадающего списка
+     *
+     * @param $attribute
+     * @return string
+     */
+    protected function getDefaultHtmlCreateForListAttribute($attribute): string
+    {
+        $options = [];
+
+        foreach ((array)$this->list_edit_fields[$attribute] as $key => $value) {
+            $selected = old($attribute) === $value ? 'selected' : '';
 
             $options[] = sprintf('<option %s value="%s">%s</option>', $selected, $value, $key);
         }
