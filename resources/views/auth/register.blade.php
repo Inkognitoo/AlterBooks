@@ -20,7 +20,7 @@
                      style="background-image: url('/img/icons/user_grey.svg')"></div>
                 <input class="registration-element__field"
                        type="text"
-                       id="email"
+                       id="registration-email"
                        name="email"
                        placeholder="электронная почта / логин"
                        required autofocus
@@ -38,7 +38,7 @@
                      style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
                 <input class="registration-element__field registration-element__field_logo"
                        type="password"
-                       id="password"
+                       id="registration-password"
                        name="password"
                        placeholder="пароль"
                        required
@@ -52,7 +52,7 @@
                      style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
                 <input class="registration-element__field registration-element__field_logo"
                        type="password"
-                       id="password_confirmation"
+                       id="registration-password_confirmation"
                        name="password_confirmation"
                        placeholder="повторите пароль"
                        required
@@ -67,7 +67,7 @@
             <div class="registration-element col-12 col-clear">
                 <input class="registration-element__field"
                        type="text"
-                       id="surname"
+                       id="registration-surname"
                        name="surname"
                        placeholder="фамилия">
             </div>
@@ -75,7 +75,7 @@
             <div class="registration-element col-12 col-clear">
                 <input class="registration-element__field"
                        type="text"
-                       id="name"
+                       id="registration-name"
                        name="name"
                        placeholder="имя">
             </div>
@@ -83,7 +83,7 @@
                  data-status="{{ $errors->has('nickname') ? 'error' : '' }}">
                 <input class="registration-element__field"
                        type="text"
-                       id="nickname"
+                       id="registration-nickname"
                        name="nickname"
                        placeholder="псевдоним"
                        value="{{ old('nickname') }}">
@@ -91,13 +91,12 @@
 
             <div class="registration-element registration-element_agreement col-12 col-clear">
                 <div class="authentication__checkbox">
-                    <label for="checkbox-1"
+                    <label for="registration-checkbox"
                            class="col-xs-12 checkbox">
                         <input type="checkbox"
                                class="checkbox__field"
-                               id="checkbox-register"
-                               name="checkbox-register"
-                               onchange="registration()">
+                               id="registration-checkbox"
+                               name="checkbox">
                         <span class="checkbox-animation">
                                     <span class="checkbox-animation__button"></span>
                                     <span class="checkbox-animation__icon"></span>

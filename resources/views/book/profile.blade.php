@@ -75,7 +75,7 @@
             <div class="book__main col-8 col-md-12">
                 <div class="row row-center">
                     <div class="book__title col-12 col-clear col-md-center">
-                        {{ $book->title }} {{ $book->id }}
+                        {{ $book->title }}
                     </div>
                     <a class="book__author col-12 col-clear col-md-center"
                        href="{{ $book->author->url }}">

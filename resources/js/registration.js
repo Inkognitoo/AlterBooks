@@ -1,7 +1,7 @@
 "use strict";
 
 (function registration() {
-    let checkbox = document.getElementById('checkbox-register');
+    let checkbox = document.getElementById('registration-checkbox');
     let button = document.getElementById('registration-button');
 
     if (checkbox !== null) {
@@ -12,8 +12,8 @@
 })();
 
 (function () {
-    let password = document.getElementById('password');
-    let password_confirmation = document.getElementById('password_confirmation');
+    let password = document.getElementById('registration-password');
+    let password_confirmation = document.getElementById('registration-password_confirmation');
 
     if ((password !== null) && (password_confirmation !== null)) {
         password_confirmation.oninput = function () {
