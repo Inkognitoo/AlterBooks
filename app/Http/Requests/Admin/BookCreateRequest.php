@@ -8,22 +8,19 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 
 /**
- * Валидируем запрос на обновление книги
+ * Валидируем запрос на создание книги
  *
- * App\Http\Requests\BookUpdateRequest
+ * App\Http\Requests\BookCreateRequest
  *
  * @property string $title
- * @property string $slug
  * @property UploadedFile|null $cover
  * @property string|null $description
  * @property integer $author_id
  * @property UploadedFile|null $text
  * @property string $status
  * @property array $genres
- * @property integer $page_count
- * @property boolean $is_processing
  */
-class BookUpdateRequest extends FormRequest
+class BookCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -42,11 +39,8 @@ class BookUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $this['is_processing'] = $this->has('is_processing');
-
         return [
             'title' => 'required|max:255',
-            'slug' => 'required|max:255',
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
             'author_id' => 'exists:users,id',
@@ -57,8 +51,6 @@ class BookUpdateRequest extends FormRequest
             ],
             'genres' => 'nullable|array',
             'genres.*' => ['exists:genres,slug'],
-            'page_count' => 'integer',
-            'is_processing'
         ];
     }
 }

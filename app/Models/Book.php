@@ -341,6 +341,20 @@ class Book extends Model
     }
 
     /**
+     * Обложка книги (как есть в бд)
+     *
+     * Эти костыли нужны из-за магии laravel, не позволяющей спокойно юзать
+     * свойство cover при наличии одноимённой функции в свежесозданном
+     * экземпляре класса
+     *
+     * @return string
+     */
+    public function getCoverAttribute(): string
+    {
+        return array_key_exists('cover', $this->attributes) ? (string)$this->attributes['cover'] : '';
+    }
+
+    /**
      * Установить обложку для книги
      *
      * @param UploadedFile $cover Обложка книги

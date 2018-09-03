@@ -72,6 +72,21 @@ class Book extends BaseBook
      */
     protected $list_edit_fields = []; // Заполняется в конструкторе
 
+    /**
+     * @var array $area_create_fields Список атрибутов, которым нужно отображать широкие поля создания
+     */
+    protected $area_create_fields = ['description'];
+
+    /**
+     * @var array $file_create_fields Список атрибутов, которым нужно отображать поля для ввода файлов
+     */
+    protected $file_create_fields = ['cover', 'text'];
+
+    /**
+     * @var array $list_create_fields Список атрибутов, которым нужно отображать выпадающий список
+     */
+    protected $list_create_fields = []; // Заполняется в конструкторе
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -82,6 +97,7 @@ class Book extends BaseBook
                 'Черновик' => self::STATUS_CLOSE,
             ],
         ];
+        $this->list_create_fields = $this->list_edit_fields;
     }
 
     /**
@@ -152,6 +168,7 @@ class Book extends BaseBook
      */
     protected function getHtmlEditForGenres(): string
     {
+        //TODO: учитывать old атрибуты
         $genres = [];
 
         foreach (Genre::all() as $genre) {
@@ -165,6 +182,30 @@ class Book extends BaseBook
                     </label>
                 </div>
             ', $genre->slug, $this->hasGenre($genre) ? 'checked' : null, $genre->name);
+        }
+
+        return implode(PHP_EOL, $genres);
+    }
+
+    /**
+     * html для отображения списка редактирования жанров (для создания книги)
+     *
+     * @return string
+     */
+    protected function getHtmlCreateForGenres(): string
+    {
+        //TODO: учитывать old атрибуты
+        $genres = [];
+
+        foreach (Genre::all() as $genre) {
+            $genres[] = sprintf('
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="genres[]" value="%s">
+                        %s
+                    </label>
+                </div>
+            ', $genre->slug, $genre->name);
         }
 
         return implode(PHP_EOL, $genres);

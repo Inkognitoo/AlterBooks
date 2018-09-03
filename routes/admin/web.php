@@ -50,8 +50,22 @@ Route::group(['middleware' => 'auth'], function() {
         ->name('user.update')
     ;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Book
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся в первую очередь работы с книгами
+    |
+    */
     Route::get('books', 'BookController@index')
         ->name('books')
+    ;
+    Route::get('book', 'BookController@createShow')
+        ->name('book.create.show')
+    ;
+    Route::post('book', 'BookController@create')
+        ->name('book.create')
     ;
     Route::get('book/{id}', 'BookController@show')
         ->name('book.show')

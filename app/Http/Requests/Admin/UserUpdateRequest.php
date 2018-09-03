@@ -46,12 +46,7 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         $id = $this->route('id');
-
-        if ($this->has('is_admin')) {
-            $this['is_admin'] = true;
-        } else {
-            $this['is_admin'] = false;
-        }
+        $this['is_admin'] = $this->has('is_admin');
 
         return [
             'nickname' => [
