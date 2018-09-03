@@ -18,7 +18,7 @@
                 </svg>
             @endfor
 
-            @for ($i = $review->rating; $i <= 10; $i++)
+            @for ($i = $review->rating + 1; $i <= 10; $i++)
                 <svg class="review-rating__star">
                     <polygon id="star" points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
                 </svg>

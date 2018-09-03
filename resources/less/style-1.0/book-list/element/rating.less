@@ -2,8 +2,10 @@
 
 .book-list-element-rating {
     flex-direction: row;
+    align-items: center;
     flex-basis: 200px;
     max-width: 200px;
+    height: 26px;
 
     &-stars {
         position: relative;
@@ -24,7 +26,7 @@
             width: 114px;
             height: 26px;
 
-            background: url("/css/img/star-plate.svg") no-repeat;
+            background: url("/img/star-plate.svg") no-repeat;
         }
 
         &__fill {
@@ -56,6 +58,7 @@
     }
 
     &__number {
+        margin-top: 8px;
         margin-left: 10px;
     }
 }
