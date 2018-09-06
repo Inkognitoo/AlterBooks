@@ -104,6 +104,12 @@
             @foreach ($books as $book)
                 @include('book.book-profile-mini')
             @endforeach
+
+            <div class="row row-center">
+                <div class="col-12 col-clear col-center">
+                    {{ $books->links() }}
+                </div>
+            </div>
         </div>
     </div>
 @endsection

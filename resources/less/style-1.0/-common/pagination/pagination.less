@@ -1,0 +1,65 @@
+@pagination-border: lightgrey;
+@pagination-color: #e8e8e8;
+@pagination-current: #7aca4a;
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+
+    &__element {
+        display: block;
+
+        margin-right: 10px;
+        margin-bottom: 15px;
+        padding: 10px 8px;
+
+        border-radius: 4px;
+
+        color: black;
+        text-decoration: none;
+
+        cursor: pointer;
+        user-select: none;
+        transition-duration: 0.1s;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            background: @pagination-color;
+            transition-duration: 0.1s;
+        }
+
+        &_current {
+            background: @green;
+            color: white;
+            cursor: auto;
+
+            &:hover {
+                border-color: @green;
+                background: @green;
+                cursor: auto;
+            }
+        }
+
+        &_dots {
+            cursor: auto;
+
+            &:hover {
+                background: transparent;
+                cursor: auto;
+            }
+        }
+
+        &[disabled="true"] {
+            cursor: auto;
+            color: #bcbcbc;
+
+            &:hover {
+                background: transparent;
+                cursor: auto;
+            }
+        }
+    }
+}
