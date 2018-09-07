@@ -31,6 +31,11 @@ class Review extends BaseReview
     ];
 
     /**
+     * @var array $number_edit_fields Список атрибутов которым нужно отображать числовое поле редактирования
+     */
+    protected $number_edit_fields = ['rating'];
+
+    /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
      */
     protected $disabled_edit_fields = ['id', 'updated_at', 'created_at'];
@@ -39,6 +44,16 @@ class Review extends BaseReview
      * @var array $area_edit_fields Список атрибутов, которым нужно отображать широкие поля редактирования
      */
     protected $area_edit_fields = ['text'];
+
+    /**
+     * @var array $number_create_fields Список атрибутов которым нужно отображать числовое поле создания
+     */
+    protected $number_create_fields = ['rating'];
+
+    /**
+     * @var array $area_create_fields Список атрибутов, которым нужно отображать широкие поля создания
+     */
+    protected $area_create_fields = ['text'];
 
     /**
      * Книга, к которой оставлена рецензия

@@ -77,8 +77,22 @@ Route::group(['middleware' => 'auth'], function() {
         ->name('book.update')
     ;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Review
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся в первую очередь работы с рецензиями
+    |
+    */
     Route::get('reviews', 'ReviewController@index')
         ->name('reviews')
+    ;
+    Route::get('review', 'ReviewController@createShow')
+        ->name('review.create.show')
+    ;
+    Route::post('review', 'ReviewController@create')
+        ->name('review.create')
     ;
     Route::get('review/{id}', 'ReviewController@show')
         ->name('review.show')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ReviewUpdateRequest;
+use App\Http\Requests\Admin\ReviewCreateRequest;
 use App\Models\Admin\Review;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -34,6 +35,32 @@ class ReviewController extends Controller
         ;
 
         return view('admin.review.show', ['review' => $review]);
+    }
+
+    /**
+     * Показываем страницу создания рецензии
+     *
+     * @return Response
+     */
+    public function createShow()
+    {
+        return view('admin.review.create');
+    }
+
+    /**
+     * Создаём рецензию
+     *
+     * @@param ReviewCreateRequest $request
+     * @return Response
+     */
+    public function create(ReviewCreateRequest $request)
+    {
+        $review = new Review($request->all());
+        $review->save();
+
+        return redirect(route('review.show', ['review' => $review]))
+            ->with('status', 'Рецензия была успешно создана')
+        ;
     }
 
     /**
