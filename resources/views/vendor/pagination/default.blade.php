@@ -2,15 +2,22 @@
     <div class="pagination">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
-            <a class="pagination__element"
+            <a class="pagination__element pagination__element_text"
                disabled="true">
-                Первая
+                Назад
+            </a>
+            <a class="pagination__element pagination__element_symbol"
+               disabled="true">
+                &#60;
             </a>
         @else
-            <a class="pagination__element"
+            <a class="pagination__element pagination__element_text"
                href="{{ $paginator->previousPageUrl() }}"
                rel="prev">
-                Первая
+                Назад
+            </a>
+            <a class="pagination__element pagination__element_symbol">
+                &#60;
             </a>
         @endif
 
@@ -32,7 +39,7 @@
                         </a>
                     @else
                         <a class="pagination__element"
-                           href="{{ $url }}">
+                                 href="{{ $url }}">
                             {{ $page }}
                         </a>
                     @endif
@@ -42,16 +49,23 @@
 
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
-            <a class="pagination__element"
+            <a class="pagination__element pagination__element_text"
                href="{{ $paginator->nextPageUrl() }}"
                rel="next">
-                Последняя
+                Вперед
+            </a>
+            <a class="pagination__element pagination__element_symbol">
+                &#62;
             </a>
         @else
-            <li class="pagination__element"
+            <a class="pagination__element pagination__element_text"
                 disabled="true">
-                Последняя
-            </li>
+                Вперед
+            </a>
+            <a class="pagination__element pagination__element_symbol"
+               disabled="true">
+                &#62;
+            </a>
         @endif
     </div>
 @endif
