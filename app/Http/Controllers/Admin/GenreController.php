@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\GenreUpdateRequest;
+use App\Http\Requests\Admin\GenreCreateRequest;
 use App\Models\Admin\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -34,6 +35,32 @@ class GenreController extends Controller
         ;
 
         return view('admin.genre.show', ['genre' => $genre]);
+    }
+
+    /**
+     * Показываем страницу создания жанра
+     *
+     * @return Response
+     */
+    public function createShow()
+    {
+        return view('admin.genre.create');
+    }
+
+    /**
+     * Создаём жанр
+     *
+     * @@param GenreCreateRequest $request
+     * @return Response
+     */
+    public function create(GenreCreateRequest $request)
+    {
+        $genre = new Genre($request->all());
+        $genre->save();
+
+        return redirect(route('genre.show', ['genre' => $genre]))
+            ->with('status', 'Жанр был успешно создан')
+            ;
     }
 
     /**

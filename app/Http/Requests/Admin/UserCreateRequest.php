@@ -45,26 +45,20 @@ class UserCreateRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route('id');
         $this['is_admin'] = $this->has('is_admin');
 
         return [
             'nickname' => [
                 'required',
                 'max:255',
-                (new CaseInsensitiveUnique('users'))->ignore($id),
+                'unique:users',
                 new Nickname(),
             ],
             'avatar' => 'image|max:5120',
             'name' => 'nullable|max:255',
             'surname' => 'nullable|max:255',
             'patronymic' => 'nullable|max:255',
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                (new CaseInsensitiveUnique('users'))->ignore($id)
-            ],
+            'email' => 'required|email|max:255',
             'password' => 'required|min:6',
             'gender' => [
                 'required',

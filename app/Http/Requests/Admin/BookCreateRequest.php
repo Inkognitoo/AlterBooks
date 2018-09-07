@@ -50,7 +50,7 @@ class BookCreateRequest extends FormRequest
                 Rule::in([Book::STATUS_OPEN, Book::STATUS_CLOSE]),
             ],
             'genres' => 'nullable|array',
-            'genres.*' => ['exists:genres,slug'],
+            'genres.*' => 'exists:genres,slug',
         ];
     }
 }

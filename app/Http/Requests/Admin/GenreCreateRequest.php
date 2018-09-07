@@ -5,16 +5,13 @@ namespace App\Http\Requests\Admin;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Валидируем запрос на создание рецензии
+ * Валидируем запрос на создание жанра
  *
  * App\Http\Requests\ReviewCreateRequest
  *
- * @property integer $rating
- * @property string $description
- * @property integer $user_id
- * @property integer $book_id
+ * @property string $name
  */
-class ReviewCreateRequest extends FormRequest
+class GenreCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,10 +31,7 @@ class ReviewCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'rating' => 'required|integer|between:1,9',
-            'text' => 'required|max:5000',
-            'user_id' => 'exists:users,id',
-            'book_id' => 'exists:books,id',
+            'name' => 'required|max:255',
         ];
     }
 }

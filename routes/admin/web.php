@@ -104,8 +104,22 @@ Route::group(['middleware' => 'auth'], function() {
         ->name('review.update')
     ;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Genre
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся в первую очередь работы с жанрами
+    |
+    */
     Route::get('genres', 'GenreController@index')
         ->name('genres')
+    ;
+    Route::get('genre', 'GenreController@createShow')
+        ->name('genre.create.show')
+    ;
+    Route::post('genre', 'GenreController@create')
+        ->name('genre.create')
     ;
     Route::get('genre/{id}', 'GenreController@show')
         ->name('genre.show')

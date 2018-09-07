@@ -42,11 +42,16 @@ class BookUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('id');
         $this['is_processing'] = $this->has('is_processing');
 
         return [
             'title' => 'required|max:255',
-            'slug' => 'required|max:255',
+            'slug' => [
+                'required',
+                'max:255',
+                Rule::unique('books')->ignore($id),
+            ],
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
             'author_id' => 'exists:users,id',
@@ -56,7 +61,7 @@ class BookUpdateRequest extends FormRequest
                 Rule::in([Book::STATUS_OPEN, Book::STATUS_CLOSE]),
             ],
             'genres' => 'nullable|array',
-            'genres.*' => ['exists:genres,slug'],
+            'genres.*' => 'exists:genres,slug',
             'page_count' => 'integer',
             'is_processing'
         ];
