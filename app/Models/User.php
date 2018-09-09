@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\ResetPasswordNotification;
 use App\Traits\FindByIdOrSlugMethod;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -67,7 +68,7 @@ use Storage;
  */
 class User extends Authenticatable
 {
-    use Notifiable, FindByIdOrSlugMethod;
+    use Notifiable, SoftDeletes, FindByIdOrSlugMethod;
 
     //Возможные гендеры пользователя
     const GENDER_MALE = 'm';

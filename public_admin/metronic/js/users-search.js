@@ -70,6 +70,10 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     title: 'Админ',
                 },
                 {
+                    data: 'is_trashed',
+                    title: 'Состояние',
+                },
+                {
                     data: 'created_at',
                     title: 'Дата регистрации',
                 },
@@ -115,6 +119,17 @@ let DatatablesSearchOptionsColumnSearch = function() {
 										<option value="">Выберите</option></select>`);
                             for(let i in status) {
                                 $(input).append('<option value="' + i + '">' + status[i].title + '</option>');
+                            }
+                            break;
+                        case 'Состояние':
+                            let state = {
+                                'true': {'title': 'Удалёно'},
+                                'false': {'title': 'На площадке'},
+                            };
+                            input = $(`<select class="form-control form-control-sm form-filter m-input" title="Select" data-col-index="` + column.index() + `">
+										<option value="">Выберите</option></select>`);
+                            for(let i in state) {
+                                $(input).append('<option value="' + i + '">' + state[i].title + '</option>');
                             }
                             break;
                         case 'Дата регистрации':
@@ -234,6 +249,17 @@ let DatatablesSearchOptionsColumnSearch = function() {
                 },
                 {
                     targets: 8,
+                    width: '80px',
+                    render: function(data, type, full, meta) {
+                        if (data) {
+                            return 'Удалёно';
+                        } else {
+                            return 'На площадке';
+                        }
+                    },
+                },
+                {
+                    targets: 9,
                     width: '120px',
                     render: function(data, type, full, meta) {
                         let date_time = new Date(`${data.date} ${data.timezone}`);

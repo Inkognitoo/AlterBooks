@@ -43,6 +43,12 @@ use \App\Models\Admin\Helper\BreadCrumbs;
             </div>
         </div>
         <div class="m-portlet__body">
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
+
             <!--begin::Section-->
             <div class="m-section">
                 <div class="m-section__content">
@@ -65,14 +71,25 @@ use \App\Models\Admin\Helper\BreadCrumbs;
             </div>
             <!--end::Section-->
 
-            <a href="#" class="btn btn-primary m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
+            @if($user->trashed())
+                <a href="{{ route('user.restore', ['id' => $user->id]) }}" class="btn btn-success m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
+                <span>
+                    <i class="la la-history"></i>
+                    <span>
+                        Восстановить
+                    </span>
+                </span>
+                </a>
+            @else
+                <a href="{{ route('user.delete', ['id' => $user->id]) }}" class="btn btn-primary m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air">
                 <span>
                     <i class="la la-close"></i>
                     <span>
                         Мягко удалить
                     </span>
                 </span>
-            </a>
+                </a>
+            @endif
 
             <button type="button" class="btn btn-danger m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air" data-toggle="modal" data-target="#delete_modal">
                 <span>
@@ -105,7 +122,7 @@ use \App\Models\Admin\Helper\BreadCrumbs;
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-danger">Удалить</button>
+                    <button type="button" class="btn btn-danger" onclick="location.href='{{ route('user.delete.permanent', ['id' => $user->id]) }}'">Удалить</button>
                 </div>
             </div>
         </div>

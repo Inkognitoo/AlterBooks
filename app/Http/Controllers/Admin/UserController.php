@@ -106,4 +106,61 @@ class UserController extends Controller
             ->with('status', 'Данные были успешно обновлены')
         ;
     }
+
+    /**
+     * Мягко удаляем пользователя
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        User::withoutGlobalScopes()
+            ->find($id)
+            ->delete()
+        ;
+
+        return redirect(route('user.show', ['id' => $id]))
+            ->with('status', 'Пользователь был мягко удалён')
+        ;
+    }
+
+    /**
+     * Жёстко удаляем пользователя
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function permanentDelete($id)
+    {
+        User::withoutGlobalScopes()
+            ->find($id)
+            ->forceDelete()
+        ;
+
+        return redirect(route('users'))
+            ->with('status', 'Пользователь был окончательно удалён')
+        ;
+    }
+
+    /**
+     * Восстанавливаем мягко удалённого пользователя
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function restore($id)
+    {
+        User::withoutGlobalScopes()
+            ->find($id)
+            ->restore()
+        ;
+
+        return redirect(route('user.show', ['id' => $id]))
+            ->with('status', 'Пользователь был восстановлен')
+        ;
+    }
 }

@@ -41,7 +41,7 @@ class User extends BaseUser
     protected $safe_attributes = [
         'id', 'nickname', 'email', 'password', 'remember_token', 'api_token', 'avatar',
         'name', 'surname', 'patronymic', 'gender', 'birthday_date', 'about', 'timezone',
-        'is_admin', 'created_at', 'updated_at',
+        'is_admin', 'deleted_at', 'created_at', 'updated_at',
     ];
 
     /**
@@ -67,7 +67,7 @@ class User extends BaseUser
     /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
      */
-    protected $disabled_edit_fields = ['id', 'password', 'remember_token', 'api_token', 'updated_at', 'created_at'];
+    protected $disabled_edit_fields = ['id', 'password', 'remember_token', 'api_token', 'deleted_at', 'updated_at', 'created_at'];
 
     /**
      * @var array $area_edit_fields Список атрибутов, которым нужно отображать широкие поля редактирования
