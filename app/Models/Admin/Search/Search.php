@@ -47,6 +47,11 @@ abstract class Search
     protected $date_search_fields = [];
 
     /**
+     * @var string $deleted_at_field Поле для проверки того факта, была ли удалена модель
+     */
+    protected $deleted_at_field = 'is_trashed';
+
+    /**
      * @var int $items_count Общее количество сущностей
      */
     private $items_count;
@@ -137,6 +142,10 @@ abstract class Search
                 continue;
             }
 
+            if ($filter === $this->deleted_at_field) {
+                $query = $this->defaultTrashedFilterBy($query, $value);
+            }
+
             $method_name = 'filterBy' . ucfirst(camel_case($filter));
             if (method_exists($this, $method_name)) {
                 $query = $this->$method_name($query, $value);
@@ -163,12 +172,14 @@ abstract class Search
     {
         $method_name = 'orderBy' . ucfirst(camel_case($sort->column));
         if (method_exists($this, $method_name)) {
-            $query = $this->$method_name($query, $sort->direction);
-        } else {
-            $query = $this->defaultOrderBy($query, $sort);
+            return $this->$method_name($query, $sort->direction);
         }
 
-        return $query;
+        if ($sort->column === 'is_trashed') {
+            return $this->defaultTrashedOrderBy($query, $sort);
+        }
+
+        return $this->defaultOrderBy($query, $sort);
     }
 
     /**
@@ -182,7 +193,7 @@ abstract class Search
     {
         return $query->offset($paginate->start)
             ->limit($paginate->length)
-            ;
+        ;
     }
 
     /**
@@ -230,6 +241,22 @@ abstract class Search
     }
 
     /**
+     * Отфильтровать список сущностей по признаку существования
+     *
+     * @param Builder $query
+     * @param $value
+     * @return Builder
+     */
+    private function defaultTrashedFilterBy(Builder $query, $value): Builder
+    {
+        if ($value == 'true') {
+           return $query->whereNotNull('deleted_at');
+        }
+
+        return $query;
+    }
+
+    /**
      * Отсортировать список сущностей по произвольному полю
      *
      * @param Builder $query
@@ -239,5 +266,17 @@ abstract class Search
     private function defaultOrderBy(Builder $query, Sort $sort): Builder
     {
         return $query->orderBy($sort->column, $sort->direction);
+    }
+
+    /**
+     * Отсортировать список сущностей по факту удаления
+     *
+     * @param Builder $query
+     * @param Sort $sort
+     * @return Builder
+     */
+    private function defaultTrashedOrderBy(Builder $query, Sort $sort): Builder
+    {
+        return $query->orderBy('deleted_at', $sort->direction);
     }
 }
