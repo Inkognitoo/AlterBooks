@@ -54,6 +54,10 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     title: 'Статус'
                 },
                 {
+                    data: 'is_trashed',
+                    title: 'Состояние',
+                },
+                {
                     data: 'Actions',
                     title: 'Действия',
                 }
@@ -80,6 +84,17 @@ let DatatablesSearchOptionsColumnSearch = function() {
 										<option value="">Выберите</option></select>`);
                             for(let i in statuses) {
                                 $(input).append('<option value="' + i + '">' + statuses[i].title + '</option>');
+                            }
+                            break;
+                        case 'Состояние':
+                            let state = {
+                                'true': {'title': 'Удалёно'},
+                                'false': {'title': 'На площадке'},
+                            };
+                            input = $(`<select class="form-control form-control-sm form-filter m-input" title="Select" data-col-index="` + column.index() + `">
+										<option value="">Выберите</option></select>`);
+                            for(let i in state) {
+                                $(input).append('<option value="' + i + '">' + state[i].title + '</option>');
                             }
                             break;
                         case 'Действия':
@@ -149,7 +164,18 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     },
                 },
                 {
-                    targets: 3,
+                    targets: 4,
+                    width: '80px',
+                    render: function(data, type, full, meta) {
+                        if (data) {
+                            return 'Удалёно';
+                        } else {
+                            return 'На площадке';
+                        }
+                    },
+                },
+                {
+                    targets: 5,
                     width: '80px',
                     render: function(data, type, full, meta) {
                         let status = 'Опубликовано';

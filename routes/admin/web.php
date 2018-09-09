@@ -85,6 +85,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('book/{id}/update', 'BookController@update')
         ->name('book.update')
     ;
+    Route::get('book/{id}/delete', 'BookController@delete')
+        ->name('book.delete')
+    ;
+    Route::get('book/{id}/permanentDelete', 'BookController@permanentDelete')
+        ->name('book.delete.permanent')
+    ;
+    Route::get('book/{id}/restore', 'BookController@restore')
+        ->name('book.restore')
+    ;
 
     /*
     |--------------------------------------------------------------------------

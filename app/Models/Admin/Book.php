@@ -29,7 +29,7 @@ class Book extends BaseBook
      */
     protected $safe_attributes = [
         'id', 'title', 'slug', 'description', 'cover', 'author_id', 'text', 'genres', 'page_count', 'mongodb_book_id',
-        'status', 'is_processing', 'created_at', 'updated_at'
+        'status', 'is_processing', 'deleted_at', 'created_at', 'updated_at'
     ];
 
     /**
@@ -50,7 +50,7 @@ class Book extends BaseBook
     /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
      */
-    protected $disabled_edit_fields = ['id', 'mongodb_book_id', 'updated_at', 'created_at'];
+    protected $disabled_edit_fields = ['id', 'mongodb_book_id', 'deleted_at', 'updated_at', 'created_at'];
 
     /**
      * @var array $area_edit_fields Список атрибутов, которым нужно отображать широкие поля редактирования

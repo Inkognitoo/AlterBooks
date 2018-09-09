@@ -105,4 +105,61 @@ class BookController extends Controller
             ->with('status', 'Данные были успешно обновлены')
         ;
     }
+
+    /**
+     * Мягко удаляем книгу
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        Book::withoutGlobalScopes()
+            ->find($id)
+            ->delete()
+        ;
+
+        return redirect(route('book.show', ['id' => $id]))
+            ->with('status', 'Книга была мягко удалён')
+        ;
+    }
+
+    /**
+     * Жёстко удаляем книгу
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function permanentDelete($id)
+    {
+        Book::withoutGlobalScopes()
+            ->find($id)
+            ->forceDelete()
+        ;
+
+        return redirect(route('books'))
+            ->with('status', 'Книга была окончательно удалена')
+        ;
+    }
+
+    /**
+     * Восстанавливаем мягко удалёной книги
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function restore($id)
+    {
+        Book::withoutGlobalScopes()
+            ->find($id)
+            ->restore()
+        ;
+
+        return redirect(route('book.show', ['id' => $id]))
+            ->with('status', 'Книга был восстановлена')
+        ;
+    }
 }
