@@ -39,6 +39,12 @@
         </div>
     </div>
     <div class="m-portlet__body">
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <!--begin: Datatable -->
         <table class="table table-striped- table-bordered table-hover table-checkable" id="genres_table">
             <thead>
@@ -51,6 +57,9 @@
                 </th>
                 <th>
                     Slug
+                </th>
+                <th>
+                    Действие
                 </th>
                 <th>
                     Действия

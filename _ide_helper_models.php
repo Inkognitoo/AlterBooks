@@ -304,12 +304,14 @@ namespace App\Models\Admin{
  * @property string $slug
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
  * @property-read string $html_create_for
  * @property-read string $html_edit_for
  * @property-read string $html_view_for
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre findSimilarSlugs($attribute, $config, $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereSlug($value)
@@ -389,7 +391,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre findSimilarSlugs($attribute, $config, $slug)
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre withoutTrashed()
  */
 	class Genre extends \Eloquent {}
 }

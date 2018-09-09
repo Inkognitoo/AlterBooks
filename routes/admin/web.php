@@ -157,6 +157,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('genre/{id}/update', 'GenreController@update')
         ->name('genre.update')
     ;
+    Route::get('genre/{id}/delete', 'GenreController@delete')
+        ->name('genre.delete')
+    ;
+    Route::get('genre/{id}/permanentDelete', 'GenreController@permanentDelete')
+        ->name('genre.delete.permanent')
+    ;
+    Route::get('genre/{id}/restore', 'GenreController@restore')
+        ->name('genre.restore')
+    ;
 
     /*
     |--------------------------------------------------------------------------

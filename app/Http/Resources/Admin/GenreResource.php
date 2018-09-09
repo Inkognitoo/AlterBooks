@@ -24,6 +24,7 @@ class GenreResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'is_trashed' => $this->trashed(),
             'created_at' => $this->created_at,
             'show_url' => route('genre.show', ['id' => $this->id]),
             'edit_url' => route('genre.edit.show', ['id' => $this->id]),

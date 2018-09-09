@@ -50,6 +50,10 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     title: 'Slug'
                 },
                 {
+                    data: 'is_trashed',
+                    title: 'Состояние',
+                },
+                {
                     data: 'Actions',
                     title: 'Действия',
                 }
@@ -66,6 +70,17 @@ let DatatablesSearchOptionsColumnSearch = function() {
                         case 'Название':
                         case 'Slug':
                             input = $(`<input type="text" class="form-control form-control-sm form-filter m-input" data-col-index="` + column.index() + `"/>`);
+                            break;
+                        case 'Состояние':
+                            let state = {
+                                'true': {'title': 'Удалёно'},
+                                'false': {'title': 'На площадке'},
+                            };
+                            input = $(`<select class="form-control form-control-sm form-filter m-input" title="Select" data-col-index="` + column.index() + `">
+										<option value="">Выберите</option></select>`);
+                            for(let i in state) {
+                                $(input).append('<option value="' + i + '">' + state[i].title + '</option>');
+                            }
                             break;
                         case 'Действия':
                             let search = $(`<button class="btn btn-brand m-btn btn-sm m-btn--icon">
@@ -131,6 +146,17 @@ let DatatablesSearchOptionsColumnSearch = function() {
                             <a href="${full.edit_url}" class="m-portlet__nav-link btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" title="Edit">
                               <i class="la la-edit"></i>
                             </a>`;
+                    },
+                },
+                {
+                    targets: 3,
+                    width: '80px',
+                    render: function(data, type, full, meta) {
+                        if (data) {
+                            return 'Удалёно';
+                        } else {
+                            return 'На площадке';
+                        }
                     },
                 },
             ],

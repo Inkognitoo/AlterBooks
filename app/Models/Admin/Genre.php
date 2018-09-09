@@ -18,11 +18,11 @@ class Genre extends BaseGenre
      * @var array $safe_attributes Список атрибутов для отображения
      */
     protected $safe_attributes = [
-        'id', 'name', 'slug', 'created_at', 'updated_at',
+        'id', 'name', 'slug', 'deleted_at', 'created_at', 'updated_at',
     ];
 
     /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
      */
-    protected $disabled_edit_fields = ['id', 'updated_at', 'created_at'];
+    protected $disabled_edit_fields = ['id', 'deleted_at', 'updated_at', 'created_at'];
 }

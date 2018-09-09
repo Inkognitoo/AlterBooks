@@ -100,4 +100,61 @@ class GenreController extends Controller
             ->with('status', 'Данные были успешно обновлены')
         ;
     }
+
+    /**
+     * Мягко удаляем жанр
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        Genre::withoutGlobalScopes()
+            ->find($id)
+            ->delete()
+        ;
+
+        return redirect(route('genre.show', ['id' => $id]))
+            ->with('status', 'Жанр был мягко удалён')
+        ;
+    }
+
+    /**
+     * Жёстко удаляем жанр
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function permanentDelete($id)
+    {
+        Genre::withoutGlobalScopes()
+            ->find($id)
+            ->forceDelete()
+        ;
+
+        return redirect(route('genres'))
+            ->with('status', 'Жанр был окончательно удален')
+        ;
+    }
+
+    /**
+     * Восстанавливаем мягко удалёного жанра
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function restore($id)
+    {
+        Genre::withoutGlobalScopes()
+            ->find($id)
+            ->restore()
+        ;
+
+        return redirect(route('genre.show', ['id' => $id]))
+            ->with('status', 'Жанр был восстановлен')
+        ;
+    }
 }

@@ -100,7 +100,6 @@ use \App\Models\Admin\Helper\BreadCrumbs;
                 </span>
             </button>
         </div>
-        <!--end::Form-->
     </div>
 
     <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" style="display: none;" aria-hidden="true">

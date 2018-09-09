@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Genre
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Genre extends Model
 {
-    use Sluggable;
+    use Sluggable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
