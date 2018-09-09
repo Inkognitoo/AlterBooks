@@ -100,4 +100,61 @@ class ReviewController extends Controller
             ->with('status', 'Данные были успешно обновлены')
         ;
     }
+
+    /**
+     * Мягко удаляем рецензию
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        Review::withoutGlobalScopes()
+            ->find($id)
+            ->delete()
+        ;
+
+        return redirect(route('review.show', ['id' => $id]))
+            ->with('status', 'Рецензия была мягко удалена')
+        ;
+    }
+
+    /**
+     * Жёстко удаляем рецензию
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function permanentDelete($id)
+    {
+        Review::withoutGlobalScopes()
+            ->find($id)
+            ->forceDelete()
+        ;
+
+        return redirect(route('reviews'))
+            ->with('status', 'Рецензия была окончательно удалена')
+        ;
+    }
+
+    /**
+     * Восстанавливаем мягко удалённую рецензию
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function restore($id)
+    {
+        Review::withoutGlobalScopes()
+            ->find($id)
+            ->restore()
+        ;
+
+        return redirect(route('review.show', ['id' => $id]))
+            ->with('status', 'Рецензия была восстановлена')
+        ;
+    }
 }

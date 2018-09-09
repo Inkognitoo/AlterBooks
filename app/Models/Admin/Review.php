@@ -27,7 +27,7 @@ class Review extends BaseReview
      * @var array $safe_attributes Список атрибутов для отображения
      */
     protected $safe_attributes = [
-        'id', 'rating', 'text', 'user_id', 'book_id', 'created_at', 'updated_at',
+        'id', 'rating', 'text', 'user_id', 'book_id', 'deleted_at', 'created_at', 'updated_at',
     ];
 
     /**
@@ -38,7 +38,7 @@ class Review extends BaseReview
     /**
      * @var array $disabled_edit_fields Список атрибутов, которым нужно отображать неактивные поля редактирования
      */
-    protected $disabled_edit_fields = ['id', 'updated_at', 'created_at'];
+    protected $disabled_edit_fields = ['id', 'deleted_at', 'updated_at', 'created_at'];
 
     /**
      * @var array $area_edit_fields Список атрибутов, которым нужно отображать широкие поля редактирования

@@ -121,6 +121,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('review/{id}/update', 'ReviewController@update')
         ->name('review.update')
     ;
+    Route::get('review/{id}/delete', 'ReviewController@delete')
+        ->name('review.delete')
+    ;
+    Route::get('review/{id}/permanentDelete', 'ReviewController@permanentDelete')
+        ->name('review.delete.permanent')
+    ;
+    Route::get('review/{id}/restore', 'ReviewController@restore')
+        ->name('review.restore')
+    ;
 
     /*
     |--------------------------------------------------------------------------

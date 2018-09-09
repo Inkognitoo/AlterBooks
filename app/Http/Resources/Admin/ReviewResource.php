@@ -26,6 +26,7 @@ class ReviewResource extends Resource
             'author' => $this->user->full_name,
             'book' => $this->book->title,
             'created_at' => $this->created_at,
+            'is_trashed' => $this->trashed(),
             'show_url' => route('review.show', ['id' => $this->id]),
             'edit_url' => route('review.edit.show', ['id' => $this->id]),
         ];
