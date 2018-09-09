@@ -250,7 +250,9 @@ abstract class Search
     private function defaultTrashedFilterBy(Builder $query, $value): Builder
     {
         if ($value == 'true') {
-           return $query->whereNotNull('deleted_at');
+            $query = $query->whereNotNull('deleted_at');
+        } else {
+            $query = $query->where(['deleted_at' => null]);
         }
 
         return $query;
