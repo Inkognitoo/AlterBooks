@@ -23,9 +23,7 @@ class UserResource extends Resource
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'name' => $this->name,
-            'surname' => $this->surname,
-            'patronymic' => $this->patronymic,
+            'full_name' => $this->surname . ' ' . $this->name . ' ' . $this->patronymic,
             'nickname' => $this->nickname,
             'gender' => $this->gender,
             'is_admin' => $this->is_admin,

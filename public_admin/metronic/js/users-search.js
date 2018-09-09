@@ -46,16 +46,8 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     title: 'Email'
                 },
                 {
-                    data: 'name',
-                    title: 'Имя'
-                },
-                {
-                    data: 'surname',
-                    title: 'Фамилия'
-                },
-                {
-                    data: 'patronymic',
-                    title: 'Отчество',
+                    data: 'full_name',
+                    title: 'ФИО'
                 },
                 {
                     data: 'nickname',
@@ -92,9 +84,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     switch (column.title()) {
                         case 'ID':
                         case 'Email':
-                        case 'Имя':
-                        case 'Фамилия':
-                        case 'Отчество':
+                        case 'ФИО':
                         case 'Никнейм':
                             input = $(`<input type="text" class="form-control form-control-sm form-filter m-input" data-col-index="` + column.index() + `"/>`);
                             break;
@@ -218,7 +208,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     },
                 },
                 {
-                    targets: 6,
+                    targets: 4,
                     width: '80px',
                     render: function(data, type, full, meta) {
                         let gender = 'Мужской';
@@ -237,7 +227,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     },
                 },
                 {
-                    targets: 7,
+                    targets: 5,
                     width: '80px',
                     render: function(data, type, full, meta) {
                         if (data) {
@@ -248,7 +238,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     },
                 },
                 {
-                    targets: 8,
+                    targets: 6,
                     width: '80px',
                     render: function(data, type, full, meta) {
                         if (data) {
@@ -259,7 +249,7 @@ let DatatablesSearchOptionsColumnSearch = function() {
                     },
                 },
                 {
-                    targets: 9,
+                    targets: 7,
                     width: '120px',
                     render: function(data, type, full, meta) {
                         let date_time = new Date(`${data.date} ${data.timezone}`);
