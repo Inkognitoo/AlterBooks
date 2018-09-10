@@ -1,0 +1,38 @@
+.header-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+
+    background: rgba(127, 126, 124, 0.2);
+    font-size: 16px;
+
+    @media screen and (max-width: @sm) {
+        font-size: 14px;
+    }
+
+    &__element {
+        margin-right: 20px;
+        margin-left: 20px;
+        color: black;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &_disabled {
+            color: @darkergrey;
+            user-select: none;
+        }
+    }
+
+    &__hr {
+        width: 1px;
+        height: 26px;
+        background: @darkergrey;
+    }
+}

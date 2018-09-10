@@ -1,0 +1,26 @@
+.registration {
+    max-width: 500px;
+
+    &__title {
+        margin-bottom: 35px;
+        text-transform: uppercase;
+    }
+
+    &__hr {
+        font-size: 16px;
+        text-transform: lowercase;
+    }
+
+    &__separator {
+        font-size: 16px;
+        text-transform: lowercase;
+
+        .authentication-re-password[data-status="correct"] & {
+            display: none;
+        }
+    }
+
+    &-agreement__href {
+        text-decoration: underline;
+    }
+}

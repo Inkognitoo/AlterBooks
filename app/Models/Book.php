@@ -145,8 +145,9 @@ class Book extends Model
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'books_genres')
-            ->withTimestamps()
-            ;
+                    ->withTimestamps()
+                    ->orderBy('name')
+               ;
     }
 
     /**
@@ -327,7 +328,7 @@ class Book extends Model
      */
     public function getRatingAttribute(): float
     {
-        return round($this->reviews->median('rating'), 1);
+        return round(($this->reviews->median('rating')) / 2, 1);
     }
 
     /**

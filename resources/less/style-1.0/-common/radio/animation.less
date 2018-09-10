@@ -1,0 +1,71 @@
+@radio-size: 16px;
+@radio-button-size: 10px;
+@off-radio-color: #d3d3d3;
+@on-radio-color: #7aca4a;
+
+.radio-animation {
+    position: relative;
+    display: block;
+    overflow: hidden;
+
+    width: @radio-size;
+    height: @radio-size;
+
+    border-radius: 50%;
+    border: 2px solid @off-radio-color;
+    background: white;
+
+    cursor: pointer;
+
+    &__button {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: @radio-button-size;
+        height: @radio-button-size;
+
+        margin-top: (@radio-size - @radio-button-size) / 2;
+        margin-left: (@radio-size - @radio-button-size) / 2;
+
+        border-radius: 50%;
+        background: white;
+
+        transform: scale(10);
+        transition-duration: 0.4s;
+    }
+}
+
+
+.radio__field:checked + .radio-animation {
+    border-color: @on-radio-color;
+    background: @on-radio-color;
+
+    animation-name: rippleRadioOn;
+    animation-duration: 0.6s;
+    animation-fill-mode: backwards;
+}
+.radio__field[disabled] + .radio-animation {
+    border-color: @off-radio-color;
+    background: @off-radio-color;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.radio__field:checked + .radio-animation > .radio-animation__button {
+    transform: translate3d(0, 0, 0) scale(1);
+    transition-duration: 0.4s;
+}
+.radio__field[disabled] + .radio-animation > .radio-animation__button {
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+
+@keyframes rippleRadioOn {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+    }
+
+    100% {
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+}

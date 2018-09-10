@@ -29,14 +29,16 @@ class IsReviewExist
         $review_id = $request->review_id ?? $request->id;
 
         $review = Review::find($review_id);
-        $book = Book::findAny($request->book_id);
+
+        if(!blank($request->book_id)) {
+            $book = Book::findAny($request->book_id);
+            if ($review->book_id !== $book->id) {
+                throw new ApiException(t('review.api', 'Рецензии для текущей книги не существует'), Response::HTTP_NOT_FOUND);
+            }
+        }
 
         if (blank($review)) {
             throw new ApiException(t('review.api', 'Рецензии не существует'), Response::HTTP_NOT_FOUND);
-        }
-
-        if ($review->book_id !== $book->id) {
-            throw new ApiException(t('review.api', 'Рецензии для текущей книги не существует'), Response::HTTP_NOT_FOUND);
         }
 
         return $next($request);

@@ -10,107 +10,231 @@
 @section('canonical', $user->canonical_url)
 
 @section('content')
-<div class="user-content container">
-    <div class="user-content__area row">
-        <div class="user-block__area col-md-8 col-md-offset-2">
-            <div class="user-block panel panel-default">
-                <div class="user-block__title panel-heading">
-                    {{ t('user', 'Профиль пользователя') }}
-                </div>
-
-                <div class="user-block-content panel-body">
-                    <div class="user-info row">
-                        <div class="user-info-avatar col-md-4 col-sm-4">
-                            <img src="{{ $user->avatar_url }}" class="user-info-avatar__image img-rounded"
-                                 alt="{{ $user->full_name }}">
+    <div class="user col-12">
+        <div class="row">
+            <div class="user__aside col-4 col-md-0">
+                <div class="row row-center">
+                    <div class="user__avatar col-12"
+                         style="background-image: url('{{ $user->avatar_url }}')"></div>
+                    <div class="user-buttons col-12">
+                        <div class="row">
+                            {{--<button class="user-buttons__element button col-12">--}}
+                                {{--<span>библиотека</span>--}}
+                            {{--</button>--}}
                         </div>
-                        <div class="user-info-area col-md-8 col-sm-8">
-                            <div class="user-info-content panel panel-default">
-                                <div class="user-info-content__name-date panel-body">
-                                    {{ $user->full_name }}
-                                    <br>
-                                    @if(filled($user->birthday_date))
+                    </div>
+                </div>
+            </div>
+            <div class="user__main col-8 col-md-12">
+                <div class="row row-center">
+                    <div class="user__name col-12 col-clear col-md-11 col-md-center col-sm-12">
+                        {{ $user->full_name }}
+                    </div>
+                    <div class="user__status col-12 col-clear col-md-11 col-md-center col-sm-12">
+                        @switch($user->gender)
+                            @case('n')
+                                был
+                                @break
+                            @case('m')
+                                был
+                                @break
+                            @case('f')
+                                была
+                                @break
+                        @endswitch
+                        на сайте {{ $user->updated_at->format('d.m.Y') }}
+                    </div>
+                    <div class="user__avatar col-0 col-clear col-md-8 col-sm-12"
+                         style="background-image: url('{{ $user->avatar_url }}')"></div>
+                    <div class="block-info col-12 col-clear col-md-11 col-md-center col-sm-12">
+                        <div class="block-info-element">
+                            <div class="block-info-element__main">
+                                {{ $user->rating == 0 ? 0 : number_format($user->rating, 1) }}
+                            </div>
+                            <div class="block-info-element__comment">
+                                рейтинг
+                            </div>
+                        </div>
+                        <div class="block-info-element">
+                            <div class="block-info-element__main">
+                                {{ $books->count() }}
+                            </div>
+                            <div class="block-info-element__comment">
+                                книг написано
+                            </div>
+                        </div>
+                        <div class="block-info-element">
+                            <div class="block-info-element__main">
+                                {{ $user->reviews->count() }}
+                            </div>
+                            <div class="block-info-element__comment">
+                                рецензий оставлено
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-0 col-clear col-md-11 col-sm-12">
+                        <div class="row">
+                            <button class="user-buttons__element button col-12">
+                                <span>библиотека</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="user-content block-content col-12 col-clear col-md-11 col-sm-12">
+                        <div class="block-content-header">
+                            <div class="block-content-header__title">
+                                данные&nbsp;пользователя
+                            </div>
+                            <hr class="block-content-header__hr">
+                        </div>
+                        <div class="block-content-main">
+                            <div class="block-content-main__element">
+                                <div class="block-content-main__title">
+                                    Псевдоним
+                                </div>
+                                <div class="block-content-main__info">
+                                    {{ $user->nickname }}
+                                </div>
+                            </div>
+
+                            @if(filled($user->birthday_date))
+                                <div class="block-content-main__element">
+                                    <div class="block-content-main__title">
+                                        Дата рождения
+                                    </div>
+                                    <div class="block-content-main__info">
                                         {{ $user->birthday_date->format('d.m.Y') }}
                                         ({{ $user->birthday_date->diffInYears(\Carbon\Carbon::now()) }})
-                                    @endif
-                                    <br>
-                                    {{ t('user', 'Рейтинг: :rating/10', ['rating' => $user->rating]) }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="block-content-main__element">
+                                <div class="block-content-main__title">
+                                    Пол
+                                </div>
+                                <div class="block-content-main__info">
+                                    @switch($user->gender)
+                                        @case('n')
+                                            не определен
+                                            @break
+                                        @case('m')
+                                            мужской
+                                            @break
+                                        @case('f')
+                                            женский
+                                            @break
+                                    @endswitch
                                 </div>
                             </div>
 
                             @if(filled($user->about))
-                            <div class="user-info-content-about panel panel-default">
-                                <div class="user-info-content-about__title panel-heading">
-                                    {{ t('user', 'О себе') }}
+                                <div class="block-content-main__element">
+                                    <div class="block-content-main__title block-content-main__title_large">
+                                        О себе
+                                    </div>
+                                    <div class="block-content-main__info block-content-main__info_large">
+                                        {!! $user->about !!}
+                                    </div>
                                 </div>
-                                <div class="user-info-content-about__content panel-body">
-                                    {!! $user->about !!}
-                                </div>
-                            </div>
                             @endif
-
-                            @auth
-                                @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="user-info-edit__button btn btn-default"
-                                       href="{{ route('user.edit.show', ['id' => $user->nickname]) }}">
-                                        {{ t('user.button', 'Редактировать') }}
-                                    </a>
-                                @endif
-                            @endauth
-
                         </div>
                     </div>
-
-                    <div class="user-block-books__area row">
-                        <div class="user-block-books col-md-12">
-                            @if (session('status'))
-                                <div class="alert alert-success">
-                                    {{ session('status') }}
+                </div>
+            </div>
+            <div class="row row-center">
+                <div class="user__books col-12 col-md-11 col-sm-12">
+                    <div class="col-12 col-clear">
+                        <div class="block-content row">
+                            <div class="col-12 col-clear col-md-0">
+                                <div class="block-content-header block-content-header_center">
+                                    <div class="block-content-header__title">
+                                        книги&nbsp;автора
+                                    </div>
+                                    <hr class="block-content-header__hr">
                                 </div>
-                            @endif
-
-                            <div class="user-block-books-content panel panel-default">
-                                <div class="user-block-books__title panel-heading">
-                                    {{ optional(Auth::user())->id == $user->id
-                                        ? t('user', 'Мои книги')
-                                        : t('user', 'Книги автора') }}
+                            </div>
+                            <div class="col-0 col-clear col-md-12">
+                                <div class="block-content-header">
+                                    <div class="block-content-header__title">
+                                        книги&nbsp;автора
+                                    </div>
+                                    <hr class="block-content-header__hr">
                                 </div>
-                                <div class="user-block-books-elements panel-body">
+                            </div>
+                            <div class="col-12 col-clear">
+                                <div class="user-books row row-between"
+                                     id="user-books"
+                                     data-status="close">
+
+                                    @if(count($books) == 0)
+                                        <div class="user-books__no-books">
+                                            здесь пока нет книг
+                                        </div>
+                                    @endif
+
                                     @foreach ($books as $book)
-                                        <a href="{{ $book->url }}" class="user-block-books__element {{ $book->status_css }}">
-                                            {{ $book->title }}
-                                        </a>
-                                        {{ !$loop->last ? ',' : '' }}
+                                        <div class="user-book col-6 col-md-12 row">
+                                            <div class="user-book__main col-12">
+                                                <div class="user-book__cover"
+                                                     style="background-image: url('{{ $book->cover_url }}')"></div>
+                                                <div class="user-book__info">
+                                                    <a class="user-book__title"
+                                                       href="{{ $book->url }}">
+                                                        {{ $book->title }}
+                                                    </a>
+                                                    <div class="block-content-main user-book-content">
+                                                        <div class="block-content-main__element user-book-content__element">
+                                                            <div class="block-content-main__title user-book-content__title">
+                                                                Опубликовано
+                                                            </div>
+                                                            <div class="block-content-main__info user-book-content__info">
+                                                                {{ $book->created_at->format('d.m.Y') }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="block-content-main__element user-book-content__element">
+                                                            <div class="block-content-main__title user-book-content__title">
+                                                                Страниц
+                                                            </div>
+                                                            <div class="block-content-main__info user-book-content__info">
+                                                                {{ $book->page_count }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="block-content-main__element user-book-content__element">
+                                                            <div class="block-content-main__title user-book-content__title">
+                                                                Рейтинг
+                                                            </div>
+                                                            <div class="block-content-main__info user-book-content__info">
+                                                                {{ $book->rating == 0 ? 0 : number_format($user->rating, 1) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
-                                </div>
-                            </div>
 
-                            @auth
-                                @if(Auth::user()->id == $user->id)
-                                    <a type="button" class="user-block-books-load__button btn btn-default"
-                                       href="{{ route('book.create.show') }}">
-                                        {{ t('book.button', 'Загрузить новую') }}
-                                    </a>
-                                @endif
-                            @endauth
-                        </div>
-                    </div>
-
-                    <div class="user-block-library__area row">
-                        <div class="user-block-library col-md-12">
-                            <div class="user-block-library-content panel panel-default">
-                                <div class="user-block-library__title panel-heading">
-                                    {{ optional(Auth::user())->id == $user->id
-                                        ? t('user', 'Моя библиотека')
-                                        : t('user', 'Библиотека пользователя') }}
-                                </div>
-                                <div class="user-block-library-elements panel-body">
-                                    @foreach ($user->libraryBooks as $book)
-                                        <a href="{{ $book->url }}" class="user-block-library__elements">
-                                            {{ $book->title }}
-                                        </a>
-                                        {{ !$loop->last ? ',' : '' }}
-                                    @endforeach
+                                    @if($books->count() > 2)
+                                            <div class="user-books__button_close col-12 col-clear"
+                                                 id="user-books-close">
+                                                <div class="row row-end">
+                                                    <button class="user-book__button button button_second col-4 col-md-12">
+                                                        <span>
+                                                            и еще {{ $books->count() - 2 }}
+                                                            {{ Lang::choice('книга|книги|книг', $books->count() - 2) }}
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="user-books__button_open col-12 col-clear"
+                                                 id="user-books-open">
+                                                <div class="row">
+                                                    <button class="user-book__button button button_second col-4 col-md-6 col-sm-12">
+                                                        <span>скрыть</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -119,5 +243,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

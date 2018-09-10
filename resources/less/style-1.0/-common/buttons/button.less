@@ -1,0 +1,124 @@
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 50px;
+    width: 100%;
+    min-height: 45px;
+    box-sizing: border-box;
+
+    background: white;
+
+    border: 1px solid @grey;
+    border-radius: 5px;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1) inset;
+    outline: 0;
+
+    color: black;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    cursor: pointer;
+    user-select: none;
+
+    @media screen and (max-width: @sm) {
+        font-size: 14px;
+    }
+
+    &:hover {
+        outline: 0 !important;
+        background: rgb(249, 249, 249);
+    }
+    &:active {
+        outline: 0 !important;
+        background: rgb(244, 244, 244);
+    }
+    &:focus {
+        outline: 0 !important;
+        background: white;
+    }
+
+    // Дефолтные значения
+
+    &_default,
+    &:disabled {
+        color: @grey;
+        border: 1px solid @lightgrey;
+        cursor: auto;
+
+        &:hover {
+            background: white;
+        }
+    }
+
+
+    // Цветовые модификации
+
+    &_green {
+        background: @darkergreen;
+        border: none;
+        color: white;
+
+        &:hover,
+        &:focus {
+            background: @green;
+        }
+        &:active {
+            background: @darkgreen;
+        }
+        &:disabled,
+        &:disabled:hover,
+        &:disabled:focus,
+        &:disabled:active {
+            border: none;
+            background: #9fba90;
+            color: white;
+        }
+    }
+
+    &_red {
+        background: @red;
+        border: none;
+        color: white;
+
+        &:hover,
+        &:focus {
+            background: @lightred;
+        }
+        &:active {
+            background: @darkred;
+        }
+    }
+
+    &_second,
+    &_second:focus {
+        display: flex;
+        width: 100%;
+
+        margin-right: 10px;
+        margin-bottom: 10px;
+        margin-left: 0;
+        padding: 8px 10px;
+
+        border: 2px solid @grey;
+        border-radius: 3px;
+        background: transparent;
+        box-shadow: none;
+
+        color: @darkgrey;
+        text-transform: none;
+
+        transition-property: border-color, color;
+        transition-duration: 0.3s, 0.3s;
+
+        &:hover,
+        &:active,
+        &:focus  {
+            border-color: @lightgreen;
+            background: white;
+            color: black;
+            cursor: pointer;
+        }
+    }
+}

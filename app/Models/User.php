@@ -27,6 +27,7 @@ use Storage;
  * @property string $nickname
  * @property Carbon|null $birthday_date
  * @property string|null $birthday_date_plain
+ * @property Carbon|null $last_activity_at Время последнего действия пользователя
  * @property string|null $avatar Название аватарки пользователя
  * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
  * @property string $avatar_url Ссылка на аватар пользователя
@@ -82,6 +83,9 @@ class User extends Authenticatable
 
     //Поле для поиска по slug через трейт FindByIdOrSlugMethod
     const SLUG_NAME = 'nickname';
+
+    //Количество минут бездействия пользователя, поддерживающее его статус Online
+    const ONLINE_ENDED = 12;
 
     /**
      * The attributes that are mass assignable.
@@ -186,6 +190,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Вернуть рецензию пользователя на конкретную книгу
+     *
+     * @param Book $book
+     * @return Review $review
+     */
+    public function getBookReview(Book $book): Review
+    {
+        return $this->reviews()
+            ->where(['book_id' => $book->id])
+            ->first()
+        ;
+    }
+
+    /**
      * Проверить, оставлял ли пользователь конкретную рецензию
      *
      * @param Review $review
@@ -207,6 +225,16 @@ class User extends Authenticatable
     public function isAuthor(Book $book): bool
     {
         return $this->id === $book->author_id;
+    }
+
+    /**
+     * Проверить, является ли текущий пользователь online
+     *
+     * @return bool
+     */
+    public function isOnline(): bool
+    {
+        return Carbon::parse($this->last_activity_at)->addMinutes(self::ONLINE_ENDED) > Carbon::now();
     }
 
     /**

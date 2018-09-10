@@ -13,11 +13,22 @@ let mix = require('laravel-mix');
 
 mix.js(['resources/assets/js/app.js',
         'resources/js/library-book.js',
-        'resources/js/review-estimate.js'], 'public/js/app.js')
+        'resources/js/review-estimate.js',
+        'resources/js/auth.js',
+        'resources/js/registration.js',
+        'resources/js/user.js',
+        'resources/js/review.js',
+        'resources/js/review-new.js',
+        'resources/js/review-delete.js',
+        'resources/js/review-restoring.js',
+        'resources/js/book-list.js'], 'public/js/app.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .less('resources/less/style.less', 'public/css')
+    .less('resources/less/style-1.0/style.less', 'public/css/style-1.0.css')
     .styles('resources/css/fix.css', 'public/css/fix.css')
     .styles('resources/css/404.css', 'public/css/404.css')
+    .styles('resources/css/normalize.css', 'public/css/normalize.css')
     .sourceMaps()
     .version()
 ;
+

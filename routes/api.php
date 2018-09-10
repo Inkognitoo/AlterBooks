@@ -13,8 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
+    Route::post('/login', 'UserController@login')
+        ->name('api.user.login')
+    ;
+
+    Route::get('/user', 'UserController@index')
+        ->name('api.user.info')
+    ;
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
@@ -46,5 +52,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     ;
     Route::post('/book/{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
         ->name('api.review.estimate.minus')
+    ;
+    Route::delete('/review/id{id}/delete', 'Api\ReviewController@delete')
+        ->name('api.review.delete')
+    ;
+    Route::put('/review/{book_id}/restore', 'Api\ReviewController@restore')
+        ->name('api.review.restore')
     ;
 });

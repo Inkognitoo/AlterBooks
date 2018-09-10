@@ -1,0 +1,118 @@
+.edit-cropper {
+    &[data-status="close"] {
+        height: 0;
+        overflow: hidden;
+    }
+
+    &-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+
+        &[data-status="close"] {
+            height: 0;
+            overflow: hidden;
+        }
+
+        &__header {
+            font-size: 16px;
+        }
+
+        &__container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            width: 100%;
+            box-sizing: border-box;
+
+            padding: 15px 15px 10px;
+        }
+
+        &__image {
+            width: 230px;
+            height: 270px;
+
+            @media screen and (max-width: 350px) {
+                width: 153px;
+                height: 180px;
+            }
+        }
+
+        &__button {
+            width: 150px;
+            height: 30px;
+            font-size: 14px;
+
+            @media screen and (max-width: 350px) {
+                font-size: 12px;
+            }
+        }
+    }
+
+    &-load {
+        flex-direction: column;
+
+        &__area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            width: 100%;
+            box-sizing: border-box;
+
+            margin-bottom: 25px;
+            padding: 15px;
+
+            border-radius: 5px;
+            border: 2px dashed @grey;
+
+            @media screen and (max-width: @md) {
+                margin-top: 15px;
+                padding: 0;
+                border: none;
+            }
+        }
+
+        &__text {
+            margin-top: 10px;
+            font-size: 16px;
+            user-select: none;
+
+            &_drop {
+                display: none;
+            }
+
+            @media screen and (max-width: @md) {
+                display: none;
+            }
+        }
+
+        &__field {
+            display: none;
+        }
+
+        &__button {
+            cursor: pointer;
+        }
+    }
+}
+
+.highlight {
+    justify-content: center;
+    min-height: 105px;
+    border-color: @green;
+    background: rgba(0, 0, 0, 0.03);
+
+    & .edit-cropper-preview__button,
+    & .edit-cropper-load__text {
+        display: none;
+
+        &_drop {
+            position: relative;
+            z-index: -100;
+            display: block;
+        }
+    }
+}

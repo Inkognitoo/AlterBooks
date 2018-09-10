@@ -1,0 +1,54 @@
+.book-genres {
+    margin-bottom: 15px;
+
+    &__title {
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+
+    &-content {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        &__element {
+            display: flex;
+            position: relative;
+
+            margin-right: 10px;
+            margin-bottom: 10px;
+            padding: 8px 10px;
+
+            border: 2px solid @grey;
+            border-radius: 3px;
+
+            font-size: 14px;
+            color: @darkgrey;
+            text-decoration: none;
+
+            transition: 0.1s;
+
+            &:last-child {
+                margin: 0;
+            }
+
+            &:hover {
+                border-color: @green;
+                color: black;
+                cursor: pointer;
+            }
+
+
+            @media screen and (max-width: @sm) {
+                & {
+                    margin-right: 5px;
+                    padding: 5px 8px;
+                }
+            }
+        }
+    }
+
+    &__no-genres {
+        font-size: 16px;
+        color: @darkergrey;
+    }
+}

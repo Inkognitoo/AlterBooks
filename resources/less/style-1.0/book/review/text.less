@@ -1,0 +1,60 @@
+.review-text {
+    max-width: ~'calc(100% - 20px)';
+    margin-left: 10px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+
+    @media screen and (max-width: @md) {
+        margin-left: 0;
+    }
+
+    @media screen and (max-width: @sm) {
+        font-size: 14px;
+    }
+
+    // обрезка текста под cut
+    overflow-y: hidden;
+    position: relative;
+    max-height: 16.5em;
+
+    &__block {
+        position: absolute;
+        left: 20px;
+        top: ~"calc(15em - 2px)";
+
+        display: flex;
+        align-items: center;
+        z-index: 10;
+
+        width: ~"calc(100% - 20px)";
+        height: 1.5em;
+
+        background: linear-gradient(to right, transparent 0%, white 40%, white 100%);
+    }
+
+    &__more {
+        position: absolute;
+        top: ~"calc(15em - 2px)";
+        right: 0;
+        z-index: 20;
+
+        height: 1.5em;
+
+        outline: none;
+        border: none;
+        background: transparent;
+
+        text-decoration: underline;
+
+        cursor: pointer;
+    }
+
+    .review-element[data-auth="true"][data-status="delete"] & {
+        max-height: 6em;
+
+        &__block {
+            top: ~"calc(4.5em - 2px)";
+        }
+    }
+}
+

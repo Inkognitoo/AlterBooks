@@ -1,0 +1,33 @@
+.footer-copyright {
+    &__logo {
+        width: 152px;
+        height: 31px;
+        margin-bottom: 10px;
+        background: url("/img/logo__grey.png") no-repeat center center;
+        background-size: 100% auto;
+    }
+
+    &__text {
+        @media screen and (max-width: 555px) {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.footer-block_max .footer-copyright {
+    margin-bottom: 30px;
+}
+
+.footer-info .footer-copyright {
+    display: none;
+
+    @media screen and (max-width: @md) {
+        display: flex;
+        margin: 40px 0 20px;
+    }
+
+    @media screen and (max-width: 555px) {
+        display: none;
+    }
+}
