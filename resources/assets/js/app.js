@@ -5,9 +5,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+import axios from 'axios';
 
 window.Vue = require('vue');
+window.Moment = require('moment');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,8 +16,14 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.component('book', require('./components/Book.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+axios.get('/api/v1/books')
+    .then(function (response) {
+        const app = new Vue({
+            el: '#app',
+            data: {
+                books: response.data
+            },
+        });
+    });
