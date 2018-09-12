@@ -30,6 +30,7 @@ class BookResource extends Resource
             'rating' => $this->rating,
             'publishDate' => $this->created_at,
             'pageCount' => $this->page_count,
+            'cover' => $this->cover_url,
             'url' => $this->url,
             'author' => new UserResource($this->author),
             'genres' => [

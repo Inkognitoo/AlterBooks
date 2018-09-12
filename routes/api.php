@@ -21,6 +21,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
     Route::get('/user', 'UserController@index')
         ->name('api.user.info')
     ;
+
+    Route::get('/books', 'BookController@index')
+        ->name('api.book.list')
+    ;
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){

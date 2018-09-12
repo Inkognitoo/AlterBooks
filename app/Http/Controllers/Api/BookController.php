@@ -26,6 +26,10 @@ class BookController extends Controller
             ->limit(10)
         ;
 
-        return BookResource::collection($books->get());
+        return BookResource::collection($books->get())
+            ->additional([
+                'total' => $books->get()->count(),
+            ])
+        ;
     }
 }

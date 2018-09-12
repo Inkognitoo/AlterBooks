@@ -66,6 +66,10 @@ Route::get('book/{id}/delete', 'BookController@delete')
     ->name('book.delete')
 ;
 
+Route::get('books-vue', 'BookController@indexVue')
+    ->name('book.list')
+;
+
 // Reader
 Route::get('book/{id}/page/{page_number}', 'ReaderController@show')
     ->name('book.page.show')
