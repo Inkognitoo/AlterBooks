@@ -49,13 +49,13 @@
                             </div>
                         </div>
 
-                        <div class="book-list-element-description col-12 col-md-0" data-status="close">
+                        <div class="book-list-element-description col-12 col-md-0" v-bind:data-status="descriptionStatus">
                             <span v-if="(book.description || '').length > 0" v-html="book.description.replace(/(?:\r\n|\r|\n)/g, '<br />')"></span>
                             <span v-else class="no-description">-описание отсутствует-</span>
 
                             <div class="book-list-element-description__block"></div>
-                            <div class="book-list-element-description__more">
-                                читать далее
+                            <div class="book-list-element-description__more" v-on:click="statusChange()">
+                                {{ linkName }}
                             </div>
                         </div>
                     </div>
@@ -63,13 +63,13 @@
             </div>
             <div class="col-12 col-clear">
                 <div class="book-list-element__description row">
-                    <div class="book-list-element-description col-0 col-md-12" data-status="close">
+                    <div class="book-list-element-description col-0 col-md-12" v-bind:data-status="descriptionStatus">
                         <span v-if="(book.description || '').length > 0" v-html="book.description.replace(/(?:\r\n|\r|\n)/g, '<br />')"></span>
                         <span v-else class="no-description">-описание отсутствует-</span>
 
                         <div class="book-list-element-description__block"></div>
-                        <div class="book-list-element-description__more">
-                            читать далее
+                        <div class="book-list-element-description__more" v-on:click="statusChange()">
+                            {{ linkName }}
                         </div>
                     </div>
                 </div>
@@ -141,6 +141,8 @@
         data: function() {
             return {
                 moment: window.Moment,
+                descriptionStatus: 'close',
+                linkName: 'читать далее',
             }
         },
         methods:  {
@@ -156,6 +158,17 @@
                 pluralize: function (count, words) {
                     let cases = [2, 0, 1, 1, 1, 2];
                     return count + ' ' + words[ (count % 100 > 4 && count % 100 < 20) ? 2 : cases[ Math.min(count % 10, 5)] ];
+                },
+
+                statusChange: function () {
+                    console.log(this.descriptionStatus);
+                    if (this.descriptionStatus === 'close') {
+                        this.descriptionStatus = 'open';
+                        this.linkName = 'свернуть';
+                    } else {
+                        this.descriptionStatus = 'close';
+                        this.linkName = 'читать далее';
+                    }
                 }
 
         },
