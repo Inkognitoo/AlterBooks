@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Search\BookSearch;
 use Illuminate\Http\Request;

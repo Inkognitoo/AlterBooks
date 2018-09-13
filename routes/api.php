@@ -25,6 +25,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
     Route::get('/books', 'BookController@index')
         ->name('api.book.list')
     ;
+
+    Route::get('/genres', 'GenreController@index')
+        ->name('api.genre.list')
+    ;
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
