@@ -11,6 +11,7 @@ use App\Http\Middleware\IsReviewExist;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\HasNotUserReviewToBook;
 use App\Http\Middleware\Api\HasUserDeletedReviewToBook;
+use App\Http\Requests\ReviewCreateRequest;
 
 class ReviewController extends Controller
 {
@@ -70,6 +71,34 @@ class ReviewController extends Controller
             ->first()
             ->restore()
         ;
+
+        $response = [
+            'success' => true,
+            'data' => null,
+            'errors' => [],
+        ];
+
+        return $response;
+    }
+
+    /**
+     * Редактируем рецензию
+     *
+     * @param ReviewCreateRequest $request
+     * @param mixed $book_id
+     * @return array
+     * @throws ApiException
+     */
+    public function edit(ReviewCreateRequest $request, $book_id)
+    {
+        $review = Review::where('user_id', Auth::user()->id)
+            ->where('book_id', $book_id)
+            ->orderBy('updated_at', 'desc')
+            ->first()
+        ;
+
+        $review->fill($request->all());
+        $review->save();
 
         $response = [
             'success' => true,
