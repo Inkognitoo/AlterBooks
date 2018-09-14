@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="book-list-genres" v-bind:class="{ 'book-list-genres_mini': mini }" v-bind:data-status="status">
         <div class="book-list-genres__title">
             список&nbsp;жанров
             <hr class="book-list-genres__hr">
@@ -23,14 +23,15 @@
 <script>
     export default {
         name: "GenresPanel",
+        props: ['mini'],
         data: function() {
             return {
                 axios: window.Axios,
                 genres: [],
+                status: 'close',
             }
         },
         mounted: function () {
-            console.log('teeeest');
             let self = this;
             this.axios.get('/api/v1/genres')
                 .then(function (response) {

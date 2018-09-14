@@ -5,9 +5,7 @@
 @section('content')
 <div id="app" style="display: flex">
     <div class="book-list-aside col-3 col-clear col-lg-0">
-        <div class="book-list-genres" data-status="close">
-            <genres-panel></genres-panel>
-        </div>
+        <genres-panel></genres-panel>
     </div>
 
     <div class="book-list-main col-8 col-clear col-lg-10 col-md-11 col-sm-12">
@@ -21,9 +19,7 @@
             </div>
 
             <div class="col-0 col-lg-12 col-lg-clear">
-                <div class="book-list-genres book-list-genres_mini" data-status="close">
-                    <genres-panel></genres-panel>
-                </div>
+                <genres-panel v-bind:mini="true"></genres-panel>
             </div>
 
             <book v-bind:book="book" v-bind:key="book.id" v-for="book in books.data"></book>
