@@ -85,7 +85,7 @@
                             <div class="book-list-element-genres__container col-10 col-md-12">
                                 <a class="book-list-element-genres__element" v-for="genre in book.genres.data"
                                    v-bind:name="genre.slug"
-                                   v-bind:class="{ 'book-list-element-genres__element_active': (activeGenres || []).includes(genre.id)}">
+                                   v-bind:class="{ 'book-list-element-genres__element_active': activeGenres.includes(genre.slug)}">
                                     {{ genre.name }}
                                 </a>
                             </div>

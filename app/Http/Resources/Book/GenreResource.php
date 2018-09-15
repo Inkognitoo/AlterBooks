@@ -23,6 +23,7 @@ class GenreResource extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
         ];
     }
 }

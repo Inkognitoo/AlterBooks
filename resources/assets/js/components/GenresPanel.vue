@@ -57,7 +57,7 @@
                 let activeGenre = undefined;
                 for (let i = 0; i < this.activeGenres.length; i++ ) {
                     activeGenre = allGenres.find((genre) => {
-                        return genre.id === this.activeGenres[i];
+                        return genre.slug === this.activeGenres[i];
                     });
                     if (activeGenre !== undefined) {
                         activeGenre.checked = true;
@@ -80,10 +80,10 @@
                 let activeGenre = this.activeGenres;
                 if (genre.checked) {
                     activeGenre = activeGenre.filter((element) => {
-                        return element !== genre.id;
+                        return element !== genre.slug;
                     });
                 } else {
-                    activeGenre.push(genre.id)
+                    activeGenre.push(genre.slug)
                 }
 
                 this.$emit('change-active-genres', activeGenre);
