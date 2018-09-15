@@ -29,5 +29,10 @@ axios.get('/api/v1/books')
             data: {
                 books: response.data
             },
+            methods: {
+                changeActiveGenres: function (genres) {
+                    this.books.filtered.genres = genres;
+                }
+            }
         });
     });

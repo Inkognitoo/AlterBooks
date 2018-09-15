@@ -84,7 +84,8 @@
                             </div>
                             <div class="book-list-element-genres__container col-10 col-md-12">
                                 <a class="book-list-element-genres__element" v-for="genre in book.genres.data"
-                                   v-bind:name="genre.slug">
+                                   v-bind:name="genre.slug"
+                                   v-bind:class="{ 'book-list-element-genres__element_active': (activeGenres || []).includes(genre.id)}">
                                     {{ genre.name }}
                                 </a>
                             </div>
@@ -137,7 +138,7 @@
 
 <script>
     export default {
-        props: ['book'],
+        props: ['book', 'activeGenres'],
         data: function() {
             return {
                 moment: window.Moment,
@@ -161,7 +162,6 @@
                 },
 
                 statusChange: function () {
-                    console.log(this.descriptionStatus);
                     if (this.descriptionStatus === 'close') {
                         this.descriptionStatus = 'open';
                         this.linkName = 'свернуть';

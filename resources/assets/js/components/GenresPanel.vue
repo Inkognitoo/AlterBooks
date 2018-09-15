@@ -7,8 +7,10 @@
         <form class="book-list-genres__content">
             <div style="display: flex" v-bind:key="genre.id" v-for="genre in genres">
                 <input type="checkbox"
+                       v-model="genre.checked"
                        v-bind:value="genre.slug">
-                <label class="book-list-genres__element">
+                <label class="book-list-genres__element"
+                       v-on:click="changeGenreStatus(genre)" >
                     {{ genre.name }}
                 </label>
             </div>
@@ -23,21 +25,70 @@
 <script>
     export default {
         name: "GenresPanel",
-        props: ['mini'],
+        props: {
+            mini: {
+                type: Boolean,
+                default: () => false
+            },
+            allGenres: {
+                type: Array,
+                default: () => []
+            },
+            activeGenres: {
+                type: Array,
+                default: () => []
+            },
+        },
         data: function() {
             return {
                 axios: window.Axios,
-                genres: [],
                 status: 'close',
             }
         },
-        mounted: function () {
-            let self = this;
-            this.axios.get('/api/v1/genres')
-                .then(function (response) {
-                    self.genres = response.data.data;
-                });
-        }
+        computed: {
+            /**
+             * На основе списка активных жанров, вычисляем как отображать список обычных жанров
+             *
+             * @returns {*[]}
+             */
+            genres: function () {
+                let genres = [];
+                let allGenres = this.allGenres;
+                let activeGenre = undefined;
+                for (let i = 0; i < this.activeGenres.length; i++ ) {
+                    activeGenre = allGenres.find((genre) => {
+                        return genre.id === this.activeGenres[i];
+                    });
+                    if (activeGenre !== undefined) {
+                        activeGenre.checked = true;
+                        allGenres = allGenres.filter((genre) => {
+                           return genre.id !== activeGenre.id
+                        });
+                        genres.push(activeGenre);
+                    }
+                }
+
+                return genres.concat(allGenres.map((element) => {
+                    element.checked = false;
+
+                    return element;
+                }));
+            }
+        },
+        methods:  {
+            changeGenreStatus: function (genre) {
+                let activeGenre = this.activeGenres;
+                if (genre.checked) {
+                    activeGenre = activeGenre.filter((element) => {
+                        return element !== genre.id;
+                    });
+                } else {
+                    activeGenre.push(genre.id)
+                }
+
+                this.$emit('change-active-genres', activeGenre);
+            }
+        },
     }
 </script>
 
