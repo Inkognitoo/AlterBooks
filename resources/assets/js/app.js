@@ -22,7 +22,10 @@ Vue.component('search-form', require('./components/SearchForm.vue'));
 Vue.component('sort-panel', require('./components/SortPanel.vue'));
 Vue.component('genres-panel', require('./components/GenresPanel.vue'));
 
-axios.get('/api/v1/books')
+let index = window.location.href.indexOf('?') === -1 ? window.location.href.length : window.location.href.indexOf('?');
+let params = window.location.href.substring(index);
+
+axios.get('/api/v1/books' + params)
     .then(function (response) {
         const app = new Vue({
             el: '#app',
@@ -32,6 +35,36 @@ axios.get('/api/v1/books')
             methods: {
                 changeActiveGenres: function (genres) {
                     this.books.filtered.genres = genres;
+
+                    this.setUrl([{name: 'genres', value: genres}]);
+                    this.getBooks({genres: genres});
+                },
+                setUrl: function (params) {
+                    let url = new URL(window.location.href);
+                    let query_string = url.search;
+                    let search_params = new URLSearchParams(query_string);
+
+                    for (let i = 0; i < params.length; i++) {
+                        if (Array.isArray(params[i].value)) {
+                            search_params.delete(params[i].name + '[]');
+                            for (let j = 0; j < params[i].value.length; j++) {
+                                search_params.append(params[i].name + '[]', params[i].value[j]);
+                            }
+                        } else {
+                            search_params.set(params[i].name, params[i].value);
+                        }
+                    }
+
+                    url.search = search_params.toString();
+                    let new_url = url.toString();
+
+                    history.pushState(history.state, window.title, new_url);
+                },
+                getBooks: function (params = {}) {
+                    axios.get('/api/v1/books', {params: params})
+                        .then((response) => {
+                            this.books = response.data;
+                        });
                 }
             }
         });
