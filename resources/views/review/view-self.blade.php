@@ -150,6 +150,7 @@
                type="submit"
                id="review-edit-save"
                data-book-id="{{ $review->book_id }}"
+               data-review-id="{{ $review->id }}"
                value="сохранить">
     </form>
 </div>

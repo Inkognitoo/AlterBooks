@@ -59,7 +59,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::put('/review/{book_id}/restore', 'Api\ReviewController@restore')
         ->name('api.review.restore')
     ;
-    Route::put('/review/{book_id}/edit', 'Api\ReviewController@edit')
+    Route::put('{book_id}/review/{id}/edit', 'Api\ReviewController@edit')
         ->name('api.review.edit')
     ;
 });

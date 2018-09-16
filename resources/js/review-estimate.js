@@ -138,7 +138,7 @@ import axios from 'axios';
      * @param {object} button Объект кнопки оценки рецензии
      */
     function disableEstimateButton(button) {
-        button.style.opacity = "0.15";
+        button.style.opacity = "0.3";
         button.style.cursor = "auto";
     }
     /**
@@ -147,7 +147,7 @@ import axios from 'axios';
      * @param {object} button Объект кнопки оценки рецензии
      */
     function enableEstimateButton(button) {
-        button.style.opacity = "0.4";
+        button.style.opacity = "1";
         button.style.cursor = "pointer";
     }
 

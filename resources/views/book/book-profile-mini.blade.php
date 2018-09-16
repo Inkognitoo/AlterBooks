@@ -8,13 +8,13 @@
             <div class="book-list-element__aside">
                 <a class="book-list-element__cover col-2 col-end col-lg-3 col-lg-end"
                    style="background-image: url('{{ $book->cover_url }}')"
-                   href="{{ $book->author->url }}"></a>
+                   href="{{ $book->url }}"></a>
             </div>
 
             <div class="book-list-element__main">
                 <div class="row">
                     <a class="book-list-element__title col-8 col-lg-12 col-sm-clear"
-                       href="{{ $book->author->url }}">
+                       href="{{ $book->url }}">
                         {{ $book->title }}
                     </a>
 
