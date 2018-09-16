@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Middleware\CheckUserCanReview;
+use App\Http\Middleware\IsBookExist;
 use Auth;
+use App\Models\Book;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Http\Middleware\CheckUserReviewGranted;
@@ -22,15 +25,47 @@ class ReviewController extends Controller
      */
     public function __construct()
     {
+//        $this->middleware(CheckUserCanReview::class)->only('create');
+
+        $this->middleware(IsBookExist::class)->only('create');
+
         $this->middleware(IsReviewExist::class)->only(['delete', 'edit']);
 
         $this->middleware(CheckUserReviewGranted::class)->only(['delete', 'edit']);
 
-        $this->middleware(HasNotUserReviewToBook::class)->only(['restore']);
+        $this->middleware(HasNotUserReviewToBook::class)->only(['create', 'restore']);
 
         $this->middleware(HasUserDeletedReviewToBook::class)->only(['restore']);
 
         $this->middleware(ApiWrapper::class);
+    }
+
+    /**
+     * Создаем рецензию
+     *
+     * @param ReviewCreateRequest $request
+     * @param mixed $book_id
+     * @return array
+     * @throws \Exception
+     */
+    public function create(ReviewCreateRequest $request, $book_id)
+    {
+        $review = new Review();
+
+        $review->fill($request->all());
+
+        $review->book_id = Book::findAny($book_id)->id;
+        Auth::user()->reviews()->save($review);
+
+        $review->save();
+
+        $response = [
+            'success' => true,
+            'data' => null,
+            'errors' => [],
+        ];
+
+        return $response;
     }
 
     /**

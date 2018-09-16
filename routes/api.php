@@ -47,6 +47,9 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     | Здесь все маршруты касающиеся в первую очередь работы с рецензиями
     |
     */
+    Route::post('/book/{book_id}/review/crete', 'Api\ReviewController@create')
+        ->name('api.review.create')
+    ;
     Route::post('/book/{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')
         ->name('api.review.estimate.plus')
     ;
@@ -59,7 +62,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::put('/review/{book_id}/restore', 'Api\ReviewController@restore')
         ->name('api.review.restore')
     ;
-    Route::put('{book_id}/review/{id}/edit', 'Api\ReviewController@edit')
+    Route::put('/book/{book_id}/review/id{id}/edit', 'Api\ReviewController@edit')
         ->name('api.review.edit')
     ;
 });
