@@ -47,7 +47,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     | Здесь все маршруты касающиеся в первую очередь работы с рецензиями
     |
     */
-    Route::post('/book/{book_id}/review/crete', 'Api\ReviewController@create')
+    Route::post('/book/{book_id}/review', 'Api\ReviewController@create')
         ->name('api.review.create')
     ;
     Route::post('/book/{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')

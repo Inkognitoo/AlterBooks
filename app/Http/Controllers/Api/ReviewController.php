@@ -25,7 +25,7 @@ class ReviewController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware(CheckUserCanReview::class)->only('create');
+        $this->middleware(CheckUserCanReview::class)->only('create');
 
         $this->middleware(IsBookExist::class)->only('create');
 
@@ -53,6 +53,10 @@ class ReviewController extends Controller
         $review = new Review();
 
         $review->fill($request->all());
+
+        if (is_numeric($book_id)) {
+            $book_id = 'id' . $book_id;
+        }
 
         $review->book_id = Book::findAny($book_id)->id;
         Auth::user()->reviews()->save($review);
