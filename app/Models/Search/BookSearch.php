@@ -15,18 +15,79 @@ use Illuminate\Http\Request;
  */
 class BookSearch
 {
+    protected const PER_PAGE = 15;
+
     /**
      * Отфильтровать и отсортировать книги
      *
      * @param Request $filters
-     * @return Builder
+     * @return SearchResult
      */
-    public static function apply(Request $filters): Builder
+    public static function apply(Request $filters): SearchResult
     {
         $query = (new Book())->newQuery();
-        $query = static::applyFilters($query, $filters);
 
-        return static::applySort($query, $filters);
+        $query = static::applyFilters($query, $filters);
+        $query = static::applySort($query, $filters);
+        $query = static::applyPaginate($query, $filters);
+
+        return static::wrapResult($query, $filters);
+    }
+
+    /**
+     * Поместить результат фильтрации в объект SearchResult
+     *
+     * @param $query
+     * @param $filters
+     * @return SearchResult
+     */
+    protected static function wrapResult(Builder $query, Request $filters): SearchResult
+    {
+        $search_result = new SearchResult();
+
+        $per_page = (int)$filters->perPage;
+        if (blank($per_page) || $per_page <= 0) {
+            $per_page = self::PER_PAGE;
+        }
+        $search_result->per_page = $per_page;
+
+        $current_page = (int)$filters->currentPage;
+        if (blank($current_page) || $current_page <= 0) {
+            $current_page = 1;
+        }
+        $search_result->current_page = $current_page;
+
+        $search_result->filtered = [
+            'genres' => $filters->genres ?? [],
+            'title' => 'test',
+        ];
+
+        switch ($filters->sort) {
+            case 'rating':
+                $search_result->sorted = [
+                    'rating' => 'asc',
+                ];
+                break;
+            case 'date':
+                $search_result->sorted = [
+                    'date' => 'asc',
+                ];
+                break;
+            default:
+                $search_result->sorted = [
+                    'rating' => 'asc',
+                ];
+                break;
+        }
+
+        $search_result->items = $query
+            ->with('genres')
+            ->with('author')
+            ->get()
+        ;
+        $search_result->total = $search_result->items->count();
+
+        return $search_result;
     }
 
     /**
@@ -67,6 +128,32 @@ class BookSearch
         }
 
         return $query;
+    }
+
+    /**
+     * Применить пагинацию
+     *
+     * @param Builder $query
+     * @param Request $filters
+     * @return Builder
+     */
+    protected static function applyPaginate(Builder $query, Request $filters): Builder
+    {
+        $per_page = (int)$filters->perPage;
+        if (blank($per_page) || $per_page <= 0) {
+            $per_page = self::PER_PAGE;
+        }
+
+        $current_page = (int)$filters->currentPage;
+        if (blank($current_page) || $current_page <= 0) {
+            $current_page = 1;
+        }
+
+        $offset = $per_page * ($current_page - 1);
+        return $query
+            ->offset($offset)
+            ->limit($per_page)
+        ;
     }
 
     /**

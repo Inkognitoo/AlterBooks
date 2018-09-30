@@ -6,10 +6,8 @@ use App\Http\Resources\BookResource;
 use App\Http\Resources\GenreResource;
 use App\Models\Genre;
 use App\Models\Search\BookSearch;
-use Debugbar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Response;
 
 class BookController extends Controller
 {
@@ -22,31 +20,18 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        \Log::info($request);
+        $books_result = BookSearch::apply($request);
 
-        $books = BookSearch::apply($request)
-            ->with('genres')
-            ->with('author')
-            ->limit(10)
-        ;
-
-        $genres = Genre::orderBy('id');
-
-        return BookResource::collection($books->get())
+        return BookResource::collection($books_result->items)
             ->additional([
-                'total' => $books->get()->count(),
-                'perPage' => 0,
-                'pageCount' => 40,
-                'currentPage' => 42,
-                'filtered' => [
-                    'genres' => $request->genres ?? [],
-                    'title' => 'ololo',
-                ],
-                'sorted' => [
-                    'news' => 'asc',
-                ],
-                'genres' => GenreResource::collection($genres->get()),
+                'total' => $books_result->total,
+                'perPage' => $books_result->per_page,
+                'pageCount' => $books_result->page_count,
+                'currentPage' => $books_result->current_page,
+                'filtered' => $books_result->filtered,
+                'sorted' => $books_result->sorted,
+                'genres' => GenreResource::collection(Genre::orderBy('id')->get()),
             ])
-            ;
+        ;
     }
 }

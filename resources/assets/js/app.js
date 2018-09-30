@@ -22,6 +22,7 @@ Vue.component('search-form', require('./components/SearchForm.vue'));
 Vue.component('sort-panel', require('./components/SortPanel.vue'));
 Vue.component('genres-panel', require('./components/GenresPanel.vue'));
 
+//получаем фильтры из url для запроса на сервер
 let index = window.location.href.indexOf('?') === -1 ? window.location.href.length : window.location.href.indexOf('?');
 let params = window.location.href.substring(index);
 
