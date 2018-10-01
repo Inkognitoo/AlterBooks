@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\BookSearchRequest;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\GenreResource;
 use App\Models\Genre;
 use App\Models\Search\BookSearch;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class BookController extends Controller
+class BookController extends ApiController
 {
 
     /**
@@ -18,7 +18,7 @@ class BookController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request)
+    public function index(BookSearchRequest $request)
     {
         $books_result = BookSearch::apply($request);
 

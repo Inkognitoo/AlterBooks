@@ -2,6 +2,7 @@
 
 namespace App\Models\Search;
 
+use App\Http\Requests\Api\BookSearchRequest;
 use App\Models\Book;
 use App\Models\Review;
 use DB;
@@ -20,10 +21,10 @@ class BookSearch
     /**
      * Отфильтровать и отсортировать книги
      *
-     * @param Request $filters
+     * @param BookSearchRequest $filters
      * @return SearchResult
      */
-    public static function apply(Request $filters): SearchResult
+    public static function apply(BookSearchRequest $filters): SearchResult
     {
         $query = (new Book())->newQuery();
 
@@ -41,7 +42,7 @@ class BookSearch
      * @param $filters
      * @return SearchResult
      */
-    protected static function wrapResult(Builder $query, Request $filters): SearchResult
+    protected static function wrapResult(Builder $query, BookSearchRequest $filters): SearchResult
     {
         $search_result = new SearchResult();
 
@@ -97,7 +98,7 @@ class BookSearch
      * @param Request $filters
      * @return Builder
      */
-    protected static function applyFilters(Builder $query, Request $filters): Builder
+    protected static function applyFilters(Builder $query, BookSearchRequest $filters): Builder
     {
         if (filled($filters->genres)) {
             $query = static::filterByGenres($query, $filters->genres);
@@ -113,7 +114,7 @@ class BookSearch
      * @param Request $filters
      * @return Builder
      */
-    protected static function applySort(Builder $query, Request $filters): Builder
+    protected static function applySort(Builder $query, BookSearchRequest $filters): Builder
     {
         switch ($filters->sort) {
             case 'rating':
@@ -137,7 +138,7 @@ class BookSearch
      * @param Request $filters
      * @return Builder
      */
-    protected static function applyPaginate(Builder $query, Request $filters): Builder
+    protected static function applyPaginate(Builder $query, BookSearchRequest $filters): Builder
     {
         $per_page = (int)$filters->perPage;
         if (blank($per_page) || $per_page <= 0) {
