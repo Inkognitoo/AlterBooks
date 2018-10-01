@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware\Api;
 
+use App\Exceptions\ApiException;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class ApiWrapper
@@ -20,17 +22,22 @@ class ApiWrapper
         /** @var Response $response */
         $response = $next($request);
 
-        if ((bool) $response->headers->get('X-error')) {
-            $response->setStatusCode(Response::HTTP_OK);
+        if ($response->headers->has(ApiException::ERROR_HEADER_LABEL)) {
+            $response->headers->remove(ApiException::ERROR_HEADER_LABEL);
 
             return $response;
         }
 
         $out = [
             'success' => true,
-            'data' => $response->original,
             'errors' => []
         ];
+
+        if ($response instanceof JsonResponse) {
+            $out = array_merge_recursive($out, $response->original);
+        } else {
+            $out['data'] = $response->original;
+        }
 
         return response()->json($out);
     }

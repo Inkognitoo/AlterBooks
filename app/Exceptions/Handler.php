@@ -108,7 +108,7 @@ class Handler extends ExceptionHandler
             'errors' => $this->getError($exception),
         ];
 
-        return response()->json($response)->header('X-error', true);
+        return response()->json($response)->header(ApiException::ERROR_HEADER_LABEL, true);
     }
 
 
