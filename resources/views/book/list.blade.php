@@ -15,7 +15,7 @@
             </div>
 
             <div class="book-list-sort col-12 col-clear">
-                <sort-panel></sort-panel>
+                <sort-panel v-on:change-active-sort="changeActiveSort" v-bind:sort="books.sorted.sort"></sort-panel>
             </div>
 
             <div class="col-0 col-lg-12 col-lg-clear">

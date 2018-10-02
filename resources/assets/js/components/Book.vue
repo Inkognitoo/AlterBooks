@@ -146,7 +146,7 @@
                 linkName: 'читать далее',
             }
         },
-        methods:  {
+        methods: {
 
                 /**
                  * https://gist.github.com/znechai/1b25d0ee9a92e5b879175ab4f040dbbc

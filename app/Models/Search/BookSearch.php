@@ -66,17 +66,20 @@ class BookSearch
         switch ($filters->sort) {
             case 'rating':
                 $search_result->sorted = [
-                    'rating' => 'asc',
+                    'sort' => 'rating',
+                    'direction' => 'asc',
                 ];
                 break;
             case 'date':
                 $search_result->sorted = [
-                    'date' => 'asc',
+                    'sort' => 'date',
+                    'direction' => 'asc',
                 ];
                 break;
             default:
                 $search_result->sorted = [
-                    'rating' => 'asc',
+                    'sort' => 'rating',
+                    'direction' => 'asc',
                 ];
                 break;
         }

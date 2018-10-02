@@ -34,12 +34,29 @@ axios.get('/api/v1/books' + params)
                 books: response.data
             },
             methods: {
+                /**
+                 * Событие о том, что изменились активные жанры книги
+                 * @param genres
+                 */
                 changeActiveGenres: function (genres) {
                     this.books.filtered.genres = genres;
 
                     this.setUrl([{name: 'genres', value: genres}]);
                     this.getBooks({genres: genres});
                 },
+                /**
+                 * Событие о том, что изменилась текущая сортировка
+                 * @param sort
+                 */
+                changeActiveSort: function (sort) {
+                    this.setUrl([{name: 'sort', value: sort}]);
+                    this.getBooks({sort: sort});
+                },
+                /**
+                 * Устанавливаем фильтры запроса в url (это нужно для того, чтобы отфильтрованный запрос можно было
+                 * передать про ссылке)
+                 * @param params
+                 */
                 setUrl: function (params) {
                     let url = new URL(window.location.href);
                     let query_string = url.search;
@@ -61,6 +78,10 @@ axios.get('/api/v1/books' + params)
 
                     history.pushState(history.state, window.title, new_url);
                 },
+                /**
+                 * Получаем с сервера отфильтрованный список книг
+                 * @param params
+                 */
                 getBooks: function (params = {}) {
                     axios.get('/api/v1/books', {params: params})
                         .then((response) => {

@@ -7,7 +7,6 @@ use App\Http\Resources\BookResource;
 use App\Http\Resources\GenreResource;
 use App\Models\Genre;
 use App\Models\Search\BookSearch;
-use Illuminate\Http\Request;
 
 class BookController extends ApiController
 {
@@ -15,7 +14,7 @@ class BookController extends ApiController
     /**
      * Получаем отфильтрованный список существующих книг
      *
-     * @param Request $request
+     * @param BookSearchRequest $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(BookSearchRequest $request)

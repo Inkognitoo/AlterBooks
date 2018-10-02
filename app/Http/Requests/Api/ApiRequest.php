@@ -6,6 +6,7 @@ use App\Exceptions\ApiException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
 
 /**
  * Родительский класс для валидации зарпосов к api
@@ -15,7 +16,6 @@ use Illuminate\Validation\ValidationException;
  */
 class ApiRequest extends FormRequest
 {
-
     /**
      * Переопределяем кидающий исключения метод для корректорной работы с нашим ApiWrapper
      *
@@ -26,7 +26,7 @@ class ApiRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
-        $error_code = 400;
+        $error_code = Response::HTTP_BAD_REQUEST;
 
         $previous_exception = null;
         $exception = null;
