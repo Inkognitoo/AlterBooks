@@ -27,11 +27,7 @@
                 Нет ни одной книги, доступной для чтения
             </div>
 
-            <div class="row row-center">
-                <div class="col-12 col-clear col-center">
-                    <!-- LINKS -->
-                </div>
-            </div>
+            <paginate v-on:change-active-page="changeActivePage" v-bind:page-count="books.pageCount" v-bind:current-page="books.currentPage"></paginate>
         </div>
     </div>
 </div>

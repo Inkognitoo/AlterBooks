@@ -21,6 +21,7 @@ Vue.component('book', require('./components/Book.vue'));
 Vue.component('search-form', require('./components/SearchForm.vue'));
 Vue.component('sort-panel', require('./components/SortPanel.vue'));
 Vue.component('genres-panel', require('./components/GenresPanel.vue'));
+Vue.component('paginate', require('./components/Paginate.vue'));
 
 //получаем фильтры из url для запроса на сервер
 let index = window.location.href.indexOf('?') === -1 ? window.location.href.length : window.location.href.indexOf('?');
@@ -28,10 +29,17 @@ let params = window.location.href.substring(index);
 
 axios.get('/api/v1/books' + params)
     .then(function (response) {
+        let params = {
+            sort: response.data.sorted.sort,
+            genres: response.data.filtered.genres,
+            currentPage: response.data.currentPage
+        };
+
         const app = new Vue({
             el: '#app',
             data: {
-                books: response.data
+                books: response.data,
+                params: params,
             },
             methods: {
                 /**
@@ -51,6 +59,14 @@ axios.get('/api/v1/books' + params)
                 changeActiveSort: function (sort) {
                     this.setUrl([{name: 'sort', value: sort}]);
                     this.getBooks({sort: sort});
+                },
+                /**
+                 * Событие о том, что изменилась текущая страница
+                 * @param page
+                 */
+                changeActivePage: function (page) {
+                    this.setUrl([{name: 'currentPage', value: page}]);
+                    this.getBooks({currentPage: page});
                 },
                 /**
                  * Устанавливаем фильтры запроса в url (это нужно для того, чтобы отфильтрованный запрос можно было
@@ -83,7 +99,9 @@ axios.get('/api/v1/books' + params)
                  * @param params
                  */
                 getBooks: function (params = {}) {
-                    axios.get('/api/v1/books', {params: params})
+                    this.params = Object.assign(this.params, params);
+
+                    axios.get('/api/v1/books', {params: this.params})
                         .then((response) => {
                             this.books = response.data;
                         });

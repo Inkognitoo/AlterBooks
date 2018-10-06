@@ -38,10 +38,7 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $books = BookSearch::apply($request)
-            ->with('genres')
-            ->with('author')
-            ->paginate(10);
+        $books = Book::paginate(15);
 
         return view('book.books-list', ['books' => $books]);
     }
