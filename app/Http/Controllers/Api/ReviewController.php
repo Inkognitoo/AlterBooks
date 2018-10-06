@@ -106,7 +106,7 @@ class ReviewController extends Controller
         Review::onlyTrashed()
             ->where('user_id', Auth::user()->id)
             ->where('book_id', $book_id)
-            ->orderBy('deleted_at', 'desc')
+            ->orderBy('deleted_at','desc')
             ->first()
             ->restore()
         ;
