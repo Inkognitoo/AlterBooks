@@ -30,9 +30,9 @@ class BookSearch
 
         $query = static::applyFilters($query, $filters);
         $query = static::applySort($query, $filters);
-        $query = static::applyPaginate($query, $filters);
+        [$query, $total] = static::applyPaginate($query, $filters);
 
-        return static::wrapResult($query, $filters);
+        return static::wrapResult($query, $filters, $total);
     }
 
     /**
@@ -40,9 +40,10 @@ class BookSearch
      *
      * @param $query
      * @param $filters
+     * @param $total
      * @return SearchResult
      */
-    protected static function wrapResult(Builder $query, BookSearchRequest $filters): SearchResult
+    protected static function wrapResult(Builder $query, BookSearchRequest $filters, int $total): SearchResult
     {
         $search_result = new SearchResult();
 
@@ -57,6 +58,9 @@ class BookSearch
             $current_page = 1;
         }
         $search_result->current_page = $current_page;
+
+        $search_result->total = $total;
+        $search_result->page_count = ceil($total / $search_result->per_page);
 
         $search_result->filtered = [
             'genres' => $filters->genres ?? [],
@@ -89,7 +93,6 @@ class BookSearch
             ->with('author')
             ->get()
         ;
-        $search_result->total = $search_result->items->count();
 
         return $search_result;
     }
@@ -98,7 +101,7 @@ class BookSearch
      * Применить имеющиеся фильтры
      *
      * @param Builder $query
-     * @param Request $filters
+     * @param BookSearchRequest $filters
      * @return Builder
      */
     protected static function applyFilters(Builder $query, BookSearchRequest $filters): Builder
@@ -114,7 +117,7 @@ class BookSearch
      * Применить указанную стортировку
      *
      * @param Builder $query
-     * @param Request $filters
+     * @param BookSearchRequest $filters
      * @return Builder
      */
     protected static function applySort(Builder $query, BookSearchRequest $filters): Builder
@@ -138,10 +141,10 @@ class BookSearch
      * Применить пагинацию
      *
      * @param Builder $query
-     * @param Request $filters
-     * @return Builder
+     * @param BookSearchRequest $filters
+     * @return array
      */
-    protected static function applyPaginate(Builder $query, BookSearchRequest $filters): Builder
+    protected static function applyPaginate(Builder $query, BookSearchRequest $filters): array
     {
         $per_page = (int)$filters->perPage;
         if (blank($per_page) || $per_page <= 0) {
@@ -153,11 +156,20 @@ class BookSearch
             $current_page = 1;
         }
 
+        // Ларавел неприятно удивляет и в случае, если в запросе есть group by, своим ->count()
+        // возвращает количество групп, а не итоговых строк в выборке. По этому делаем так:
+        $raw_query = 'SELECT COUNT(*) AS total FROM (' . $query->toSql() .') AS original_query';
+        $count_query = DB::select($raw_query, $query->getBindings());
+        $total = array_first($count_query)->total;
+
         $offset = $per_page * ($current_page - 1);
-        return $query
-            ->offset($offset)
-            ->limit($per_page)
-        ;
+
+        return [
+            $query
+                ->offset($offset)
+                ->limit($per_page),
+            $total
+        ];
     }
 
     /**
@@ -169,8 +181,10 @@ class BookSearch
      */
     protected static function filterByGenres(Builder $query, array $genres): Builder
     {
+        //TODO: очень мощный оверхэд. Нужно подумать, как это можно оптимизировать
         foreach ($genres as $genre) {
             $query->whereHas('genres', function ($genres) use ($genre) {
+                /** @var Builder $genres*/
                 $genres->where(['slug' => $genre]);
             });
         }
