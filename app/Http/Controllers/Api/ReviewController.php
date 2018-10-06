@@ -29,9 +29,9 @@ class ReviewController extends Controller
 
         $this->middleware(IsBookExist::class)->only('create');
 
-        $this->middleware(IsReviewExist::class)->only(['delete', 'edit']);
-
-        $this->middleware(CheckUserReviewGranted::class)->only(['delete', 'edit']);
+//        $this->middleware(IsReviewExist::class)->only(['delete', 'edit']);
+//
+//        $this->middleware(CheckUserReviewGranted::class)->only(['delete', 'edit']);
 
         $this->middleware(HasNotUserReviewToBook::class)->only(['create', 'restore']);
 
@@ -75,15 +75,18 @@ class ReviewController extends Controller
     /**
      * Удаляем рецензию
      *
-     * @param mixed $id
+     * @param mixed $book_id
      * @return array
      * @throws \Exception
      */
-    public function delete($id)
+    public function delete($book_id)
     {
-        Review::find($id)
-            ->delete()
+        $review = Review::where('user_id', Auth::user()->id)
+            ->where('book_id', $book_id)
+            ->orderBy('updated_at', 'desc')
+            ->first()
         ;
+        $review -> delete();
 
         $response = [
             'success' => true,
@@ -104,8 +107,8 @@ class ReviewController extends Controller
     public function restore($book_id)
     {
         Review::onlyTrashed()
-            ->where('user_id', Auth::user()->id)
-            ->where('book_id', $book_id)
+            ->where('user_id',Auth::user()->id)
+            ->where('book_id',$book_id)
             ->orderBy('deleted_at','desc')
             ->first()
             ->restore()
