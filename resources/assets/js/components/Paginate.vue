@@ -8,6 +8,11 @@
                       :disabled="(activePage === 1)" >
                     Назад
                 </span>
+                <span class="pagination__element pagination__element_symbol"
+                      v-on:click="changePage(activePage - 1)"
+                      :disabled="(activePage === 1)" >
+                    &lt;
+                </span>
 
                 <span class="pagination__element" v-for="page in pages"
                       v-bind:class="{
@@ -22,6 +27,11 @@
                       v-on:click="changePage(activePage + 1)"
                       :disabled="(activePage === pageCount)" >
                     Вперед
+                </span>
+                <span class="pagination__element pagination__element_symbol"
+                      v-on:click="changePage(activePage + 1)"
+                      :disabled="(activePage === pageCount)" >
+                    &gt;
                 </span>
             </div>
 
