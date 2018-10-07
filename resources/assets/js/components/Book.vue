@@ -21,7 +21,7 @@
                                      v-bind:class="{ 'book-list-element-rating-stars__fill_red': book.rating <= 2,
                                                     'book-list-element-rating-stars__fill_yellow': book.rating > 2 && book.rating <= 3.5,
                                                     'book-list-element-rating-stars__fill_green': book.rating > 3.5 }"
-                                     v-bind:style="{ 'width': book.rating * 100 / 5 }"></div>
+                                     v-bind:style="{ 'width': (book.rating * 100 / 5) + '%' }"></div>
                                 <div class="book-list-element-rating-stars__form"></div>
                             </div>
                             <div class="book-list-element-rating__number">
@@ -41,7 +41,7 @@
                                     v-bind:class="{ 'book-list-element-rating-stars__fill_red': book.rating <= 2,
                                                     'book-list-element-rating-stars__fill_yellow': book.rating > 2 && book.rating <= 3.5,
                                                     'book-list-element-rating-stars__fill_green': book.rating > 3.5 }"
-                                     v-bind:style="{ 'width': book.rating * 100 / 5 }"></div>
+                                     v-bind:style="{ 'width': (book.rating * 100 / 5) + '%' }"></div>
                                 <div class="book-list-element-rating-stars__form"></div>
                             </div>
                             <div class="book-list-element-rating__number">
