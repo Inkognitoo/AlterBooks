@@ -54,7 +54,7 @@
                             <span v-else class="no-description">-описание отсутствует-</span>
 
                             <div class="book-list-element-description__block"></div>
-                            <div class="book-list-element-description__more" v-on:click="statusChange()">
+                            <div class="book-list-element-description__more" v-on:click="descriptionStatusChange()">
                                 {{ linkName }}
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <span v-else class="no-description">-описание отсутствует-</span>
 
                         <div class="book-list-element-description__block"></div>
-                        <div class="book-list-element-description__more" v-on:click="statusChange()">
+                        <div class="book-list-element-description__more" v-on:click="descriptionStatusChange()">
                             {{ linkName }}
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                     return count + ' ' + words[ (count % 100 > 4 && count % 100 < 20) ? 2 : cases[ Math.min(count % 10, 5)] ];
                 },
 
-                statusChange: function () {
+                descriptionStatusChange: function () {
                     if (this.descriptionStatus === 'close') {
                         this.descriptionStatus = 'open';
                         this.linkName = 'свернуть';

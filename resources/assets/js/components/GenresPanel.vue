@@ -16,8 +16,8 @@
             </div>
         </form>
         <div class="book-list-genres__stripe"></div>
-        <div class="book-list-genres__more">
-            больше жанров
+        <div class="book-list-genres__more" v-on:click="showMoreStatusChange">
+            {{ linkName }}
         </div>
     </div>
 </template>
@@ -43,6 +43,7 @@
             return {
                 axios: window.Axios,
                 status: 'close',
+                linkName: 'больше жанров',
             }
         },
         computed: {
@@ -87,6 +88,16 @@
                 }
 
                 this.$emit('change-active-genres', activeGenre);
+            },
+
+            showMoreStatusChange: function () {
+                if (this.status === 'close') {
+                    this.status = 'open';
+                    this.linkName = 'свернуть';
+                } else {
+                    this.status = 'close';
+                    this.linkName = 'больше жанров';
+                }
             }
         },
     }
