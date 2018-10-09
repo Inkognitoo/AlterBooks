@@ -1,7 +1,7 @@
 <template>
     <div class="row row-center">
         <div class="col-12 col-clear col-center">
-            <div class="pagination">
+            <div class="pagination" v-if="this.pageCount > 1">
 
                 <span class="pagination__element pagination__element_text"
                       v-on:click="changePage(activePage - 1)"
@@ -33,6 +33,7 @@
                       :disabled="(activePage === pageCount)" >
                     &gt;
                 </span>
+
             </div>
 
         </div>
