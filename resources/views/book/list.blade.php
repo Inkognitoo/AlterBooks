@@ -12,7 +12,7 @@
             <div class="book-list-main col-8 col-clear col-lg-10 col-md-11 col-sm-12">
                 <div class="row">
                     <div class="col-12 col-clear">
-                        <search-form></search-form>
+                        <search-form v-on:change-title="changeTitle" v-bind:current-title="books.filtered.title"></search-form>
                     </div>
 
                     <div class="book-list-sort col-12 col-clear">

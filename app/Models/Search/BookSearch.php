@@ -110,6 +110,10 @@ class BookSearch
             $query = static::filterByGenres($query, $filters->genres);
         }
 
+        if (filled($filters->title)) {
+            $query = static::filterByTitle($query, $filters->title);
+        }
+
         return $query;
     }
 
@@ -122,6 +126,10 @@ class BookSearch
      */
     protected static function applySort(Builder $query, BookSearchRequest $filters): Builder
     {
+        if (filled($filters->title)) {
+            $query = self::orderBySimilarityDesc($query, $filters->title);
+        }
+
         switch ($filters->sort) {
             case 'rating':
                 $query = static::orderByRatingDesc($query);
@@ -193,6 +201,22 @@ class BookSearch
     }
 
     /**
+     * Отфильтровать книги по соотвествию названия
+     *
+     * @param Builder $query
+     * @param string $title
+     * @return Builder
+     */
+    protected static function filterByTitle(Builder $query, string $title): Builder
+    {
+        $similarity_percent = 10;
+
+        $query->whereRaw('similarity(title, ?) >= ?', [$title, $similarity_percent / 100]);
+
+        return $query;
+    }
+
+    /**
      * Сортировать книги по суммарному рейтингу их рецензий. От большего к меньшему
      *
      * @param Builder $query
@@ -225,6 +249,18 @@ class BookSearch
         return $query->orderByDesc('created_at')
             ->orderBy('books.id')
         ;
+    }
+
+    /**
+     * Сортировать книги по схожести с title. От более схожих к менее схожим
+     *
+     * @param Builder $query
+     * @param string $title
+     * @return Builder
+     */
+    protected static function orderBySimilarityDesc(Builder $query, string $title): Builder
+    {
+        return $query->orderByRaw('similarity(title, ?) DESC', [$title]);
     }
 
 }
