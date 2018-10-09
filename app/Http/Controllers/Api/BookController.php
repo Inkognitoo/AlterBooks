@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\BookSearchRequest;
+use App\Http\Requests\Api\BookTipsRequest;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\GenreResource;
+use App\Models\Book;
 use App\Models\Genre;
 use App\Models\Search\BookSearch;
 
@@ -32,5 +34,16 @@ class BookController extends ApiController
                 'genres' => GenreResource::collection(Genre::orderBy('id')->get()),
             ])
         ;
+    }
+
+    /**
+     * Список схожих имён книг
+     *
+     * @param BookTipsRequest $request
+     * @return array
+     */
+    public function tips(BookTipsRequest $request)
+    {
+        return Book::getTips($request->title);
     }
 }

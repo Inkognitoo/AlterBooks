@@ -6,6 +6,7 @@ use App\Jobs\ProcessBook;
 use App\Models\Book\Txt;
 use App\Scopes\Book\StatusScope;
 use App\Traits\FindByIdOrSlugMethod;
+use DB;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -469,5 +470,42 @@ class Book extends Model
             });
         Storage::put($fit_cover_path, (string)$cover->encode());
         return Storage::url($fit_cover_path);
+    }
+
+    /**
+     * Список, содержащий подсказки для текущего title (ищет наиболее схожие названия книг)
+     *
+     * @param string $title
+     * @return array
+     */
+    public static function getTips(string $title): array
+    {
+        $limit = 5;
+        $similarity_percent = 10;
+
+        return Book::select(['title'])
+            ->whereRaw('similarity(title, ?) >= ?', [$title, $similarity_percent / 100])
+
+            //сортировка по степени схожести
+            ->orderByRaw('similarity(title, ?) DESC', [$title])
+
+            //сортировка по рейтингу
+            ->leftJoin((new Review())->getTable() . ' AS reviews', function ($reviews) {
+                $reviews->on(['reviews.book_id' => 'books.id'])
+                    ->whereNull('reviews.deleted_at');
+            })
+            ->groupBy('books.id')
+            ->orderByDesc(DB::raw('COALESCE(AVG(reviews.rating), 0)'))
+
+            //стандартные сортировки
+            ->orderBy('books.created_at')
+            ->orderBy('books.id')
+
+            ->limit($limit)
+            ->get()
+
+            ->pluck('title')
+            ->all()
+        ;
     }
 }

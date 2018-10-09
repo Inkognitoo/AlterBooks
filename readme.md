@@ -22,3 +22,6 @@ MVP версия сервиса
 
 После чего, для работы с [css](https://github.com/Inkognitoo/AlterBooks/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F#%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-css) или [javascript](https://github.com/Inkognitoo/AlterBooks/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F#%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-javascript) необходимо запустить:
 `npm run watch` для компиляции файлов после каждого изменения, либо `npm run dev` для компиляции текущего состояния.
+
+Для работы с нечётким поиском, необходимо под пользователем **postgresql** зайти в базу данных проекта и выполнить команду:  
+`CREATE EXTENSION pg_trgm;`

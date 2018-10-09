@@ -25,6 +25,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
     Route::get('/books', 'BookController@index')
         ->name('api.book.list')
     ;
+    Route::get('/books/tips', 'BookController@tips')
+        ->name('api.book.tips')
+    ;
 
     Route::get('/genres', 'GenreController@index')
         ->name('api.genre.list')

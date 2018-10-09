@@ -61,6 +61,14 @@ axios.get('/api/v1/books' + params)
                     this.getBooks({sort: sort});
                 },
                 /**
+                 * Событие о том, что измененился title
+                 * @param title
+                 */
+                changeTitle: function (title) {
+                    this.setUrl([{name: 'title', value: title}]);
+                    this.getBooks({title: title});
+                },
+                /**
                  * Событие о том, что изменилась текущая страница
                  * @param page
                  */

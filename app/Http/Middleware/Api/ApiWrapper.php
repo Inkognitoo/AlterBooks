@@ -33,7 +33,8 @@ class ApiWrapper
             'errors' => []
         ];
 
-        if ($response instanceof JsonResponse) {
+        if ($response instanceof JsonResponse &&
+            array_has($response->original, 'data')) {
             $out = array_merge_recursive($out, $response->original);
         } else {
             $out['data'] = $response->original;
