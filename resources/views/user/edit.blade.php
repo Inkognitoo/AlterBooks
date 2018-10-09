@@ -211,6 +211,27 @@
 
                 <div class="edit-block-element">
                     <label class="edit-block-element__title"
+                           for="old_password">
+                        Пароль
+                    </label>
+                    <div class="edit-block-element__content">
+                        <input class="edit-block-element__content_old-password"
+                               type="password"
+                               id="old_password"
+                               name="old_password"
+                               required>
+                    </div>
+                </div>
+
+                <div class="edit-block-element">
+                    <div class="edit-block-element__title"></div>
+                    <div class="edit-block-element__content edit-block-element__content_error">
+                        Внимание! Изменение данных профиля приведет к&nbsp;изменению данных для&nbsp;входа на&nbsp;сайт.
+                    </div>
+                </div>
+
+                <div class="edit-block-element">
+                    <label class="edit-block-element__title"
                            for="change_e-mail">
                         E-mail
                     </label>
@@ -248,13 +269,6 @@
                                name="password_confirmation"
                                data-status="">
                         <div class="edit-block-element__flag"></div>
-                    </div>
-                </div>
-
-                <div class="edit-block-element">
-                    <div class="edit-block-element__title"></div>
-                    <div class="edit-block-element__content edit-block-element__content_error">
-                        Внимание! Изменение данных профиля приведет к&nbsp;изменению данных для&nbsp;входа на&nbsp;сайт.
                     </div>
                 </div>
 

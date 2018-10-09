@@ -17,6 +17,7 @@ use Illuminate\Validation\Rule;
  *
  * @property string $email
  * @property string $password
+ * @property string $old_password
  */
 class UserUpdateEmailRequest extends FormRequest
 {
@@ -45,6 +46,10 @@ class UserUpdateEmailRequest extends FormRequest
                 (new CaseInsensitiveUnique('users'))->ignore(Auth::user()->id)
             ],
             'password' => 'nullable|min:6|confirmed',
+            'old_password' => [
+                'required',
+                'current_password'
+            ],
         ];
     }
 }

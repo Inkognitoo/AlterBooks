@@ -20,6 +20,12 @@ class AppServiceProvider extends ServiceProvider
         Horizon::auth(function ($request) {
            return (bool) optional(Auth::user())->is_admin;
         });
+
+       \Validator::extendImplicit('current_password',
+           function($attribute, $value, $parameters, $validator)
+           {
+               return \Hash::check($value, auth()->user()->password);
+           });
     }
 
     /**
