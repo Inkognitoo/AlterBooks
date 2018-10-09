@@ -29,9 +29,9 @@ class ReviewController extends Controller
 
         $this->middleware(IsBookExist::class)->only('create');
 
-//        $this->middleware(IsReviewExist::class)->only(['delete', 'edit']);
-//
-//        $this->middleware(CheckUserReviewGranted::class)->only(['delete', 'edit']);
+        $this->middleware(IsReviewExist::class)->only(['delete', 'edit']);
+
+        $this->middleware(CheckUserReviewGranted::class)->only(['delete', 'edit']);
 
         $this->middleware(HasNotUserReviewToBook::class)->only(['create', 'restore']);
 
@@ -76,10 +76,11 @@ class ReviewController extends Controller
      * Удаляем рецензию
      *
      * @param mixed $book_id
+     * @param int $id
      * @return array
      * @throws \Exception
      */
-    public function delete($book_id)
+    public function delete($book_id, $id)
     {
         $review = Review::where('user_id', Auth::user()->id)
             ->where('book_id', $book_id)
@@ -127,8 +128,8 @@ class ReviewController extends Controller
      * Редактируем рецензию
      *
      * @param ReviewCreateRequest $request
-     * @param int $id
      * @param mixed $book_id
+     * @param int $id
      * @return array
      * @throws \Exception
      */

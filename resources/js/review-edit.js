@@ -72,7 +72,7 @@ import axios from 'axios';
              * @returns {Promise<any>}
              */
             function restoreApiReview(book_id, id, rating) {
-                let url = `/api/v1/${book_id}/review/${id}/edit`;
+                let url = `/api/v1/book/${book_id}/review/id${id}/edit`;
 
                 let header = review_field_header.value;
                 let text = review_field_text.value;

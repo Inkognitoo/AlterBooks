@@ -23,7 +23,9 @@ class CheckUserReviewGranted
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()->hasReview(Review::find($request->id))) {
+        $review_id = $request->review_id ?? $request->id;
+
+        if (!Auth::user()->hasReview(Review::find($review_id))) {
             return response(view('errors.403'), 403);
         }
 
