@@ -38,13 +38,6 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $books = Book::paginate(15);
-
-        return view('book.books-list', ['books' => $books]);
-    }
-
-    public function indexVue(Request $request)
-    {
         return view('book.list');
     }
 

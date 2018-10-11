@@ -64,7 +64,7 @@ class BookSearch
 
         $search_result->filtered = [
             'genres' => $filters->genres ?? [],
-            'title' => 'test',
+            'title' => $filters->title,
         ];
 
         switch ($filters->sort) {

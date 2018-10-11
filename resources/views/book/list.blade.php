@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="col-12 col-center">
-        <div id="app" class="row row-center">
+        <div id="book-list" class="row row-center">
             <div class="book-list-aside col-3 col-clear col-lg-0">
                 <genres-panel v-on:change-active-genres="changeActiveGenres" v-bind:all-genres="books.genres" v-bind:active-genres="books.filtered.genres"></genres-panel>
             </div>
@@ -33,4 +33,9 @@
             </div>
         </div>
     </div>
+@endsection
+
+
+@section('javascript')
+    <script src="{{ mix('/js/book-list.js') }}"></script>
 @endsection
