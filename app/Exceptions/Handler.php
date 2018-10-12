@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Events\Error;
+use App\Http\Middleware\Api\ApiWrapper;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -55,6 +56,14 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof ApiException) {
+            return $this->apiRender($request, $exception);
+        }
+
+        if ($request->headers->has(ApiWrapper::API_HEADER_LABEL)) {
+            if (App::environment('production')) {
+                return $this->apiRender($request, new ServerException());
+            }
+
             return $this->apiRender($request, $exception);
         }
 
