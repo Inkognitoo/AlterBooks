@@ -1,0 +1,73 @@
+.book-list-element-description {
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+
+    @media screen and (max-width: @md) {
+        margin-left: 0;
+    }
+
+    // обрезка текста под cut
+    position: relative;
+    width: 200px;
+
+    &__block {
+        position: absolute;
+        left: 20px;
+        top: 7.5em;
+
+        align-items: center;
+        z-index: 10;
+
+        width: ~"calc(100% - 20px)";
+        height: 1.5em;
+
+        background: linear-gradient(to right, transparent 0%, white 40%, white 100%);
+    }
+
+    &__more {
+        position: absolute;
+        right: 0;
+        z-index: 20;
+
+        height: 1.5em;
+
+        padding-right: 20px;
+
+        outline: none;
+        border: none;
+        background: transparent;
+
+        color: black;
+        text-decoration: underline;
+
+        cursor: pointer;
+    }
+
+
+    &[data-status="open"] {
+        max-height: none;
+        margin-bottom: 40px;
+        overflow: visible;
+    }
+    &[data-status="open"] &__block {
+        display: none;
+    }
+    &[data-status="open"] &__more {
+        top: auto;
+        bottom: -1.5em;
+    }
+
+    &[data-status="close"] {
+        max-height: 9em;
+        margin-bottom: 0;
+        overflow: hidden;
+    }
+    &[data-status="close"] &__block {
+        display: flex;
+    }
+    &[data-status="close"] &__more {
+        top: 7.5em;
+        bottom: auto;
+    }
+}

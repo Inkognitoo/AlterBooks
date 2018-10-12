@@ -1,0 +1,55 @@
+.review-grade {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 10px;
+
+    &__value_guest {
+        font-size: 16px;
+        color: @darkergrey;
+    }
+
+    .review-element[data-auth="true"][data-status="delete"] & {
+        display: none;
+    }
+
+    & * {
+        margin-right: 7px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    @media screen and (max-width: @md) {
+        margin-left: 0;
+    }
+
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 30px;
+
+        margin-right: 7px;
+
+        outline: none;
+        border: 2px solid @lightgrey;
+        background: #efefef;
+
+        &:disabled {
+            opacity: 0.3;
+
+            &:hover {
+                opacity: 0.3;
+            }
+        }
+
+        &:hover {
+            border-color: @grey;
+            cursor: pointer;
+        }
+    }
+}

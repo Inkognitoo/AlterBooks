@@ -3,8 +3,11 @@
 namespace App\Exceptions;
 
 use App\Events\Error;
+use App\Http\Middleware\Api\ApiWrapper;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,35 +55,112 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-
-        if (!($exception instanceof ApiException)) {
-            return parent::render($request, $exception);
+        if ($exception instanceof ApiException) {
+            return $this->apiRender($request, $exception);
         }
 
+        if ($request->headers->has(ApiWrapper::API_HEADER_LABEL)) {
+            if (App::environment('production')) {
+                return $this->apiRender($request, new ServerException());
+            }
+
+            return $this->apiRender($request, $exception);
+        }
+
+        return $this->classicRender($request, $exception);
+    }
+
+    /**
+     * Классическая обработка ошибок в приложении
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function classicRender($request, Exception $exception)
+    {
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->notFoundHandler($request, $exception);
+        }
+
+        return parent::render($request, $exception);
+    }
+
+    /**
+     * Обработка 404-ой ошибки
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function notFoundHandler($request, Exception $exception)
+    {
+        if (IS_ADMIN_ENVIRONMENT) {
+            return response()->view('admin.errors.404');
+        }
+
+        return response()->view('errors.404');
+    }
+
+    /**
+     * Обработка ошибок при запросе через API
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function apiRender($request, Exception $exception)
+    {
         $response = [
             'success' => false,
             'data' => null,
             'errors' => $this->getError($exception),
         ];
 
-        return response()->json($response)->header('X-error', true);
+        return response()->json($response)->header(ApiException::ERROR_HEADER_LABEL, true);
     }
 
 
+    /**
+     * Рекурсивная запись ошибок в массив
+     *
+     * @param Exception $exception
+     * @return array
+     */
     protected function getError(Exception $exception)
     {
-
         $error = [
             'code' => $exception->getCode(),
             'message' => $exception->getMessage(),
         ];
 
-        if (empty($exception->getPrevious())) {
+        if (blank($exception->getPrevious())) {
             return [$error];
         }
 
         $errors = $this->getError($exception->getPrevious());
         $errors[] = $error;
+
         return $errors;
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $exception->getMessage()], 401);
+        }
+
+        if (IS_ADMIN_ENVIRONMENT) {
+            return redirect()->guest(route('login.show'));
+        }
+
+        return redirect()->guest(route('login'));
     }
 }

@@ -53,22 +53,4 @@ class ReviewController extends Controller
 
         return redirect(route('book.show', ['id' => $book_id]));
     }
-
-    /**
-     * Удаляем рецензию
-     *
-     * @param mixed $book_id
-     * @param mixed $id
-     * @return Redirect
-     * @throws Exception
-     */
-    public function delete($book_id, $id)
-    {
-        Review::find($id)
-            ->delete()
-        ;
-
-        return redirect(route('book.show', ['id' => $book_id]))
-            ->with(['status' => t('review.api', 'Рецензия была успешно удалена')]);
-    }
 }

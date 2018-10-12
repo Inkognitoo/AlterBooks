@@ -40,7 +40,7 @@ class UserController extends Controller
 
             $response = [
                 'success' => false,
-                'data' => null,
+                'data' => 'email',
                 'errors' => $errors,
             ];
             return response()->json($response, 400);
@@ -49,7 +49,7 @@ class UserController extends Controller
         if (!$this->attemptLogin($request)) {
             $response = [
                 'success' => false,
-                'data' => null,
+                'data' => 'password',
                 'errors' => [
                     'email' => 'Имя пользователя и пароль не совпадают.'
                 ],
@@ -57,9 +57,10 @@ class UserController extends Controller
             return response()->json($response, 400);
         }
 
+        $user = Auth::user();
         $response = [
             'success' => true,
-            'data' => 'Успешная авторизация',
+            'data' => $user->api_token,
             'errors' => [],
         ];
 

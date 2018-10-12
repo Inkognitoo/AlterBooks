@@ -2,94 +2,76 @@
     /** @var \Illuminate\Support\ViewErrorBag $errors */
 @endphp
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        {{ t('review', 'Новая рецензия') }}
+<div class="review-new" data-status="open" id="review-new">
+    <div class="review-new-create"
+         data-status="open">
+        <div class="review-new-create__text">
+            у&nbsp;Вас еще нет рецензии на&nbsp;эту&nbsp;книгу
+        </div>
+        <button class="review-new-create__button button">
+            написать рецензию
+        </button>
     </div>
-    <div class='panel-body'>
-        <form class="form-horizontal" method="POST" action="{{ route('review.create', ['id' => $book->slug]) }}">
-            {{ csrf_field() }}
+    <form class="review-new-form"
+          method="POST"
+          action="{{ route('review.create', ['id' => $book->slug]) }}"
+          data-status="close">
 
-            <div class="form-group{{ $errors->has('rating') ? ' has-error' : '' }}">
-                <label for="rating" class="col-md-4 control-label">
-                    {{ t('review', 'Оценка') }}
-                </label>
+        {{ csrf_field() }}
 
-                <div class="col-md-6">
-                    <select id="rating" class="form-control" name="rating">
-                        <option value="1"
-                                {{ old('rating') == 1 ? 'selected' : '' }} >
-                            1
-                        </option>
-                        <option value="2"
-                                {{ old('rating') == 2 ? 'selected' : '' }} >
-                            2
-                        </option>
-                        <option value="3"
-                                {{ old('rating') == 3 ? 'selected' : '' }} >
-                            3
-                        </option>
-                        <option value="4"
-                                {{ old('rating') == 4 ? 'selected' : '' }} >
-                            4
-                        </option>
-                        <option value="5"
-                                {{ old('rating') == 5 ? 'selected' : '' }} >
-                            5
-                        </option>
-                        <option value="6"
-                                {{ old('rating') == 6 ? 'selected' : '' }} >
-                            6
-                        </option>
-                        <option value="7"
-                                {{ old('rating') == 7 ? 'selected' : '' }} >
-                            7
-                        </option>
-                        <option value="8"
-                                {{ old('rating') == 8 ? 'selected' : '' }} >
-                            8
-                        </option>
-                        <option value="9"
-                                {{ old('rating') == 9 ? 'selected' : '' }} >
-                            9
-                        </option>
-                        <option value="10"
-                                {{ old('rating') == 10 ? 'selected' : '' }} >
-                            10
-                        </option>
-                    </select>
-
-                    @if ($errors->has('rating'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('rating') }}</strong>
-                        </span>
-                    @endif
-                </div>
+        <div class="review-new-form-rating">
+            <div class="review-new-form-rating__text">
+                Оценка
             </div>
+            <div class="review-new-stars">
 
-            <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
-                <label for="text" class="col-md-4 control-label">
-                    {{ t('review', 'Текст') }}
-                </label>
+                @for ($i = 10; $i >= 1; $i--)
+                    <input class="review-new-stars__element"
+                           type="radio"
+                           id="nr-{{ $i }}"
+                           name="rating"
+                           value="{{ $i }}"
+                           {{ $i === 1 ? 'checked' : ''}}>
+                    <label class="review-new-stars__star"
+                           for="nr-{{ $i }}">
+                        <svg class="review-rating__star review-rating__star_active">
+                            <polygon id="star" points="11,0 14.23,6.55 21.46,7.6 16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
+                        </svg>
+                    </label>
+                @endfor
 
-                <div class="col-md-6">
-                    <textarea id="text" class="form-control review-edit-textarea" name="text" rows="5">{{ old('text') }}
-                    </textarea>
-                    @if ($errors->has('text'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('text') }}</strong>
-                        </span>
-                    @endif
-                </div>
+                <div class="review-new-form-rating__number"></div>
             </div>
-
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-4">
-                    <button type="submit" class="btn btn-primary">
-                        {{ t('review.button', 'Отправить') }}
-                    </button>
-                </div>
+        </div>
+        <div class="review-new-form__field">
+            <input type="text"
+                   id="nr-header"
+                   name="header"
+                   maxlength="67"
+                   placeholder="Заголовок рецензии"
+                   data-input-type="nr-field"
+                   data-has-error="false"
+                   required>
+            <div class="review-new-form__message">
+                осталось символов: <span id="review-new-form__remain">67</span>
             </div>
-        </form>
-    </div>
+            <div class="review-new-form__error">
+                укажите заголовок рецензии
+            </div>
+        </div>
+        <div class="review-new-form__field">
+            <textarea id="nr-content"
+                      name="text"
+                      placeholder="Текст рецензии"
+                      data-input-type="nr-field"
+                      data-has-error="false"
+                      required></textarea>
+            <div class="review-new-form__error">
+                напишите текст рецензии
+            </div>
+        </div>
+        <input class="review-new-form__button button"
+               type="submit"
+               value="оставить рецензию">
+    </form>
 </div>

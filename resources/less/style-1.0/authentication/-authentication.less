@@ -1,0 +1,94 @@
+.authentication {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+
+    overflow: auto;
+
+    width: 100%;
+    height: 100vh;
+
+    background: rgba(74, 67, 74, 0.7);
+
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;
+
+    &-enter[data-status="close"] {
+        display: none;
+    }
+
+    &-re-password[data-status="close"] {
+        display: none;
+    }
+
+    &__window {
+        position: relative;
+        width: 90%;
+        max-width: 400px;
+        z-index: 120;
+
+        margin: 100px auto 20px;
+        padding: 20px 30px 30px;
+        box-sizing: border-box;
+
+        background: @transparent;
+
+        @media screen and (max-width: @lg) {
+            margin-top: 70px;
+        }
+
+        @media screen and (max-width: @md) {
+            margin-top: 50px;
+        }
+
+        @media screen and (max-width: 360px) {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 20px 15px 20px;
+
+            & * .block-content-header__title {
+                font-size: 14px;
+            }
+        }
+    }
+
+    &[data-status="modal-open"] {
+         display: block;
+         animation-name: showBackground;
+    }
+
+    &[data-status="modal-close"] {
+        display: none;
+        transition-property: display;
+        transition-delay: 0.2s;
+
+        animation-duration: 0.2s;
+        animation-fill-mode: forwards;
+        animation-name: hideBackground;
+    }
+}
+
+@keyframes showBackground {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes hideBackground {
+    0% {
+        opacity: 1;
+    }
+    99% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}

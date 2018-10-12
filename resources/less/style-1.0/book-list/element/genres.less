@@ -1,0 +1,60 @@
+.book-list-element-genres {
+    display: flex;
+    margin-top: 30px;
+
+    &__title {
+        margin-top: 5px;
+        text-transform: uppercase;
+    }
+
+    &__container {
+        flex-wrap: wrap;
+    }
+
+    &__element {
+        padding: 7px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+
+        border: 2px solid @grey;
+        border-radius: 5px;
+
+        font-size: 14px;
+
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            background: #f5f8fa;
+        }
+
+        &_active {
+            border-color: @lightgreen;
+            background: @transparent;
+
+            &:hover {
+                cursor: auto;
+            }
+        }
+
+        @media screen and (max-width: @lg) {
+            padding: 5px;
+            margin-right: 7px;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+    }
+
+    @media screen and (max-width: @md) {
+        &__title {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+    }
+
+    @media screen and (max-width: 300px) {
+        &__element {
+            font-size: 12px;
+        }
+    }
+}

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Genre
@@ -23,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Genre extends Model
 {
+    use Sluggable, SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -33,12 +37,26 @@ class Genre extends Model
     ];
 
     /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
+    /**
      * Книги этого жанра
      */
     public function books()
     {
         return $this->belongsToMany(Book::class, 'books_genres')
             ->withTimestamps()
-            ;
+        ;
     }
 }

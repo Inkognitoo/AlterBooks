@@ -21,6 +21,17 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
     Route::get('/user', 'UserController@index')
         ->name('api.user.info')
     ;
+
+    Route::get('/books', 'BookController@index')
+        ->name('api.book.list')
+    ;
+    Route::get('/books/tips', 'BookController@tips')
+        ->name('api.book.tips')
+    ;
+
+    Route::get('/genres', 'GenreController@index')
+        ->name('api.genre.list')
+    ;
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
@@ -52,5 +63,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     ;
     Route::post('/book/{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
         ->name('api.review.estimate.minus')
+    ;
+    Route::delete('/review/id{id}/delete', 'Api\ReviewController@delete')
+        ->name('api.review.delete')
+    ;
+    Route::put('/review/{book_id}/restore', 'Api\ReviewController@restore')
+        ->name('api.review.restore')
     ;
 });

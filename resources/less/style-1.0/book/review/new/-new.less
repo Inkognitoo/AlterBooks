@@ -1,0 +1,16 @@
+.review-new {
+    width: 100%;
+    min-height: 100px;
+    box-sizing: border-box;
+
+    margin-bottom: 30px;
+    padding: 20px;
+
+    border: 2px dashed @lightgrey;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.4);
+
+    &[data-status="close"] {
+        display: none;
+    }
+}

@@ -1,0 +1,61 @@
+.review-new-form-rating {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    &__text {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    &__number {
+        order: -100;
+        margin-left: 5px;
+        color: @darkergrey;
+
+        .review-new-stars__element[value="10"]:checked ~ &:after,
+        .review-new-stars__element[value="10"] + .review-new-stars__star:hover ~ &:after {
+            content: "(10)";
+        }
+        .review-new-stars__element[value="9"]:checked ~ &:after,
+        .review-new-stars__element[value="9"] + .review-new-stars__star:hover ~ &:after {
+            content: "(9)";
+        }
+        .review-new-stars__element[value="8"]:checked ~ &:after,
+        .review-new-stars__element[value="8"] + .review-new-stars__star:hover ~ &:after {
+            content: "(8)";
+        }
+        .review-new-stars__element[value="7"]:checked ~ &:after,
+        .review-new-stars__element[value="7"] + .review-new-stars__star:hover ~ &:after {
+            content: "(7)";
+        }
+        .review-new-stars__element[value="6"]:checked ~ &:after,
+        .review-new-stars__element[value="6"] + .review-new-stars__star:hover ~ &:after {
+            content: "(6)";
+        }
+        .review-new-stars__element[value="5"]:checked ~ &:after,
+        .review-new-stars__element[value="5"] + .review-new-stars__star:hover ~ &:after {
+            content: "(5)";
+        }
+        .review-new-stars__element[value="4"]:checked ~ &:after,
+        .review-new-stars__element[value="4"] + .review-new-stars__star:hover ~ &:after {
+            content: "(4)";
+        }
+        .review-new-stars__element[value="3"]:checked ~ &:after,
+        .review-new-stars__element[value="3"] + .review-new-stars__star:hover ~ &:after {
+            content: "(3)";
+        }
+        .review-new-stars__element[value="2"]:checked ~ &:after,
+        .review-new-stars__element[value="2"] + .review-new-stars__star:hover ~ &:after {
+            content: "(2)";
+        }
+        .review-new-stars__element[value="1"]:checked ~ &:after,
+        .review-new-stars__element[value="1"] + .review-new-stars__star:hover ~ &:after {
+            content: "(1)";
+        }
+
+        @media screen and (max-width: 400px) {
+            display: none;
+        }
+    }
+}

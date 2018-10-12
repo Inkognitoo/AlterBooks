@@ -8,6 +8,8 @@ use App\Rules\Nickname;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Auth;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 

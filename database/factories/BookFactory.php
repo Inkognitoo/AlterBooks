@@ -7,7 +7,8 @@ use Faker\Generator as Faker;
 $factory->define(App\Models\Book::class, function (Faker $faker) {
 
     do {
-        $title = $faker->realText(rand(10, 20));
+        $title = 'Книга ' . $faker->realText(rand(10, 20));
+        $title = substr($title, 0, -1);
     } while (blank($title));
 
     return [

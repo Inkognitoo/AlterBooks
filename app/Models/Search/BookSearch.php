@@ -2,6 +2,7 @@
 
 namespace App\Models\Search;
 
+use App\Http\Requests\Api\BookSearchRequest;
 use App\Models\Book;
 use App\Models\Review;
 use DB;
@@ -15,31 +16,102 @@ use Illuminate\Http\Request;
  */
 class BookSearch
 {
+    protected const PER_PAGE = 15;
+
     /**
      * Отфильтровать и отсортировать книги
      *
-     * @param Request $filters
-     * @return Builder
+     * @param BookSearchRequest $filters
+     * @return SearchResult
      */
-    public static function apply(Request $filters): Builder
+    public static function apply(BookSearchRequest $filters): SearchResult
     {
         $query = (new Book())->newQuery();
-        $query = static::applyFilters($query, $filters);
 
-        return static::applySort($query, $filters);
+        $query = static::applyFilters($query, $filters);
+        $query = static::applySort($query, $filters);
+        [$query, $total] = static::applyPaginate($query, $filters);
+
+        return static::wrapResult($query, $filters, $total);
+    }
+
+    /**
+     * Поместить результат фильтрации в объект SearchResult
+     *
+     * @param $query
+     * @param $filters
+     * @param $total
+     * @return SearchResult
+     */
+    protected static function wrapResult(Builder $query, BookSearchRequest $filters, int $total): SearchResult
+    {
+        $search_result = new SearchResult();
+
+        $per_page = (int)$filters->perPage;
+        if (blank($per_page) || $per_page <= 0) {
+            $per_page = self::PER_PAGE;
+        }
+        $search_result->per_page = $per_page;
+
+        $current_page = (int)$filters->currentPage;
+        if (blank($current_page) || $current_page <= 0) {
+            $current_page = 1;
+        }
+        $search_result->current_page = $current_page;
+
+        $search_result->total = $total;
+        $search_result->page_count = ceil($total / $search_result->per_page);
+
+        $search_result->filtered = [
+            'genres' => $filters->genres ?? [],
+            'title' => $filters->title,
+        ];
+
+        switch ($filters->sort) {
+            case 'rating':
+                $search_result->sorted = [
+                    'sort' => 'rating',
+                    'direction' => 'asc',
+                ];
+                break;
+            case 'date':
+                $search_result->sorted = [
+                    'sort' => 'date',
+                    'direction' => 'asc',
+                ];
+                break;
+            default:
+                $search_result->sorted = [
+                    'sort' => 'rating',
+                    'direction' => 'asc',
+                ];
+                break;
+        }
+
+        $search_result->items = $query
+            ->with('genres')
+            ->with('author')
+            ->get()
+        ;
+
+        return $search_result;
     }
 
     /**
      * Применить имеющиеся фильтры
      *
      * @param Builder $query
-     * @param Request $filters
+     * @param BookSearchRequest $filters
      * @return Builder
      */
-    protected static function applyFilters(Builder $query, Request $filters): Builder
+    protected static function applyFilters(Builder $query, BookSearchRequest $filters): Builder
     {
         if (filled($filters->genres)) {
             $query = static::filterByGenres($query, $filters->genres);
+        }
+
+        if (filled($filters->title)) {
+            $query = static::filterByTitle($query, $filters->title);
         }
 
         return $query;
@@ -49,11 +121,15 @@ class BookSearch
      * Применить указанную стортировку
      *
      * @param Builder $query
-     * @param Request $filters
+     * @param BookSearchRequest $filters
      * @return Builder
      */
-    protected static function applySort(Builder $query, Request $filters): Builder
+    protected static function applySort(Builder $query, BookSearchRequest $filters): Builder
     {
+        if (filled($filters->title)) {
+            $query = self::orderBySimilarityDesc($query, $filters->title);
+        }
+
         switch ($filters->sort) {
             case 'rating':
                 $query = static::orderByRatingDesc($query);
@@ -70,6 +146,41 @@ class BookSearch
     }
 
     /**
+     * Применить пагинацию
+     *
+     * @param Builder $query
+     * @param BookSearchRequest $filters
+     * @return array
+     */
+    protected static function applyPaginate(Builder $query, BookSearchRequest $filters): array
+    {
+        $per_page = (int)$filters->perPage;
+        if (blank($per_page) || $per_page <= 0) {
+            $per_page = self::PER_PAGE;
+        }
+
+        $current_page = (int)$filters->currentPage;
+        if (blank($current_page) || $current_page <= 0) {
+            $current_page = 1;
+        }
+
+        // Ларавел неприятно удивляет и в случае, если в запросе есть group by, своим ->count()
+        // возвращает количество групп, а не итоговых строк в выборке. По этому делаем так:
+        $raw_query = 'SELECT COUNT(*) AS total FROM (' . $query->toSql() .') AS original_query';
+        $count_query = DB::select($raw_query, $query->getBindings());
+        $total = array_first($count_query)->total;
+
+        $offset = $per_page * ($current_page - 1);
+
+        return [
+            $query
+                ->offset($offset)
+                ->limit($per_page),
+            $total
+        ];
+    }
+
+    /**
      * Отфильтровать книги по наличию жанра/жанров
      *
      * @param Builder $query
@@ -78,11 +189,29 @@ class BookSearch
      */
     protected static function filterByGenres(Builder $query, array $genres): Builder
     {
+        //TODO: очень мощный оверхэд. Нужно подумать, как это можно оптимизировать
         foreach ($genres as $genre) {
             $query->whereHas('genres', function ($genres) use ($genre) {
+                /** @var Builder $genres*/
                 $genres->where(['slug' => $genre]);
             });
         }
+
+        return $query;
+    }
+
+    /**
+     * Отфильтровать книги по соотвествию названия
+     *
+     * @param Builder $query
+     * @param string $title
+     * @return Builder
+     */
+    protected static function filterByTitle(Builder $query, string $title): Builder
+    {
+        $similarity_percent = 10;
+
+        $query->whereRaw('similarity(title, ?) >= ?', [$title, $similarity_percent / 100]);
 
         return $query;
     }
@@ -120,6 +249,18 @@ class BookSearch
         return $query->orderByDesc('created_at')
             ->orderBy('books.id')
         ;
+    }
+
+    /**
+     * Сортировать книги по схожести с title. От более схожих к менее схожим
+     *
+     * @param Builder $query
+     * @param string $title
+     * @return Builder
+     */
+    protected static function orderBySimilarityDesc(Builder $query, string $title): Builder
+    {
+        return $query->orderByRaw('similarity(title, ?) DESC', [$title]);
     }
 
 }

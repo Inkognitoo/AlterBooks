@@ -1,0 +1,22 @@
+.review__avatar {
+    width: 97px;
+    max-width: 97px;
+    height: 113px;
+
+    margin-bottom: 15px;
+
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &-box {
+        flex-basis: 117px;
+        max-width: 117px;
+    }
+
+    @media screen and (max-width: @md) {
+        background-position-y: 0;
+        background-size: contain;
+    }
+}

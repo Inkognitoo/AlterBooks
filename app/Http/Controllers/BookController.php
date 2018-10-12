@@ -23,9 +23,9 @@ class BookController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(CheckAuth::class)->except(['index', 'show']);
+        $this->middleware(CheckAuth::class)->except(['index', 'show', 'indexVue']);
 
-        $this->middleware(CheckBookExist::class)->except(['index', 'createShow', 'create']);
+        $this->middleware(CheckBookExist::class)->except(['index', 'createShow', 'create', 'indexVue']);
 
         $this->middleware(CheckUserBookGranted::class)->only(['editShow', 'edit', 'delete']);
     }
@@ -38,12 +38,7 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $books = BookSearch::apply($request)
-            ->with('genres')
-            ->with('author')
-            ->paginate(10);
-
-        return view('book.books-list', ['books' => $books]);
+        return view('book.list');
     }
 
     /**
