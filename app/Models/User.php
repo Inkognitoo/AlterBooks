@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\ResetPasswordNotification;
 use App\Traits\FindByIdOrSlugMethod;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,7 +69,7 @@ use Storage;
  */
 class User extends Authenticatable
 {
-    use Notifiable, FindByIdOrSlugMethod;
+    use Notifiable, SoftDeletes, FindByIdOrSlugMethod;
 
     //Возможные гендеры пользователя
     const GENDER_MALE = 'm';
@@ -373,9 +374,23 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getCanonicalUrlAttribute()
+    public function getCanonicalUrlAttribute(): string
     {
         return route('user.show', ['id' => 'id' . $this->id]);
+    }
+
+    /**
+     * Аватара пользователя (как есть в бд)
+     *
+     * Эти костыли нужны из-за магии laravel, не позволяющей спокойно юзать
+     * свойство avatar при наличии одноимённой функции в свежесозданном
+     * экземпляре класса
+     *
+     * @return string
+     */
+    public function getAvatarAttribute(): string
+    {
+        return array_key_exists('avatar', $this->attributes) ? (string)$this->attributes['avatar'] : '';
     }
 
     /**

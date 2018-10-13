@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App;
-use App\Event\Error;
+use App\Events\Error;
 use App\Mail\Error as ErrorMail;
 use Illuminate\Support\Arr;
 use Mail;

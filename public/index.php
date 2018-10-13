@@ -8,6 +8,7 @@
  */
 
 define('LARAVEL_START', microtime(true));
+define('IS_ADMIN_ENVIRONMENT', false);
 
 /*
 |--------------------------------------------------------------------------

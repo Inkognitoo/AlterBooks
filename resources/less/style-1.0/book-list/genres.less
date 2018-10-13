@@ -87,6 +87,10 @@
         background: @transparent;
     }
 
+    .book-list-genres[data-status="open"] > &__stripe {
+        display: none;
+    }
+
     &__more {
         position: absolute;
         top: 590px;
@@ -104,6 +108,10 @@
         cursor: pointer;
     }
 
+    .book-list-genres[data-status="open"] > &__more {
+        bottom: -25px;
+        top: auto;
+    }
 
     @media screen and (max-width: @lg) {
         & {
@@ -155,4 +163,10 @@
             text-align: right;
         }
     }
+}
+
+.book-list-genres[data-status="open"] {
+    max-height: none;
+    overflow: visible;
+    margin-bottom: 50px;
 }

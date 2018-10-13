@@ -205,5 +205,6 @@
 @include("auth.login")
 
 <script src="{{ mix('/js/app.js') }}"></script>
+@yield('javascript')
 </body>
 </html>

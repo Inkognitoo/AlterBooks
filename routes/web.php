@@ -72,6 +72,10 @@ Route::get('book/{id}/delete', 'BookController@delete')
     ->name('book.delete')
 ;
 
+Route::get('books-vue', 'BookController@indexVue')
+    ->name('book.list')
+;
+
 // Reader
 Route::get('book/{id}/page/{page_number}', 'ReaderController@show')
     ->name('book.page.show')
@@ -94,6 +98,9 @@ Route::post('book/{id}/page/{page_number}/edit', 'ReaderController@edit')
 Route::post('book/{id}/review', 'ReviewController@create')
     ->name('review.create')
 ;
+Route::get('book/{book_id}/review/id{id}/delete', 'ReviewController@delete')
+    ->name('review.delete')
+;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,3 +114,4 @@ Route::post('book/{id}/review', 'ReviewController@create')
 //маршрут для просмтра логов
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')
     ->middleware([\App\Http\Middleware\CheckAdmin::class]);
+
