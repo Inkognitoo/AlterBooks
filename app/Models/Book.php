@@ -29,7 +29,7 @@ use File;
  * @property int $author_id
  * @property int $mongodb_book_id Идентификатор документа в MongoDB
  * @property int $page_count Количество страниц в книге
- * @property string $cover_path Путь до обложки книги в рамках Amazon S3
+ * @property string $cover_path Путь до обложки книги в рамках файловой системы
  * @property string $cover_url Ссылка на обложку книги
  * @property string $url Ссылка на книгу
  * @property string $status_css css класс соответствующий текущему статусу книги
@@ -459,12 +459,12 @@ class Book extends Model
             return $this->cover_url;
         }
 
-        $fit_cover_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->cover_path;
+        $fit_cover_path = str_before($this->cover_path, $this->cover) . 'thumbs/' . $width . 'x' . $height . '/' . $this->cover;
         if (Storage::exists($fit_cover_path)) {
             return Storage::url($fit_cover_path);
         }
 
-        $cover = Image::make(Storage::url($this->cover_path))
+        $cover = Image::make(Storage::path($this->cover_path))
             ->fit($width, $height, function ($constraint) {
                 $constraint->aspectRatio();
             });
