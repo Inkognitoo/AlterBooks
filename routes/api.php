@@ -35,6 +35,19 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
+
+    /*
+    |--------------------------------------------------------------------------
+    | Registration
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся регистрации
+    |
+    */
+    Route::post('/api/v1/registration/validate', 'Api\RegistrtionController@validate')
+        ->name('api.registration.validate')
+    ;
+
     /*
     |--------------------------------------------------------------------------
     | Book
@@ -76,4 +89,5 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::put('/book/{book_id}/review/id{id}/edit', 'Api\ReviewController@edit')
         ->name('api.review.edit')
     ;
+
 });
