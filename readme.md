@@ -47,3 +47,43 @@ MVP версия сервиса
 ```
 127.0.0.1	alterbooks admin.alterbooks
 ```
+
+## Решение проблем 
+В случае, если команда №2 из предыдущего блока завершается с ошибкой вида: "address \<service name\> already in use", необходимо изменить порт соответствующего сервиса в файле `laradock-alterbook/.env` на свободный.  
+ Например, если в системе уже установлен nginx слушающий 80 порт, то в в файле `laradock-alterbook/.env` можно прописать `NGINX_HOST_HTTP_PORT=8080` либо любой другой свободный порт
+ 
+ В случае, если во время решения предыдущей проблемы был изменён порт nginx контейнера, необходимо прописать проксирование адресов приложения для системного nginx.      
+ (**Обратите внимание** `proxy_pass http://127.0.0.1:<NGINX_HOST_HTTP_PORT>` то есть, тот который прописали nginx в файле `laradock-alterbook/.env`)   
+ Для этого необходимо в папке `/etc/nginx/sites-available/` создать файлы  
+ 
+ **alterbooks**
+ ```nginx
+server {
+    listen 80;
+    server_name alterbooks;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+ **admin.alterbooks**
+ ```nginx
+server {
+    listen 80;
+    server_name admin.alterbooks;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+После чего зайти в папку `/etc/nginx/sites-enabled/`и выполнить  
+`sudo ln -s ../sites-available/alterbooks alterbooks && sudo ln -s ../sites-available/admin.alterbooks admin.alterbooks`
