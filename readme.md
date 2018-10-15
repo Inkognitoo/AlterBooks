@@ -33,10 +33,9 @@ MVP версия сервиса
 
 Все команды выполняются из корня проекта
 
-1. `cp docker/.env laradock/`
-2. `cp docker/nginx/sites/* laradock/nginx/sites/`
-3. `cp docker/php-worker/supervisord.d/horizon.conf laradock/php-worker/supervisord.d/`
-4. `cd laradock && docker-compose up -d nginx postgres redis php-worker`
-5. `cd laradock && docker-compose exec --user=laradock workspace bash`
+1. `cp laradock-alterbooks/env-example laradock-alterbooks/.env`
+2. `cd laradock-alterbooks && docker-compose up -d nginx postgres redis php-worker`
+3. `cd laradock-alterbooks && docker-compose exec --user=laradock workspace bash init.sh`
  
-После чего необходмо выполнить команды из блока [Первичные команды](#Первичные-команды)
+Для работы внутри контейнера необходимо запустить  
+`cd laradock-alterbooks && docker-compose exec --user=laradock workspace bash`
