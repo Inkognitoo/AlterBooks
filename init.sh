@@ -13,10 +13,10 @@ if [ $environment = "develop" ]
 then
     # Блок работы с системой
     echo -e "\n\033[1;36mСоздаю файл переменных окружения\033[0m\n"
-    #cp .env.example .env
+    cp .env.example .env
 
-    echo -e "\n\033[1;36mУстанавливаю необходимые права к папкам\033[0m\n"
-    chgrp -R www-data storage bootstrap/cache
+    #echo -e "\n\033[1;36mУстанавливаю необходимые права к папкам\033[0m\n"
+    #chgrp -R www-data storage bootstrap/cache
 
     # Блок работы с php
     echo -e "\n\033[1;36mВыкачиваю зависимости для php\033[0m\n"

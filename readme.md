@@ -18,7 +18,7 @@ MVP версия сервиса
 `php artisan db:seed`  
 `sudo chgrp -R www-data storage bootstrap/cache`
 
-Для заполнения базы данных фейковыми данными:
+Для заполнения базы данных фейковыми данными:  
 `php artisan db:seed --class=FixtureSeeder`  
 (для генерации аккаунта авторизации, заполните как минимум env переменные `SEEDER_USER_EMAIL` и `SEEDER_USER_PASSWORD`)
 
@@ -29,7 +29,10 @@ MVP версия сервиса
 `CREATE EXTENSION pg_trgm;`
 
 # Виртуальное окружение laradock
-Убедитесь, что у вас установлены docker и docker-compose
+Убедитесь, что у вас установлены docker и docker-compose.   
+Убедитесь, что папка laradock-alterbooks не пуста. В противном случае выполните:   
+`git submodule update --init
+`
 
 Все команды выполняются из корня проекта
 
@@ -39,3 +42,8 @@ MVP версия сервиса
  
 Для работы внутри контейнера необходимо запустить  
 `cd laradock-alterbooks && docker-compose exec --user=laradock workspace bash`
+
+Для доступа к проекту необходимо добавить в файл `/etc/hosts` строки:
+```
+127.0.0.1	alterbooks admin.alterbooks
+```
