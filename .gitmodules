@@ -1,1 +1,4 @@
 
+[submodule "laradock-alterbooks"]
+	path = laradock-alterbooks
+	url = https://github.com/inkognitoo/laradock-alterbooks.git
