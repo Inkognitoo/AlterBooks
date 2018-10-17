@@ -29,7 +29,7 @@ use Storage;
  * @property string|null $birthday_date_plain
  * @property Carbon|null $last_activity_at Время последнего действия пользователя
  * @property string|null $avatar Название аватарки пользователя
- * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
+ * @property string $avatar_path Путь до аватара пользователя в рамках файлового хранилища
  * @property string $avatar_url Ссылка на аватар пользователя
  * @property string $url Ссылка на пользователя
  * @property string $full_name ФИО пользователя
@@ -448,12 +448,12 @@ class User extends Authenticatable
             return $this->avatar_url;
         }
 
-        $fit_avatar_path = 'thumbs/' . $width . 'x' . $height . '/' . $this->avatar_path;
+        $fit_avatar_path = str_before($this->avatar_path, $this->avatar) . 'thumbs/' . $width . 'x' . $height . '/' . $this->avatar;
         if (Storage::exists($fit_avatar_path)) {
             return Storage::url($fit_avatar_path);
         }
 
-        $avatar = Image::make(Storage::url($this->avatar_path))
+        $avatar = Image::make(Storage::path($this->avatar_path))
             ->fit($width, $height, function ($constraint) {
                 $constraint->aspectRatio();
             });
