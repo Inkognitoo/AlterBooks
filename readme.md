@@ -87,3 +87,6 @@ server {
 
 После чего зайти в папку `/etc/nginx/sites-enabled/`и выполнить  
 `sudo ln -s ../sites-available/alterbooks alterbooks && sudo ln -s ../sites-available/admin.alterbooks admin.alterbooks`
+
+Альтернативным решением может быть, просто на время работы отключить сервисы занимающие необходимый порт.  
+Например: `sudo service nginx stop`
