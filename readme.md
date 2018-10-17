@@ -48,6 +48,13 @@ MVP версия сервиса
 127.0.0.1	alterbooks admin.alterbooks
 ```
 
+Для работы с XDebug необходимо в PhpStorm открыть:   
+File | Settings | Languages & Frameworks | PHP | Servers  
+И добавить сервер примерно следующего вида
+![Xdebug settings](https://preview.ibb.co/hNEU80/Screenshot-from-2018-10-17-23-35-47.png)
+
+После чего нужно включить XDebug и расставить breakpoints в коде
+
 ## Решение проблем 
 В случае, если команда №2 из предыдущего блока завершается с ошибкой вида: "address \<service name\> already in use", необходимо изменить порт соответствующего сервиса в файле `laradock-alterbook/.env` на свободный.  
  Например, если в системе уже установлен nginx слушающий 80 порт, то в в файле `laradock-alterbook/.env` можно прописать `NGINX_HOST_HTTP_PORT=8080` либо любой другой свободный порт
