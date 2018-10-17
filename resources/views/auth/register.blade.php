@@ -16,7 +16,8 @@
 
             <div class="registration-element col-12 col-clear"
                  data-name="email"
-                 data-status="">
+                 data-status=""
+                 data-number="0">
                 <div class="registration-element__logo"
                      style="background-image: url('/img/icons/user_grey.svg')"></div>
                 <input class="registration-element__field"
@@ -35,7 +36,8 @@
 
             <div class="registration-element col-12 col-clear"
                  data-name="password"
-                 data-status="">
+                 data-status=""
+                 data-number="1">
                 <div class="registration-element__logo"
                      style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
                 <input class="registration-element__field registration-element__field_logo"
@@ -45,6 +47,7 @@
                        placeholder="пароль"
                        required
                        value="">
+                <div class="registration-element__flag"></div>
                 <div class="registration-element__error">
                     пароль менее 6 символов
                 </div>
@@ -52,8 +55,8 @@
             </div>
 
             <div class="registration-element col-12 col-clear"
-                 data-name="password_confirmation"
-                 data-status="">
+                 data-status=""
+                 data-number="2">
                 <div class="registration-element__logo"
                      style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
                 <input class="registration-element__field registration-element__field_logo"
@@ -67,6 +70,23 @@
                 <div class="registration-element__error">
                     пароли не совпадают
                 </div>
+                <div class="registration-element__star">*</div>
+            </div>
+
+            <div class="registration-element col-12 col-clear"
+                 data-name="nickname"
+                 data-status=""
+                 data-number="3">
+                <div class="registration-element__logo registration-element__logo_none"></div>
+                <input class="registration-element__field"
+                       type="text"
+                       id="registration-nickname"
+                       name="nickname"
+                       placeholder="псевдоним"
+                       required
+                       value="{{ old('nickname') }}">
+                <div class="registration-element__flag"></div>
+                <div class="registration-element__error"></div>
                 <div class="registration-element__star">*</div>
             </div>
 
@@ -87,22 +107,6 @@
                        name="name"
                        placeholder="имя">
             </div>
-            <div class="registration-element col-12 col-clear"
-                 data-name="nickname"
-                 data-status="">
-                <div class="registration-element__logo registration-element__logo_none"></div>
-                <input class="registration-element__field"
-                       type="text"
-                       id="registration-nickname"
-                       name="nickname"
-                       placeholder="псевдоним"
-                       value="{{ old('nickname') }}">
-                <div class="registration-element__flag"></div>
-                <div class="registration-element__error">
-                    псевдоним занят, выберите другой
-                </div>
-                <div class="registration-element__star">*</div>
-            </div>
 
             <div class="registration-element registration-agreement col-12 col-clear">
                 <div class="authentication__checkbox">
@@ -111,7 +115,8 @@
                         <input type="checkbox"
                                class="checkbox__field"
                                id="registration-checkbox"
-                               name="checkbox">
+                               name="checkbox"
+                               data-number="4">
                         <span class="checkbox-animation">
                                     <span class="checkbox-animation__button"></span>
                                     <span class="checkbox-animation__icon"></span>

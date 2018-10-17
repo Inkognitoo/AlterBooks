@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
+
     Route::post('/login', 'UserController@login')
         ->name('api.user.login')
     ;
@@ -34,7 +35,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
     ;
 });
 
-Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
+Route::group(['prefix' => 'v1'], function(){
 
     /*
     |--------------------------------------------------------------------------
@@ -44,9 +45,12 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     | Здесь все маршруты касающиеся регистрации
     |
     */
-    Route::post('/api/v1/registration/validate', 'Api\RegistrtionController@validate')
+    Route::post('/registration/validate', 'Api\RegistrationController@validator')
         ->name('api.registration.validate')
     ;
+});
+
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
 
     /*
     |--------------------------------------------------------------------------
