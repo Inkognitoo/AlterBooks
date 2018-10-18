@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => IS_ADMIN_ENVIRONMENT ? env('ADMIN_APP_URL', 'http://localhost') : env('APP_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
