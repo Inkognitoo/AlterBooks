@@ -17,7 +17,6 @@ class ReviewNegativeEstimateTest extends TestCase
 
     use DatabaseTransactions;
 
-
     /**
      * Проверяем успешную негативную оценку
      *
