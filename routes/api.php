@@ -78,19 +78,19 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::post('/book/{book_id}/review', 'Api\ReviewController@create')
         ->name('api.review.create')
     ;
-    Route::post('/book/{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')
+    Route::post('/book/{book_id}/review/{id}/estimate/plus', 'ReviewEstimateController@plus')
         ->name('api.review.estimate.plus')
     ;
-    Route::post('/book/{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
+    Route::post('/book/{book_id}/review/{id}/estimate/minus', 'ReviewEstimateController@minus')
         ->name('api.review.estimate.minus')
     ;
-    Route::delete('/book/{book_id}/review/id{id}/delete', 'Api\ReviewController@delete')
+    Route::delete('/book/{book_id}/review/{id}/delete', 'Api\ReviewController@delete')
         ->name('api.review.delete')
     ;
     Route::put('/review/{book_id}/restore', 'Api\ReviewController@restore')
         ->name('api.review.restore')
     ;
-    Route::put('/book/{book_id}/review/id{id}/edit', 'Api\ReviewController@edit')
+    Route::put('/book/{book_id}/review/{id}/edit', 'Api\ReviewController@edit')
         ->name('api.review.edit')
     ;
 
