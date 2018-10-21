@@ -162,7 +162,7 @@ abstract class Search
     }
 
     /**
-     * Получить осортированную выборку
+     * Получить отсортированную выборку
      *
      * @param Builder $query
      * @param Sort $sort

@@ -8,6 +8,18 @@ use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
+    /** @var BookSearch */
+    private $book_search;
+
+    /**
+     * BookController constructor.
+     * @param BookSearch $book_search
+     */
+    public function __construct(BookSearch $book_search)
+    {
+        $this->book_search = $book_search;
+    }
+
     /**
      * Получить отфильтрованный список пользователей
      *
@@ -16,6 +28,6 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        return (new BookSearch())->apply($request);
+        return $this->book_search->apply($request);
     }
 }

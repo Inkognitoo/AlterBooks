@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\ReviewEstimate
@@ -27,16 +28,20 @@ class ReviewEstimate extends Model
 {
     /**
      * Пользователь оставивший оценку
+     *
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Рецензия, к которой оставлена оценка
+     *
+     * @return BelongsTo
      */
-    public function review()
+    public function review(): BelongsTo
     {
         return $this->belongsTo(Review::class);
     }

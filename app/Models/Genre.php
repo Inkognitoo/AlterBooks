@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -52,8 +53,10 @@ class Genre extends Model
 
     /**
      * Книги этого жанра
+     *
+     * @return BelongsToMany
      */
-    public function books()
+    public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'books_genres')
             ->withTimestamps()

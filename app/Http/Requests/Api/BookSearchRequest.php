@@ -12,6 +12,7 @@ namespace App\Http\Requests\Api;
  * @property integer $perPage
  * @property integer $currentPage
  * @property null|array $genres
+ * @property string $sort
  */
 class BookSearchRequest extends ApiRequest
 {

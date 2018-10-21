@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    /** @var UserSearch */
+    protected $user_search;
+
+    /**
+     * UserController constructor.
+     * @param UserSearch $user_search
+     */
+    public function __construct(UserSearch $user_search)
+    {
+        $this->user_search = $user_search;
+    }
+
     /**
      * Получить отфильтрованный список пользователей
      *
@@ -16,6 +28,6 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return (new UserSearch())->apply($request);
+        return $this->user_search->apply($request);
     }
 }

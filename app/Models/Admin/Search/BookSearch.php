@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 
 /**
+ * Поисковая модель книги
+ *
  * Class BookSearch
  * @package App
  *
@@ -16,7 +18,7 @@ use Illuminate\Database\Query\Expression;
 class BookSearch extends Search
 {
     /**
-     * Инциализация всех необходимых переменных
+     * Инициализация всех необходимых переменных
      */
     public function init(): void
     {
@@ -39,6 +41,7 @@ class BookSearch extends Search
         $author = mb_strtolower($author);
 
         return $query->whereHas('author', function($user) use($author) {
+            /** @var $user Builder */
             $user->where(new Expression('LOWER(CONCAT(surname, name, patronymic))'), 'like', "%{$author}%");
         });
     }

@@ -29,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        //Отладочная консоль только для окружения отличного от production
+        //TODO: использовать только в dev окружении
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }

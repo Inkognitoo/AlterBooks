@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 
 /**
+ * Поисковая модель рецензии
+ *
  * Class ReviewSearch
  * @package App
  *
@@ -39,6 +41,7 @@ class ReviewSearch extends Search
         $name = mb_strtolower($name);
 
         return $query->whereHas('user', function($user) use($name) {
+            /** @var $user Builder */
             $user->where(new Expression('LOWER(CONCAT(surname, name, patronymic))'), 'like', "%{$name}%");
         });
     }
@@ -55,6 +58,7 @@ class ReviewSearch extends Search
         $title = mb_strtolower($title);
 
         return $query->whereHas('book', function($user) use($title) {
+            /** @var $user Builder */
             $user->where(new Expression('LOWER(title)'), 'like', "%{$title}%");
         });
     }
