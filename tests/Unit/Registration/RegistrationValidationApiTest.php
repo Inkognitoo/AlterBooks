@@ -19,17 +19,14 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testEmailSuccess()
     {
-        $url = 'api.registration.validate';
+        $url_name = 'api.registration.validate';
 
-        $name = 'email';
-        $value = 'notsostupidfox@mail.ru';
-
+        $email = 'notsostupidfox@mail.ru';
         $params = [
-            'name' => $name,
-            'value' => $value
+            'email' => $email,
         ];
 
-        $response = $this->post(route($url), $params);
+        $response = $this->post(route($url_name), $params);
         $response->assertJson([
             'success' => true
         ]);
@@ -41,19 +38,49 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testEmailFail()
     {
-        $url = 'api.registration.validate';
+        $url_name = 'api.registration.validate';
 
-        $name = 'email';
-        $value = 'notsostupidfox';
-
+        $email = 'notsostupidfox';
         $params = [
-            'name' => $name,
-            'value' => $value
+            'email' => $email,
         ];
 
-        $response = $this->post(route($url), $params);
+        $response = $this->post(route($url_name), $params);
         $response->assertJson([
-            'success' => false
+            'success' => false,
+            'errors' => [
+                [
+                    'name' => 'email',
+                    'message' => 'введённая строка не является адресом электронной почты'
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Проверка провальной валидации уже существующего email
+     *
+     */
+    public function testEmaiAlreadyExistslFail()
+    {
+        /** @var User $person */
+        $person = factory(User::class)->create();
+
+        $url_name = 'api.registration.validate';
+
+        $params = [
+            'email' => $person->email,
+        ];
+
+        $response = $this->post(route($url_name), $params);
+        $response->assertJson([
+            'success' => false,
+            'errors' => [
+                [
+                    'name' => 'email',
+                    'message' => 'профиль с данными адресом электронной почты уже существует'
+                ]
+            ]
         ]);
     }
 
@@ -63,17 +90,14 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testPasswordSuccess()
     {
-        $url = 'api.registration.validate';
+        $url_name = 'api.registration.validate';
 
-        $name = 'password';
-        $value = '123456';
-
+        $password = '123456';
         $params = [
-            'name' => $name,
-            'value' => $value
+            'password' => $password,
         ];
 
-        $response = $this->post(route($url), $params);
+        $response = $this->post(route($url_name), $params);
         $response->assertJson([
             'success' => true
         ]);
@@ -85,39 +109,39 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testPasswordFail()
     {
-        $url = 'api.registration.validate';
+        $url_name = 'api.registration.validate';
 
-        $name = 'password';
-        $value = '123';
-
+        $password = '123';
         $params = [
-            'name' => $name,
-            'value' => $value
+            'password' => $password,
         ];
 
-        $response = $this->post(route($url), $params);
+        $response = $this->post(route($url_name), $params);
         $response->assertJson([
-            'success' => false
+            'success' => false,
+            'errors' => [
+                [
+                    'name' => 'password',
+                    'message' => 'пароль менее 6 символов'
+                ]
+            ]
         ]);
     }
 
     /**
- * Проверка успешной валидации ника
- *
- */
+     * Проверка успешной валидации ника
+     *
+     */
     public function testNicknameSuccess()
     {
-        $url = 'api.registration.validate';
+        $url_name = 'api.registration.validate';
 
-        $name = 'nickname';
-        $value = 'AngryFox';
-
+        $nickname = 'AngryFox';
         $params = [
-            'name' => $name,
-            'value' => $value
+            'nickname' => $nickname,
         ];
 
-        $response = $this->post(route($url), $params);
+        $response = $this->post(route($url_name), $params);
         $response->assertJson([
             'success' => true
         ]);
@@ -134,17 +158,19 @@ class RegistrationValidationApiTest extends TestCase
 
         $url = 'api.registration.validate';
 
-        $name = 'nickname';
-        $value = $person->nickname;
-
         $params = [
-            'name' => $name,
-            'value' => $value
+            'nickname' => $person->nickname,
         ];
 
         $response = $this->post(route($url), $params);
         $response->assertJson([
-            'success' => false
+            'success' => false,
+            'errors' => [
+                [
+                    'name' => 'nickname',
+                    'message' => 'пользователь с данным псевдонимом уже существует'
+                ]
+            ]
         ]);
     }
 }
