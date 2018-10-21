@@ -4,6 +4,7 @@ namespace App\Models\Admin;
 
 use App\Models\Review as BaseReview;
 use App\Traits\Admin\Attributes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Review
@@ -57,8 +58,10 @@ class Review extends BaseReview
 
     /**
      * Книга, к которой оставлена рецензия
+     *
+     * @return BelongsTo
      */
-    public function book()
+    public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class)
             ->withoutGlobalScopes()
