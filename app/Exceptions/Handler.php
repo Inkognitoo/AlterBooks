@@ -129,19 +129,11 @@ class Handler extends ExceptionHandler
      */
     protected function getError(Exception $exception)
     {
-        if ($exception instanceof ValidateException) {
-            $error = [
-                'name' => $exception->getName(),
-                'code' => $exception->getCode(),
-                'message' => $exception->getMessage(),
-            ];
-        } else {
-            $error = [
-                'code' => $exception->getCode(),
-                'message' => $exception->getMessage(),
-            ];
-        }
-
+        $error = [
+            'name' => $exception instanceof ValidateException ? $exception->getName() : null,
+            'code' => $exception->getCode(),
+            'message' => $exception->getMessage(),
+        ];
 
         if (blank($exception->getPrevious())) {
             return [$error];

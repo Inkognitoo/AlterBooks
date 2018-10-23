@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-use App\Exceptions\ApiException;
+use App\Exceptions\ValidateException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
@@ -17,11 +17,11 @@ use Illuminate\Http\Response;
 class ApiRequest extends FormRequest
 {
     /**
-     * Переопределяем кидающий исключения метод для корректорной работы с нашим ApiWrapper
+     * Переопределяем кидающий исключения метод для корректной работы с нашим ApiWrapper
      *
      * @param Validator $validator
-     * @throws ApiException
      * @throws ValidationException
+     * @throws ValidateException
      */
     protected function failedValidation(Validator $validator)
     {
@@ -30,12 +30,11 @@ class ApiRequest extends FormRequest
 
         $previous_exception = null;
         $exception = null;
-        foreach ($errors as $error) {
-            $exception = new ApiException(implode(';', $error), $error_code, $previous_exception);
+        foreach ($errors as $error_name => $error_text) {
+            $exception = new ValidateException($error_name, implode(';', $error_text), $error_code, $previous_exception);
             $previous_exception = $exception;
         }
-
-        if ($exception instanceof ApiException) {
+        if ($exception instanceof ValidateException) {
             throw $exception;
         }
 
