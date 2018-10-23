@@ -14,7 +14,7 @@
                 регистрация
             </div>
 
-            <div class="registration-element col-12 col-clear"
+            <div class="registration-element registration-element_validated col-12 col-clear"
                  data-name="email"
                  data-status=""
                  data-number="0">
@@ -34,10 +34,9 @@
                 <div class="registration-element__star">*</div>
             </div>
 
-            <div class="registration-element col-12 col-clear"
+            <div class="registration-element registration-element_validated col-12 col-clear"
                  data-name="password"
-                 data-status=""
-                 data-number="1">
+                 data-status="">
                 <div class="registration-element__logo"
                      style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
                 <input class="registration-element__field registration-element__field_logo"
@@ -55,8 +54,7 @@
             </div>
 
             <div class="registration-element col-12 col-clear"
-                 data-status=""
-                 data-number="2">
+                 data-status="">
                 <div class="registration-element__logo"
                      style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
                 <input class="registration-element__field registration-element__field_logo"
@@ -73,10 +71,9 @@
                 <div class="registration-element__star">*</div>
             </div>
 
-            <div class="registration-element col-12 col-clear"
+            <div class="registration-element registration-element_validated col-12 col-clear"
                  data-name="nickname"
-                 data-status=""
-                 data-number="3">
+                 data-status="">
                 <div class="registration-element__logo registration-element__logo_none"></div>
                 <input class="registration-element__field"
                        type="text"
