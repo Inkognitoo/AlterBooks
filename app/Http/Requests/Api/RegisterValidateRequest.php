@@ -5,6 +5,7 @@ namespace App\Http\Requests\Api;
 
 use App\Exceptions\ApiException;
 use App\Exceptions\ValidateException;
+use App\Rules\CaseInsensitiveUnique;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Response;
@@ -38,9 +39,22 @@ class RegisterValidateRequest extends ApiRequest
     public function rules()
     {
         return [
-            'email' => 'nullable|max:255|email|unique:users,email',
-            'password' => 'nullable|min:6|max:255',
-            'nickname' => 'nullable|max:255|unique:users,nickname'
+            'email' => [
+                'nullable',
+                'max:255',
+                'email',
+                (new CaseInsensitiveUnique('users'))->setMessage('профиль с данными адресом электронной почты уже существует'),
+            ],
+            'password' =>[
+                'nullable',
+                'min:6',
+                'max:255',
+            ],
+            'nickname' => [
+                'nullable',
+                'max:255',
+                (new CaseInsensitiveUnique('users'))->setMessage('пользователь с данным псевдонимом уже существует'),
+            ],
         ];
     }
 

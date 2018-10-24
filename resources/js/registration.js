@@ -63,9 +63,6 @@ import axios from 'axios';
         /**
          *  Проверяем обязательные поля
          */
-
-        let success = false;
-
         let elements = Array.from(document.getElementsByClassName(' registration-element_validated'));
 
         let data = [];
