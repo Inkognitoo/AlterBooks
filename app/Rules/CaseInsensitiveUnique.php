@@ -96,7 +96,7 @@ class CaseInsensitiveUnique implements Rule
      */
     public function message()
     {
-        if ($this->message !== '') {
+        if (filled($this->message)) {
             return trans('validation.custom_message', ['attribute' => $this->message]);
         }
 

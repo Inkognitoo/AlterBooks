@@ -14,7 +14,7 @@ class RegistrationValidationApiTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Проверка успешной валидации email
+     * Успешная валидация emailЖ
      *
      */
     public function testEmailSuccess()
@@ -33,7 +33,7 @@ class RegistrationValidationApiTest extends TestCase
     }
 
     /**
-     * Проверка провальной валидации email
+     * Провал валидации email: строка не является email
      *
      */
     public function testEmailFail()
@@ -58,7 +58,7 @@ class RegistrationValidationApiTest extends TestCase
     }
 
     /**
-     * Проверка провальной валидации уже существующего email
+     * Провал валидации email: указан существующий email
      *
      */
     public function testEmaiAlreadyExistslFail()
@@ -85,7 +85,41 @@ class RegistrationValidationApiTest extends TestCase
     }
 
     /**
-     * Проверка успешной валидации пароля
+     * Провал валидации email: указан существующий email в другом регистре
+     *
+     */
+    public function testEmailExistsCaseFail()
+    {
+        /** @var User $person */
+        $person = factory(User::class)->create();
+
+        $url_name = 'api.registration.validate';
+
+        $email = $person->email;
+        for ($i = 0; $i < mb_strlen($email); $i++) {
+            $email{$i} = ctype_upper($email{$i}) ?
+                            mb_convert_case($email{$i}, MB_CASE_LOWER, "UTF-8") :
+                            mb_convert_case($email{$i}, MB_CASE_UPPER, "UTF-8");
+        }
+
+        $params = [
+            'email' => $email,
+        ];
+
+        $response = $this->post(route($url_name), $params);
+        $response->assertJson([
+            'success' => false,
+            'errors' => [
+                [
+                    'name' => 'email',
+                    'message' => 'профиль с данными адресом электронной почты уже существует'
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Успешная валидация пароля
      *
      */
     public function testPasswordSuccess()
@@ -104,7 +138,7 @@ class RegistrationValidationApiTest extends TestCase
     }
 
     /**
-     * Проверка провальной валидации пароля
+     * Провал валидации пароля: менее 6 символов
      *
      */
     public function testPasswordFail()
@@ -129,7 +163,7 @@ class RegistrationValidationApiTest extends TestCase
     }
 
     /**
-     * Проверка успешной валидации ника
+     * Успешная валидация никнейма
      *
      */
     public function testNicknameSuccess()
@@ -148,7 +182,7 @@ class RegistrationValidationApiTest extends TestCase
     }
 
     /**
-     * Проверка провальной валидации ника
+     * Провал валидации никнейма: указан существующий никнейм
      *
      */
     public function testNicknameFail()
@@ -160,6 +194,40 @@ class RegistrationValidationApiTest extends TestCase
 
         $params = [
             'nickname' => $person->nickname,
+        ];
+
+        $response = $this->post(route($url), $params);
+        $response->assertJson([
+            'success' => false,
+            'errors' => [
+                [
+                    'name' => 'nickname',
+                    'message' => 'пользователь с данным псевдонимом уже существует'
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Провал валидации никнейма: указан существующий никнейм
+     *
+     */
+    public function testNicknameCaseFail()
+    {
+        /** @var User $person */
+        $person = factory(User::class)->create();
+
+        $url = 'api.registration.validate';
+
+        $nickname = $person->nickname;
+        for ($i = 0; $i < mb_strlen($nickname); $i++) {
+            $nickname{$i} = ctype_upper($nickname{$i}) ?
+                mb_convert_case($nickname{$i}, MB_CASE_LOWER, "UTF-8") :
+                mb_convert_case($nickname{$i}, MB_CASE_UPPER, "UTF-8");
+        }
+
+        $params = [
+            'nickname' => $nickname,
         ];
 
         $response = $this->post(route($url), $params);
