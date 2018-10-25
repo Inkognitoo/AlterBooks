@@ -14,7 +14,7 @@ class RegistrationValidationApiTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Успешная валидация emailЖ
+     * Успешная валидация email
      *
      */
     public function testEmailSuccess()
@@ -96,11 +96,9 @@ class RegistrationValidationApiTest extends TestCase
         $url_name = 'api.registration.validate';
 
         $email = $person->email;
-        for ($i = 0; $i < mb_strlen($email); $i++) {
-            $email{$i} = ctype_upper($email{$i}) ?
-                            mb_convert_case($email{$i}, MB_CASE_LOWER, "UTF-8") :
-                            mb_convert_case($email{$i}, MB_CASE_UPPER, "UTF-8");
-        }
+        $email{0} = ctype_upper($email{0}) ?
+            mb_convert_case($email{0}, MB_CASE_LOWER, "UTF-8") :
+            mb_convert_case($email{0}, MB_CASE_UPPER, "UTF-8");
 
         $params = [
             'email' => $email,
@@ -220,11 +218,9 @@ class RegistrationValidationApiTest extends TestCase
         $url = 'api.registration.validate';
 
         $nickname = $person->nickname;
-        for ($i = 0; $i < mb_strlen($nickname); $i++) {
-            $nickname{$i} = ctype_upper($nickname{$i}) ?
-                mb_convert_case($nickname{$i}, MB_CASE_LOWER, "UTF-8") :
-                mb_convert_case($nickname{$i}, MB_CASE_UPPER, "UTF-8");
-        }
+        $nickname{0} = ctype_upper($nickname{0}) ?
+            mb_convert_case($nickname{0}, MB_CASE_LOWER, "UTF-8") :
+            mb_convert_case($nickname{0}, MB_CASE_UPPER, "UTF-8");
 
         $params = [
             'nickname' => $nickname,

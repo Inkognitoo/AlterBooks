@@ -32,7 +32,6 @@ return [
     ],
     'boolean'              => 'Поле :attribute должно иметь значение логического типа.', // калька 'истина' или 'ложь' звучала бы слишком неестественно
     'confirmed'            => 'Поле :attribute не совпадает с подтверждением.',
-    'custom_message'       => ':attribute',
     'date'                 => 'Поле :attribute не является датой.',
     'date_format'          => 'Поле :attribute не соответствует формату :format.',
     'different'            => 'Поля :attribute и :other должны различаться.',
