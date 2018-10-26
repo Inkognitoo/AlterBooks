@@ -5,12 +5,21 @@
     &:first-child {
         margin-top: 0;
     }
+
     &_file {
         margin-top: 0;
         padding-top: 0;
 
         @media screen and (max-width: @sm) {
             margin-bottom: 15px;
+        }
+    }
+
+    &_buttons {
+        @media screen and (max-width: 570px) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     }
 
@@ -113,7 +122,17 @@
 
         &_wide {
             flex-direction: column;
+            margin-top: 40px;
         }
+
+        &_string {
+            align-items: center;
+
+            @media screen and (max-width: @md) {
+                align-items: start;
+            }
+        }
+
 
         @media screen and (max-width: @md) {
             flex-direction: column;
@@ -141,6 +160,18 @@
             @media screen and (max-width: @sm) {
                 font-size: 14px;
             }
+
+            &_sm {
+                margin: 0 10px 10px 0;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                @media screen and (max-width: 570px) {
+                    margin-right: 0;
+                }
+            }
         }
 
         &__title {
@@ -154,7 +185,16 @@
             }
         }
 
+        &_string &__title {
+            margin-top: 0;
+
+            @media screen and (max-width: @md) {
+                margin: 5px 0;
+            }
+        }
+
         &__content {
+            position: relative;
             width: ~"calc(100% - 170px)";
 
             &_select {
@@ -163,6 +203,7 @@
                 padding-left: 10px;
                 border: 1px solid #c8c8c8;
                 border-radius: 2px;
+                background: white;
                 font-size: 14px;
 
                 &:active,
@@ -210,6 +251,10 @@
                 }
             }
 
+            #change_date {
+                padding-right: 10px;
+            }
+
             &_error {
                 font-size: 14px;
                 color: red;
@@ -236,6 +281,10 @@
                 display: flex;
                 flex-direction: column;
                 margin-top: 7px;
+
+                & * {
+                    margin-bottom: 5px;
+                }
 
                 & label {
                     margin-bottom: 10px;
@@ -276,6 +325,26 @@
             @media screen and (max-width: 370px) {
                 display: none;
             }
+        }
+    }
+
+    &-status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 10px;
+
+        font-size: 14px;
+
+        &_correct {
+            background: rgba(0, 191, 0, 0.1);
+        }
+
+        &_error {
+            background: rgba(191, 6, 0, 0.1);
         }
     }
 }

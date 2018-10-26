@@ -143,6 +143,7 @@ import axios from 'axios';
             };
         });
 
+        // noinspection JSAnnotator
         /**
          * Выводим ошибки
          */
@@ -176,6 +177,7 @@ import axios from 'axios';
             });
         }
 
+        // noinspection JSAnnotator
         /**
          * Выводим состояние поля в отсутствии ошибок
          */
@@ -206,10 +208,13 @@ import axios from 'axios';
          *  Определяем, можно ли пользователю зарегистрироваться
          */
 
-        checkbox.onclick = registrationAgreement;
+        if (checkbox !== null) {
+            checkbox.onclick = registrationAgreement;
 
-        function registrationAgreement() {
-            registration_button.disabled = !(re_password_success && required_success && checkbox.checked);
+            // noinspection JSAnnotator
+            function registrationAgreement() {
+                registration_button.disabled = !(re_password_success && required_success && checkbox.checked);
+            }
         }
     }
 })();
