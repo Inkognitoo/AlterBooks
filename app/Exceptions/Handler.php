@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App;
 use App\Events\Error;
 use App\Http\Middleware\Api\ApiWrapper;
 use Exception;

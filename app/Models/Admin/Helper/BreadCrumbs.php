@@ -3,6 +3,8 @@
 namespace App\Models\Admin\Helper;
 
 /**
+ * Класс-хелпер для генерации хлебных крошек в админке
+ *
  * Class BreadCrumbs
  * @package App\Models\Admin\Helper
  */

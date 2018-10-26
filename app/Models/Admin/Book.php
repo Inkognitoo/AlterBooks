@@ -87,6 +87,10 @@ class Book extends BaseBook
      */
     protected $list_create_fields = []; // Заполняется в конструкторе
 
+    /**
+     * Book constructor.
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -169,10 +173,11 @@ class Book extends BaseBook
     protected function getHtmlEditForGenres(): string
     {
         //TODO: учитывать old атрибуты
-        $genres = [];
+        $genres_html = [];
+        $genres = Genre::all();
 
-        foreach (Genre::all() as $genre) {
-            $genres[] = sprintf('
+        foreach ($genres as $genre) {
+            $genres_html[] = sprintf('
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" name="genres[]"
@@ -184,7 +189,7 @@ class Book extends BaseBook
             ', $genre->slug, $this->hasGenre($genre) ? 'checked' : null, $genre->name);
         }
 
-        return implode(PHP_EOL, $genres);
+        return implode(PHP_EOL, $genres_html);
     }
 
     /**
@@ -195,10 +200,11 @@ class Book extends BaseBook
     protected function getHtmlCreateForGenres(): string
     {
         //TODO: учитывать old атрибуты
-        $genres = [];
+        $genres_html = [];
+        $genres = Genre::all();
 
-        foreach (Genre::all() as $genre) {
-            $genres[] = sprintf('
+        foreach ($genres as $genre) {
+            $genres_html[] = sprintf('
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" name="genres[]" value="%s">
@@ -208,6 +214,6 @@ class Book extends BaseBook
             ', $genre->slug, $genre->name);
         }
 
-        return implode(PHP_EOL, $genres);
+        return implode(PHP_EOL, $genres_html);
     }
 }

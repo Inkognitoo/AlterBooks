@@ -7,6 +7,8 @@ use App\Http\Resources\Admin\GenreResource;
 use App\Models\Genre;
 
 /**
+ * Поисковая модель жанра
+ *
  * Class GenreSearch
  * @package App
  *
@@ -14,7 +16,7 @@ use App\Models\Genre;
 class GenreSearch extends Search
 {
     /**
-     * Инциализация всех необходимых переменных
+     * Инициализация всех необходимых переменных
      */
     public function init(): void
     {

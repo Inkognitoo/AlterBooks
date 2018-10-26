@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
@@ -45,11 +47,11 @@ class Review extends Model
     use SoftDeletes;
 
     //Возможный тон рецензии
-    const TONE_NEUTRAL = 0;
+    public const TONE_NEUTRAL = 0;
 
-    const TONE_POSITIVE = 1;
+    public const TONE_POSITIVE = 1;
 
-    const TONE_NEGATIVE = 2;
+    public const TONE_NEGATIVE = 2;
 
     /**
      * The attributes that are mass assignable.
@@ -69,24 +71,30 @@ class Review extends Model
 
     /**
      * Автор рецензии
+     *
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Книга, к которой оставлена рецензия
+     *
+     * @return BelongsTo
      */
-    public function book()
+    public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
     }
 
     /**
      * Все оценки текущей рецензии
+     *
+     * @return HasMany
      */
-    public function reviewEstimates()
+    public function reviewEstimates(): HasMany
     {
         return $this->hasMany(ReviewEstimate::class, 'review_id');
     }
@@ -97,12 +105,12 @@ class Review extends Model
      * @param User $user
      * @return ReviewEstimate | null
      */
-    public function usersEstimate(User $user)
+    public function usersEstimate(User $user): ?ReviewEstimate
     {
         return $this->reviewEstimates()
             ->where('user_id', '=', $user->id)
             ->first()
-            ;
+        ;
     }
 
     /**
@@ -111,7 +119,7 @@ class Review extends Model
      * @param User $user
      * @return boolean
      */
-    public function isAuthor(User $user)
+    public function isAuthor(User $user): bool
     {
         return ($this->user_id === $user->id);
     }
@@ -122,7 +130,7 @@ class Review extends Model
      * @param User $user
      * @return boolean
      */
-    public function isForBookOfUser(User $user)
+    public function isForBookOfUser(User $user): bool
     {
         return ($this->book->author_id === $user->id);
     }
@@ -132,7 +140,7 @@ class Review extends Model
      * @param string $text
      * @return string
      */
-    public function getTextAttribute($text)
+    public function getTextAttribute($text): string
     {
         $pattern = '/(\r\n)/i';
         $replacement = '<br>';
@@ -145,7 +153,7 @@ class Review extends Model
      *
      * @param string $text
      */
-    public function setTextAttribute($text)
+    public function setTextAttribute($text): void
     {
         $this->attributes['text'] = htmlspecialchars($text, ENT_HTML5);
     }
@@ -155,7 +163,7 @@ class Review extends Model
      *
      * @return string
      */
-    public function getTextPlainAttribute()
+    public function getTextPlainAttribute(): string
     {
         return $this->attributes['text'];
     }
@@ -166,7 +174,7 @@ class Review extends Model
      * @param string $created_at
      * @return Carbon
     */
-    public function getCreatedAtAttribute($created_at)
+    public function getCreatedAtAttribute($created_at): Carbon
     {
         $date_time = new Carbon($created_at, config('app.timezone'));
         if (Auth::check()) {
@@ -181,7 +189,7 @@ class Review extends Model
      *
      * @return Carbon
      */
-    public function getCreatedAtPlainAttribute()
+    public function getCreatedAtPlainAttribute(): Carbon
     {
         return new Carbon($this->attributes['created_at']);
     }
@@ -191,7 +199,7 @@ class Review extends Model
      *
      * @return int
      */
-    public function getEstimateAttribute()
+    public function getEstimateAttribute(): int
     {
         return $this->reviewEstimates->sum('estimate');
     }

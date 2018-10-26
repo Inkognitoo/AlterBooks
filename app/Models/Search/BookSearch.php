@@ -10,12 +10,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 /**
+ * Поисковая модель книги
+ *
  * Class BookSearch
  * @package App
  *
  */
 class BookSearch
 {
+    /** @var int Количество сущностей на одной странице выборки */
     protected const PER_PAGE = 15;
 
     /**
@@ -48,13 +51,13 @@ class BookSearch
         $search_result = new SearchResult();
 
         $per_page = (int)$filters->perPage;
-        if (blank($per_page) || $per_page <= 0) {
+        if ($per_page <= 0) {
             $per_page = self::PER_PAGE;
         }
         $search_result->per_page = $per_page;
 
         $current_page = (int)$filters->currentPage;
-        if (blank($current_page) || $current_page <= 0) {
+        if ($current_page <= 0) {
             $current_page = 1;
         }
         $search_result->current_page = $current_page;
@@ -155,12 +158,12 @@ class BookSearch
     protected static function applyPaginate(Builder $query, BookSearchRequest $filters): array
     {
         $per_page = (int)$filters->perPage;
-        if (blank($per_page) || $per_page <= 0) {
+        if ($per_page <= 0) {
             $per_page = self::PER_PAGE;
         }
 
         $current_page = (int)$filters->currentPage;
-        if (blank($current_page) || $current_page <= 0) {
+        if ($current_page <= 0) {
             $current_page = 1;
         }
 
@@ -201,7 +204,7 @@ class BookSearch
     }
 
     /**
-     * Отфильтровать книги по соотвествию названия
+     * Отфильтровать книги по соответствию названия
      *
      * @param Builder $query
      * @param string $title

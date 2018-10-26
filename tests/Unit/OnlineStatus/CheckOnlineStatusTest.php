@@ -64,10 +64,10 @@ class CheckOnlineStatusTest extends TestCase
     {
         $person = factory(User::class)->create();
         Auth::attempt(['email' => $person->email, 'password' => 'secret']);
-        $startPersonLastActivity = Auth::user()->last_activity_at;
+        $last_activity = Auth::user()->last_activity_at;
         sleep(2);
         $this->call('GET', '/');
-        $this->assertTrue($startPersonLastActivity < Auth::user()->last_activity_at);
+        $this->assertTrue($last_activity < Auth::user()->last_activity_at);
     }
 
     /**

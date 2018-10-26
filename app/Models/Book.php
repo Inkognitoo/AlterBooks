@@ -9,9 +9,14 @@ use App\Traits\FindByIdOrSlugMethod;
 use DB;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use RuntimeException;
 use Storage;
 use Exception;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -72,12 +77,12 @@ class Book extends Model
     use SoftDeletes, Sluggable, FindByIdOrSlugMethod;
 
     //Подпапка в которой хранятся обложки для книг
-    const COVER_PATH = 'book_covers';
+    public const COVER_PATH = 'book_covers';
 
     //Возможные статусы книги
-    const STATUS_OPEN = 'open_by_author';
+    public const STATUS_OPEN = 'open_by_author';
 
-    const STATUS_CLOSE = 'close_by_author';
+    public const STATUS_CLOSE = 'close_by_author';
 
     /**
      * The attributes that are mass assignable.
@@ -124,8 +129,10 @@ class Book extends Model
 
     /**
      * Пользователи, добавившие книгу к себе в библиотеку
+     *
+     * @return BelongsToMany
      */
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'users_library')
             ->withTimestamps()
@@ -134,27 +141,33 @@ class Book extends Model
 
     /**
      * Все рецензии на текущую книгу
+     *
+     * @return HasMany
      */
-    public function reviews()
+    public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'book_id');
     }
 
     /**
      * Все жанры текущей книги
+     *
+     * @return BelongsToMany
      */
-    public function genres()
+    public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'books_genres')
                     ->withTimestamps()
                     ->orderBy('name')
-               ;
+        ;
     }
 
     /**
      * Автор книги
+     *
+     * @return BelongsTo
      */
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -165,10 +178,10 @@ class Book extends Model
      * @param $id mixed
      * @return Book|null
      */
-    public static function findAny($id)
+    public static function findAny($id): ?Book
     {
         $query = self::withoutGlobalScopes([StatusScope::class]);
-        if (is_array($id)) {
+        if (\is_array($id)) {
             $query->where($id);
         } else {
             $query->findByIdOrSlug($id);
@@ -231,7 +244,7 @@ class Book extends Model
      * @param string $description
      * @return string
      */
-    public function getDescriptionAttribute($description)
+    public function getDescriptionAttribute($description): string
     {
         $pattern = '/(\r\n)/i';
         $replacement = '<br>';
@@ -243,7 +256,7 @@ class Book extends Model
      *
      * @param string $description
      */
-    public function setDescriptionAttribute($description)
+    public function setDescriptionAttribute($description): void
     {
         $this->attributes['description'] = htmlspecialchars($description, ENT_HTML5);
     }
@@ -253,7 +266,7 @@ class Book extends Model
      *
      * @return string
      */
-    public function getDescriptionPlainAttribute()
+    public function getDescriptionPlainAttribute(): string
     {
         return $this->attributes['description'];
     }
@@ -262,16 +275,16 @@ class Book extends Model
      * Путь до обложки книги на Amazon S3
      *
      * @return string
-     * @throws Exception
+     * @throws RuntimeException
      */
     public function getCoverPathAttribute(): string
     {
         if (blank($this->id)) {
-            throw new Exception('For getting cover path, book must be present');
+            throw new RuntimeException('For getting cover path, book must be present');
         }
 
         if (blank($this->cover)) {
-            throw new Exception('For getting cover path, book\'s cover must be present');
+            throw new RuntimeException('For getting cover path, book\'s cover must be present');
         }
 
         return $this::COVER_PATH . '/' . $this->id . '/' . $this->cover;
@@ -337,7 +350,7 @@ class Book extends Model
      *
      * @return string
      */
-    public function getCanonicalUrlAttribute()
+    public function getCanonicalUrlAttribute(): string
     {
         return route('book.show', ['id' => 'id' . $this->id]);
     }
@@ -361,12 +374,12 @@ class Book extends Model
      *
      * @param UploadedFile $cover Обложка книги
      * @return void
-     * @throws Exception
+     * @throws RuntimeException
      */
-    public function setCoverAttribute(UploadedFile $cover)
+    public function setCoverAttribute(UploadedFile $cover): void
     {
         if (blank($this->id)) {
-            throw new Exception('For setting cover, book must be present');
+            throw new RuntimeException('For setting cover, book must be present');
         }
 
         if (filled($this->cover) && Storage::exists($this->cover_path)) {
@@ -383,12 +396,12 @@ class Book extends Model
      *
      * @param UploadedFile $text Текст книги
      * @return void
-     * @throws Exception
+     * @throws RuntimeException
      */
-    public function setTextAttribute(UploadedFile $text)
+    public function setTextAttribute(UploadedFile $text): void
     {
         if (blank($this->id)) {
-            throw new Exception('For setting text, book must be present');
+            throw new RuntimeException('For setting text, book must be present');
         }
 
         switch (File::mimeType($text->path())) {
@@ -397,7 +410,7 @@ class Book extends Model
                 $converter = new Txt($this, storage_path('app/' . $path));
                 break;
             default:
-                throw new Exception('Book\'s format is not allow');
+                throw new RuntimeException('Book\'s format is not allow');
 
         }
 
@@ -410,7 +423,7 @@ class Book extends Model
      *
      * @param array $genres
      */
-    public function setGenresAttribute($genres)
+    public function setGenresAttribute($genres): void
     {
         $genres = Genre::whereIn('slug', $genres)->get();
         $this->genres()->sync($genres);
@@ -439,7 +452,7 @@ class Book extends Model
      * @return void
      * @throws Exception
      */
-    public function editPage(int $page_number, string $text)
+    public function editPage(int $page_number, string $text): void
     {
         $mongodb_book = new MongoBook($this);
 
@@ -466,6 +479,7 @@ class Book extends Model
 
         $cover = Image::make(Storage::path($this->cover_path))
             ->fit($width, $height, function ($constraint) {
+                /** @var Constraint $constraint */
                 $constraint->aspectRatio();
             });
         Storage::put($fit_cover_path, (string)$cover->encode());

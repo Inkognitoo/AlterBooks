@@ -8,6 +8,18 @@ use App\Http\Controllers\Controller;
 
 class GenreController extends Controller
 {
+    /** @var GenreSearch */
+    private $genre_search;
+
+    /**
+     * GenreController constructor.
+     * @param GenreSearch $genre_search
+     */
+    public function __construct(GenreSearch $genre_search)
+    {
+        $this->genre_search = $genre_search;
+    }
+
     /**
      * Получить отфильтрованный список жанров
      *
@@ -16,6 +28,6 @@ class GenreController extends Controller
      */
     public function index(Request $request)
     {
-        return (new GenreSearch())->apply($request);
+        return $this->genre_search->apply($request);
     }
 }

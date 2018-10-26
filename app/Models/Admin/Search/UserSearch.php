@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 
 /**
+ * Поисковая модель для пользователя
+ *
  * Class UserSearch
  * @package App
  *

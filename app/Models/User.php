@@ -5,12 +5,16 @@ namespace App\Models;
 use App\Notifications\ResetPasswordNotification;
 use App\Traits\FindByIdOrSlugMethod;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Exception;
+use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use RuntimeException;
 use Storage;
 
 /**
@@ -72,20 +76,20 @@ class User extends Authenticatable
     use Notifiable, SoftDeletes, FindByIdOrSlugMethod;
 
     //Возможные гендеры пользователя
-    const GENDER_MALE = 'm';
+    public const GENDER_MALE = 'm';
 
-    const GENDER_FEMALE = 'f';
+    public const GENDER_FEMALE = 'f';
 
-    const GENDER_NOT_INDICATED = 'n';
+    public const GENDER_NOT_INDICATED = 'n';
 
     //Подпапка в которой хранятся аватары пользователей
-    const AVATAR_PATH = 'avatars';
+    public const AVATAR_PATH = 'avatars';
 
     //Поле для поиска по slug через трейт FindByIdOrSlugMethod
-    const SLUG_NAME = 'nickname';
+    public const SLUG_NAME = 'nickname';
 
     //Количество минут бездействия пользователя, поддерживающее его статус Online
-    const ONLINE_ENDED = 12;
+    public const ONLINE_ENDED = 12;
 
     /**
      * The attributes that are mass assignable.
@@ -114,23 +118,27 @@ class User extends Authenticatable
      * @param  string  $token
      * @return void
      */
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));
     }
 
     /**
      * Книги, автором которых является текущий пользователь
+     *
+     * @return HasMany
      */
-    public function books()
+    public function books(): HasMany
     {
         return $this->hasMany(Book::class, 'author_id');
     }
 
     /**
      * Книги в библиотеке пользователя
+     *
+     * @return BelongsToMany
      */
-    public function libraryBooks()
+    public function libraryBooks(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'users_library')
             ->withTimestamps()
@@ -139,16 +147,20 @@ class User extends Authenticatable
 
     /**
      * Рецензии текущего пользователя
+     *
+     * @return HasMany
      */
-    public function reviews()
+    public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'user_id');
     }
 
     /**
      * Оценки на рецензии оставленные текущим пользователем
+     *
+     * @return HasMany
      */
-    public function reviewEstimates()
+    public function reviewEstimates(): HasMany
     {
         return $this->hasMany(ReviewEstimate::class, 'user_id');
     }
@@ -159,7 +171,7 @@ class User extends Authenticatable
      * @param Book $book
      * @return Book|null
      */
-    public function getLibraryBook(Book $book)
+    public function getLibraryBook(Book $book): ?Book
     {
         return $this->libraryBooks()->where(['book_id' => $book->id])->first();
     }
@@ -195,7 +207,7 @@ class User extends Authenticatable
      * @param Book $book
      * @return Review $review
      */
-    public function getBookReview(Book $book): Review
+    public function getBookReview(Book $book): ?Review
     {
         return $this->reviews()
             ->where(['book_id' => $book->id])
@@ -243,7 +255,7 @@ class User extends Authenticatable
      * @param string $about
      * @return string
      */
-    public function getAboutAttribute($about)
+    public function getAboutAttribute($about): string
     {
         $pattern = '/(\r\n)/i';
         $replacement = '<br>';
@@ -255,7 +267,7 @@ class User extends Authenticatable
      *
      * @param string $about
      */
-    public function setAboutAttribute($about)
+    public function setAboutAttribute($about): void
     {
         $this->attributes['about'] = htmlspecialchars($about, ENT_HTML5);
     }
@@ -265,7 +277,7 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getAboutPlainAttribute()
+    public function getAboutPlainAttribute(): string
     {
         return $this->attributes['about'];
     }
@@ -274,16 +286,16 @@ class User extends Authenticatable
      * Путь до аватары пользователя в файловом хранилище
      *
      * @return string
-     * @throws Exception
+     * @throws RuntimeException
      */
     public function getAvatarPathAttribute(): string
     {
         if (blank($this->id)) {
-            throw new Exception('For getting avatar path, user must be present');
+            throw new RuntimeException('For getting avatar path, user must be present');
         }
 
         if (blank($this->avatar)) {
-            throw new Exception('For getting avatar path, user\'s avatar must be present');
+            throw new RuntimeException('For getting avatar path, user\'s avatar must be present');
         }
 
         return $this::AVATAR_PATH . '/' . $this->id . '/' . $this->avatar;
@@ -364,7 +376,7 @@ class User extends Authenticatable
      *
      * @return string|null
      */
-    public function getBirthdayDatePlainAttribute()
+    public function getBirthdayDatePlainAttribute(): ?string
     {
         return $this->attributes['birthday_date'];
     }
@@ -398,12 +410,12 @@ class User extends Authenticatable
      *
      * @param UploadedFile $avatar Аватар пользователя
      * @return void
-     * @throws Exception
+     * @throws RuntimeException
      */
-    public function setAvatarAttribute(UploadedFile $avatar)
+    public function setAvatarAttribute(UploadedFile $avatar): void
     {
         if (blank($this->id)) {
-            throw new Exception('For setting avatar path, user must be present');
+            throw new RuntimeException('For setting avatar path, user must be present');
         }
 
         if (filled($this->avatar) && Storage::exists($this->avatar_path)) {
@@ -420,7 +432,7 @@ class User extends Authenticatable
      *
      * @param string $email
      */
-    public function setEmailAttribute(string $email)
+    public function setEmailAttribute(string $email): void
     {
         $this->attributes['email'] = mb_strtolower($email);
     }
@@ -430,7 +442,7 @@ class User extends Authenticatable
      *
      * @param string $password
      */
-    public function setPasswordAttribute($password)
+    public function setPasswordAttribute($password): void
     {
         $this->attributes['password'] = bcrypt($password);
     }
@@ -455,6 +467,7 @@ class User extends Authenticatable
 
         $avatar = Image::make(Storage::path($this->avatar_path))
             ->fit($width, $height, function ($constraint) {
+                /** @var Constraint $constraint  */
                 $constraint->aspectRatio();
             });
         Storage::put($fit_avatar_path, (string)$avatar->encode());
