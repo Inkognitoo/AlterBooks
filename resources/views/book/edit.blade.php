@@ -29,10 +29,19 @@
                 {{ csrf_field() }}
 
                 @if (session('status'))
-                    <div class="edit-block-status">
-                        {{ session('status') }}
+                    <div class="edit-block-status__container">
+                        <div class="edit-block-status edit-block-status_correct">
+                            {{ session('status') }}
+                        </div>
                     </div>
                 @endif
+                @foreach (($errors->all()) as $error)
+                    <div class="edit-block-status__container">
+                        <div class="edit-block-status edit-block-status_error">
+                            {{ $error }}
+                        </div>
+                    </div>
+                @endforeach
 
                 <div class="edit-block-element">
                     <label class="edit-block-element__title"
@@ -45,6 +54,7 @@
                                id="title"
                                name="title"
                                maxlength="50"
+
                                value="{{ old('title', $book->title) }}">
                         <div class="edit-block-element__size">
                             15 / 50
@@ -142,6 +152,7 @@
                         вернуться к профилю
                     </a>
                 </div>
+
             </form>
         </div>
     </div>
