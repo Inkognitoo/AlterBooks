@@ -14,8 +14,7 @@ class BookTrgmIndex extends Migration
     public function up()
     {
         DB::statement('CREATE EXTENSION IF NOT EXISTS pg_trgm');
-        //TODO: разобраться, почему не поднимаются в тестовом окружении
-        //DB::statement('CREATE INDEX books_name_trigram ON books USING gist(title gist_trgm_ops);');
+        DB::statement('CREATE INDEX books_name_trigram ON books USING gist(title gist_trgm_ops);');
     }
 
     /**
@@ -25,7 +24,7 @@ class BookTrgmIndex extends Migration
      */
     public function down()
     {
-        DB::statement('DROP INDEX IF EXISTS books_name_trigram');
-        //DB::statement('DROP EXTENSION IF EXISTS pg_trgm');
+        DB::statement('DROP INDEX IF EXISTS books_name_trigram CASCADE');
+        DB::statement('DROP EXTENSION IF EXISTS pg_trgm');
     }
 }
