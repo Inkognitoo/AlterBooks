@@ -7,24 +7,30 @@
      data-status="open"
      data-auth="true"
      id="review-self">
-    <div class="review-rating" data-rating ="{{ $review->rating }}">
-        <div class="review-rating__header">
+
+    <div class="review-rating"
+         data-rating ="{{ $review->rating }}">
+        <div class="review-rating__header"
+             id="rating-header">
             {{ number_format($review->rating, 1) }}
         </div>
         <div class="review-rating-stars">
             @for ($i = 1; $i <= $review->rating; $i++)
-                <svg class="review-rating__star review-rating__star_active">
-                    <polygon id="star" points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
+                <svg class="review-rating__star review-rating__star_active"
+                     data-number="{{ $i }}">
+                    <polygon points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
                 </svg>
             @endfor
 
             @for ($i = $review->rating + 1; $i <= 10; $i++)
-                <svg class="review-rating__star">
-                    <polygon id="star" points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
+                <svg class="review-rating__star"
+                     data-number="{{ $i }}">
+                    <polygon points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
                 </svg>
             @endfor
         </div>
     </div>
+
     <div class="review-element__body row row-center">
         <div class="review__main col-12">
             <div class="row">
@@ -33,7 +39,7 @@
                         {{ $review->created_at->format('d.m.Y') }}
                     </div>
                     <div class="review__icon review__icon_edit"
-                         style="opacity: 0.3"></div>
+                         id="review-edit"></div>
 
                     <a class="review__icon review__icon_delete"
                        id="review-delete"
@@ -47,14 +53,14 @@
                     </button>
                 </div>
                 <div class="review-title col-12 col-clear">
-                    {{ $review->header }}
+                    <span id="review-header-content">{{ $review->header }}</span>
                     <div class="review-title__shield"
                          id="review-shield"></div>
                 </div>
                 <div class="review-text col-12 col-clear"
                      data-status="close"
                      id="review-text">
-                    {!! $review->text !!} ({{ $review->id }})
+                    <span id="review-text-content">{!! $review->text !!}</span>
                     <div class="review-text__block" id="review-text-block"></div>
                     <button class="review-text__more" id="review-text-more">
                         читать далее
@@ -75,4 +81,76 @@
         </div>
     </div>
     <hr class="review-element__hr">
+</div>
+
+<!-- Редактирование рецензии -->
+<div class="review-new"
+     data-status="close"
+     id="review-edit-module">
+    <form class="review-new-form"
+          onsubmit="return false"
+          data-status="open">
+
+        {{ csrf_field() }}
+
+        <div class="review-new-form-rating">
+            <div class="review-new-form-rating__text">
+                Оценка
+            </div>
+            <div class="review-new-stars">
+
+                @for ($i = 10; $i >= 1; $i--)
+                    <input class="review-new-stars__element"
+                           type="radio"
+                           id="er-{{ $i }}"
+                           name="rating"
+                           value="{{ $i }}"
+                           {{ $i === $review->rating ? 'checked' : ''}}>
+                    <label class="review-new-stars__star"
+                           for="er-{{ $i }}">
+                        <svg class="review-rating__star review-rating__star_active">
+                            <polygon id="star"
+                                     points="11,0 14.23,6.55 21.46,7.6 16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
+                        </svg>
+                    </label>
+                @endfor
+
+                <div class="review-new-form-rating__number"></div>
+            </div>
+        </div>
+        <div class="review-new-form__field">
+            <input type="text"
+                   id="er-header"
+                   name="header"
+                   maxlength="67"
+                   placeholder="Заголовок рецензии"
+                   data-input-type="nr-field"
+                   data-has-error="false"
+                   value="{{ $review->header }}"
+                   required>
+            <div class="review-new-form__message">
+                осталось символов: <span id="review-edit-form__remain">67</span>
+            </div>
+            <div class="review-new-form__error">
+                укажите заголовок рецензии
+            </div>
+        </div>
+        <div class="review-new-form__field">
+            <textarea id="er-content"
+                      name="text"
+                      placeholder="Текст рецензии"
+                      data-input-type="er-field"
+                      data-has-error="false"
+                      required>{!! $review->text !!}</textarea>
+            <div class="review-new-form__error">
+                напишите текст рецензии
+            </div>
+        </div>
+        <input class="review-new-form__button button"
+               type="submit"
+               id="review-edit-save"
+               data-book-id="{{ $review->book_id }}"
+               data-review-id="{{ $review->id }}"
+               value="сохранить">
+    </form>
 </div>

@@ -21,6 +21,8 @@ mix.js(['resources/assets/js/app.js',
         'resources/js/review-new.js',
         'resources/js/review-delete.js',
         'resources/js/review-restoring.js',
+        'resources/js/review-edit.js',
+        'resources/js/user-edit.js',
         'resources/js/book-list.js'], 'public/js/app.js')
     .js(['resources/js/book-list/book-list.js'], 'public/js/book-list.js')
     .sass('resources/assets/sass/app.scss', 'public/css')

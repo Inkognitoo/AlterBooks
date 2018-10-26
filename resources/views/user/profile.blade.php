@@ -18,9 +18,12 @@
                          style="background-image: url('{{ $user->avatar_url }}')"></div>
                     <div class="user-buttons col-12">
                         <div class="row">
-                            {{--<button class="user-buttons__element button col-12">--}}
-                                {{--<span>библиотека</span>--}}
-                            {{--</button>--}}
+                            @if (Auth::user()->id === $user->id)
+                                <a class="user-buttons__element button col-12"
+                                   href="{{ route('user.edit.show', ['id' => $user->nickname]) }}">
+                                    редактировать
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Middleware\CheckUserCanReview;
+use App\Http\Middleware\IsBookExist;
 use Auth;
+use App\Models\Book;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Http\Middleware\CheckUserReviewGranted;
@@ -11,6 +14,7 @@ use App\Http\Middleware\IsReviewExist;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\HasNotUserReviewToBook;
 use App\Http\Middleware\Api\HasUserDeletedReviewToBook;
+use App\Http\Requests\ReviewCreateRequest;
 
 class ReviewController extends Controller
 {
@@ -21,11 +25,15 @@ class ReviewController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(IsReviewExist::class)->only(['delete']);
+        $this->middleware(CheckUserCanReview::class)->only('create');
 
-        $this->middleware(CheckUserReviewGranted::class)->only(['delete']);
+        $this->middleware(IsBookExist::class)->only('create');
 
-        $this->middleware(HasNotUserReviewToBook::class)->only(['restore']);
+        $this->middleware(IsReviewExist::class)->only(['delete', 'edit']);
+
+        $this->middleware(CheckUserReviewGranted::class)->only(['delete', 'edit']);
+
+        $this->middleware(HasNotUserReviewToBook::class)->only(['create', 'restore']);
 
         $this->middleware(HasUserDeletedReviewToBook::class)->only(['restore']);
 
@@ -33,17 +41,53 @@ class ReviewController extends Controller
     }
 
     /**
+     * Создаем рецензию
+     *
+     * @param ReviewCreateRequest $request
+     * @param mixed $book_id
+     * @return array
+     * @throws \Exception
+     */
+    public function create(ReviewCreateRequest $request, $book_id)
+    {
+        $review = new Review();
+
+        $review->fill($request->all());
+
+        if (is_numeric($book_id)) {
+            $book_id = 'id' . $book_id;
+        }
+
+        $review->book_id = Book::findAny($book_id)->id;
+        Auth::user()->reviews()->save($review);
+
+        $review->save();
+
+        $response = [
+            'success' => true,
+            'data' => null,
+            'errors' => [],
+        ];
+
+        return $response;
+    }
+
+    /**
      * Удаляем рецензию
      *
-     * @param mixed $id
+     * @param mixed $book_id
+     * @param int $id
      * @return array
-     * @throws ApiException
+     * @throws \Exception
      */
-    public function delete($id)
+    public function delete($book_id, $id)
     {
-        Review::find($id)
-            ->delete()
+        $review = Review::where('user_id', Auth::user()->id)
+            ->where('book_id', $book_id)
+            ->orderBy('updated_at', 'desc')
+            ->first()
         ;
+        $review -> delete();
 
         $response = [
             'success' => true,
@@ -59,17 +103,46 @@ class ReviewController extends Controller
      *
      * @param mixed $book_id
      * @return array
-     * @throws ApiException
+     * @throws \Exception
      */
     public function restore($book_id)
     {
         Review::onlyTrashed()
-            ->where('user_id', Auth::user()->id)
-            ->where('book_id', $book_id)
-            ->orderBy('deleted_at', 'desc')
+            ->where('user_id',Auth::user()->id)
+            ->where('book_id',$book_id)
+            ->orderBy('deleted_at','desc')
             ->first()
             ->restore()
         ;
+
+        $response = [
+            'success' => true,
+            'data' => null,
+            'errors' => [],
+        ];
+
+        return $response;
+    }
+
+    /**
+     * Редактируем рецензию
+     *
+     * @param ReviewCreateRequest $request
+     * @param mixed $book_id
+     * @param int $id
+     * @return array
+     * @throws \Exception
+     */
+    public function edit(ReviewCreateRequest $request, $book_id, $id)
+    {
+        $review = Review::where('user_id', Auth::user()->id)
+            ->where('book_id', $book_id)
+            ->orderBy('updated_at', 'desc')
+            ->first()
+        ;
+
+        $review->fill($request->all());
+        $review->save();
 
         $response = [
             'success' => true,

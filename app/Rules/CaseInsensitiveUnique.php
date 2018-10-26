@@ -26,6 +26,13 @@ class CaseInsensitiveUnique implements Rule
     protected $idColumn = 'id';
 
     /**
+     * The text of error.
+     *
+     * @var string
+     */
+    protected $message = '';
+
+    /**
      * Create a new rule instance.
      *
      * @param string $table
@@ -70,12 +77,29 @@ class CaseInsensitiveUnique implements Rule
     }
 
     /**
+     * Get custom error message.
+     *
+     * @param  string $message
+     * @return $this
+     */
+    public function setMessage(string $message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
      * Get the validation error message.
      *
      * @return string
      */
     public function message()
     {
+        if (filled($this->message)) {
+            return __($this->message, ['attribute' => $this->attribute]);
+        }
+
         return trans('validation.unique', ['attribute' => $this->attribute]);
     }
 }

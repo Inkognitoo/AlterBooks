@@ -131,6 +131,7 @@ class Handler extends ExceptionHandler
     protected function getError(Exception $exception)
     {
         $error = [
+            'name' => $exception instanceof ValidateException ? $exception->getName() : null,
             'code' => $exception->getCode(),
             'message' => $exception->getMessage(),
         ];

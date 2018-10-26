@@ -19,10 +19,10 @@ import axios from 'axios';
      *
      */
     function deleteReview() {
-        let review_id = parseInt(this.dataset.reviewId);
-        let book_id = parseInt(this.dataset.bookId)
+        let book_id = parseInt(this.dataset.bookId);
+        let id = parseInt(this.dataset.reviewId);
 
-        deleteApiReview(review_id)
+        deleteApiReview(id, book_id)
             .then(function (response) {
                 addRestoring(book_id);
             })
@@ -34,11 +34,13 @@ import axios from 'axios';
     /**
      * Api запрос для мягкого удаления рецензии
      *
-     * @param {int} review_id идентификатор рецензии
+     * @param {int} id идентификатор рецензии
+     * @param {int} book_id идентификатор книги
      * @returns {Promise<any>}
      */
-    function deleteApiReview(review_id) {
-        let url = `/api/v1/review/id${review_id}/delete`;
+    function deleteApiReview(id, book_id) {
+        console.log(book_id);
+        let url = `/api/v1/book/${book_id}/review/id${id}/delete`;
 
         return new Promise(function (resolve, reject) {
             request.delete(url)

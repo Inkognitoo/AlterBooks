@@ -14,8 +14,10 @@
                 регистрация
             </div>
 
-            <div class="registration-element col-12 col-clear"
-                 data-status="{{ $errors->has('email') ? 'error' : 'correct' }}">
+            <div class="registration-element registration-element_validated col-12 col-clear"
+                 data-name="email"
+                 data-status=""
+                 data-number="0">
                 <div class="registration-element__logo"
                      style="background-image: url('/img/icons/user_grey.svg')"></div>
                 <input class="registration-element__field"
@@ -23,7 +25,7 @@
                        id="registration-email"
                        name="email"
                        placeholder="электронная почта / логин"
-                       required autofocus
+                       required
                        value="{{ old('email') }}">
                 <div class="registration-element__flag"></div>
                 <div class="registration-element__error">
@@ -32,7 +34,8 @@
                 <div class="registration-element__star">*</div>
             </div>
 
-            <div class="registration-element col-12 col-clear"
+            <div class="registration-element registration-element_validated col-12 col-clear"
+                 data-name="password"
                  data-status="">
                 <div class="registration-element__logo"
                      style="background-image: url('/img/icons/lock-closed_grey.svg')"></div>
@@ -43,6 +46,10 @@
                        placeholder="пароль"
                        required
                        value="">
+                <div class="registration-element__flag"></div>
+                <div class="registration-element__error">
+                    пароль менее 6 символов
+                </div>
                 <div class="registration-element__star">*</div>
             </div>
 
@@ -64,7 +71,24 @@
                 <div class="registration-element__star">*</div>
             </div>
 
+            <div class="registration-element registration-element_validated col-12 col-clear"
+                 data-name="nickname"
+                 data-status="">
+                <div class="registration-element__logo registration-element__logo_none"></div>
+                <input class="registration-element__field"
+                       type="text"
+                       id="registration-nickname"
+                       name="nickname"
+                       placeholder="псевдоним"
+                       required
+                       value="{{ old('nickname') }}">
+                <div class="registration-element__flag"></div>
+                <div class="registration-element__error"></div>
+                <div class="registration-element__star">*</div>
+            </div>
+
             <div class="registration-element col-12 col-clear">
+                <div class="registration-element__logo registration-element__logo_none"></div>
                 <input class="registration-element__field"
                        type="text"
                        id="registration-surname"
@@ -73,30 +97,23 @@
             </div>
 
             <div class="registration-element col-12 col-clear">
+                <div class="registration-element__logo registration-element__logo_none"></div>
                 <input class="registration-element__field"
                        type="text"
                        id="registration-name"
                        name="name"
                        placeholder="имя">
             </div>
-            <div class="registration-element col-12 col-clear"
-                 data-status="{{ $errors->has('nickname') ? 'error' : '' }}">
-                <input class="registration-element__field"
-                       type="text"
-                       id="registration-nickname"
-                       name="nickname"
-                       placeholder="псевдоним"
-                       value="{{ old('nickname') }}">
-            </div>
 
-            <div class="registration-element registration-element_agreement col-12 col-clear">
+            <div class="registration-element registration-agreement col-12 col-clear">
                 <div class="authentication__checkbox">
                     <label for="registration-checkbox"
                            class="col-xs-12 checkbox">
                         <input type="checkbox"
                                class="checkbox__field"
                                id="registration-checkbox"
-                               name="checkbox">
+                               name="checkbox"
+                               data-number="4">
                         <span class="checkbox-animation">
                                     <span class="checkbox-animation__button"></span>
                                     <span class="checkbox-animation__icon"></span>

@@ -12,7 +12,7 @@ use Auth;
  * Class CheckUserBookGranted
  * @package App\Http\Middleware
  */
-class CheckUserDeleteReview
+class CanUserReview
 {
     /**
      * Handle an incoming request.

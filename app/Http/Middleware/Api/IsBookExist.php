@@ -27,6 +27,11 @@ class IsBookExist
     public function handle($request, Closure $next)
     {
         $book_id = $request->book_id ?? $request->id;
+
+        if (is_numeric($book_id)) {
+            $book_id = 'id' . $book_id;
+        }
+
         $book = Book::findAny($book_id);
 
         if (blank($book)) {

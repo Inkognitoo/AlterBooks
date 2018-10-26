@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
+
     Route::post('/login', 'UserController@login')
         ->name('api.user.login')
     ;
@@ -34,7 +35,23 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function(){
     ;
 });
 
+Route::group(['prefix' => 'v1'], function(){
+
+    /*
+    |--------------------------------------------------------------------------
+    | Registration
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся регистрации
+    |
+    */
+    Route::post('/registration/validate', 'Api\RegistrationController@validator')
+        ->name('api.registration.validate')
+    ;
+});
+
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
+
     /*
     |--------------------------------------------------------------------------
     | Book
@@ -58,16 +75,23 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     | Здесь все маршруты касающиеся в первую очередь работы с рецензиями
     |
     */
-    Route::post('/book/{book_id}/review/id{id}/estimate/plus', 'ReviewEstimateController@plus')
+    Route::post('/book/{book_id}/review', 'Api\ReviewController@create')
+        ->name('api.review.create')
+    ;
+    Route::post('/book/{book_id}/review/{id}/estimate/plus', 'ReviewEstimateController@plus')
         ->name('api.review.estimate.plus')
     ;
-    Route::post('/book/{book_id}/review/id{id}/estimate/minus', 'ReviewEstimateController@minus')
+    Route::post('/book/{book_id}/review/{id}/estimate/minus', 'ReviewEstimateController@minus')
         ->name('api.review.estimate.minus')
     ;
-    Route::delete('/review/id{id}/delete', 'Api\ReviewController@delete')
+    Route::delete('/book/{book_id}/review/{id}/delete', 'Api\ReviewController@delete')
         ->name('api.review.delete')
     ;
     Route::put('/review/{book_id}/restore', 'Api\ReviewController@restore')
         ->name('api.review.restore')
     ;
+    Route::put('/book/{book_id}/review/{id}/edit', 'Api\ReviewController@edit')
+        ->name('api.review.edit')
+    ;
+
 });

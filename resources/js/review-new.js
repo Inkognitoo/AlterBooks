@@ -48,13 +48,5 @@
         review_new.setAttribute('data-status', 'close');
         review_self.setAttribute('data-status', 'open');
     }
-
-    let edit_rs_button = document.getElementsByClassName('review__icon_edit');
-    Array.prototype.forEach.call(edit_rs_button, function(button){
-        button.addEventListener('click', function (b) {
-            review_new.setAttribute('data-status', 'open');
-            review_self.setAttribute('data-status', 'close');
-        })
-    });
 })();
 

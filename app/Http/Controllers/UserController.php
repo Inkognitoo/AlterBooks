@@ -6,7 +6,9 @@ use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserExist;
 use App\Http\Middleware\CheckUserGranted;
+use App\Http\Requests\UserUpdateEmailRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\UserUpdateInfoRequest;
 use App\Models\Search\UserSearch;
 use App\Scopes\Book\StatusScope;
 use App\Models\User;
@@ -90,7 +92,41 @@ class UserController extends Controller
 
         return redirect(route('user.edit', ['id' => Auth::user()->nickname]))
             ->with('status', t('user.api', 'Данные были успешно обновлены'))
-        ;
+            ;
     }
-    
+
+    /**
+     * Редактируем данные о профиле пользователя
+     *
+     * @param UserUpdateRequest $request
+     * @return Response
+     * @throws Exception
+     */
+    public function editInfo(UserUpdateInfoRequest $request)
+    {
+        Auth::user()->fill($request->all());
+        Auth::user()->save();
+
+        return redirect(route('user.edit', ['id' => Auth::user()->nickname]))
+            ->with('status', t('user.api', 'Данные были успешно обновлены'))
+            ;
+    }
+
+    /**
+     * Редактируем данные пользователя для входа
+     *
+     * @param UserUpdateRequest $request
+     * @return Response
+     * @throws Exception
+     */
+    public function editEmail(UserUpdateEmailRequest $request)
+    {
+        Auth::user()->fill($request->all());
+        Auth::user()->save();
+
+        return redirect(route('user.edit', ['id' => Auth::user()->nickname]))
+            ->with('status', t('user.api', 'Данные были успешно обновлены'))
+            ;
+
+    }
 }

@@ -5,7 +5,6 @@
     &:first-child {
         margin-top: 0;
     }
-
     &_file {
         margin-top: 0;
         padding-top: 0;
@@ -19,6 +18,11 @@
         box-sizing: border-box;
         border: 1px solid #dcdcdc;
     }
+
+    &__button {
+        margin-top: 25px;
+    }
+
 
     &-header {
         display: flex;
@@ -250,9 +254,13 @@
             bottom: 1px;
             right: 1px;
 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
             width: 74px;
+            height: ~"calc(100% - 2px)";
             box-sizing: border-box;
-            padding: 5px 10px 4px 10px;
 
             border-top-right-radius: 2px;
             border-bottom-right-radius: 2px;
