@@ -179,7 +179,6 @@ return [
         /*
          * Custom Service Providers
          */
-        App\MongoDB\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
     ],
