@@ -173,6 +173,26 @@ class Book extends Model
     }
 
     /**
+     * Все главы текущей книги
+     *
+     * @return HasMany
+     */
+    public function chapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class, 'book_id');
+    }
+
+    /**
+     * Все страницы текущей книги
+     *
+     * @return HasMany
+     */
+    public function pages(): HasMany
+    {
+        return $this->hasMany(Page::class, 'book_id');
+    }
+
+    /**
      * Произвести поиск книги с любым статусом по id[number] или slug, либо по условию: ['column', 'condition', 'value']
      *
      * @param $id mixed

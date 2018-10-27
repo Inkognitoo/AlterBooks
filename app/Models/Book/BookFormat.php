@@ -18,5 +18,5 @@ interface BookFormat
      *
      * @return Book
      */
-    public function getBook();
+    public function getBook(): Book;
 }
