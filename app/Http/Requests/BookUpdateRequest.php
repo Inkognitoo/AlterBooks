@@ -39,7 +39,7 @@ class BookUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
+            'title' => 'required|max:50',
             'cover' => 'image|max:5120',
             'description' => 'nullable|max:5000',
             'text' => 'nullable|file|mimes:txt|mimetypes:text/plain',
@@ -49,6 +49,20 @@ class BookUpdateRequest extends FormRequest
             ],
             'genres' => 'nullable|array',
             'genres.*' => ['exists:genres,slug']
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'Название книги не может быть пустым',
+            'title.max' => 'Название книги должно содержать менее 50 символов',
+            'description.max' => 'Описание книги не должно содержать более 5000 символов',
         ];
     }
 }

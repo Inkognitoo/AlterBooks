@@ -11,160 +11,151 @@
 @section('title', 'Редактировать книгу')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    {{ t('book', 'Редактирование профиля') }}
+    <div class="edit col-12">
+        <div class="edit-block book-edit">
+            <div class="edit-block-header">
+                <hr class="edit-block-header__hr">
+                <div class="edit-block-header__title">
+                    информация&nbsp;о&nbsp;книге
                 </div>
+                <hr class="edit-block-header__hr">
+            </div>
 
-                <div class="panel-body">
+            <form class="edit-block__main"
+                  method="POST"
+                  action="{{ route('book.edit', ['id' => $book->slug]) }}"
+                  enctype="multipart/form-data">
 
-                    <div id="notify-place"></div>
+                {{ csrf_field() }}
 
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
+                @if (session('status'))
+                    <div class="edit-block-status__container">
+                        <div class="edit-block-status edit-block-status_correct">
                             {{ session('status') }}
                         </div>
-                    @endif
-
-                    <form class="form-horizontal" method="POST" action="{{ route('book.edit', ['id' => $book->slug]) }}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <label for="title" class="col-md-4 control-label">
-                                {{ t('book', 'Название') }}
-                            </label>
-
-                            <div class="col-md-6">
-                                <input id="title" type="text" class="form-control" name="title"
-                                       value="{{ old('title', $book->title) }}" autofocus>
-
-                                @if ($errors->has('title'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('title') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                    </div>
+                @endif
+                @foreach (($errors->all()) as $error)
+                    <div class="edit-block-status__container">
+                        <div class="edit-block-status edit-block-status_error">
+                            {{ $error }}
                         </div>
+                    </div>
+                @endforeach
 
-                        <div class="form-group{{ $errors->has('cover') ? ' has-error' : '' }}">
-                            <label for="cover" class="col-md-4 control-label">
-                                {{ t('book', 'Обложка') }}
-                            </label>
+                <div class="edit-block-element">
+                    <label class="edit-block-element__title"
+                           for="title">
+                        Название
+                    </label>
+                    <div class="edit-block-element__content">
+                        <input class="edit-block-element__content_input"
+                               type="text"
+                               id="title"
+                               name="title"
+                               maxlength="50"
 
-                            <div class="col-md-6">
-                                <input id="cover" type="file" class="form-control" name="cover">
-
-                                @if ($errors->has('cover'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('cover') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                               value="{{ old('title', $book->title) }}">
+                        <div class="edit-block-element__size">
+                            15 / 50
                         </div>
-
-                        <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
-                            <label for="text" class="col-md-4 control-label">
-                                {{ t('book', 'Текст книги') }}
-                            </label>
-
-                            <div class="col-md-6">
-                                <input id="text" type="file" class="form-control" name="text" {{ $book->is_processing ? 'disabled' : null }}>
-
-                                @if ($errors->has('text'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('text') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                            <label for="description" class="col-md-4 control-label">
-                                {{ t('book', 'Описание') }}
-                            </label>
-
-                            <div class="col-md-6">
-                                <textarea id="description" class="book-edit-description form-control" name="description" rows="5">{{ old('description_plain', $book->description_plain) }}</textarea>
-                                @if ($errors->has('description'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('description') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('genres') ? ' has-error' : '' }}">
-                            <label for="genres" class="col-md-4 control-label">
-                                {{ t('book', 'Жанры') }}
-                            </label>
-
-                            <div class="col-md-6">
-                                @foreach(\App\Models\Genre::all() as $genre)
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="genres[]"
-                                                   value="{{ $genre->slug }}"
-                                                   {{ $book->hasGenre($genre) ? 'checked' : null }} >
-                                            {{ $genre->name }}
-                                        </label>
-                                    </div>
-                                @endforeach
-
-                                @if ($errors->has('genres'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('genres') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                            <label for="status" class="col-md-4 control-label">
-                                {{ t('book', 'Статус') }}
-                            </label>
-
-                            <div class="col-md-6">
-                                <select id="status" class="form-control" name="status">
-                                    <option value="{{ \App\Models\Book::STATUS_CLOSE }}"
-                                            {{ old('status', $book->status) == \App\Models\Book::STATUS_CLOSE ? 'selected' : '' }} >
-                                        {{ t('book', 'Черновик (видите только вы)') }}
-                                    </option>
-                                    <option value="{{ \App\Models\Book::STATUS_OPEN }}"
-                                            {{ old('status', $book->status) == \App\Models\Book::STATUS_OPEN ? 'selected' : ''}} >
-                                        {{ t('book', 'Чистовик (видят все)') }}
-                                    </option>
-                                </select>
-
-                                @if ($errors->has('status'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('status') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ t('book.button', 'Сохранить') }}
-                                </button>
-                                <a type="button" href="{{ $book->url}}" class="btn btn-primary">
-                                    {{ t('book.button', 'К профилю') }}
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <div class="edit-block-element edit-block-element_string">
+                    <label class="edit-block-element__title"
+                           for="change_text">
+                        Текст книги
+                    </label>
+                    <div class="edit-block-element__content">
+                        <input type="file"
+                               id="change_text"
+                               name="text">
+                    </div>
+                </div>
+
+                <div class="edit-block-element">
+                    <label class="edit-block-element__title"
+                           for="change_status">
+                        Статус
+                    </label>
+                    <select class="edit-block-element__content edit-block-element__content_select"
+                            id="status"
+                            name="status">
+                        <option value="{{ \App\Models\Book::STATUS_OPEN }}"
+                                {{ old('status', $book->status) == \App\Models\Book::STATUS_OPEN ? 'selected' : ''}}>
+                            чистовик (видят все)
+                        </option>
+                        <option value="{{ \App\Models\Book::STATUS_CLOSE }}"
+                                {{ old('status', $book->status) == \App\Models\Book::STATUS_CLOSE ? 'selected' : '' }}>
+                            черновик (видите только вы)
+                        </option>
+                    </select>
+                </div>
+
+                <div class="edit-block-element">
+                    <div class="edit-block-element__title">
+                        Жанры
+                    </div>
+                    <div class="edit-block-element__content">
+
+                        <div class="edit-block-element__content_checkbox">
+                            @foreach(\App\Models\Genre::all() as $genre)
+                                <div class="edit-block-element__checkbox">
+                                    <label for="genre-{{ $genre->id }}"
+                                           class="col-xs-12 checkbox">
+                                        <input type="checkbox"
+                                               class="checkbox__field"
+                                               id="genre-{{ $genre->id }}"
+                                               name="genres[]"
+                                               value="{{ $genre->slug }}"
+                                                {{ $book->hasGenre($genre) ? 'checked' : null }} >
+                                        <span class="checkbox-animation">
+                                            <span class="checkbox-animation__button"></span>
+                                            <span class="checkbox-animation__icon"></span>
+                                            <span class="checkbox-animation__ripple"></span>
+                                        </span>
+                                        <span class="checkbox__content">
+                                            {{ $genre->name }}
+                                        </span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-block-element edit-block-element_wide">
+                    <div class="edit-block-header">
+                        <hr class="edit-block-header__hr">
+                        <label class="edit-block-header__title"
+                               for="date">
+                            описание&nbsp;книги
+                        </label>
+                        <hr class="edit-block-header__hr">
+                    </div>
+                    <div class="edit-block-element__content edit-block-element__content_wide">
+                            <textarea class="edit-block-element__content_date"
+                                      type="date"
+                                      id="date"
+                                      name="description"
+                                      placeholder="Введите описание">{{ old('description_plain', $book->description_plain) }}</textarea>
+                    </div>
+                </div>
+
+                <div class="edit-block_buttons row row-center">
+                    <input  class="edit-block-element__button edit-block-element__button_sm button button_green "
+                            type="submit"
+                            value="сохранить">
+                    <a class="edit-block-element__button edit-block-element__button_sm button"
+                       href="{{ $book->url }}">
+                        вернуться к профилю
+                    </a>
+                </div>
+
+            </form>
         </div>
     </div>
-</div>
 @endsection
 
 <script>
