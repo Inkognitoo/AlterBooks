@@ -18,6 +18,7 @@ import axios from 'axios';
         header_output.innerText = String(67 - header_length);
 
         review_field_header.oninput = function () {
+            review_field_header.dataset.hasError = 'false';
             header_length = review_field_header.value.length;
             header_output.innerText = String(67 - header_length);
         };
@@ -29,7 +30,11 @@ import axios from 'axios';
 
             let review_header = document.getElementById('review-header-content');
             let review_text = document.getElementById('review-text-content');
+
             let review_field_text = document.getElementById('er-content');
+            review_field_text.oninput = function () {
+                review_field_text.dataset.hasError = 'false';
+            };
 
             review_field_header.value = review_header.innerText;
             review_field_text.value = review_text.innerText;
@@ -58,8 +63,8 @@ import axios from 'axios';
                     .then(function (response) {
                         showReview(rating);
                     })
-                    .catch(function (error) {
-                        console.log(error);
+                    .catch(function (response) {
+                        showErrors(response.errors);
                     });
             }
 
@@ -72,7 +77,7 @@ import axios from 'axios';
              * @returns {Promise<any>}
              */
             function restoreApiReview(book_id, id, rating) {
-                let url = `/api/v1/book/${book_id}/review/id${id}/edit`;
+                let url = `/api/v1/book/${book_id}/review/${id}/edit`;
 
                 let header = review_field_header.value;
                 let text = review_field_text.value;
@@ -116,6 +121,36 @@ import axios from 'axios';
                 });
                 document.getElementById('rating-header').innerHTML = rating.toFixed(1);
                 document.getElementsByClassName('review-rating')[0].dataset.rating = rating;
+            }
+
+            /**
+             * Показываем ошибки, возникшие при редактировании рецензии
+             */
+            function showErrors(errors) {
+                let element = null;
+                let element_error = null;
+
+                Array.prototype.forEach.call(errors, function(error){
+                    switch (error.name) {
+                        case 'rating':
+                            element = document.getElementById('er-header');
+                            break;
+                        case 'header':
+                            element = document.getElementById('er-header');
+                            break;
+                        case 'text':
+                            element = document.getElementById('er-content');
+                            break;
+                    }
+
+                    element_error = element;
+                    while ((element_error.nodeType !== 1) || (!element_error.classList.contains('review-new-form__error'))) {
+                        element_error = element_error.nextSibling;
+                    }
+
+                    element.dataset.hasError = 'true';
+                    element_error.innerHTML = error.message;
+                });
             }
         })
     }
