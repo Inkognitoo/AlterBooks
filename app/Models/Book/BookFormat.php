@@ -11,7 +11,7 @@ interface BookFormat
      *
      * @return mixed
      */
-    public function convert();
+    public function convert(): void;
 
     /**
      * Вернуть экземпляр книги относящийся к текущему книжному формату
