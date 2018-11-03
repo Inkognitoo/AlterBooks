@@ -6,6 +6,8 @@ use App\Models\Book;
 
 interface BookFormat
 {
+    public const PAGE_SIZE = 10000; //символы
+
     /**
      * Конвертировать текущий формат в формат AlterBooks-а
      *
