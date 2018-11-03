@@ -36,6 +36,7 @@ class Txt implements BookFormat
 
     /**
      * Txt constructor.
+     *
      * @param Book $book
      * @param string $text_path
      */
@@ -57,6 +58,7 @@ class Txt implements BookFormat
 
     /**
      * Конвертация текста книги в формат AlterBooks-а
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function convert(): void
@@ -83,14 +85,13 @@ class Txt implements BookFormat
             $page_number++;
             $chapter_id = $chapter->id;
 
-            //TODO: глав может быть несколько. Сделать рекурсией
             if ($this->haveChapterIn($page)) {
                 $page = $this->getTextBeforeChapter($page);
 
                 Page::create([
                     'book_id' => $this->book->id,
                     'chapter_id' => $chapter_id,
-                    'number' => $page_number++,
+                    'number' => $page_number,
                     'text' => $page
                 ]);
                 $text = mb_substr($text, mb_strlen($page) - 1);
@@ -101,10 +102,10 @@ class Txt implements BookFormat
                     'number' => ++$chapter_number,
                     'name' => $chapter_name
                 ]);
-                $chapter_id = $chapter->id;
 
                 $text = mb_substr($text, mb_strpos($text, $chapter_name) + mb_strlen($chapter_name));
-                $page = $this->getPage($text);
+
+                continue;
             }
 
             Page::create([
@@ -192,6 +193,12 @@ class Txt implements BookFormat
         return $this->getPage($text, $size);
     }
 
+    /**
+     * Получить название текущей главы
+     *
+     * @param string $text
+     * @return string
+     */
     private function getChapter(string $text): string
     {
         preg_match(self::CHAPTER_PATTERN, $text, $chapter, PREG_OFFSET_CAPTURE);
