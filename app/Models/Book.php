@@ -507,6 +507,15 @@ class Book extends Model
     }
 
     /**
+     * Удалить весь текст книги
+     *
+     */
+    public function purgeText(): void
+    {
+       $this->chapters()->delete();
+    }
+
+    /**
      * Список, содержащий подсказки для текущего title (ищет наиболее схожие названия книг)
      *
      * @param string $title
