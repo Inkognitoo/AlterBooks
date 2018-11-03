@@ -10,6 +10,104 @@
 
 namespace App\Models{
 /**
+ * App\Models\Page
+ *
+ * @property int $id
+ * @property int $book_id
+ * @property int $chapter_id
+ * @property int $number
+ * @property string $text
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Book $book
+ * @property Chapter $chapter
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Page whereBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Page whereChapterId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Page whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Page whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Page whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Page whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Page whereUpdatedAt($value)
+ */
+	class Page extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\ReviewEstimate
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $review_id
+ * @property int $estimate
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Models\Review $review
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereEstimate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereReviewId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereUserId($value)
+ * @mixin \Eloquent
+ */
+	class ReviewEstimate extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Chapter
+ *
+ * @property int $id
+ * @property int $book_id
+ * @property int $number
+ * @property string $name
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Book $book
+ * @property Page[] $pages
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Chapter whereBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Chapter whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Chapter whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Chapter whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Chapter whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Chapter whereUpdatedAt($value)
+ */
+	class Chapter extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Genre
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre findSimilarSlugs($attribute, $config, $slug)
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre withoutTrashed()
+ */
+	class Genre extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Review
  *
  * @property int $id
@@ -18,6 +116,7 @@ namespace App\Models{
  * @property string $text_plain Текст рецензии как он есть в бд
  * @property int $user_id
  * @property int $book_id
+ * @property string $header Заголовок рецензии
  * @property \Carbon\Carbon|null $deleted_at
  * @property \Carbon\Carbon|null $created_at Дата создания сущности в соотвествии с часовым поясом пользователя
  * @property \Carbon\Carbon|null $created_at_plain Дата создания сущности как она есть в бд
@@ -41,7 +140,6 @@ namespace App\Models{
  * @method static bool|null restore()
  * @mixin \Eloquent
  * @property int $tone
- * @property string|null $header
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereHeader($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Review whereTone($value)
  */
@@ -50,68 +148,100 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\User
+ * App\Models\Book
  *
  * @property int $id
- * @property string|null $name
- * @property string $email
- * @property string $password
- * @property string|null $remember_token
- * @property string|null $surname
- * @property string|null $patronymic
- * @property string $gender
- * @property string $nickname
- * @property Carbon|null $birthday_date
- * @property string|null $birthday_date_plain
- * @property string|null $avatar Название аватарки пользователя
- * @property string $avatar_path Путь до аватара пользователя в рамках Amazon S3
- * @property string $avatar_url Ссылка на аватар пользователя
- * @property string $url Ссылка на пользователя
- * @property string $full_name ФИО пользователя
- * @property string $timezone таймзона пользователя
- * @property string $about Информация "О себе" с переводами строки заменёными на <br>
- * @property string $about_plain Информация "О себе" как она есть в бд
- * @property string $api_token Токен пользователя для api запросов
+ * @property string|null $title
+ * @property string|null $description Описание книги с переводами строки заменёными на <br>
+ * @property string|null $description_plain Описание книги как оно есть в бд
+ * @property string|null $cover Название обложки книги
+ * @property string $status Статус текущей книги (черновик/чистовик)
+ * @property int $author_id
+ * @property int $mongodb_book_id Идентификатор документа в MongoDB
+ * @property int $page_count Количество страниц в книге
+ * @property string $cover_path Путь до обложки книги в рамках файловой системы
+ * @property string $cover_url Ссылка на обложку книги
+ * @property string $url Ссылка на книгу
+ * @property string $status_css css класс соответствующий текущему статусу книги
  * @property float $rating Средняя оценка книги
+ * @property string $slug Имя книги для формирования url
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books Список книг созданных пользователем
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $libraryBooks Список книг добавленных пользователем в свою библиотеку
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReviewEstimate[] $reviewEstimates Оценки к рецензиями оставленные пользователем
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property-read \App\Models\User $author
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users Коллекция пользователей добавивших к себе книгу
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
- * @property-read string $canonical_url Каноничный (основной, постоянный) url пользователя
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirthdayDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNickname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePatronymic($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSurname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAbout($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereApiToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereTimezone($value)
- * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User findByIdOrSlug($id, $slug_name = null)
- * @property bool $is_admin
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIsAdmin($value)
- * @property string $last_activity_at
- * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
+ * @property-read string $canonical_url Каноничный (основной, постоянный) url книги
+ * @property-write mixed $text
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCover($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereMongodbBookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book wherePageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withoutTrashed()
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User onlyTrashed()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLastActivityAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
+ * @mixin Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findByIdOrSlug($id, $slug_name = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereSlug($value)
+ * @property bool $is_processing
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereIsProcessing($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Chapter[] $chapters
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Page[] $pages
  */
-	class User extends \Eloquent {}
+	class Book extends \Eloquent {}
+}
+
+namespace App\Models\Search{
+/**
+ * Class SearchResult
+ *
+ * @package App\Models\Search
+ * @property int $per_page
+ * @property int $page_count
+ * @property int $current_page
+ * @property array $filtered
+ * @property array $sorted
+ * @property Collection $items
+ * @property int $total
+ */
+	class SearchResult extends \Eloquent {}
+}
+
+namespace App\Models\Admin{
+/**
+ * Class Genre
+ *
+ * @package App\Models\Admin
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
+ * @property-read string $html_create_for
+ * @property-read string $html_edit_for
+ * @property-read string $html_view_for
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereUpdatedAt($value)
+ */
+	class Genre extends \Eloquent {}
 }
 
 namespace App\Models\Admin{
@@ -150,6 +280,58 @@ namespace App\Models\Admin{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Review whereUserId($value)
  */
 	class Review extends \Eloquent {}
+}
+
+namespace App\Models\Admin{
+/**
+ * Class Book
+ *
+ * @package App\Models\Admin
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property string $cover
+ * @property int $author_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $page_count
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property string $status
+ * @property string $slug
+ * @property bool $is_processing
+ * @property-read \App\Models\User $author
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Chapter[] $chapters
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
+ * @property-read string $canonical_url
+ * @property-read string $cover_path
+ * @property-read string $cover_url
+ * @property-read string $description_plain
+ * @property-read string $html_create_for
+ * @property-read string $html_edit_for
+ * @property-read string $html_view_for
+ * @property-read float $rating
+ * @property-read string $status_css
+ * @property-read string $url
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Page[] $pages
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
+ * @property-write mixed $text
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findByIdOrSlug($id, $slug_name = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereCover($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereIsProcessing($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book wherePageCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereUpdatedAt($value)
+ */
+	class Book extends \Eloquent {}
 }
 
 namespace App\Models\Admin\Search\Helper{
@@ -242,187 +424,69 @@ namespace App\Models\Admin{
 	class User extends \Eloquent {}
 }
 
-namespace App\Models\Admin{
-/**
- * Class Book
- *
- * @package App\Models\Admin
- * @property int $id
- * @property string $title
- * @property string $description
- * @property string $cover
- * @property int $author_id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property string|null $mongodb_book_id
- * @property int $page_count
- * @property \Carbon\Carbon|null $deleted_at
- * @property string $status
- * @property string $slug
- * @property bool $is_processing
- * @property-read \App\Models\User $author
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
- * @property-read string $canonical_url
- * @property-read string $cover_path
- * @property-read string $cover_url
- * @property-read string $description_plain
- * @property-read string $html_create_for
- * @property-read string $html_edit_for
- * @property-read string $html_view_for
- * @property-read float $rating
- * @property-read string $status_css
- * @property-read string $url
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
- * @property-write mixed $text
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findByIdOrSlug($id, $slug_name = null)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereCover($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereIsProcessing($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereMongodbBookId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book wherePageCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Book whereUpdatedAt($value)
- */
-	class Book extends \Eloquent {}
-}
-
-namespace App\Models\Admin{
-/**
- * Class Genre
- *
- * @package App\Models\Admin
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property string|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
- * @property-read string $html_create_for
- * @property-read string $html_edit_for
- * @property-read string $html_view_for
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admin\Genre whereUpdatedAt($value)
- */
-	class Genre extends \Eloquent {}
-}
-
 namespace App\Models{
 /**
- * App\Models\Book
+ * App\Models\User
  *
  * @property int $id
- * @property string|null $title
- * @property string|null $description Описание книги с переводами строки заменёными на <br>
- * @property string|null $description_plain Описание книги как оно есть в бд
- * @property string|null $cover Название обложки книги
- * @property string $status Статус текущей книги (черновик/чистовик)
- * @property int $author_id
- * @property int $mongodb_book_id Идентификатор документа в MongoDB
- * @property int $page_count Количество страниц в книге
- * @property string $cover_path Путь до обложки книги в рамках Amazon S3
- * @property string $cover_url Ссылка на обложку книги
- * @property string $url Ссылка на книгу
- * @property string $status_css css класс соответствующий текущему статусу книги
+ * @property string|null $name
+ * @property string $email
+ * @property string $password
+ * @property string|null $remember_token
+ * @property string|null $surname
+ * @property string|null $patronymic
+ * @property string $gender
+ * @property string $nickname
+ * @property Carbon|null $birthday_date
+ * @property string|null $birthday_date_plain
+ * @property Carbon|null $last_activity_at Время последнего действия пользователя
+ * @property string|null $avatar Название аватарки пользователя
+ * @property string $avatar_path Путь до аватара пользователя в рамках файлового хранилища
+ * @property string $avatar_url Ссылка на аватар пользователя
+ * @property string $url Ссылка на пользователя
+ * @property string $full_name ФИО пользователя
+ * @property string $timezone таймзона пользователя
+ * @property string $about Информация "О себе" с переводами строки заменёными на <br>
+ * @property string $about_plain Информация "О себе" как она есть в бд
+ * @property string $api_token Токен пользователя для api запросов
  * @property float $rating Средняя оценка книги
- * @property string $slug Имя книги для формирования url
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property \Carbon\Carbon|null $deleted_at
- * @property-read \App\Models\User $author
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users Коллекция пользователей добавивших к себе книгу
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books Список книг созданных пользователем
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $libraryBooks Список книг добавленных пользователем в свою библиотеку
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ReviewEstimate[] $reviewEstimates Оценки к рецензиями оставленные пользователем
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
- * @property-read string $canonical_url Каноничный (основной, постоянный) url книги
- * @property-write mixed $text
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCover($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Book onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereMongodbBookId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book wherePageCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereStatus($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Book withoutTrashed()
- * @method static bool|null forceDelete()
- * @method static bool|null restore()
- * @mixin Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findByIdOrSlug($id, $slug_name = null)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereSlug($value)
- * @property bool $is_processing
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Book whereIsProcessing($value)
- */
-	class Book extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\Genre
- *
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Book[] $books
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereUpdatedAt($value)
+ * @property-read string $canonical_url Каноничный (основной, постоянный) url пользователя
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirthdayDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereNickname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePatronymic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSurname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereApiToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereTimezone($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User findByIdOrSlug($id, $slug_name = null)
+ * @property bool $is_admin
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereIsAdmin($value)
  * @property string|null $deleted_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre findSimilarSlugs($attribute, $config, $slug)
  * @method static bool|null forceDelete()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User onlyTrashed()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Genre whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Genre withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLastActivityAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  */
-	class Genre extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\ReviewEstimate
- *
- * @property int $id
- * @property int $user_id
- * @property int $review_id
- * @property int $estimate
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property-read \App\Models\Review $review
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereEstimate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereReviewId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ReviewEstimate whereUserId($value)
- * @mixin \Eloquent
- */
-	class ReviewEstimate extends \Eloquent {}
+	class User extends \Eloquent {}
 }
 

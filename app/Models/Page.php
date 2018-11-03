@@ -18,11 +18,21 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'book_id', 'chapter_id', 'number',
+        'text'
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function book()
     {
-        return $this->belongsTo('App\Book');
+        return $this->belongsTo(Book::class);
     }
 
     /**
@@ -30,6 +40,6 @@ class Page extends Model
      */
     public function chapter()
     {
-        return $this->belongsTo('App\Chapter');
+        return $this->belongsTo(Chapter::class);
     }
 }

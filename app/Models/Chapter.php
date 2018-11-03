@@ -18,11 +18,20 @@ class Chapter extends Model
 {
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'book_id', 'number', 'name'
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function book()
     {
-        return $this->belongsTo('App\Book');
+        return $this->belongsTo(Book::class);
     }
 
     /**
@@ -30,6 +39,6 @@ class Chapter extends Model
      */
     public function pages()
     {
-        return $this->hasMany('App\Page');
+        return $this->hasMany(Page::class);
     }
 }
