@@ -13,7 +13,6 @@ use File;
  */
 class Txt implements BookFormat
 {
-    protected const PAGE_SIZE = 10000; //символы
 
     /**
      * Паттерн для поиска глав
@@ -165,11 +164,33 @@ class Txt implements BookFormat
      *
      * @param string $text
      * @param int $size
+     * @param bool $smart_end Искать окончание страницы
      * @return string
      */
-    private function getPage(string $text, int $size = self::PAGE_SIZE): string
+    private function getPage(string $text, int $size = self::PAGE_SIZE, bool $smart_end = true): string
     {
-        return mb_substr($text, 0, $size);
+        /** @var int $max_offset Максимальное количество символов на которое можно сместиться при поиск конца строки */
+        $max_offset = 15;
+        /** @var array $end_page_symbols Символы подразумевающие собой конец строки */
+        $end_page_symbols = [".", "\t", "\n", " "];
+
+        $page = mb_substr($text, 0, $size);
+
+        if ($smart_end) {
+            for ($i = 1; $i < $max_offset; $i++) {
+                $last_symbol = mb_substr($page, -1);
+                if (\in_array($last_symbol, $end_page_symbols, false)) {
+                    break;
+                }
+
+                $page = mb_substr($text, 0, $size + $i);
+            }
+            if ($i === $max_offset) {
+                $page .= '-';
+            }
+        }
+
+        return $page;
     }
 
     /**
@@ -190,7 +211,7 @@ class Txt implements BookFormat
         //по этому расстояние в символах до начала главы получаем вот так.
         $size = (int)mb_strlen(substr($text, 0, $chapter[0][1]));
 
-        return $this->getPage($text, $size);
+        return $this->getPage($text, $size, false);
     }
 
     /**
