@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use App\Models\Book;
 use Illuminate\Database\Seeder;
 
 class LibraryTestSeeder extends Seeder
@@ -11,10 +13,11 @@ class LibraryTestSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\User::class, 10)->create()->each(function ($u) {
-            $count = rand(1, 5);
+        factory(User::class, 10)->create()->each(function ($user) {
+            $count = random_int(1, 5);
             for ($i = 0; $i < $count; $i++) {
-                $u->books()->save(factory(App\Models\Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]));
+                /** @var User $user */
+                $user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
             }
         });
     }

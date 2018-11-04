@@ -13,9 +13,11 @@ use Faker\Generator as Faker;
 |
 */
 
+/* @var Illuminate\Database\Eloquent\Factory $factory */
+
 $factory->define(App\Models\User::class, function (Faker $faker) {
     $genders = [\App\Models\User::GENDER_MALE, \App\Models\User::GENDER_FEMALE, \App\Models\User::GENDER_NOT_INDICATED];
-    $gender = $genders[rand(0, count($genders) - 1)];
+    $gender = $genders[random_int(0, count($genders) - 1)];
 
     switch ($gender) {
         case \App\Models\User::GENDER_FEMALE:
@@ -39,7 +41,7 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'patronymic' => mb_convert_encoding($patronymic, 'UTF-8'),
         'birthday_date' => $faker->date(),
         'gender' => $gender,
-        'about' => mb_convert_encoding($faker->realText(rand(100, 300)), 'UTF-8'),
+        'about' => mb_convert_encoding($faker->realText(random_int(100, 300)), 'UTF-8'),
         'email' => $faker->unique()->safeEmail,
         'password' => 'secret',
         'remember_token' => str_random(10),
