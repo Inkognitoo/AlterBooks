@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Library;
+namespace Tests\Feature\Library;
 
 use App\Models\Book;
 use App\Models\User;

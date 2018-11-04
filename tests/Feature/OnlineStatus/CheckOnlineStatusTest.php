@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\OnlineStatus;
+namespace Tests\Feature\OnlineStatus;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
