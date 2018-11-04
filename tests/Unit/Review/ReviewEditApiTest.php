@@ -27,8 +27,8 @@ class ReviewEditApiTest extends TestCase
         $this->seed(ReviewEditTestSeeder::class);
 
         /** @var User $person */
-        $person = factory(User::class)->create();
-        $review = factory(Review::class)->create()->where('user_id', $person->id);
+        $person = User::inRandomOrder()->first();
+        $review = $person->reviews()->inRandomOrder()->first();
 
         $headers = [
             'Authorization' => 'Bearer ' . $person->api_token
@@ -36,22 +36,22 @@ class ReviewEditApiTest extends TestCase
 
         do {
             $review_rating = rand(1, 10);
-        } while ($review_rating !== $review->rating);
+        } while ($review_rating == $review->rating);
 
         do {
             $review_header = mb_convert_encoding($this->faker->realText(rand(20, 67)), 'UTF-8');
-        } while ($review_header !== $review->header);
+        } while ($review_header == $review->header);
 
         do {
             $review_text = mb_convert_encoding($this->faker->realText(rand(100, 500)), 'UTF-8');
-        } while ($review_text !== $review->text);
+        } while ($review_text == $review->text);
 
 
-        $response = $this->put(route('api.review.edit', ['rating' => $review_rating, 'header' => $review_header, 'text' => $review_text]), [], $headers);
+        $response = $this->put(route('api.review.edit', ['book_id' => $review->book_id, 'id' => $review->id]), ['rating' => $review_rating, 'header' => $review_header, 'text' => $review_text], $headers);
         $response->assertJson([
             'success' => true
         ]);
-        $this->assertDatabaseHas('review', [
+        $this->assertDatabaseHas('reviews', [
             'id' => $review->id,
             'rating' => $review_rating,
             'header' => $review_header,
