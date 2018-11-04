@@ -37,8 +37,4 @@ then
 
     echo -e "\n\033[1;36mКомипилирую js и css для разработки\033[0m\n"
     npm run dev
-
-    # Блок работы с python
-    echo -e "\n\033[1;36mВыкачиваю зависимости для python\033[0m\n"
-    pip install -r python/requirements.txt --upgrade --user
 fi
