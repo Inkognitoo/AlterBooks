@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Middleware\CheckUserCanReview;
-use App\Http\Middleware\IsBookExist;
 use Auth;
-use App\Models\Book;
 use App\Http\Controllers\Controller;
-use App\Models\Review;
-use App\Http\Middleware\CheckUserReviewGranted;
-use App\Exceptions\ApiException;
+use App\Http\Middleware\Api\CanUserReview;
+use App\Http\Middleware\IsBookExist;
 use App\Http\Middleware\IsReviewExist;
+use App\Http\Middleware\CheckUserReviewGranted;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\HasNotUserReviewToBook;
 use App\Http\Middleware\Api\HasUserDeletedReviewToBook;
+use App\Http\Requests\Api\ReviewEditRequest;
 use App\Http\Requests\ReviewCreateRequest;
+use App\Models\Book;
+use App\Models\Review;
 
 class ReviewController extends Controller
 {
@@ -25,7 +25,8 @@ class ReviewController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(CheckUserCanReview::class)->only('create');
+
+        $this->middleware(CanUserReview::class)->only('create');
 
         $this->middleware(IsBookExist::class)->only('create');
 
@@ -127,15 +128,14 @@ class ReviewController extends Controller
     /**
      * Редактируем рецензию
      *
-     * @param ReviewCreateRequest $request
+     * @param ReviewEditRequest $request
      * @param mixed $book_id
      * @param int $id
-     * @return array
      * @throws \Exception
      */
-    public function edit(ReviewCreateRequest $request, $book_id, $id)
+    public function edit(ReviewEditRequest $request, $book_id, $id)
     {
-        $review = Review::where('user_id', Auth::user()->id)
+        $review = Auth::user()->reviews()
             ->where('book_id', $book_id)
             ->orderBy('updated_at', 'desc')
             ->first()
@@ -143,13 +143,5 @@ class ReviewController extends Controller
 
         $review->fill($request->all());
         $review->save();
-
-        $response = [
-            'success' => true,
-            'data' => null,
-            'errors' => [],
-        ];
-
-        return $response;
     }
 }

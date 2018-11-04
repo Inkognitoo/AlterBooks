@@ -97,7 +97,9 @@
             <div class="review-new-form-rating__text">
                 Оценка
             </div>
-            <div class="review-new-stars">
+            <div class="review-new-stars"
+                 id="er-rating"
+                 data-has-error="false">
 
                 @for ($i = 10; $i >= 1; $i--)
                     <input class="review-new-stars__element"
@@ -117,7 +119,9 @@
 
                 <div class="review-new-form-rating__number"></div>
             </div>
+            <div class="review-new-form__error"></div>
         </div>
+
         <div class="review-new-form__field">
             <input type="text"
                    id="er-header"
@@ -126,8 +130,7 @@
                    placeholder="Заголовок рецензии"
                    data-input-type="nr-field"
                    data-has-error="false"
-                   value="{{ $review->header }}"
-                   required>
+                   value="{{ $review->header }}">
             <div class="review-new-form__message">
                 осталось символов: <span id="review-edit-form__remain">67</span>
             </div>
@@ -135,13 +138,13 @@
                 укажите заголовок рецензии
             </div>
         </div>
+
         <div class="review-new-form__field">
             <textarea id="er-content"
                       name="text"
                       placeholder="Текст рецензии"
                       data-input-type="er-field"
-                      data-has-error="false"
-                      required>{!! $review->text !!}</textarea>
+                      data-has-error="false">{!! $review->text !!}</textarea>
             <div class="review-new-form__error">
                 напишите текст рецензии
             </div>
