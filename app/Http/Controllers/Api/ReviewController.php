@@ -135,8 +135,7 @@ class ReviewController extends Controller
      */
     public function edit(ReviewEditRequest $request, $book_id, $id)
     {
-
-        $review = Review::where('user_id', Auth::user()->id)
+        $review = Auth::user()->reviews()
             ->where('book_id', $book_id)
             ->orderBy('updated_at', 'desc')
             ->first()

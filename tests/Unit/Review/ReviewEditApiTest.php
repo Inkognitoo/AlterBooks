@@ -22,29 +22,30 @@ class ReviewEditApiTest extends TestCase
      * Успешное редактирование рецензии
      *
      * @return void
-    */
+     * @throws \Exception
+     */
     public function testReviewEditSuccess() {
         $this->seed(ReviewEditTestSeeder::class);
 
-        /** @var User $person */
-        $person = User::inRandomOrder()->first();
-        $review = $person->reviews()->inRandomOrder()->first();
+        /** @var User $user */
+        $user = User::inRandomOrder()->first();
+        $review = $user->reviews()->inRandomOrder()->first();
 
         $headers = [
-            'Authorization' => 'Bearer ' . $person->api_token
+            'Authorization' => 'Bearer ' . $user->api_token
         ];
 
         do {
-            $review_rating = rand(1, 10);
-        } while ($review_rating == $review->rating);
+            $review_rating = random_int(1, 10);
+        } while ($review_rating === $review->rating);
 
         do {
             $review_header = mb_convert_encoding($this->faker->realText(rand(20, 67)), 'UTF-8');
-        } while ($review_header == $review->header);
+        } while ($review_header === $review->header);
 
         do {
             $review_text = mb_convert_encoding($this->faker->realText(rand(100, 500)), 'UTF-8');
-        } while ($review_text == $review->text);
+        } while ($review_text === $review->text);
 
 
         $response = $this->put(route('api.review.edit', ['book_id' => $review->book_id, 'id' => $review->id]), ['rating' => $review_rating, 'header' => $review_header, 'text' => $review_text], $headers);

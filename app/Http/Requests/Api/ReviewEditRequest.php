@@ -65,7 +65,7 @@ class ReviewEditRequest extends ApiRequest
         return [
             'rating.required' => 'оценка книги обязательна для заполнения',
             'rating.integer' => 'оценка книги должна быть целым числом',
-            'rating.between' => 'дайте книге оценку от 1 до 10',
+            'rating.between' => 'дайте книге оценку от :min до :max',
             'header.required' => 'заголовок рецензии обязателен для заполнения',
             'header.max' => 'заголовок рецензии слишком длинных (более 67 символов)',
             'text.required' => 'текст рецензии обязателен для заполнения',
