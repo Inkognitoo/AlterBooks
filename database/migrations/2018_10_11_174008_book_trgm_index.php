@@ -25,6 +25,6 @@ class BookTrgmIndex extends Migration
     public function down()
     {
         DB::statement('DROP INDEX IF EXISTS books_name_trigram CASCADE');
-//        DB::statement('DROP EXTENSION IF EXISTS pg_trgm');
+        DB::statement('DROP EXTENSION IF EXISTS pg_trgm');
     }
 }
