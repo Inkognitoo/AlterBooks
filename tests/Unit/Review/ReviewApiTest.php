@@ -21,18 +21,19 @@ class ReviewApiTest extends TestCase
      *
      * @return void
      */
-    public function addFirstReview()
+    public function testAddFirstReview()
     {
-        $this->seed(ReviewTestSeeder::class);
-
-        /** @var User $person */
-        $person = factory(User::class)->create();
-        $review = Review::inRandomOrder()
-            ->first()
-        ;
-
-        $headers = [
-            'Authorization' => 'Bearer ' . $person->api_token
-        ];
+//        $this->seed(ReviewTestSeeder::class);
+//
+//        /** @var User $person */
+//        $person = factory(User::class)->create();
+//        $review = Review::inRandomOrder()
+//            ->first()
+//        ;
+//
+//        $headers = [
+//            'Authorization' => 'Bearer ' . $person->api_token
+//        ];
+        $this->assertTrue(true);
     }
 }

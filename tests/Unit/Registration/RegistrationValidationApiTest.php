@@ -63,13 +63,13 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testEmaiAlreadyExistslFail()
     {
-        /** @var User $person */
-        $person = factory(User::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
 
         $url_name = 'api.registration.validate';
 
         $params = [
-            'email' => $person->email,
+            'email' => $user->email,
         ];
 
         $response = $this->post(route($url_name), $params);
@@ -90,12 +90,12 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testEmailExistsCaseFail()
     {
-        /** @var User $person */
-        $person = factory(User::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
 
         $url_name = 'api.registration.validate';
 
-        $email = $person->email;
+        $email = $user->email;
         $email{0} = ctype_upper($email{0}) ?
             mb_convert_case($email{0}, MB_CASE_LOWER, "UTF-8") :
             mb_convert_case($email{0}, MB_CASE_UPPER, "UTF-8");
@@ -185,13 +185,13 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testNicknameFail()
     {
-        /** @var User $person */
-        $person = factory(User::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
 
         $url = 'api.registration.validate';
 
         $params = [
-            'nickname' => $person->nickname,
+            'nickname' => $user->nickname,
         ];
 
         $response = $this->post(route($url), $params);
@@ -212,12 +212,12 @@ class RegistrationValidationApiTest extends TestCase
      */
     public function testNicknameCaseFail()
     {
-        /** @var User $person */
-        $person = factory(User::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
 
         $url = 'api.registration.validate';
 
-        $nickname = $person->nickname;
+        $nickname = $user->nickname;
         $nickname{0} = ctype_upper($nickname{0}) ?
             mb_convert_case($nickname{0}, MB_CASE_LOWER, "UTF-8") :
             mb_convert_case($nickname{0}, MB_CASE_UPPER, "UTF-8");
