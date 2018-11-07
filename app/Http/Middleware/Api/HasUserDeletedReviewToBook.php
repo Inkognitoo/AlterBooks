@@ -9,7 +9,8 @@ use Illuminate\Http\Response;
 use App\Models\Review;
 
 /**
- * Проверям, отсутствуют ли у пользователя активные рецензии
+ * Проверям, есть ли у пользователя удаленные рецензии на данную книгу
+ *
  *
  * Class HasUserDeletedReviewToBook
  * @package App\Http\Middleware\Api
@@ -28,11 +29,7 @@ class HasUserDeletedReviewToBook
     {
         $book_id = $request->book_id ?? $request->id;
 
-
-        //TODO: исправить на получение через данные пользователя
-//        $review_deleted = Auth::user()->reviews()->history()->onlyTrashed()->where('book_id', $book_id)->exists();
-
-        $review_deleted = Review::onlyTrashed()->where('user_id', Auth::user()->id)->where('book_id', $book_id)->exists();
+        $review_deleted =  Auth::user()->reviews()->onlyTrashed()->where('book_id', $book_id)->exists();
 
         if (!$review_deleted) {
             throw new ApiException('Удаленных рецензий к книге не существует', Response::HTTP_NOT_FOUND);

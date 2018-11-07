@@ -103,26 +103,18 @@ class ReviewController extends Controller
      * Восстанавливаем рецензию
      *
      * @param mixed $book_id
-     * @return array
      * @throws \Exception
      */
     public function restore($book_id)
     {
-        Review::onlyTrashed()
-            ->where('user_id',Auth::user()->id)
-            ->where('book_id',$book_id)
-            ->orderBy('deleted_at','desc')
+        Auth::user()
+            ->reviews()
+            ->onlyTrashed()
+            ->where('book_id', $book_id)
+            ->latest('deleted_at')
             ->first()
             ->restore()
         ;
-
-        $response = [
-            'success' => true,
-            'data' => null,
-            'errors' => [],
-        ];
-
-        return $response;
     }
 
     /**
