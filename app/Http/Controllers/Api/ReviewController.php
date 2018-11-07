@@ -88,7 +88,7 @@ class ReviewController extends Controller
             ->orderBy('updated_at', 'desc')
             ->first()
         ;
-        $review -> delete();
+        $review->delete();
 
         $response = [
             'success' => true,
