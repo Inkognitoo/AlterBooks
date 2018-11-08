@@ -8,7 +8,6 @@ use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use ReviewRestoreTestSeeder;
 
 class ReviewRestoreApiTest extends TestCase
 {
