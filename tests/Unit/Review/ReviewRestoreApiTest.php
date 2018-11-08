@@ -23,20 +23,19 @@ class ReviewRestoreApiTest extends TestCase
      * @throws \Exception
      */
     public function testReviewRestoreSuccess() {
-        $this->seed(ReviewRestoreTestSeeder::class);
 
         /** @var User $user */
-        $user = User::inRandomOrder()->first();
+        $user = factory(User::class)->create();
 
-        do {
-            $alter_user = User::inRandomOrder()->first();
-        } while ($user === $alter_user);
+        /** @var User $alter_user */
+        $alter_user = factory(User::class)->create();
 
-        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]));
+        /** @var Book $book*/
+        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
 
+        /** @var Review $review*/
         $review = $user->reviews()->save(factory(Review::class)->make([
-            'book_id' => $book->id,
-            'user_id' => $user->id
+            'book_id' => $book->id
         ]));
         $review->delete();
 
@@ -61,20 +60,19 @@ class ReviewRestoreApiTest extends TestCase
      * @throws \Exception
      */
     public function testActiveExistDeletedNotExistFail() {
-        $this->seed(ReviewRestoreTestSeeder::class);
 
         /** @var User $user */
-        $user = User::inRandomOrder()->first();
+        $user = factory(User::class)->create();
 
-        do {
-            $alter_user = User::inRandomOrder()->first();
-        } while ($user === $alter_user);
+        /** @var User $alter_user */
+        $alter_user = factory(User::class)->create();
 
-        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]));
+        /** @var Book $book*/
+        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
 
+        /** @var Review $review*/
         $review = $user->reviews()->save(factory(Review::class)->make([
-            'book_id' => $book->id,
-            'user_id' => $user->id
+            'book_id' => $book->id
         ]));
 
         $headers = [
@@ -94,33 +92,32 @@ class ReviewRestoreApiTest extends TestCase
      * @throws \Exception
      */
     public function testActiveExistDeletedExistFail() {
-        $this->seed(ReviewRestoreTestSeeder::class);
 
         /** @var User $user */
-        $user = User::inRandomOrder()->first();
+        $user = factory(User::class)->create();
 
-        do {
-            $alter_user = User::inRandomOrder()->first();
-        } while ($user === $alter_user);
+        /** @var User $alter_user */
+        $alter_user = factory(User::class)->create();
 
-        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]));
+        /** @var Book $book*/
+        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
 
-        $review_delete = $user->reviews()->save(factory(Review::class)->make([
+        /** @var Review $review_deleted*/
+        $review_deleted = $user->reviews()->save(factory(Review::class)->make([
             'book_id' => $book->id,
             'user_id' => $user->id
         ]));
-        $review_delete->delete();
+        $review_deleted->delete();
 
-        $review = $user->reviews()->save(factory(Review::class)->make([
-            'book_id' => $book->id,
-            'user_id' => $user->id
+        $user->reviews()->save(factory(Review::class)->make([
+            'book_id' => $book->id
         ]));
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->put(route('api.review.restore', ['book_id' => $review_delete->book_id]), [], $headers);
+        $response = $this->put(route('api.review.restore', ['book_id' => $review_deleted->book_id]), [], $headers);
         $response->assertJson([
             'success' => false
         ]);
@@ -133,16 +130,15 @@ class ReviewRestoreApiTest extends TestCase
      * @throws \Exception
      */
     public function testReviewsNotExistFail() {
-        $this->seed(ReviewRestoreTestSeeder::class);
 
         /** @var User $user */
-        $user = User::inRandomOrder()->first();
+        $user = factory(User::class)->create();
 
-        do {
-            $alter_user = User::inRandomOrder()->first();
-        } while ($user === $alter_user);
+        /** @var User $alter_user */
+        $alter_user = factory(User::class)->create();
 
-        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]));
+        /** @var Book $book*/
+        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token
