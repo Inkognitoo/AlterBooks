@@ -11,7 +11,7 @@
                 <div class="book-list-element__main">
                     <div class="row">
                         <a class="book-list-element__title col-8 col-lg-12 col-sm-clear"
-                           v-bind:href="book.author.url">
+                           v-bind:href="book.url">
                             {{ book.title }}
                         </a>
 

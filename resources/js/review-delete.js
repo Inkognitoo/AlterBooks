@@ -39,8 +39,7 @@ import axios from 'axios';
      * @returns {Promise<any>}
      */
     function deleteApiReview(id, book_id) {
-        console.log(book_id);
-        let url = `/api/v1/book/${book_id}/review/id${id}/delete`;
+        let url = `/api/v1/book/${book_id}/review/${id}/delete`;
 
         return new Promise(function (resolve, reject) {
             request.delete(url)

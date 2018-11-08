@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Book;
+use App\Models\Genre;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ReviewEditTestSeeder extends Seeder
@@ -11,38 +15,32 @@ class ReviewEditTestSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\User::class, 10)->create()->each(function ($u) {
-            $count = rand(1, 5);
+        /** @var User $user */
+
+        factory(User::class, 10)->create()->each(function ($user) {
+            $count = random_int(1, 5);
             for ($i = 0; $i < $count; $i++) {
-                $u->books()->save(factory(App\Models\Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]));
+                $user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
             }
 
 
-            $genres = \App\Models\Genre::all();
+            $genres = Genre::all();
             if (filled($genres)) {
-                $u->books->each(function ($book) use ($genres) {
+                $user->books->each(function ($book) use ($genres) {
                     $book->genres()->attach(
-                        $genres->random(rand(1, $genres->count()))->pluck('id')->toArray()
+                        $genres->random(random_int(1, $genres->count()))->pluck('id')->toArray()
                     );
                 });
             }
 
-            $count = rand(1, 5);
+            $count = random_int(1, 5);
             for ($i = 0; $i < $count; $i++) {
-                $book = \App\Models\Book::inRandomOrder()->where('author_id', '!=', $u->id)->first();
+                $book = Book::inRandomOrder()->where('author_id', '!=', $user->id)->first();
                 if (filled($book)) {
-                    $u->reviews()->save(factory(App\Models\Review::class)->make([
-                        'book_id' => $book->id,
-                        'user_id' => $u->id
+                    $user->reviews()->save(factory(Review::class)->make([
+                        'book_id' => $book->id
                     ]));
                 }
-            }
-
-            $review = \App\Models\Review::inRandomOrder()->where('user_id', '!=', $u->id)->first();
-            if (filled($review)) {
-                $review->reviewEstimates()->save(factory(App\Models\ReviewEstimate::class)->make([
-                    'user_id' => $u->id
-                ]));
             }
         });
     }
