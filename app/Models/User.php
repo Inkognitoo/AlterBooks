@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Blog\Article;
 use App\Notifications\ResetPasswordNotification;
 use App\Traits\FindByIdOrSlugMethod;
 use Carbon\Carbon;
@@ -163,6 +164,16 @@ class User extends Authenticatable
     public function reviewEstimates(): HasMany
     {
         return $this->hasMany(ReviewEstimate::class, 'user_id');
+    }
+
+    /**
+     * Статьи блога, автором которых является текущий пользователь
+     *
+     * @return HasMany
+     */
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class, 'author_id');
     }
 
     /**
