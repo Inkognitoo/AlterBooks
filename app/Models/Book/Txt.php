@@ -3,10 +3,9 @@
 namespace App\Models\Book;
 
 use App\Models\Book;
-use MongoDB;
-use MongoDB\BSON\ObjectID;
+use App\Models\Chapter;
+use App\Models\Page;
 use File;
-use Storage;
 
 /**
  * Class Txt
@@ -14,6 +13,11 @@ use Storage;
  */
 class Txt implements BookFormat
 {
+
+    /**
+     * Паттерн для поиска глав
+     */
+    protected const CHAPTER_PATTERN = '/\n([гГ][лЛ][аА][вВ][аА].*)\n/mu';
 
     /**
      * Книга для которой производим обработку
@@ -31,6 +35,7 @@ class Txt implements BookFormat
 
     /**
      * Txt constructor.
+     *
      * @param Book $book
      * @param string $text_path
      */
@@ -45,43 +50,83 @@ class Txt implements BookFormat
      *
      * @return Book
      */
-    public function getBook()
+    public function getBook(): Book
     {
         return $this->book;
     }
 
     /**
      * Конвертация текста книги в формат AlterBooks-а
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function convert()
+    public function convert(): void
     {
         $this->book->is_processing = true;
         $this->book->save();
 
         $text = $this->toEncoding(File::get($this->text_path));
-        $pages = $this->separateIntoPages($text);
-        $this->deleteTmpFile();
 
-        $collection = MongoDB::get()->alterbooks->books;
+        $this->book->purgeText();
 
-        $result = $collection->insertOne([
-            'pages' => $pages,
+        $chapter = Chapter::create([
+            'book_id' => $this->book->id,
+            'number' => 0,
+            'name' => 'Пролог'
         ]);
 
-        if (filled($this->book->mongodb_book_id)) {
-            $collection
-                ->deleteOne(['_id' => new ObjectID($this->book->mongodb_book_id)])
-            ;
-        }
+        $page_number = 0;
+        $chapter_number = 0;
 
-        $this->book->mongodb_book_id = $result->getInsertedId();
+        //TODO: переписать на что-то более изящное
+        do {
+            $page = $this->getPage($text);
+            $page_number++;
+            $chapter_id = $chapter->id;
+
+            if ($this->haveChapterIn($page)) {
+                $page = $this->getTextBeforeChapter($page);
+
+                Page::create([
+                    'book_id' => $this->book->id,
+                    'chapter_id' => $chapter_id,
+                    'number' => $page_number,
+                    'text' => $page
+                ]);
+                $text = mb_substr($text, mb_strlen($page) - 1);
+
+                $chapter_name = $this->getChapter($text);
+                $chapter = Chapter::create([
+                    'book_id' => $this->book->id,
+                    'number' => ++$chapter_number,
+                    'name' => $chapter_name
+                ]);
+
+                $text = mb_substr($text, mb_strpos($text, $chapter_name) + mb_strlen($chapter_name));
+
+                continue;
+            }
+
+            Page::create([
+                'book_id' => $this->book->id,
+                'chapter_id' => $chapter_id,
+                'number' => $page_number,
+                'text' => $page
+            ]);
+
+            $text = mb_substr($text, mb_strlen($page) - 1);
+
+        } while (filled($text));
+
+        $this->deleteTmpFile();
+
+
         $this->book->is_processing = false;
         $this->book->save();
     }
 
     /**
-     * Преобразовать тектовый файл в кодировку UTF-8 и экронировать опасные символы
+     * Преобразовать текстовый файл в кодировку UTF-8 и экранировать опасные символы
      *
      * @param string $raw_text
      * @return string
@@ -105,7 +150,7 @@ class Txt implements BookFormat
         fwrite($temp, $text);
         $path = stream_get_meta_data($temp)['uri'];
 
-        //Для максимально точного определения кодировки испльзуем python скрипт
+        //Для максимально точного определения кодировки используем python скрипт
         $command = escapeshellcmd(base_path('python/encoding.py') . ' ' . $path);
         $encoding = trim(shell_exec($command));
 
@@ -115,64 +160,94 @@ class Txt implements BookFormat
     }
 
     /**
-     * Разбиваем текст на страницы
+     * Получить отдельную страницу из текста
      *
      * @param string $text
-     * @return array
+     * @param int $size
+     * @param bool $smart_end Искать окончание страницы
+     * @return string
      */
-    private function separateIntoPages(string $text): array
+    private function getPage(string $text, int $size = self::PAGE_SIZE, bool $smart_end = true): string
     {
-        $page_size = 1800; //символы
-        $pages = [];
-        $start_symbol_number = 0;
-        $i = 0;
-        do {
-            $i++;
-            $current_page_size = $page_size;
+        /** @var int $max_offset Максимальное количество символов на которое можно сместиться при поиск конца строки */
+        $max_offset = 15;
+        /** @var array $end_page_symbols Символы подразумевающие собой конец строки */
+        $end_page_symbols = [".", "\t", "\n", " "];
 
-            list($page, $current_page_size) = $this->extractPage($text, $start_symbol_number, $current_page_size);
-            $start_symbol_number += $current_page_size;
-            if ($page == '-') {
-                break;
+        $page = mb_substr($text, 0, $size);
+
+        if ($smart_end) {
+            for ($i = 1; $i < $max_offset; $i++) {
+                $last_symbol = mb_substr($page, -1);
+                if (\in_array($last_symbol, $end_page_symbols, false)) {
+                    break;
+                }
+
+                $page = mb_substr($text, 0, $size + $i);
             }
-            $pages[] = [
-                'page' => $i,
-                'text' => $page,
-            ];
-        } while (true);
-
-        $this->book->page_count = $i;
-
-        return $pages;
-    }
-
-    /**
-     * Извлечь отдельную страницу из текста
-     *
-     * @param string $text
-     * @param int $start_symbol_number
-     * @param int $page_size
-     * @return array
-     */
-    private function extractPage(string $text, int $start_symbol_number, int $page_size): array
-    {
-        $attempt_count = 5;
-        for ($i = 0; $i < $attempt_count; $i++) {
-            $divide_symbol = mb_substr($text, $start_symbol_number + $page_size + $i, 1);
-            if ($divide_symbol == ' ') {
-                $page = mb_substr($text, $start_symbol_number, $page_size + $i);
-                return [$page, $page_size + $i];
+            if ($i === $max_offset) {
+                $page .= '-';
             }
         }
 
-        $page = mb_substr($text, $start_symbol_number, $page_size - $attempt_count);
-        return [($page . '-'), $page_size - $attempt_count];
+        return $page;
+    }
+
+    /**
+     * Получить текст до первой главы
+     *
+     * @param string $text
+     * @return null|string
+     */
+    private function getTextBeforeChapter(string $text): string
+    {
+        preg_match(self::CHAPTER_PATTERN, $text, $chapter, PREG_OFFSET_CAPTURE);
+
+        if (empty($text)) {
+            return $text;
+        }
+
+        //Это просто позор, у меня слов нет. PHP за 20 с лишним лет так и не научился по нормальному работать с UTF-8
+        //по этому расстояние в символах до начала главы получаем вот так.
+        $size = (int)mb_strlen(substr($text, 0, $chapter[0][1]));
+
+        return $this->getPage($text, $size, false);
+    }
+
+    /**
+     * Получить название текущей главы
+     *
+     * @param string $text
+     * @return string
+     */
+    private function getChapter(string $text): string
+    {
+        preg_match(self::CHAPTER_PATTERN, $text, $chapter, PREG_OFFSET_CAPTURE);
+
+        if (empty($chapter)) {
+            throw new \RuntimeException('Chapter not found');
+        }
+
+        return $chapter[1][0];
+    }
+
+    /**
+     * Проверить, содержит ли текст признак главы
+     *
+     * @param string $page
+     * @return bool
+     */
+    private function haveChapterIn(string $page): bool
+    {
+        preg_match(self::CHAPTER_PATTERN, $page, $chapter);
+
+        return filled($chapter);
     }
 
     /**
      * Удалить временный файл с текстом
      */
-    private function deleteTmpFile()
+    private function deleteTmpFile(): void
     {
         File::delete($this->text_path);
     }

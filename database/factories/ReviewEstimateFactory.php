@@ -6,6 +6,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\ReviewEstimate::class, function (Faker $faker) {
     return [
-        'estimate' => rand(-1, 1),
+        'estimate' => random_int(-1, 1),
     ];
 });

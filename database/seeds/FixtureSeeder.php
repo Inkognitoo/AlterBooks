@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Genre;
+use App\Models\ReviewEstimate;
 use App\Models\User;
+use App\Models\Book;
+use App\Models\Review;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
@@ -30,16 +34,16 @@ class FixtureSeeder extends Seeder
     {
         $files = File::allFiles(storage_path('seed/books/'));
         $count = 10;
-        factory(App\Models\User::class, $count)->create()->each(function ($user) use ($files) {
+        factory(User::class, $count)->create()->each(function ($user) use ($files) {
             $this->command->info('Перехожу к созданию фейкового пользователя');
 
-            /** @var \App\Models\User $user*/
+            /** @var User $user*/
             $faker = Faker::create();
 
             if (self::WITH_IMAGES) {
                 $this->command->info('Создаю аватару для фейкового пользователя');
 
-                $avatar_path = $faker->image('/tmp', rand(200, 600), rand(200, 600));
+                $avatar_path = $faker->image('/tmp', random_int(200, 600), random_int(200, 600));
                 $avatar = new UploadedFile($avatar_path, 'cat');
 
                 $user->avatar = $avatar;
@@ -48,18 +52,18 @@ class FixtureSeeder extends Seeder
                 $this->command->info('Аватара создана');
             }
 
-            $count = rand(1, 5);
+            $count = random_int(1, 5);
             for ($i = 0; $i < $count; $i++) {
                 $this->command->info('Создаю книгу #' . ($i + 1) . ' для фейкового пользователя');
 
-                /** @var \App\Models\Book $book */
-                $book = factory(App\Models\Book::class)->make(['status' => \App\Models\Book::STATUS_OPEN]);
+                /** @var Book $book */
+                $book = factory(Book::class)->make(['status' => Book::STATUS_OPEN]);
                 $user->books()->save($book);
 
                 if (self::WITH_IMAGES) {
                     $this->command->info('Создаю обложку для книги');
 
-                    $cover_path = $faker->image('/tmp', rand(200, 600), rand(200, 600));
+                    $cover_path = $faker->image('/tmp', random_int(200, 600), random_int(200, 600));
                     $cover = new UploadedFile($cover_path, 'cover');
                     $book->cover = $cover;
                     $book->save();
@@ -86,22 +90,23 @@ class FixtureSeeder extends Seeder
 
             $this->command->info('Заполняю жанры для книг');
 
-            $genres = \App\Models\Genre::all();
+            $genres = Genre::all();
             if (filled($genres)) {
                 $user->books->each(function ($book) use ($genres) {
+                    /** @var Book $book */
                     $book->genres()->attach(
-                        $genres->random(rand(1, $genres->count()))->pluck('id')->toArray()
+                        $genres->random(random_int(1, $genres->count()))->pluck('id')->toArray()
                     );
                 });
             }
 
             $this->command->info('Создаю рецензии');
 
-            $count = rand(1, 5);
+            $count = random_int(1, 5);
             for ($i = 0; $i < $count; $i++) {
-                $book = \App\Models\Book::inRandomOrder()->where('author_id', '!=', $user->id)->first();
+                $book = Book::inRandomOrder()->where('author_id', '!=', $user->id)->first();
                 if (filled($book)) {
-                    $user->reviews()->save(factory(App\Models\Review::class)->make([
+                    $user->reviews()->save(factory(Review::class)->make([
                         'book_id' => $book->id,
                         'user_id' => $user->id
                     ]));
@@ -110,9 +115,9 @@ class FixtureSeeder extends Seeder
 
             $this->command->info('Создаю оценки к чужим книгам от текущего пользователя');
 
-            $review = \App\Models\Review::inRandomOrder()->where('user_id', '!=', $user->id)->first();
+            $review = Review::inRandomOrder()->where('user_id', '!=', $user->id)->first();
             if (filled($review)) {
-                $review->reviewEstimates()->save(factory(App\Models\ReviewEstimate::class)->make([
+                $review->reviewEstimates()->save(factory(ReviewEstimate::class)->make([
                     'user_id' => $user->id
                 ]));
             }

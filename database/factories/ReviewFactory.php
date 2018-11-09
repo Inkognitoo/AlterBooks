@@ -6,8 +6,8 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Review::class, function (Faker $faker) {
     return [
-        'rating' => rand(1, 10),
-        'header' => mb_convert_encoding($faker->realText(rand(20, 67)), 'UTF-8'),
-        'text' => mb_convert_encoding($faker->realText(rand(100, 500)), 'UTF-8'),
+        'rating' => random_int(1, 10),
+        'header' => mb_convert_encoding($faker->realText(random_int(20, 67)), 'UTF-8'),
+        'text' => mb_convert_encoding($faker->realText(random_int(100, 500)), 'UTF-8'),
     ];
 });

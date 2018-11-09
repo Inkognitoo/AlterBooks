@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\OnlineStatus;
+namespace Tests\Feature\OnlineStatus;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -24,10 +24,10 @@ class CheckOnlineStatusTest extends TestCase
      */
     public function testLastActivityIsMoreThenOnlineEnded()
     {
-        $person = factory(User::class)->create();
-        $person->last_activity_at = Carbon::parse($person->last_activity_at)
-            ->subMinutes($person::ONLINE_ENDED + 1);
-        $this->assertFalse($person->isOnline());
+        $user = factory(User::class)->create();
+        $user->last_activity_at = Carbon::parse($user->last_activity_at)
+            ->subMinutes(User::ONLINE_ENDED + 1);
+        $this->assertFalse($user->isOnline());
     }
 
     /**
@@ -37,9 +37,9 @@ class CheckOnlineStatusTest extends TestCase
      */
     public function testLastActivityIsTheCurrentTime()
     {
-        $person = factory(User::class)->create();
-        $person->last_activity_at = Carbon::now();
-        $this->assertTrue($person->isOnline());
+        $user = factory(User::class)->create();
+        $user->last_activity_at = Carbon::now();
+        $this->assertTrue($user->isOnline());
     }
 
     /**
@@ -49,10 +49,10 @@ class CheckOnlineStatusTest extends TestCase
      */
     public function testLastActivityIsLessThenOnlineEnded()
     {
-        $person = factory(User::class)->create();
-        $person->last_activity_at = Carbon::parse($person->last_activity_at)
-            ->subMinutes($person::ONLINE_ENDED - 1);
-        $this->assertTrue($person->isOnline());
+        $user = factory(User::class)->create();
+        $user->last_activity_at = Carbon::parse($user->last_activity_at)
+            ->subMinutes(User::ONLINE_ENDED - 1);
+        $this->assertTrue($user->isOnline());
     }
 
     /**
@@ -62,8 +62,8 @@ class CheckOnlineStatusTest extends TestCase
      */
     public function testLastActivityAtChangeWhenVisitingPages()
     {
-        $person = factory(User::class)->create();
-        Auth::attempt(['email' => $person->email, 'password' => 'secret']);
+        $user = factory(User::class)->create();
+        Auth::attempt(['email' => $user->email, 'password' => 'secret']);
         $last_activity = Auth::user()->last_activity_at;
         sleep(2);
         $this->call('GET', '/');
@@ -79,11 +79,11 @@ class CheckOnlineStatusTest extends TestCase
     {
         $this->seed(LibraryTestSeeder::class);
 
-        /** @var User $person */
-        $person = factory(User::class)->create();
-        Auth::attempt(['email' => $person->email, 'password' => 'secret']);
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        Auth::attempt(['email' => $user->email, 'password' => 'secret']);
 
-        $startPersonLastActivity = Auth::user()->last_activity_at;
+        $start_person_last_activity = Auth::user()->last_activity_at;
 
         $book = Book::inRandomOrder()
             ->first()
@@ -99,6 +99,6 @@ class CheckOnlineStatusTest extends TestCase
 
         $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
 
-        $this->assertTrue($startPersonLastActivity < Auth::user()->last_activity_at);
+        $this->assertTrue($start_person_last_activity < Auth::user()->last_activity_at);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Genre;
 use Illuminate\Database\Seeder;
 
 class GenresTableSeeder extends Seeder
@@ -43,7 +44,7 @@ class GenresTableSeeder extends Seeder
         ];
 
         foreach ($genres as $genre) {
-            $new_genre = \App\Models\Genre::firstOrCreate(['name' => $genre['name'], 'slug' => $genre['slug']]);
+            $new_genre = Genre::firstOrCreate(['name' => $genre['name'], 'slug' => $genre['slug']]);
             $new_genre->save();
         }
 

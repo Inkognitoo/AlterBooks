@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Library;
+namespace Tests\Feature\Library;
 
 use App\Models\Book;
 use App\Models\User;
@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LibraryTestSeeder;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AddBookTest extends TestCase
 {
@@ -25,14 +24,14 @@ class AddBookTest extends TestCase
     {
         $this->seed(LibraryTestSeeder::class);
 
-        /** @var User $person */
-        $person = factory(User::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
         $book = Book::inRandomOrder()
             ->first()
         ;
 
         $headers = [
-            'Authorization' => 'Bearer ' . $person->api_token
+            'Authorization' => 'Bearer ' . $user->api_token
         ];
 
         $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
@@ -40,7 +39,7 @@ class AddBookTest extends TestCase
             'success' => true,
         ]);
         $this->assertDatabaseHas('users_library', [
-            'user_id' => $person->id,
+            'user_id' => $user->id,
             'book_id' => $book->id,
         ]);
     }
@@ -54,14 +53,14 @@ class AddBookTest extends TestCase
     {
         $this->seed(LibraryTestSeeder::class);
 
-        /** @var User $person */
-        $person = factory(User::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
         $book = Book::inRandomOrder()
             ->first()
         ;
 
         $headers = [
-            'Authorization' => 'Bearer ' . $person->api_token
+            'Authorization' => 'Bearer ' . $user->api_token
         ];
 
         $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
@@ -69,7 +68,7 @@ class AddBookTest extends TestCase
             'success' => true,
         ]);
         $this->assertDatabaseHas('users_library', [
-            'user_id' => $person->id,
+            'user_id' => $user->id,
             'book_id' => $book->id,
         ]);
 
@@ -78,7 +77,7 @@ class AddBookTest extends TestCase
             'success' => false,
         ]);
         $this->assertDatabaseHas('users_library', [
-            'user_id' => $person->id,
+            'user_id' => $user->id,
             'book_id' => $book->id,
         ]);
     }
@@ -92,15 +91,15 @@ class AddBookTest extends TestCase
     {
         $this->seed(LibraryTestSeeder::class);
 
-        /** @var User $person */
-        $person = factory(User::class)->create();
+        /** @var User $user */
+        $user = factory(User::class)->create();
         $books = Book::inRandomOrder()
             ->limit(10)
             ->get()
         ;
 
         $headers = [
-            'Authorization' => 'Bearer ' . $person->api_token
+            'Authorization' => 'Bearer ' . $user->api_token
         ];
 
         foreach ($books as $book) {
@@ -109,7 +108,7 @@ class AddBookTest extends TestCase
                 'success' => true,
             ]);
             $this->assertDatabaseHas('users_library', [
-                'user_id' => $person->id,
+                'user_id' => $user->id,
                 'book_id' => $book->id,
             ]);
 
@@ -118,11 +117,9 @@ class AddBookTest extends TestCase
                 'success' => false,
             ]);
             $this->assertDatabaseHas('users_library', [
-                'user_id' => $person->id,
+                'user_id' => $user->id,
                 'book_id' => $book->id,
             ]);
-
-            usleep(500000);
         }
     }
 
@@ -135,15 +132,15 @@ class AddBookTest extends TestCase
     {
         $this->seed(LibraryTestSeeder::class);
 
-        /** @var User $person */
-        $person = factory(User::class, 10)->create()->each(function ($u) {
-            /** @var User $u */
-            $u->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
+        /** @var User $user */
+        $user = factory(User::class, 10)->create()->each(function ($user) {
+            /** @var User $user */
+            $user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
         })->first();
-        $book = $person->books->first();
+        $book = $user->books->first();
 
         $headers = [
-            'Authorization' => 'Bearer ' . $person->api_token
+            'Authorization' => 'Bearer ' . $user->api_token
         ];
 
         $response = $this->post(route('api.library.add', ['id' => "id{$book->id}"]), [], $headers);
@@ -153,7 +150,7 @@ class AddBookTest extends TestCase
         ]);
 
         $this->assertDatabaseMissing('users_library', [
-            'user_id' => $person->id,
+            'user_id' => $user->id,
             'book_id' => $book->id,
         ]);
     }
