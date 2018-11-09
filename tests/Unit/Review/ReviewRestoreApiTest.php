@@ -21,8 +21,8 @@ class ReviewRestoreApiTest extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function testReviewRestoreSuccess() {
-
+    public function testReviewRestoreSuccess()
+    {
         /** @var User $user */
         $user = factory(User::class)->create();
 
@@ -58,8 +58,8 @@ class ReviewRestoreApiTest extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function testActiveExistDeletedNotExistFail() {
-
+    public function testActiveExistDeletedNotExistFail()
+    {
         /** @var User $user */
         $user = factory(User::class)->create();
 
@@ -90,8 +90,8 @@ class ReviewRestoreApiTest extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function testActiveExistDeletedExistFail() {
-
+    public function testActiveExistDeletedExistFail()
+    {
         /** @var User $user */
         $user = factory(User::class)->create();
 
@@ -128,8 +128,8 @@ class ReviewRestoreApiTest extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function testReviewsNotExistFail() {
-
+    public function testReviewsNotExistFail()
+    {
         /** @var User $user */
         $user = factory(User::class)->create();
 

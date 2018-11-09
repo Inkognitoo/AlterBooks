@@ -32,7 +32,8 @@ MVP версия сервиса
 Убедитесь, что у вас установлены docker и docker-compose.   
 Убедитесь, что папка laradock-alterbooks не пуста. В противном случае выполните:   
 `git submodule update --init
-`
+`  
+Так же для обновления можно использовать команду: `git submodule foreach git pull origin master`
 
 Все команды выполняются из корня проекта
 
