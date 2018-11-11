@@ -48,7 +48,7 @@ class ReviewDeleteApiTest extends TestCase
         ]);
         $this->assertDatabaseHas('reviews', [
             'id' => $review->id,
-            'deleted_at' => Carbon::now()
+            'deleted_at' => $review->refresh()->deleted_at
         ]);
     }
 }
