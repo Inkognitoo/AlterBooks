@@ -46,7 +46,6 @@ class ReviewController extends Controller
      *
      * @param ReviewCreateRequest $request
      * @param mixed $book_id
-     * @return array
      * @throws \Exception
      */
     public function create(ReviewCreateRequest $request, $book_id)
@@ -63,14 +62,6 @@ class ReviewController extends Controller
         Auth::user()->reviews()->save($review);
 
         $review->save();
-
-        $response = [
-            'success' => true,
-            'data' => null,
-            'errors' => [],
-        ];
-
-        return $response;
     }
 
     /**
@@ -78,25 +69,17 @@ class ReviewController extends Controller
      *
      * @param mixed $book_id
      * @param int $id
-     * @return array
      * @throws \Exception
      */
     public function delete($book_id, $id)
     {
-        $review = Review::where('user_id', Auth::user()->id)
+        Auth::user()
+            ->reviews()
             ->where('book_id', $book_id)
-            ->orderBy('updated_at', 'desc')
+            ->latest('updated_at')
             ->first()
+            ->delete()
         ;
-        $review->delete();
-
-        $response = [
-            'success' => true,
-            'data' => null,
-            'errors' => [],
-        ];
-
-        return $response;
     }
 
     /**
