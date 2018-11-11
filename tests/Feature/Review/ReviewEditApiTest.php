@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Review;
+namespace Tests\Feature\Review;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
