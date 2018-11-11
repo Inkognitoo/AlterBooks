@@ -18,12 +18,14 @@
                          style="background-image: url('{{ $user->avatar_url }}')"></div>
                     <div class="user-buttons col-12">
                         <div class="row">
-                            @if (Auth::user()->id === $user->id)
-                                <a class="user-buttons__element button col-12"
-                                   href="{{ route('user.edit.show', ['id' => $user->nickname]) }}">
-                                    редактировать
-                                </a>
-                            @endif
+                            @auth
+                                @if (Auth::user()->id === $user->id)
+                                    <a class="user-buttons__element button col-12"
+                                       href="{{ route('user.edit.show', ['id' => $user->nickname]) }}">
+                                        редактировать
+                                    </a>
+                                @endif
+                            @endauth
                         </div>
                     </div>
                 </div>

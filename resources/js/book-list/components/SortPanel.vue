@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="book-list-sort col-12 col-clear">
         <div class="book-list-sort__title">
             сортировать
         </div>
