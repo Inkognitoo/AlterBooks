@@ -25,7 +25,7 @@ class CanUserReview
     {
         $book_id = $request->book_id ?? $request->id;
 
-        if (Auth::user()->id !== Book::findAny($book_id)->author_id) {
+        if (Auth::user()->id === Book::find($book_id)->author_id) {
             return response(view('errors.403'), 403);
         }
 

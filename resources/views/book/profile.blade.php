@@ -224,7 +224,7 @@
                             @include('review.view-self', ['review' => Auth::user()->getBookReview($book)])
                         @else
                             @if(Auth::user()->id !== $book->author_id)
-                                @include('review.create')
+                                @include('review.view-self', ['review' => null, 'book_id' => $book->id])
                             @endif
                         @endif
                     @endauth

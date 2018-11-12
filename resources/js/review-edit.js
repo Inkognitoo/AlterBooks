@@ -133,7 +133,7 @@ import axios from 'axios';
                 Array.prototype.forEach.call(errors, function(error){
                     switch (error.name) {
                         case 'rating':
-                            element = document.getElementById('er-header');
+                            element = document.getElementById('er-rating');
                             break;
                         case 'header':
                             element = document.getElementById('er-header');

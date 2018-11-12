@@ -12,7 +12,7 @@ use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\HasNotUserReviewToBook;
 use App\Http\Middleware\Api\HasUserDeletedReviewToBook;
 use App\Http\Requests\Api\ReviewEditRequest;
-use App\Http\Requests\ReviewCreateRequest;
+use App\Http\Requests\Api\ReviewCreateRequest;
 use App\Models\Book;
 use App\Models\Review;
 
@@ -59,6 +59,7 @@ class ReviewController extends Controller
         }
 
         $review->book_id = Book::findAny($book_id)->id;
+
         Auth::user()->reviews()->save($review);
 
         $review->save();
