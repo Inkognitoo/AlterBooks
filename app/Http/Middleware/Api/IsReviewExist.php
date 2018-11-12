@@ -5,11 +5,12 @@ namespace App\Http\Middleware;
 use App\Models\Book;
 use App\Exceptions\ApiException;
 use App\Models\Review;
+use Auth;
 use Closure;
 use Illuminate\Http\Response;
 
 /**
- * Проверям, существует ли рецензия к книге
+ * Проверям, существует ли рецензия к книге авторизованного пользователя
  *
  * Class IsBookExist
  * @package App\Http\Middleware\Api
@@ -26,9 +27,7 @@ class IsReviewExist
      */
     public function handle($request, Closure $next)
     {
-        $review_id = $request->review_id ?? $request->id;
-
-        $review = Review::find($review_id);
+        $review = Auth::user()->reviews()->where('book_id', $request->book_id)->first();
 
         if(!blank($request->book_id)) {
             $book = Book::find($request->book_id);

@@ -6,7 +6,6 @@
     $header = '';
     $text = '';
     $created_at = \Carbon\Carbon::now();
-    $id = 0;
     $estimate = 0;
 
     if ($review !== null) {
@@ -14,7 +13,6 @@
         $header = $review->header;
         $text = $review->text;
         $created_at = $review->created_at;
-        $id = $review->id;
         $book_id = $review->book_id;
         $estimate = $review->estimate;
     }
@@ -66,7 +64,6 @@
 
                     <a class="review__icon review__icon_delete"
                        id="review-delete"
-                       data-review-id="{{ $id }}"
                        data-book-id="{{ $book_id }}"></a>
 
                     <button class="review__button button"
@@ -181,7 +178,6 @@
                type="submit"
                id="review-edit-save"
                data-book-id="{{ $book_id }}"
-               data-review-id="{{ $id }}"
                value="сохранить">
     </form>
 </div>
