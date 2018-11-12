@@ -7,7 +7,7 @@ use Closure;
 use Auth;
 
 /**
- * Проверяем, имеет ли пользователь право на манипуляции с рецензией
+ * Проверяем, имеет ли пользователь оставлять рецензию к данной книге
  *
  * Class CheckUserBookGranted
  * @package App\Http\Middleware

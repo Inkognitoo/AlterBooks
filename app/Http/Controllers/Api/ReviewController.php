@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\Api\CanUserReview;
 use App\Http\Middleware\IsBookExist;
 use App\Http\Middleware\IsReviewExist;
-use App\Http\Middleware\CheckUserReviewGranted;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\HasNotUserReviewToBook;
 use App\Http\Middleware\Api\HasUserDeletedReviewToBook;

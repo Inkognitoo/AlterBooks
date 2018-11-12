@@ -33,9 +33,7 @@ class ReviewRestoreApiTest extends TestCase
         $book = $alter_user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
 
         /** @var Review $review*/
-        $review = $user->reviews()->save(factory(Review::class)->make([
-            'book_id' => $book->id
-        ]));
+        $review = $user->reviews()->save(factory(Review::class)->make(['book_id' => $book->id]));
         $review->delete();
 
         $headers = [
@@ -70,9 +68,7 @@ class ReviewRestoreApiTest extends TestCase
         $book = $alter_user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
 
         /** @var Review $review*/
-        $review = $user->reviews()->save(factory(Review::class)->make([
-            'book_id' => $book->id
-        ]));
+        $review = $user->reviews()->save(factory(Review::class)->make(['book_id' => $book->id]));
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token
