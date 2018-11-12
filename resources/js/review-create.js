@@ -116,13 +116,19 @@ import axios from "axios";
      * @param {object} createReview содержание рецензии
      */
     function showReview(bookId, createReview) {
-        let showRating = document.getElementsByClassName('review-rating__star');
+        let showRating = document.getElementsByClassName('review-rating__star_show');
         Array.prototype.forEach.call(showRating, function(showRatingElement){
             if (showRatingElement.dataset.number <= createReview.rating) {
                 showRatingElement.classList.add('review-rating__star_active');
             } else {
                 showRatingElement.classList.remove('review-rating__star_active');
             }
+        });
+
+        showRating = document.getElementsByClassName('review-new-stars__element_edit');
+        Array.prototype.forEach.call(showRating, function(showRatingElement){
+            showRatingElement.checked = Number(showRatingElement.value) === createReview.rating;
+            console.log(showRatingElement.checked, createReview.rating);
         });
 
         document.getElementById('rating-header').innerHTML = createReview.rating.toFixed(1);

@@ -30,7 +30,8 @@ class IsReviewExist
         $review = Auth::user()
                   ->reviews()
                   ->where('book_id', $request->book_id)
-                  ->first();
+                  ->first()
+        ;
 
         if(!blank($request->book_id)) {
             $book = Book::find($request->book_id);

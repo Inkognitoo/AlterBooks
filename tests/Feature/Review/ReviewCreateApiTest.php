@@ -71,7 +71,8 @@ class ReviewCreateApiTest extends TestCase
         $user = factory(User::class)->create();
 
         /** @var Book $book*/
-        $book = $user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
+        $book = $user->books()
+                     ->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token
@@ -100,7 +101,8 @@ class ReviewCreateApiTest extends TestCase
         $user = factory(User::class)->create();
 
         /** @var Review $review*/
-        $review = $user->reviews()->save(factory(Review::class)->make(['book_id' => $book->id]));
+        $review = $user->reviews()
+                       ->save(factory(Review::class)->make(['book_id' => $book->id]));
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token
