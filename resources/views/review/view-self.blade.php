@@ -1,26 +1,11 @@
 @php
     /** @var \App\Models\Review $review */
     /** @var int $book_id */
-
-    $rating = 1;
-    $header = '';
-    $text = '';
-    $created_at = \Carbon\Carbon::now();
-    $estimate = 0;
-
-    if ($review !== null) {
-        $rating = $review->rating;
-        $header = $review->header;
-        $text = $review->text;
-        $created_at = $review->created_at;
-        $book_id = $review->book_id;
-        $estimate = $review->estimate;
-    }
 @endphp
 
 
 <div class="review-element"
-     @if($review === null)
+     @if ($review->header === '')
         data-status="close"
      @else
         data-status="open"
@@ -30,20 +15,20 @@
 
     <div class="review-rating"
          id="review-rating"
-         data-rating ="{{ $rating }}">
+         data-rating ="{{ $review->rating }}">
         <div class="review-rating__header"
              id="rating-header">
-            {{ number_format($rating, 1) }}
+            {{ number_format($review->rating, 1) }}
         </div>
         <div class="review-rating-stars">
-            @for ($i = 1; $i <= $rating; $i++)
+            @for ($i = 1; $i <= $review->rating; $i++)
                 <svg class="review-rating__star review-rating__star_active"
                      data-number="{{ $i }}">
                     <polygon points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
                 </svg>
             @endfor
 
-            @for ($i = $rating + 1; $i <= 10; $i++)
+            @for ($i = $review->rating + 1; $i <= 10; $i++)
                 <svg class="review-rating__star"
                      data-number="{{ $i }}">
                     <polygon points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
@@ -57,7 +42,7 @@
             <div class="row">
                 <div class="review__info-box col-12">
                     <div class="review__date">
-                        {{ $created_at->format('d.m.Y') }}
+                        {{ $review->created_at->format('d.m.Y') }}
                     </div>
                     <div class="review__icon review__icon_edit"
                          id="review-edit"></div>
@@ -73,14 +58,14 @@
                     </button>
                 </div>
                 <div class="review-title col-12 col-clear">
-                    <span id="review-header-content">{{ $header }}</span>
+                    <span id="review-header-content">{{ $review->header }}</span>
                     <div class="review-title__shield"
                          id="review-shield"></div>
                 </div>
                 <div class="review-text col-12 col-clear"
                      data-status="close"
                      id="review-text">
-                    <span id="review-text-content">{!! $text !!}</span>
+                    <span id="review-text-content">{!! $review->text !!}</span>
                     <div class="review-text__block" id="review-text-block"></div>
                     <button class="review-text__more" id="review-text-more">
                         читать далее
@@ -91,7 +76,7 @@
                         &minus;
                     </button>
                     <div class="review-grade__value">
-                        {{ $estimate }}
+                        {{ $review->estimate }}
                     </div>
                     <button class="review-grade__button" disabled>
                         &plus;
@@ -104,7 +89,7 @@
 </div>
 
 <!-- Создание рецензии -->
-@if ($review === null)
+@if ($review->header === '')
     @include ('review.create', ['book_id' => $book_id])
 @endif
 
@@ -132,7 +117,7 @@
                            id="er-{{ $i }}"
                            name="rating"
                            value="{{ $i }}"
-                           {{ $i === $rating ? 'checked' : ''}}>
+                           {{ $i === $review->rating ? 'checked' : ''}}>
                     <label class="review-new-stars__star"
                            for="er-{{ $i }}">
                         <svg class="review-rating__star review-rating__star_active">
@@ -155,7 +140,7 @@
                    placeholder="Заголовок рецензии"
                    data-input-type="nr-field"
                    data-has-error="false"
-                   value="{{ $header }}">
+                   value="{{ $review->header }}">
             <div class="review-new-form__message">
                 осталось символов: <span id="review-edit-form__remain">67</span>
             </div>
@@ -169,7 +154,7 @@
                       name="text"
                       placeholder="Текст рецензии"
                       data-input-type="er-field"
-                      data-has-error="false">{!! $text !!}</textarea>
+                      data-has-error="false">{!! $review->text !!}</textarea>
             <div class="review-new-form__error">
                 напишите текст рецензии
             </div>

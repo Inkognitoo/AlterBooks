@@ -221,10 +221,18 @@
                 <div class="block-content-main">
                     @auth
                         @if(Auth::user()->hasBookReview($book))
-                            @include('review.view-self', ['review' => Auth::user()->getBookReview($book)])
+                            @include('review.view-self', ['review' => Auth::user()->getBookReview($book), 'book_id' => $book->id])
                         @else
                             @if(Auth::user()->id !== $book->author_id)
-                                @include('review.view-self', ['review' => null, 'book_id' => $book->id])
+                                @include('review.view-self',
+                                            ['review' => (object)[
+                                                'rating' => 1,
+                                                'header' => '',
+                                                'text' => '',
+                                                'created_at' => \Carbon\Carbon::now(),
+                                                'estimate' => 0
+                                            ],
+                                        'book_id' => $book->id])
                             @endif
                         @endif
                     @endauth

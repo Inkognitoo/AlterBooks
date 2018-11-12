@@ -6,7 +6,6 @@ use App\Models\Book;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -35,24 +34,28 @@ class ReviewCreateApiTest extends TestCase
      */
     public function testReviewCreateSuccess()
     {
-        /** @var User $user */
-        $user = factory(User::class)->create();
-
         /** @var Book $book*/
         $book = Book::inRandomOrder()->first();
+
+        /** @var User $user */
+        $user = factory(User::class)->create();
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post(route('api.review.create', ['book_id' => $book->id]), ['rating' => 2, 'header' => 'header', 'text' => 'review text'], $headers);
+        $rating = 2;
+        $header = 'header';
+        $text = 'review text';
+
+        $response = $this->post(route('api.review.create', ['book_id' => $book->id]), ['rating' => $rating, 'header' => $header, 'text' => $text], $headers);
         $response->assertJson([
             'success' => true
         ]);
         $this->assertDatabaseHas('reviews', [
-            'rating' => 2,
-            'header' => 'header',
-            'text' => 'review text'
+            'rating' => $rating,
+            'header' => $header,
+            'text' => $text
         ]);
     }
 
@@ -74,7 +77,11 @@ class ReviewCreateApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post(route('api.review.create', ['book_id' => $book->id]), ['rating' => 2, 'header' => 'header', 'text' => 'review text'], $headers);
+        $rating = 2;
+        $header = 'header';
+        $text = 'review text';
+
+        $response = $this->post(route('api.review.create', ['book_id' => $book->id]), ['rating' => $rating, 'header' => $header, 'text' => $text], $headers);
         $response->assertStatus(403);
     }
 
@@ -86,11 +93,11 @@ class ReviewCreateApiTest extends TestCase
      */
     public function testActiveReviewAlreadyExistFail()
     {
-        /** @var User $user */
-        $user = factory(User::class)->create();
-
         /** @var Book $book*/
         $book = Book::inRandomOrder()->first();
+
+        /** @var User $user */
+        $user = factory(User::class)->create();
 
         /** @var Review $review*/
         $review = $user->reviews()->save(factory(Review::class)->make(['book_id' => $book->id]));
@@ -99,7 +106,11 @@ class ReviewCreateApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post(route('api.review.create', ['book_id' => $book->id]), ['rating' => 2, 'header' => 'header', 'text' => 'review text'], $headers);
+        $rating = 2;
+        $header = 'header';
+        $text = 'review text';
+
+        $response = $this->post(route('api.review.create', ['book_id' => $book->id]), ['rating' => $rating, 'header' => $header, 'text' => $text], $headers);
         $response->assertJson([
             'success' => false
         ]);

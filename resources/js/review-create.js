@@ -71,7 +71,7 @@ import axios from "axios";
             text: createContent.value
         };
 
-        restoreApiReview(bookId, createReview)
+        createApiReview(bookId, createReview)
             .then(function (response) {
                 showReview(bookId, createReview);
             })
@@ -87,7 +87,7 @@ import axios from "axios";
      * @param {object} createReview содержание рецензии
      * @returns {Promise<any>}
      */
-    function restoreApiReview(bookId, createReview) {
+    function createApiReview(bookId, createReview) {
         let url = `/api/v1/book/${bookId}/review/create`;
 
         return new Promise(function (resolve, reject) {

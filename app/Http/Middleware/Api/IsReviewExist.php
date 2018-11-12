@@ -27,7 +27,10 @@ class IsReviewExist
      */
     public function handle($request, Closure $next)
     {
-        $review = Auth::user()->reviews()->where('book_id', $request->book_id)->first();
+        $review = Auth::user()
+                  ->reviews()
+                  ->where('book_id', $request->book_id)
+                  ->first();
 
         if(!blank($request->book_id)) {
             $book = Book::find($request->book_id);
