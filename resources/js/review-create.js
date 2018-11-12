@@ -24,35 +24,6 @@ import axios from "axios";
             };
         })
     });
-
-    let review_self = document.getElementById('review-self');
-    let review_new = document.getElementById('review-create');
-    let review_text = document.getElementById('review-text');
-
-    function newReviewForm() {
-        let header_length = 0;
-        let header = document.getElementById('create-header');
-        let output_header = document.getElementById('review-new-form__remain');
-        if (header.value === '') {
-            header.setAttribute('data-has-error', 'true');
-        }
-        header.oninput = function () {
-            header.setAttribute('data-has-error', 'false');
-            header_length = this.value.length;
-            output_header.innerHTML = String(67 - header_length);
-        };
-
-        let content = document.getElementById('create-content');
-        if (content.value === '') {
-            content.setAttribute('data-has-error', 'true');
-        }
-        content.oninput = function () {
-            content.setAttribute('data-has-error', 'false');
-        };
-
-        review_new.setAttribute('data-status', 'close');
-        review_self.setAttribute('data-status', 'open');
-    }
 })();
 
 
@@ -87,7 +58,7 @@ import axios from "axios";
 
         let createRatingGroup = document.getElementsByName('create-rating');
         let createRating = 0;
-        Array.prototype.forEach.call(createRatingGroup, function(createRatingElement){
+        Array.prototype.forEach.call(createRatingGroup, function(createRatingElement) {
             createRating = parseInt(createRatingElement.checked ? createRatingElement.value: createRating);
         });
 
