@@ -7,12 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\Api\CanUserReview;
 use App\Http\Middleware\IsBookExist;
 use App\Http\Middleware\IsReviewExist;
-use App\Http\Middleware\CheckUserReviewGranted;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\Api\HasNotUserReviewToBook;
 use App\Http\Middleware\Api\HasUserDeletedReviewToBook;
 use App\Http\Requests\Api\ReviewEditRequest;
-use App\Http\Requests\ReviewCreateRequest;
+use App\Http\Requests\Api\ReviewCreateRequest;
 use App\Models\Book;
 use App\Models\Review;
 
@@ -31,8 +30,6 @@ class ReviewController extends Controller
         $this->middleware(IsBookExist::class)->only('create');
 
         $this->middleware(IsReviewExist::class)->only(['delete', 'edit']);
-
-        $this->middleware(CheckUserReviewGranted::class)->only(['delete', 'edit']);
 
         $this->middleware(HasNotUserReviewToBook::class)->only(['create', 'restore']);
 
@@ -59,6 +56,7 @@ class ReviewController extends Controller
         }
 
         $review->book_id = Book::findAny($book_id)->id;
+
         Auth::user()->reviews()->save($review);
 
         $review->save();
@@ -68,10 +66,9 @@ class ReviewController extends Controller
      * Удаляем рецензию
      *
      * @param mixed $book_id
-     * @param int $id
      * @throws \Exception
      */
-    public function delete($book_id, $id)
+    public function delete($book_id)
     {
         Auth::user()
             ->reviews()
@@ -108,7 +105,7 @@ class ReviewController extends Controller
      * @param int $id
      * @throws \Exception
      */
-    public function edit(ReviewEditRequest $request, $book_id, $id)
+    public function edit(ReviewEditRequest $request, $book_id)
     {
         $review = Auth::user()->reviews()
             ->where('book_id', $book_id)

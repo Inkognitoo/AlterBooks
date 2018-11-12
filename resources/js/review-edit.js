@@ -50,7 +50,6 @@ import axios from 'axios';
              */
             function saveReview() {
                 let book_id = parseInt(this.dataset.bookId);
-                let id = parseInt(this.dataset.reviewId);
 
                 let rating = 0;
                 let rating_field = document.getElementsByName('rating');
@@ -59,7 +58,7 @@ import axios from 'axios';
 
                 });
 
-                restoreApiReview(book_id, id, rating)
+                restoreApiReview(book_id, rating)
                     .then(function (response) {
                         showReview(rating);
                     })
@@ -71,13 +70,12 @@ import axios from 'axios';
             /**
              * Api запрос для изменения рецензии
              *
-             * @param {int} id идентификатор рецензии
              * @param {int} book_id идентификатор книги
              * @param {int} rating рейтинг рецензии
              * @returns {Promise<any>}
              */
-            function restoreApiReview(book_id, id, rating) {
-                let url = `/api/v1/book/${book_id}/review/${id}/edit`;
+            function restoreApiReview(book_id, rating) {
+                let url = `/api/v1/book/${book_id}/review/edit`;
 
                 let header = review_field_header.value;
                 let text = review_field_text.value;
@@ -133,7 +131,7 @@ import axios from 'axios';
                 Array.prototype.forEach.call(errors, function(error){
                     switch (error.name) {
                         case 'rating':
-                            element = document.getElementById('er-header');
+                            element = document.getElementById('er-rating');
                             break;
                         case 'header':
                             element = document.getElementById('er-header');

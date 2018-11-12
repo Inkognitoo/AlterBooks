@@ -28,6 +28,7 @@ class HasNotUserReviewToBook
         $book_id = $request->book_id ?? $request->id;
 
         $review_active = Auth::user()->reviews()->where('book_id', $book_id)->exists();
+
         if ($review_active) {
             throw new ApiException('Существуют активные рецензии к книге', Response::HTTP_NOT_FOUND);
         }

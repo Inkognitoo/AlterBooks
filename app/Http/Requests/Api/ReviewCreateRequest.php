@@ -3,15 +3,15 @@
 namespace App\Http\Requests\Api;
 
 /**
- * Проверяем данные для редактирования рецензии
+ * Валидируем запрос на создание рецензии
  *
- * Class RegisterValidateRequest
+ * App\Http\Requests\ReviewCreateRequest
  *
  * @property int $rating
  * @property string $text
  * @property string $header
  */
-class ReviewEditRequest extends ApiRequest
+class ReviewCreateRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +22,7 @@ class ReviewEditRequest extends ApiRequest
     {
         return true;
     }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -64,4 +65,6 @@ class ReviewEditRequest extends ApiRequest
             'text.max' => 'текст рецензии слишком длинный (более :max символов)'
         ];
     }
+
+
 }

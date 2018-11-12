@@ -37,7 +37,7 @@ import axios from 'axios';
      * @returns {Promise<any>}
      */
     function restoreApiReview(book_id) {
-        let url = `/api/v1/review/${book_id}/restore`;
+        let url = `/api/v1/book/${book_id}/review/restore`;
 
         return new Promise(function (resolve, reject) {
             request.put(url)

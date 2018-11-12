@@ -1,14 +1,20 @@
 @php
     /** @var \App\Models\Review $review */
+    /** @var int $book_id */
 @endphp
 
 
 <div class="review-element"
-     data-status="open"
+     @if ($review->header === '')
+        data-status="close"
+     @else
+        data-status="open"
+     @endif
      data-auth="true"
      id="review-self">
 
     <div class="review-rating"
+         id="review-rating"
          data-rating ="{{ $review->rating }}">
         <div class="review-rating__header"
              id="rating-header">
@@ -16,14 +22,14 @@
         </div>
         <div class="review-rating-stars">
             @for ($i = 1; $i <= $review->rating; $i++)
-                <svg class="review-rating__star review-rating__star_active"
+                <svg class="review-rating__star review-rating__star_show review-rating__star_active"
                      data-number="{{ $i }}">
                     <polygon points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
                 </svg>
             @endfor
 
             @for ($i = $review->rating + 1; $i <= 10; $i++)
-                <svg class="review-rating__star"
+                <svg class="review-rating__star review-rating__star_show"
                      data-number="{{ $i }}">
                     <polygon points="11,0 14.23,6.55  21.46,7.6  16.23,12.7 17.47,19.9 11,16.5 4.53,19.9 6.77,12.7 0.54,7.6 7.77,6.55"></polygon>
                 </svg>
@@ -43,8 +49,7 @@
 
                     <a class="review__icon review__icon_delete"
                        id="review-delete"
-                       data-review-id="{{ $review->id }}"
-                       data-book-id="{{ $review->book_id }}"></a>
+                       data-book-id="{{ $book_id }}"></a>
 
                     <button class="review__button button"
                             id="review-restore"
@@ -83,7 +88,12 @@
     <hr class="review-element__hr">
 </div>
 
-<!-- Редактирование рецензии -->
+<!-- Создание рецензии -->
+@if ($review->header === '')
+    @include ('review.create', ['book_id' => $book_id])
+@endif
+
+<!-- Редактирование и рецензии -->
 <div class="review-new"
      data-status="close"
      id="review-edit-module">
@@ -102,7 +112,7 @@
                  data-has-error="false">
 
                 @for ($i = 10; $i >= 1; $i--)
-                    <input class="review-new-stars__element"
+                    <input class="review-new-stars__element review-new-stars__element_edit"
                            type="radio"
                            id="er-{{ $i }}"
                            name="rating"
@@ -152,8 +162,7 @@
         <input class="review-new-form__button button"
                type="submit"
                id="review-edit-save"
-               data-book-id="{{ $review->book_id }}"
-               data-review-id="{{ $review->id }}"
+               data-book-id="{{ $book_id }}"
                value="сохранить">
     </form>
 </div>

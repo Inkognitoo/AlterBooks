@@ -7,7 +7,7 @@ use Closure;
 use Auth;
 
 /**
- * Проверяем, имеет ли пользователь право на манипуляции с рецензией
+ * Проверяем, имеет ли пользователь право оставлять рецензию к данной книге
  *
  * Class CheckUserBookGranted
  * @package App\Http\Middleware
@@ -25,7 +25,11 @@ class CanUserReview
     {
         $book_id = $request->book_id ?? $request->id;
 
-        if (Auth::user()->id !== Book::findAny($book_id)->author_id) {
+        if (is_numeric($book_id)) {
+            $book_id = 'id' . $book_id;
+        }
+
+        if (Auth::user()->id === Book::findAny($book_id)->author_id) {
             return response(view('errors.403'), 403);
         }
 
