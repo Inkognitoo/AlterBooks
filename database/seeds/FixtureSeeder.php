@@ -5,6 +5,7 @@ use App\Models\ReviewEstimate;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Review;
+use App\Models\Blog\Article;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Http\UploadedFile;
@@ -86,6 +87,17 @@ class FixtureSeeder extends Seeder
                 }
 
                 $this->command->info('Книга создана');
+            }
+
+            $count = random_int(1, 5);
+            for ($i = 0; $i < $count; $i++) {
+                $this->command->info('Создаю статью #' . ($i + 1) . ' для фейкового пользователя');
+
+                /** @var Article $article */
+                $article = factory(Article::class)->make();
+                $user->articles()->save($article);
+
+                $this->command->info('Статья создана');
             }
 
             $this->command->info('Заполняю жанры для книг');
