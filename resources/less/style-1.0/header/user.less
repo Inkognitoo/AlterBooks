@@ -15,6 +15,10 @@
 
     font-size: 14px;
 
+    &:focus {
+        outline: none !important;
+    }
+
     &:after {
         content: "";
         position: absolute;
@@ -55,6 +59,7 @@
 
     &-namespace {
         margin-left: 10px;
+        color: black;
 
         &__name,
         &__nickname {
@@ -164,10 +169,10 @@
             font-size: 12px;
         }
     }
-}
 
-.header-main-buttons__element_user-active:checked + * + .header-user {
-    display: block;
+    &[data-status="open"] {
+        display: block;
+    }
 }
 
 .header-main-buttons[data-auth="false"] .header-user {

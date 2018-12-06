@@ -2,8 +2,29 @@
 
 import axios from 'axios';
 
-// Api
 (function () {
+    // Show / hide user profile
+    let headerProfile = document.getElementsByClassName('header-user')[0];
+    let headerProfileButton = document.getElementsByClassName('header-main-buttons__element_user')[0];
+
+    if (headerProfile !== null) {
+        headerProfile.onfocus = function () {
+            headerProfile.dataset.status = 'open';
+        };
+
+        headerProfile.onblur = function () {
+            headerProfile.dataset.status = 'close';
+        };
+
+        headerProfileButton.onfocus = function () {
+            if (headerProfile.dataset.status === 'close') {
+                headerProfile.dataset.status = 'open';
+                headerProfile.focus();
+            }
+        };
+    }
+
+    // Api
     let auth_button = document.getElementById('auth-button');
     let url = '/api/v1/login';
 

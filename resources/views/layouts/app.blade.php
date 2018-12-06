@@ -50,12 +50,14 @@
                     <input class="header-main-buttons__element_user-active" type="checkbox" id="user">
                     <label class="header-main-buttons__element header-main-buttons__element_user button-user"
                            for="user"
-                           title="{{ Auth::user()->nickname }}">
+                           title="{{ Auth::user()->nickname }}"
+                           tabindex="1">
                         {{ Auth::user()->email }}
                     </label>
 
                     <div class="header-user"
-                         data-status="modal-close">
+                         tabindex="2"
+                         data-status="close">
                         <div class="header-user__title">
                             <div class="header-user__avatar"
                                  style="background-image: url('{{ Auth::user()->avatar_url }}')"></div>
