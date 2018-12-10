@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\UserPasswordRequest;
 use App\Http\Resources\UserResource;
+use Hash;
+use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Validator;
@@ -74,4 +76,21 @@ class UserController extends Controller
         ;
     }
 
+    /**
+     * Проверяем, соответствует ли введенный пароль существующему
+     *
+     * @param UserPasswordRequest $request
+     * @return array
+     * @throws \Exception
+     */
+    public function checkingPassword(UserPasswordRequest $request)
+    {
+        $response = [
+            'success' =>  Hash::check($request->password, Auth::user()->password),
+            'data' => null,
+            'errors' => []
+        ];
+
+        return $response;
+    }
 }

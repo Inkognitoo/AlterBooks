@@ -210,6 +210,14 @@
                 {{ csrf_field() }}
 
                 <div class="edit-block-element">
+                    <div class="edit-block-element__title"></div>
+                    <div class="edit-block-element__content">
+                        Для изменения данных профиля введите текущий пароль
+                    </div>
+                </div>
+
+                <div class="edit-block-element edit-block-blocking__subject"
+                     data-status="blocking">
                     <label class="edit-block-element__title"
                            for="old_password">
                         Пароль
@@ -226,55 +234,59 @@
                 <div class="edit-block-element">
                     <div class="edit-block-element__title"></div>
                     <div class="edit-block-element__content edit-block-element__content_error">
-                        Внимание! Изменение данных профиля приведет к&nbsp;изменению данных для&nbsp;входа на&nbsp;сайт.
+                        &nbsp;
                     </div>
                 </div>
 
-                <div class="edit-block-element">
-                    <label class="edit-block-element__title"
-                           for="change_e-mail">
-                        E-mail
-                    </label>
-                    <div class="edit-block-element__content">
-                        <input type="text"
-                               id="change_e-mail"
-                               name="email"
-                               value="{{ old('email', Auth::user()->email) }}"
-                               required>
+                <div class="edit-block-blocking__object">
+                    <div class="edit-block-element">
+                        <label class="edit-block-element__title"
+                               for="change_e-mail">
+                            E-mail
+                        </label>
+                        <div class="edit-block-element__content">
+                            <input type="text"
+                                   id="change_e-mail"
+                                   name="email"
+                                   value="{{ Auth::user()->email }}"
+                                   required>
+                        </div>
                     </div>
+
+                    <div class="edit-block-element">
+                        <label class="edit-block-element__title"
+                               for="change_password">
+                            Новый пароль
+                        </label>
+                        <div class="edit-block-element__content">
+                            <input class="edit-block-element__content_password"
+                                   type="password"
+                                   id="change_password"
+                                   name="password">
+                        </div>
+                    </div>
+
+                    <div class="edit-block-element">
+                        <label class="edit-block-element__title"
+                               for="change_re-password">
+                            Повтор пароля
+                        </label>
+                        <div class="edit-block-element__content">
+                            <input class="edit-block-element__content_re-password"
+                                   type="password"
+                                   id="change_re-password"
+                                   name="password_confirmation"
+                                   data-status="">
+                            <div class="edit-block-element__flag"></div>
+                        </div>
+                    </div>
+
+                    <input class="edit-block-element__button button button_green"
+                           type="submit"
+                           value="изменить">
                 </div>
 
-                <div class="edit-block-element">
-                    <label class="edit-block-element__title"
-                           for="change_password">
-                        Новый пароль
-                    </label>
-                    <div class="edit-block-element__content">
-                        <input class="edit-block-element__content_password"
-                               type="password"
-                               id="change_password"
-                               name="password">
-                    </div>
-                </div>
 
-                <div class="edit-block-element">
-                    <label class="edit-block-element__title"
-                           for="change_re-password">
-                        Повтор пароля
-                    </label>
-                    <div class="edit-block-element__content">
-                        <input class="edit-block-element__content_re-password"
-                               type="password"
-                               id="change_re-password"
-                               name="password_confirmation"
-                               data-status="">
-                        <div class="edit-block-element__flag"></div>
-                    </div>
-                </div>
-
-                <input  class="edit-block-element__button button button_green"
-                        type="submit"
-                        value="изменить">
             </form>
         </div>
         <a class="edit-block__button button"
