@@ -242,8 +242,13 @@
                     outline: none;
                     border: 1px solid @darkergrey;
                 }
+
                 &:active {
                     outline: none;
+                }
+
+                &:disabled {
+                    background: white;
                 }
 
                 &[data-status="correct"] {
@@ -351,4 +356,11 @@
             margin-bottom: 15px;
         }
     }
+
+    &-blocking__subject[data-status="blocking"] {
+        & ~ .edit-block-blocking__object {
+            color: @grey;
+        }
+    }
 }
+

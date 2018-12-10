@@ -94,4 +94,15 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
         ->name('api.review.restore')
     ;
 
+    /*
+    |--------------------------------------------------------------------------
+    | User
+    |--------------------------------------------------------------------------
+    |
+    | Здесь все маршруты касающиеся в первую очередь работы с пользователем
+    |
+    */
+    Route::put('/user/edit/checking/password', 'Api\UserController@checkingPassword')
+        ->name('api.user.checking.password')
+    ;
 });

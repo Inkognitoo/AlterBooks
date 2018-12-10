@@ -102,7 +102,6 @@ class ReviewController extends Controller
      *
      * @param ReviewEditRequest $request
      * @param mixed $book_id
-     * @param int $id
      * @throws \Exception
      */
     public function edit(ReviewEditRequest $request, $book_id)
