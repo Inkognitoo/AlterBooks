@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Requests\Api\ArticleCreateRequest;
+use App\Models\Blog\Article;
+use Auth;
 
 class ArticleController extends Controller
 {
