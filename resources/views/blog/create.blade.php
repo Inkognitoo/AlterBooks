@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Создать статьи')
+@section('title', 'Создать статью')
 
 @section('content')
     <div class="container">
@@ -38,8 +38,7 @@
 
                                 <div class="col-md-6">
                                 <textarea id="description" class="form-control" name="text"
-                                          autofocus rows="5">
-                                </textarea>
+                                          autofocus rows="5"></textarea>
 
                                     @if ($errors->has('text'))
                                         <span class="help-block">
