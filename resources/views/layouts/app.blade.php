@@ -47,13 +47,11 @@
                         {{ t('app.button', 'Вход') }}
                     </div>
                 @else
-                    <input class="header-main-buttons__element_user-active" type="checkbox" id="user">
-                    <label class="header-main-buttons__element header-main-buttons__element_user button-user"
-                           for="user"
-                           title="{{ Auth::user()->nickname }}"
+                    <div class="header-main-buttons__element header-main-buttons__element_user button-user"
+                           title="{{ Auth::user()->email }}"
                            tabindex="1">
                         {{ Auth::user()->email }}
-                    </label>
+                    </div>
 
                     <div class="header-user"
                          tabindex="2"

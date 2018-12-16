@@ -7,19 +7,35 @@ import axios from 'axios';
     let headerProfile = document.getElementsByClassName('header-user')[0];
     let headerProfileButton = document.getElementsByClassName('header-main-buttons__element_user')[0];
 
-    if (headerProfile !== null) {
-        headerProfile.onfocus = function () {
-            headerProfile.dataset.status = 'open';
-        };
+    if (headerProfile) {
+        document.onclick = function(e) {
+            let target = e.target || window.event.srcElement;
+            let windowOpened = false;
 
-        headerProfile.onblur = function () {
+            let targetParent = target;
+            while (targetParent !== document) {
+                if (targetParent.classList.contains('button-user')) {
+                    windowOpened = true;
+
+                    if (headerProfile.dataset.status === 'open') {
+                        windowOpened = false;
+                    }
+                }
+                targetParent = targetParent.parentNode;
+            }
+
+            targetParent = target;
+            while (targetParent !== document) {
+                if (targetParent.classList.contains('header-user')) {
+                    windowOpened = true;
+                }
+                targetParent = targetParent.parentNode;
+            }
+
             headerProfile.dataset.status = 'close';
-        };
 
-        headerProfileButton.onfocus = function () {
-            if (headerProfile.dataset.status === 'close') {
+            if (windowOpened) {
                 headerProfile.dataset.status = 'open';
-                headerProfile.focus();
             }
         };
     }
