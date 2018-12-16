@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UserPasswordRequest;
 use App\Http\Resources\UserResource;
@@ -90,7 +91,6 @@ class UserController extends Controller
             'data' => null,
             'errors' => []
         ];
-
         return $response;
     }
 }

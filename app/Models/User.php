@@ -279,11 +279,7 @@ class User extends Authenticatable
      */
     public function getAboutPlainAttribute(): string
     {
-        if (is_null($this->attributes['about'])) {
-            return '';
-        }
-
-        return $this->attributes['about'];
+        return (string)$this->attributes['about'];
     }
 
     /**
