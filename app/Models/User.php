@@ -38,8 +38,8 @@ use Storage;
  * @property string $url Ссылка на пользователя
  * @property string $full_name ФИО пользователя
  * @property string $timezone таймзона пользователя
- * @property string $about Информация "О себе" с переводами строки заменёными на <br>
- * @property string $about_plain Информация "О себе" как она есть в бд
+ * @property string|null $about Информация "О себе" с переводами строки заменёными на <br>
+ * @property string|null $about_plain Информация "О себе" как она есть в бд
  * @property string $api_token Токен пользователя для api запросов
  * @property float $rating Средняя оценка книги
  * @property \Carbon\Carbon|null $created_at
@@ -279,7 +279,7 @@ class User extends Authenticatable
      */
     public function getAboutPlainAttribute(): string
     {
-        return $this->attributes['about'];
+        return (string)$this->attributes['about'];
     }
 
     /**
