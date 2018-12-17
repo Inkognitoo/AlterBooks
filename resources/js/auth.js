@@ -2,8 +2,45 @@
 
 import axios from 'axios';
 
-// Api
 (function () {
+    // Show / hide user profile
+    let headerProfile = document.getElementsByClassName('header-user')[0];
+    let headerProfileButton = document.getElementsByClassName('header-main-buttons__element_user')[0];
+
+    if (headerProfile) {
+        document.onclick = function(e) {
+            let target = e.target || window.event.srcElement;
+            let windowOpened = false;
+
+            let targetParent = target;
+            while (targetParent !== document) {
+                if (targetParent.classList.contains('button-user')) {
+                    windowOpened = true;
+
+                    if (headerProfile.dataset.status === 'open') {
+                        windowOpened = false;
+                    }
+                }
+                targetParent = targetParent.parentNode;
+            }
+
+            targetParent = target;
+            while (targetParent !== document) {
+                if (targetParent.classList.contains('header-user')) {
+                    windowOpened = true;
+                }
+                targetParent = targetParent.parentNode;
+            }
+
+            headerProfile.dataset.status = 'close';
+
+            if (windowOpened) {
+                headerProfile.dataset.status = 'open';
+            }
+        };
+    }
+
+    // Api
     let auth_button = document.getElementById('auth-button');
     let url = '/api/v1/login';
 
