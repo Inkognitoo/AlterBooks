@@ -3,6 +3,11 @@
 import axios from "axios";
 
 (function () {
+
+    /**
+     *  Установление длины текстовых полей
+     */
+
     let info_form = document.getElementById('user-edit-info');
     if (info_form !== null) {
         let input = document.getElementsByClassName('edit-block-element__content_input');
@@ -11,11 +16,28 @@ import axios from "axios";
             size.innerHTML = field.value.length + ' / ' + field.getAttribute('maxlength');
             field.oninput = function () {
                 size.innerHTML = field.value.length + ' / ' + field.getAttribute('maxlength');
+
+                this.classList.remove('edit-block-element__content_error-field');
+                document.getElementById('edit-error-' + this.name).innerHTML = '&nbsp;';
+                document.getElementsByClassName('edit-block-status_correct')[0].style.display = 'none';
+            };
+        });
+
+        let textareas = document.getElementById('user-edit-info').getElementsByClassName('edit-block-element_textarea');
+        Array.prototype.forEach.call(textareas, function (textarea) {
+            textarea.getElementsByTagName('textarea')[0].oninput = function () {
+                this.classList.remove('edit-block-element__content_error-field');
+                document.getElementById('edit-error-' + this.name).innerHTML = '&nbsp;';
+                document.getElementsByClassName('edit-block-status_correct')[0].style.display = 'none';
             };
         });
     }
 
-    // Изменение логина и/или пароля
+
+    /**
+     *  Проверка совпадения нового пароля и его повтора
+     */
+
     let email_form = document.getElementById('user-edit-email');
     if (email_form !== null) {
         let password = document.getElementsByClassName('edit-block-element__content_password');
@@ -52,6 +74,11 @@ import axios from "axios";
             }
         };
     }
+
+
+    /**
+     *  Изменение логина и/или пароля
+     */
 
     let request = axios.create({
         headers: {'Authorization': 'Bearer ' + document.getElementsByName('api_token')[0].content}
@@ -133,5 +160,101 @@ import axios from "axios";
         let errorBlock = blockingElement.parentNode;
         errorBlock = errorBlock.getElementsByClassName('edit-block-element__content_error')[0];
         errorBlock.innerHTML = status? '&nbsp;' : 'Внимание! Изменение логина и/или пароля приведет к изменению данных для авторизации на сайте' ;
+    }
+
+
+    /**
+     *  Изменение информации о пользователе
+     */
+
+    let userEditInfoForm = document.getElementById('user-edit-info');
+    if (userEditInfoForm) {
+        let userEditButton = document.getElementById('user-edit-info-button');
+        userEditButton.addEventListener('click', function (e) {
+            editUserInfo();
+        });
+    }
+
+
+    /**
+     * Обрабатываем процесс изменения информации о пользователе
+     *
+     */
+    function editUserInfo() {
+        let data = {};
+        data['nickname'] = document.getElementById('change_nickname').value;
+        data['name'] = document.getElementById('change_name').value;
+        data['surname'] = document.getElementById('change_surname').value;
+        data['patronymic'] = document.getElementById('change_patronymic').value;
+        data['birthday_data'] = document.getElementById('change_birthday_date').value;
+        data['about'] = document.getElementById('change_about').value;
+
+        data.gender = 'n';
+        Array.prototype.forEach.call(document.getElementsByName('gender'), function (gender) {
+            data['gender'] = gender.checked ? gender.value : data.gender;
+        });
+
+
+        validateApiUserInfo(data)
+            .then(function (response) {
+                showUserInfoCorrect();
+            })
+            .catch(function (response) {
+                showUserInfoErrors(response.errors);
+            });
+    }
+
+    /**
+     * Api запрос для изменения данных пользователя
+     *
+     * @param {object} data данные формы
+     * @returns {Promise<any>}
+     */
+    function validateApiUserInfo(data) {
+        let url = `/api/v1/user/edit/info`;
+
+        return new Promise(function (resolve, reject) {
+            request.post(url, {
+                nickname: data.nickname,
+                name: data.name,
+                surname: data.surname,
+                patronymic: data.patronymic,
+                birthday_date: data.birthday_data,
+                gender: data.gender,
+                about: data.about
+            })
+                .then(function (response) {
+                    if (response.data.success) {
+                        resolve(response.data);
+                    } else {
+                        reject(response.data)
+                    }
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+        });
+    }
+
+    /**
+     *  Выводим ошибки при их наличии
+     *
+     *  @param {object} errors
+     */
+    function showUserInfoErrors(errors) {
+        Array.prototype.forEach.call(errors, function (error) {
+            document.getElementById('edit-error-' + error.name).innerText = error.message;
+            document.getElementById('change_' + error.name).classList.add('edit-block-element__content_error-field');
+            document.getElementsByClassName('edit-block-status_correct')[0].style.display = 'none';
+        });
+    }
+
+    /**
+     *  Выводим ошибки при их наличии
+     *
+     *  @param {object} errors
+     */
+    function showUserInfoCorrect(errors) {
+        document.getElementsByClassName('edit-block-status_correct')[0].style.display = 'flex';
     }
 })();

@@ -105,4 +105,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::put('/user/edit/checking/password', 'Api\UserController@checkingPassword')
         ->name('api.user.checking.password')
     ;
+    Route::post('user/edit/info', 'Api\UserController@editInfo')
+        ->name('api.user.edit.info')
+    ;
 });

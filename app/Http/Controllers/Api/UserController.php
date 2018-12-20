@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Requests\Api\UserPasswordRequest;
+use App\Http\Requests\Api\UserUpdateInfoRequest;
 use App\Http\Resources\UserResource;
 use Hash;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Response;
 use Validator;
 
 class UserController extends Controller
@@ -28,6 +31,8 @@ class UserController extends Controller
         $this->middleware('guest')->only('login');
 
         $this->middleware('auth:api')->only('index');
+
+        $this->middleware(ApiWrapper::class) -> only('editInfo');
     }
 
 
@@ -92,5 +97,17 @@ class UserController extends Controller
             'errors' => []
         ];
         return $response;
+    }
+
+    /**
+     * Редактируем данные о профиле пользователя
+     *
+     * @param UserUpdateInfoRequest $request
+     * @throws \Exception
+     */
+    public function editInfo(UserUpdateInfoRequest $request)
+    {
+        Auth::user()->fill($request->all());
+        Auth::user()->save();
     }
 }

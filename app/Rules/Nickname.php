@@ -30,6 +30,6 @@ class Nickname implements Rule
      */
     public function message()
     {
-        return trans('validation.nickname', ['attribute' => $this->attribute]);
+        return 'псевдоним может содержать только латинские буквы, цифры, сиволы "-" и "_"';
     }
 }

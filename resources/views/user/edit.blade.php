@@ -18,12 +18,12 @@
             </div>
             <form class="edit-block__main"
                   method="POST"
-                  action="{{ route('user.edit.info', ['id' => Auth::user()->nickname]) }}"
-                  enctype="multipart/form-data"
+                  onsubmit="return false"
                   id="user-edit-info">
                 {{ csrf_field() }}
 
-                <div class="edit-block-element">
+                <div class="edit-block-element edit-block-element_input"
+                     id="edit-element-nickname">
                     <label class="edit-block-element__title"
                            for="change_nickname">
                         Псевдоним
@@ -35,15 +35,18 @@
                                name="nickname"
                                value="{{ old('nickname', Auth::user()->nickname) }}"
                                maxlength="30"
-                               autofocus
-                               required>
+                               autofocus>
                     </div>
                     <div class="edit-block-element__size">
                         {{ mb_strlen(Auth::user()->nickname) }} / 30
                     </div>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-nickname">&nbsp;</div>
 
-                <div class="edit-block-element">
+
+                <div class="edit-block-element edit-block-element_input"
+                     id="edit-element-surname">
                     <label class="edit-block-element__title"
                            for="change_surname">
                         Фамилия
@@ -60,8 +63,12 @@
                         {{ mb_strlen(Auth::user()->surname) }} / 30
                     </div>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-surname">&nbsp;</div>
 
-                <div class="edit-block-element">
+
+                <div class="edit-block-element edit-block-element_input"
+                     id="edit-element-name">
                     <label class="edit-block-element__title"
                            for="change_name">
                         Имя
@@ -78,8 +85,11 @@
                         {{ mb_strlen(Auth::user()->name) }} / 30
                     </div>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-name">&nbsp;</div>
 
-                <div class="edit-block-element">
+
+                <div class="edit-block-element edit-block-element_input">
                     <label class="edit-block-element__title"
                            for="change_patronymic">
                         Отчество
@@ -96,8 +106,11 @@
                         {{ mb_strlen(Auth::user()->patronymic) }} / 30
                     </div>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-patronymic">&nbsp;</div>
 
-                <div class="edit-block-element">
+
+                <div class="edit-block-element edit-block-element_input">
                     <label class="edit-block-element__title"
                            for="change_date">
                         Дата рождения
@@ -105,11 +118,13 @@
                     <div class="edit-block-element__content">
                         <input class="edit-block-element__content_date"
                                type="date"
-                               id="change_date"
+                               id="change_birthday_date"
                                name="birthday_date"
                                value="{{ old('birthday_date', optional(Auth::user()->birthday_date)->format('Y-m-d')) }}">
                     </div>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-birthday_date">&nbsp;</div>
 
                 <div class="edit-block-element">
                     <div class="edit-block-element__title">
@@ -169,7 +184,8 @@
                     </div>
                 </div>
 
-                <div class="edit-block-element edit-block-element_wide">
+
+                <div class="edit-block-element edit-block-element_wide edit-block-element_textarea">
                     <div class="edit-block-header">
                         <hr class="edit-block-header__hr">
                         <label class="edit-block-header__title"
@@ -179,16 +195,26 @@
                         <hr class="edit-block-header__hr">
                     </div>
                     <div class="edit-block-element__content edit-block-element__content_wide">
-                            <textarea class="edit-block-element__content_date"
-                                      type="date"
-                                      id="change_about"
-                                      name="about"
-                                      placeholder="Введите описание">{{ old('about_plain', Auth::user()->about_plain) }}</textarea>
+                        <textarea class="edit-block-element__content_date"
+                                  type="date"
+                                  id="change_about"
+                                  name="about"
+                                  placeholder="Введите описание">{{ old('about_plain', Auth::user()->about_plain) }}</textarea>
                     </div>
                 </div>
+                <div class="edit-block-element__error edit-block-element__error_textarea"
+                     id="edit-error-about">&nbsp;</div>
+
+
+                <div class="edit-block-status edit-block-status_correct"
+                     style="display: none">
+                    Данные успешно сохранены!
+                </div>
+
 
                 <input class="edit-block-element__button button button_green"
                        type="submit"
+                       id="user-edit-info-button"
                        value="сохранить">
             </form>
         </div>
