@@ -48,15 +48,14 @@ class UserEditInfoApiTest extends TestCase
 
         $birthdayDate = Carbon::now()->format('Y-m-d');
 
-        $gender = $user->gender === 'n' ? 'f' : 'n';
+        $gender = $user->gender === User::GENDER_NOT_INDICATED ? User::GENDER_FEMALE : User::GENDER_NOT_INDICATED;
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $nickname,
                 'name' => $name,
@@ -100,9 +99,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => '',
                 'gender' => $user->gender
@@ -133,9 +131,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $alterUser->nickname,
                 'gender' => $user->gender
@@ -165,9 +162,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $nickname,
                 'gender' => $user->gender
@@ -197,9 +193,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $nickname,
                 'gender' => $user->gender
@@ -229,9 +224,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $user->nickname,
                 'name' => $name,
@@ -262,9 +256,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $user->nickname,
                 'surname' => $surname,
@@ -295,9 +288,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $user->nickname,
                 'patronymic' => $patronymic,
@@ -326,9 +318,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $user->nickname,
                 'gender' => ''
@@ -358,9 +349,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $user->nickname,
                 'gender' => $gender
@@ -390,9 +380,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $user->nickname,
                 'birthday-date' => $date,
@@ -423,9 +412,8 @@ class UserEditInfoApiTest extends TestCase
             'Authorization' => 'Bearer ' . $user->api_token
         ];
 
-        $response = $this->post
-        (
-            route('api.user.edit.info', []),
+        $response = $this->post(
+            route('api.user.edit.info'),
             [
                 'nickname' => $user->nickname,
                 'gender' => $user->gender,
