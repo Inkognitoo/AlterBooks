@@ -117,7 +117,7 @@
     &-element {
         position: relative;
         display: flex;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         font-size: 16px;
 
         &_wide {
@@ -196,6 +196,7 @@
         &__content {
             position: relative;
             width: ~"calc(100% - 170px)";
+            font-size: 14px;
 
             &_select {
                 height: 32px;
@@ -204,7 +205,6 @@
                 border: 1px solid #c8c8c8;
                 border-radius: 2px;
                 background: white;
-                font-size: 14px;
 
                 &:active,
                 &:focus {
@@ -254,6 +254,10 @@
                 &[data-status="correct"] {
                     color: @darkergreen;
                 }
+
+                &.edit-block-element__content_error-field {
+                    border-color: red;
+                }
             }
 
             #change_date {
@@ -299,6 +303,7 @@
             & > textarea {
                 min-height: ~"calc(10em + 40px)";
                 resize: vertical;
+                margin-bottom: 5px;
                 padding-top: 10px;
             }
         }
@@ -313,7 +318,7 @@
             align-items: center;
 
             width: 74px;
-            height: ~"calc(100% - 2px)";
+            height: 30px;
             box-sizing: border-box;
 
             border-top-right-radius: 2px;
@@ -331,6 +336,26 @@
                 display: none;
             }
         }
+
+        &__error {
+            margin-left: 175px;
+            margin-bottom: 15px;
+
+            font-size: 12px;
+            color: red;
+
+            @media screen and (max-width: @md) {
+                margin-left: 0;
+            }
+
+            &_textarea {
+                margin-left: 20px;
+
+                @media screen and (max-width: @md) {
+                    margin-left: 0;
+                }
+            }
+        }
     }
 
     &-status {
@@ -339,10 +364,14 @@
         align-items: center;
 
         width: 100%;
-        margin-bottom: 5px;
+        box-sizing: border-box;
+
+        margin-bottom: 20px;
         padding: 10px;
 
         font-size: 14px;
+
+        transition: opacity 0.3s;
 
         &_correct {
             background: rgba(0, 191, 0, 0.1);

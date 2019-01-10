@@ -66,5 +66,4 @@ class ReviewCreateRequest extends ApiRequest
         ];
     }
 
-
 }
