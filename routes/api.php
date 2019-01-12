@@ -66,6 +66,9 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::delete('/library/book/{id}', 'LibraryBookController@destroy')
         ->name('api.library.delete')
     ;
+    Route::put('book/{book_id}/edit', 'Api\BookController@edit')
+        ->name('api.book.edit')
+    ;
 
     /*
     |--------------------------------------------------------------------------

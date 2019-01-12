@@ -7,8 +7,6 @@ use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckBookExist;
 use App\Http\Middleware\CheckUserBookGranted;
 use App\Http\Requests\BookCreateRequest;
-use App\Http\Requests\BookUpdateRequest;
-use App\Models\Search\BookSearch;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Auth;
@@ -93,27 +91,6 @@ class BookController extends Controller
         return view('book.edit', [
             'book' => Book::findAny($id)
         ]);
-    }
-
-    /**
-     * Редактируем профиль книги
-     *
-     * @param BookUpdateRequest $request
-     * @param int $id
-     * @return Response
-     * @throws Exception
-     */
-    public function edit(BookUpdateRequest $request, $id)
-    {
-        $book = Book::findAny($id);
-
-        $book->fill($request->all());
-        $book->save();
-
-        return redirect(route('book.edit', ['id' => $book->slug]))
-            ->with('book_id', $book->id)
-            ->with('status', t('book.api', 'Данные были успешно обновлены'))
-        ;
     }
 
     /**

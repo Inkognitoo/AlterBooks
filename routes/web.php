@@ -62,9 +62,6 @@ Route::post('book', 'BookController@create')
 Route::get('book/{id}/edit', 'BookController@editShow')
     ->name('book.edit.show')
 ;
-Route::post('book/{id}/edit', 'BookController@edit')
-    ->name('book.edit')
-;
 Route::get('book/{id}/delete', 'BookController@delete')
     ->name('book.delete')
 ;
