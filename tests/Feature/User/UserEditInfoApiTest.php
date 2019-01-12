@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Review;
+namespace Tests\Feature\User;
 
 use App\Models\User;
 use Carbon\Carbon;

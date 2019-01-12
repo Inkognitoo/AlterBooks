@@ -39,7 +39,7 @@
                                type="text"
                                id="change_title"
                                name="title"
-                               maxlength="50"
+                               maxlength="1000"
                                value="{{ old('title', $book->title) }}">
                         <div class="edit-block-element__size">
                             15 / 50
