@@ -49,7 +49,7 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
@@ -67,7 +67,7 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
@@ -103,7 +103,7 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
@@ -120,7 +120,7 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
