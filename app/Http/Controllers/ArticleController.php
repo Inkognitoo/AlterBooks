@@ -42,4 +42,10 @@ class ArticleController extends Controller
 
         return redirect()->back();
     }
+
+    public function show($slug) {
+        return view('blog.show', [
+            'article' => Article::with('author')->where('slug', $slug)->first()
+        ]);
+    }
 }
