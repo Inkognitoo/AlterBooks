@@ -112,7 +112,7 @@ Route::get('book/{book_id}/review/id{id}/delete', 'ReviewController@delete')
 */
 
 Route::get('blog/article', 'ArticleController@createShow')
-    ->name('blog.createShow')
+    ->name('blog.create.show')
 ;
 Route::post('blog/article','ArticleController@create')
     ->name('blog.create')
