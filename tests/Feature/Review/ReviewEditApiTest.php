@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\Review;
 
+use App\Models\Book;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use ReviewEditTestSeeder;
 
 class ReviewEditApiTest extends TestCase
 {
@@ -16,13 +17,6 @@ class ReviewEditApiTest extends TestCase
     use DatabaseTransactions;
 
     use WithFaker;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->seed(ReviewEditTestSeeder::class);
-    }
 
     /**
      * Успешное редактирование рецензии
@@ -33,8 +27,18 @@ class ReviewEditApiTest extends TestCase
     public function testReviewEditSuccess()
     {
         /** @var User $user */
-        $user = User::inRandomOrder()->first();
-        $review = $user->reviews()->inRandomOrder()->first();
+        $user = factory(User::class)->create();;
+
+        /** @var User $alter_user */
+        $alter_user = factory(User::class)->create();
+
+        /** @var Book $book */
+        $book = $alter_user->books()->save(factory(Book::class)->make(['status' => Book::STATUS_OPEN]));
+
+        /** @var Review $review */
+        $review = $user->reviews()->save(factory(Review::class)->make([
+            'book_id' => $book->id
+        ]));
 
         $headers = [
             'Authorization' => 'Bearer ' . $user->api_token

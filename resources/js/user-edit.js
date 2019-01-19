@@ -250,11 +250,9 @@ import axios from "axios";
     }
 
     /**
-     *  Выводим ошибки при их наличии
-     *
-     *  @param {object} errors
+     *  Выводим сообщение об успешном редактирования данных
      */
-    function showUserInfoCorrect(errors) {
+    function showUserInfoCorrect() {
         document.getElementsByClassName('edit-block-status_correct')[0].style.display = 'flex';
     }
 })();

@@ -12,7 +12,9 @@
 
 @section('content')
     <div class="edit col-12">
-        <div class="edit-block book-edit">
+        <div class="edit-block book-edit"
+             id="book-edit"
+             data-book-id="{{ $book->id }}">
             <div class="edit-block-header">
                 <hr class="edit-block-header__hr">
                 <div class="edit-block-header__title">
@@ -23,44 +25,30 @@
 
             <form class="edit-block__main"
                   method="POST"
-                  action="{{ route('book.edit', ['id' => $book->slug]) }}"
-                  enctype="multipart/form-data">
+                  onsubmit="return false">
 
                 {{ csrf_field() }}
 
-                @if (session('status'))
-                    <div class="edit-block-status__container">
-                        <div class="edit-block-status edit-block-status_correct">
-                            {{ session('status') }}
-                        </div>
-                    </div>
-                @endif
-                @foreach (($errors->all()) as $error)
-                    <div class="edit-block-status__container">
-                        <div class="edit-block-status edit-block-status_error">
-                            {{ $error }}
-                        </div>
-                    </div>
-                @endforeach
-
                 <div class="edit-block-element">
                     <label class="edit-block-element__title"
-                           for="title">
+                           for="change_title">
                         Название
                     </label>
                     <div class="edit-block-element__content">
                         <input class="edit-block-element__content_input"
                                type="text"
-                               id="title"
+                               id="change_title"
                                name="title"
-                               maxlength="50"
-
+                               maxlength="1000"
                                value="{{ old('title', $book->title) }}">
                         <div class="edit-block-element__size">
                             15 / 50
                         </div>
                     </div>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-title">&nbsp;</div>
+
 
                 <div class="edit-block-element edit-block-element_string">
                     <label class="edit-block-element__title"
@@ -73,6 +61,9 @@
                                name="text">
                     </div>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-text">&nbsp;</div>
+
 
                 <div class="edit-block-element">
                     <label class="edit-block-element__title"
@@ -80,7 +71,7 @@
                         Статус
                     </label>
                     <select class="edit-block-element__content edit-block-element__content_select"
-                            id="status"
+                            id="change_status"
                             name="status">
                         <option value="{{ \App\Models\Book::STATUS_OPEN }}"
                                 {{ old('status', $book->status) == \App\Models\Book::STATUS_OPEN ? 'selected' : ''}}>
@@ -92,13 +83,15 @@
                         </option>
                     </select>
                 </div>
+                <div class="edit-block-element__error"
+                     id="edit-error-status">&nbsp;</div>
+
 
                 <div class="edit-block-element">
-                    <div class="edit-block-element__title">
+                    <div class="edit-block-element__title edit-block-element__title_checkboxes">
                         Жанры
                     </div>
                     <div class="edit-block-element__content">
-
                         <div class="edit-block-element__content_checkbox">
                             @foreach(\App\Models\Genre::all() as $genre)
                                 <div class="edit-block-element__checkbox">
@@ -107,7 +100,7 @@
                                         <input type="checkbox"
                                                class="checkbox__field"
                                                id="genre-{{ $genre->id }}"
-                                               name="genres[]"
+                                               name="genres"
                                                value="{{ $genre->slug }}"
                                                 {{ $book->hasGenre($genre) ? 'checked' : null }} >
                                         <span class="checkbox-animation">
@@ -125,11 +118,12 @@
                     </div>
                 </div>
 
+
                 <div class="edit-block-element edit-block-element_wide">
                     <div class="edit-block-header">
                         <hr class="edit-block-header__hr">
                         <label class="edit-block-header__title"
-                               for="date">
+                               for="change_description">
                             описание&nbsp;книги
                         </label>
                         <hr class="edit-block-header__hr">
@@ -137,14 +131,24 @@
                     <div class="edit-block-element__content edit-block-element__content_wide">
                             <textarea class="edit-block-element__content_date"
                                       type="date"
-                                      id="date"
+                                      id="change_description"
                                       name="description"
                                       placeholder="Введите описание">{{ old('description_plain', $book->description_plain) }}</textarea>
                     </div>
                 </div>
+                <div class="edit-block-element__error edit-block-element__error_textarea"
+                     id="edit-error-description">&nbsp;</div>
+
+
+                <div class="edit-block-status edit-block-status_correct"
+                     style="display: none">
+                    Данные успешно сохранены!
+                </div>
+
 
                 <div class="edit-block_buttons row row-center">
-                    <input  class="edit-block-element__button edit-block-element__button_sm button button_green "
+                    <input  class="edit-block-element__button edit-block-element__button_sm button button_green"
+                            id="book-edit-button"
                             type="submit"
                             value="сохранить">
                     <a class="edit-block-element__button edit-block-element__button_sm button"
