@@ -29,7 +29,7 @@ class CanUserEditBook
             $book_id = 'id' . $book_id;
         }
 
-        if (Auth::user()->id !== Book::findAny($book_id)->author_id) {
+        if (!Auth::user()->isAuthor(Book::findAny($book_id))) {
             return response(view('errors.405'), 405);
         }
 

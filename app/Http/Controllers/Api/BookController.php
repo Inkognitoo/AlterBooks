@@ -26,11 +26,11 @@ class BookController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(IsBookExist::class) -> only('edit');
+        $this->middleware(IsBookExist::class)->only('edit');
 
-        $this->middleware(CanUserEditBook::class) -> only('edit');
+        $this->middleware(CanUserEditBook::class)->only('edit');
 
-        $this->middleware(ApiWrapper::class) -> only('edit');
+        $this->middleware(ApiWrapper::class)->only('edit');
     }
 
 
