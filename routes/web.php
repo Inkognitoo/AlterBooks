@@ -120,6 +120,12 @@ Route::post('blog/article','ArticleController@create')
 Route::get('blog/articles/{slug}', 'ArticleController@show')
     ->name('blog.show')
 ;
+Route::get('blog/article/{slug}/edit','ArticleController@editShow')
+    ->name('blog.edit.show')
+;
+Route::post('blog/article/{slug}/edit', 'ArticleController@edit')
+    ->name('blog.edit')
+;
 
 
 /*

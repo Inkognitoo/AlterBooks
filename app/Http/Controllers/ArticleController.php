@@ -48,4 +48,12 @@ class ArticleController extends Controller
             'article' => Article::with('author')->where('slug', $slug)->first()
         ]);
     }
+
+    public function editShow() {
+
+    }
+
+    public function edit($slug) {
+
+    }
 }
