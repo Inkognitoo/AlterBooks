@@ -16,7 +16,7 @@ use Illuminate\Http\UploadedFile;
 use LibraryTestSeeder;
 use Tests\TestCase;
 
-class TxtUploadTest extends TestCase
+class TxtUploadApiTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -38,7 +38,9 @@ class TxtUploadTest extends TestCase
         $book = factory(Book::class)->make();
         $user->books()->save($book);
 
-        Auth::login($user);
+        $headers = [
+            'Authorization' => 'Bearer ' . $user->api_token
+        ];
 
         //Тестируем для Алисы в стране чудес
         $book_name = 'Кэрролл_-_Алиса_в_стране_чудес.txt';
@@ -49,13 +51,14 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->put(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
+        ], $headers);
+        $response->assertJson([
+            'success' => true
         ]);
-        $response->assertStatus(Response::HTTP_FOUND);
-
         $this->assertEquals($chapters_count, Chapter::where('book_id', $book->id)->count());
 
         //Тестируем для мёртвых душ
@@ -67,13 +70,14 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->put(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
+        ], $headers);
+        $response->assertJson([
+            'success' => true
         ]);
-        $response->assertStatus(Response::HTTP_FOUND);
-
         $this->assertEquals($chapters_count, Chapter::where('book_id', $book->id)->count());
     }
 
@@ -93,7 +97,9 @@ class TxtUploadTest extends TestCase
         $book = factory(Book::class)->make();
         $user->books()->save($book);
 
-        Auth::login($user);
+        $headers = [
+            'Authorization' => 'Bearer ' . $user->api_token
+        ];
 
         //Тестируем для Алисы в стране чудес
         $book_name = 'Кэрролл_-_Алиса_в_стране_чудес.txt';
@@ -103,13 +109,14 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->put(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
+        ], $headers);
+        $response->assertJson([
+            'success' => true
         ]);
-        $response->assertStatus(Response::HTTP_FOUND);
-
         $this->assertGreaterThan(1, Page::where('book_id', $book->id)->count());
 
         //Тестируем для мёртвых душ
@@ -120,13 +127,14 @@ class TxtUploadTest extends TestCase
 
         $file = new UploadedFile($book_path, $book_name, $book_size, $book_mime_type, null, true);
 
-        $response = $this->post(route('api.book.edit', ['id' => "id{$book->id}"]), [
+        $response = $this->put(route('api.book.edit', ['id' => "id{$book->id}"]), [
             'title' => $book->title,
             'status' => Book::STATUS_OPEN,
             'text' => $file
+        ], $headers);
+        $response->assertJson([
+            'success' => true
         ]);
-        $response->assertStatus(Response::HTTP_FOUND);
-
         $this->assertGreaterThan(1, Page::where('book_id', $book->id)->count());
     }
 

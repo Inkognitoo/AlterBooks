@@ -54,7 +54,8 @@ class BookUpdateRequest extends ApiRequest
             ],
             'text' => [
                 'nullable',
-                'file|mimes:txt',
+                'file',
+                'mimes:txt',
                 'mimetypes:text/plain'
             ],
             'status' => [

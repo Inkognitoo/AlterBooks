@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware\Api;
 
+use App\Exceptions\ApiException;
 use App\Models\Book;
 use Closure;
 use Auth;
+use Illuminate\Http\Response;
 
 /**
  * Проверяем, имеет ли пользователь право редактировать книгу
@@ -17,9 +19,10 @@ class CanUserEditBook
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
+     * @throws ApiException
      */
     public function handle($request, Closure $next)
     {
@@ -30,7 +33,7 @@ class CanUserEditBook
         }
 
         if (!Auth::user()->isAuthor(Book::findAny($book_id))) {
-            return response(view('errors.405'), 405);
+            throw new ApiException('Вы не можете редактировать чужую книгу', Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         return $next($request);
