@@ -6,6 +6,7 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\Api\ApiWrapper;
 use App\Http\Requests\Api\UserPasswordRequest;
+use App\Http\Requests\Api\UserUpdateEmailRequest;
 use App\Http\Requests\Api\UserUpdateInfoRequest;
 use App\Http\Resources\UserResource;
 use Hash;
@@ -31,7 +32,7 @@ class UserController extends Controller
 
         $this->middleware('auth:api')->only('index');
 
-        $this->middleware(ApiWrapper::class) -> only('editInfo');
+        $this->middleware(ApiWrapper::class) -> only(['editInfo', 'editEmail']);
     }
 
 
@@ -102,9 +103,24 @@ class UserController extends Controller
      * Редактируем данные о профиле пользователя
      *
      * @param UserUpdateInfoRequest $request
+     * @return string
      * @throws \Exception
      */
     public function editInfo(UserUpdateInfoRequest $request)
+    {
+        Auth::user()->fill($request->all());
+        Auth::user()->save();
+
+        return Auth::user()->url;
+    }
+
+    /**
+     * Редактируем данные пользователя для входа
+     *
+     * @param UserUpdateEmailRequest $request
+     * @throws \Exception
+     */
+    public function editEmail(UserUpdateEmailRequest $request)
     {
         Auth::user()->fill($request->all());
         Auth::user()->save();
