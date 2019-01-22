@@ -5,13 +5,22 @@
 @section('content')
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
+
+                    @if (session('status'))
+                        <div class="edit-block-status__container">
+                            <div class="edit-block-status edit-block-status_correct">
+                                {{ session('status') }}
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="panel-heading">
                         <h1>{{ t('article', 'Редактирование статьи') }}</h1>
                     </div>
 
                     <div class="panel-body">
 
-                        <form class="form-horizontal" method="POST" action="{{ route('book.edit', ['slug' => $article->slug]) }}">
+                        <form class="form-horizontal" method="POST" action="{{ route('blog.edit', ['slug' => $article->slug]) }}">
                             {{ csrf_field() }}
                             <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                                 <label for="title" class="col-md-4 control-label">
@@ -48,7 +57,7 @@
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ t('blog.button', 'Создать') }}
+                                        {{ t('blog.button', 'Редактировать') }}
                                     </button>
                                 </div>
                             </div>

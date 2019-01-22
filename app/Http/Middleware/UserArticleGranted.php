@@ -25,7 +25,7 @@ class UserArticleGranted
     {
         $article_slug = $request->route()->slug;
 
-        $article = Article::where('slug', $article_slug)->first();
+        $article = Article::where('slug', $article_slug)->firstOrFail();
 
         if (Auth::user()->id !== $article->author_id) {
             return response(view('errors.403'), 403);

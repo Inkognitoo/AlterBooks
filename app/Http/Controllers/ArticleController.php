@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ArticleCreateRequest;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\UserArticleGranted;
+use App\Http\Requests\ArticleCreateRequest;
+use App\Http\Requests\ArticleUpdateRequest;
 use App\Models\Blog\Article;
 use Auth;
-use Request;
 
 class ArticleController extends Controller
 {
@@ -48,7 +48,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Показываем страницу редактирования статьи блога
+     * Показываем страницу статьи блога
      *
      * @param  string  $slug
      * @return Response
@@ -60,9 +60,8 @@ class ArticleController extends Controller
     }
 
     /**
-     * Редактируем статью блога
+     * Показываем страницу редактирования статьи блога
      *
-     * @param ArticleUpdateRequest $request
      * @param Article $article
      * @return Response
      * @throws Exception
@@ -73,7 +72,21 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function edit($slug) {
+    /**
+     * Редактируем статью блога
+     *
+     * @param ArticleUpdateRequest $request
+     * @param Article $article
+     * @return Response
+     * @throws Exception
+     */
+    public function edit(ArticleUpdateRequest $request, Article $article) {
 
+        $article->fill($request->all());
+        $article->save();
+
+        return redirect()->back()
+            ->with('status', t('blog.api', 'Данные были успешно обновлены'))
+            ;
     }
 }
