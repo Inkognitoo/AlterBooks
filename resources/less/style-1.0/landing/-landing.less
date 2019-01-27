@@ -1,0 +1,57 @@
+.landing {
+    &-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+
+        width: 100%;
+        padding: 0 50px 100px;
+    }
+
+    &-element {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        max-width: 1200px;
+
+        margin-bottom: 50px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &__title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 15px;
+
+            background: linear-gradient(to right, transparent 0%, @grey 35%, @grey 65%, transparent 100%);
+
+            text-transform: uppercase;
+        }
+
+        &__area {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 15px;
+        }
+    }
+
+    &-more {
+        max-width: 1000px;
+        font-size: 0.9em;
+    }
+}

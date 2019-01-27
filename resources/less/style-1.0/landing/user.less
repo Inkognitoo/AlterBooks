@@ -1,0 +1,43 @@
+.landing-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 136px;
+    margin-right: 20px;
+    padding: 10px 10px 15px;
+
+    border-radius: 10px;
+    background: white;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &__avatar {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 15px;
+
+        border-radius: 50%;
+        background-size: 100% auto;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+    }
+
+    &__name {
+        width: 100%;
+        margin-bottom: 20px;
+
+        font-size: 0.8em;
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    &__read {
+        min-height: 30px;
+        margin-top: auto;
+        font-size: 0.8em;
+    }
+}
