@@ -111,4 +111,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
     Route::post('user/edit/info', 'Api\UserController@editInfo')
         ->name('api.user.edit.info')
     ;
+    Route::post('user/edit/email', 'Api\UserController@editEmail')
+        ->name('api.user.edit.email')
+    ;
 });

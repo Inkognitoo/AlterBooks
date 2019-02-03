@@ -112,7 +112,7 @@
 
                 <div class="edit-block-element edit-block-element_input">
                     <label class="edit-block-element__title"
-                           for="change_date">
+                           for="change_birthday_date">
                         Дата рождения
                     </label>
                     <div class="edit-block-element__content">
@@ -231,7 +231,7 @@
             </div>
             <form class="edit-block__main"
                   method="POST"
-                  action="{{ route('user.edit.email', ['id' => Auth::user()->nickname]) }}"
+                  onsubmit="return false"
                   id="user-edit-email">
                 {{ csrf_field() }}
 
@@ -267,17 +267,20 @@
                 <div class="edit-block-blocking__object">
                     <div class="edit-block-element">
                         <label class="edit-block-element__title"
-                               for="change_e-mail">
+                               for="change_email">
                             E-mail
                         </label>
                         <div class="edit-block-element__content">
                             <input type="text"
-                                   id="change_e-mail"
+                                   id="change_email"
                                    name="email"
                                    value="{{ Auth::user()->email }}"
                                    required>
                         </div>
                     </div>
+                    <div class="edit-block-element__error"
+                         id="edit-error-email">&nbsp;</div>
+
 
                     <div class="edit-block-element">
                         <label class="edit-block-element__title"
@@ -291,24 +294,37 @@
                                    name="password">
                         </div>
                     </div>
+                    <div class="edit-block-element__error"
+                         id="edit-error-password">&nbsp;</div>
+
 
                     <div class="edit-block-element">
                         <label class="edit-block-element__title"
-                               for="change_re-password">
+                               for="change_password_confirmation">
                             Повтор пароля
                         </label>
                         <div class="edit-block-element__content">
                             <input class="edit-block-element__content_re-password"
                                    type="password"
-                                   id="change_re-password"
+                                   id="change_password_confirmation"
                                    name="password_confirmation"
                                    data-status="">
                             <div class="edit-block-element__flag"></div>
                         </div>
                     </div>
+                    <div class="edit-block-element__error"
+                         id="edit-error-password_confirmation">&nbsp;</div>
+
+
+                    <div class="edit-block-status edit-block-status_correct"
+                         style="display: none">
+                        Данные успешно сохранены!
+                    </div>
+
 
                     <input class="edit-block-element__button button button_green"
                            type="submit"
+                           id="user-edit-email-button"
                            value="изменить">
                 </div>
 
@@ -316,7 +332,7 @@
             </form>
         </div>
         <a class="edit-block__button button"
-           href="{{ Auth::user()->url }}">
+           href="{{ Auth::user()->url }}" id="user-edit-to-profile">
             вернуться к профилю
         </a>
     </div>

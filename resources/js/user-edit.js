@@ -171,7 +171,7 @@ import axios from "axios";
     if (userEditInfoForm) {
         let userEditButton = document.getElementById('user-edit-info-button');
         userEditButton.addEventListener('click', function (e) {
-            editUserInfo();
+            editUserInfo(userEditInfoForm);
         });
     }
 
@@ -180,7 +180,7 @@ import axios from "axios";
      * Обрабатываем процесс изменения информации о пользователе
      *
      */
-    function editUserInfo() {
+    function editUserInfo(parentElement) {
         let data = {};
         data['nickname'] = document.getElementById('change_nickname').value;
         data['name'] = document.getElementById('change_name').value;
@@ -197,10 +197,12 @@ import axios from "axios";
 
         validateApiUserInfo(data)
             .then(function (response) {
-                showUserInfoCorrect();
+                showUserCorrect(parentElement);
+                document.getElementById('user-edit-to-profile').href = response.data;
+                window.history.pushState(null, '', 'http://alterbooks/user/' + data.nickname + '/edit');
             })
             .catch(function (response) {
-                showUserInfoErrors(response.errors);
+                showUserErrors(response.errors, parentElement);
             });
     }
 
@@ -237,22 +239,85 @@ import axios from "axios";
     }
 
     /**
+     *  Изменение даныных пользователя дял входа
+     */
+
+    let userEditEmailForm = document.getElementById('user-edit-email');
+    if (userEditEmailForm) {
+        let userEditButton = document.getElementById('user-edit-email-button');
+        userEditButton.addEventListener('click', function (e) {
+            editUserEmail(userEditEmailForm);
+        });
+    }
+
+
+    /**
+     * Обрабатываем процесс изменения даныных пользователя дял входа
+     *
+     */
+    function editUserEmail(parentElement) {
+        let data = {};
+        data.email = document.getElementById('change_email').value;
+        data.password = document.getElementById('change_password').value;
+        data.password_confirmation = document.getElementById('change_password_confirmation').value;
+        data.old_password = document.getElementById('old_password').value;
+
+        validateApiUserEmail(data)
+            .then(function (response) {
+                showUserCorrect(parentElement);
+            })
+            .catch(function (response) {
+                showUserErrors(response.errors, parentElement);
+            });
+    }
+
+    /**
+     * Api запрос для изменения даныных пользователя дял входа
+     *
+     * @param {object} data данные формы
+     * @returns {Promise<any>}
+     */
+    function validateApiUserEmail(data) {
+        let url = `/api/v1/user/edit/email`;
+
+        return new Promise(function (resolve, reject) {
+            request.post(url, {
+                email: data.email,
+                password: data.password,
+                password_confirmation: data.password_confirmation,
+                old_password: data.old_password
+            })
+                .then(function (response) {
+                    if (response.data.success) {
+                        resolve(response.data);
+                    } else {
+                        reject(response.data)
+                    }
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+        });
+    }
+
+    /**
      *  Выводим ошибки при их наличии
      *
      *  @param {object} errors
+     *  @param {object} parentElement
      */
-    function showUserInfoErrors(errors) {
+    function showUserErrors(errors, parentElement) {
         Array.prototype.forEach.call(errors, function (error) {
             document.getElementById('edit-error-' + error.name).innerText = error.message;
             document.getElementById('change_' + error.name).classList.add('edit-block-element__content_error-field');
-            document.getElementsByClassName('edit-block-status_correct')[0].style.display = 'none';
+            parentElement.getElementsByClassName('edit-block-status_correct')[0].style.display = 'none';
         });
     }
 
     /**
      *  Выводим сообщение об успешном редактирования данных
      */
-    function showUserInfoCorrect() {
-        document.getElementsByClassName('edit-block-status_correct')[0].style.display = 'flex';
+    function showUserCorrect(parentElement) {
+        parentElement.getElementsByClassName('edit-block-status_correct')[0].style.display = 'flex';
     }
 })();
