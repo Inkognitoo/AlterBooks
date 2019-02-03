@@ -23,7 +23,7 @@ class UserEditInfoApiTest extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function testReviewEditSuccess()
+    public function testUserInfoEditSuccess()
     {
         /** @var User $user */
         $user = factory(User::class)->create();

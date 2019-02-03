@@ -35,9 +35,6 @@ Route::get('user/{id}/edit', 'UserController@editShow')
 Route::post('user/{id}/edit', 'UserController@edit')
     ->name('user.edit')
 ;
-Route::post('user/{id}/edit/email', 'UserController@editEmail')
-    ->name('user.edit.email')
-;
 
 /*
 |--------------------------------------------------------------------------
