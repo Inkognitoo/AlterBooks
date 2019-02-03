@@ -8,6 +8,10 @@
 
         width: 100%;
         padding: 0 50px 100px;
+
+        @media screen and (max-width: @md) {
+            font-size: 0.9em;
+        }
     }
 
     &-element {
@@ -25,6 +29,14 @@
             margin-bottom: 0;
         }
 
+        @media screen and (max-width: 1160px) {
+            width: 70%;
+        }
+
+        @media screen and (max-width: 980px) {
+            width: 100%;
+        }
+
         &__title {
             display: flex;
             justify-content: center;
@@ -34,8 +46,9 @@
             box-sizing: border-box;
             padding: 10px 15px;
 
-            background: linear-gradient(to right, transparent 0%, @grey 35%, @grey 65%, transparent 100%);
+            background: linear-gradient(to right, transparent 0%, #68c254 35%, #68c254 65%, transparent 100%);
 
+            color: white;
             text-transform: uppercase;
         }
 
@@ -43,9 +56,10 @@
             display: flex;
             justify-content: center;
             align-items: stretch;
+            flex-wrap: wrap;
 
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             padding: 15px;
         }
     }

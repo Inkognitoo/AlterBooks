@@ -8,7 +8,7 @@
 @section('title', 'AlterBooks')
 
 @section('content')
-    <main class="landing-content">
+    <div class="landing-content">
         <div class="landing-element landing-books">
             <div class="landing-element__title landing-books__title">
                 {{ t('book', 'Новинки') }}
@@ -39,5 +39,5 @@
                 {{ t('user.button', 'Все пользователи') }}
             </a>
         </div>
-    </main>
+    </div>
 @endsection

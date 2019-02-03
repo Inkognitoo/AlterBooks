@@ -5,14 +5,18 @@
     align-items: center;
 
     width: 136px;
-    margin-right: 20px;
+    margin: 0 10px 20px;
     padding: 10px 10px 15px;
 
     border-radius: 10px;
     background: white;
 
-    &:last-child {
-        margin-right: 0;
+    @media screen and (max-width: 450px) {
+        width: 100%;
+
+        &:nth-child(n + 4) {
+            display: none;
+        }
     }
 
     &__cover {
