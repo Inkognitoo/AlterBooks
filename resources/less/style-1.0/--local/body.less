@@ -1,15 +1,21 @@
 .body {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+
     min-height: 100vh;
+
     background: @transparent;
+
     font-family: Verdana, sans-serif;
     font-size: 18px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-tap-highlight-color: transparent;
-    overflow-y: scroll;
 
+    overflow-y: scroll;
+  
     &__main {
+       min-height: 90vh;
        margin: 30px 0 40px;
     }
 }

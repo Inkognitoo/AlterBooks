@@ -1,0 +1,45 @@
+.landing-book {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 136px;
+    margin: 0 10px 20px;
+    padding: 10px 10px 15px;
+
+    border-radius: 10px;
+    background: white;
+
+    @media screen and (max-width: 450px) {
+        width: 100%;
+
+        &:nth-child(n + 4) {
+            display: none;
+        }
+    }
+
+    &__cover {
+        width: 115px;
+        height: 170px;
+
+        background-size: 100% auto;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+    }
+
+    &__title {
+        width: 100%;
+        margin-bottom: 20px;
+
+        font-size: 0.8em;
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    &__read {
+        min-height: 30px;
+        margin-top: auto;
+        font-size: 0.8em;
+    }
+}
